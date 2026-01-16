@@ -136,6 +136,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#resources">Resources</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#version-history"><i class="bi bi-clock-history"></i> Version History</a>
+                    </li>
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
@@ -171,6 +174,9 @@
                 </a>
                 <a href="#best-practices" class="list-group-item list-group-item-action">
                     <i class="bi bi-5-circle"></i> Best Practices
+                </a>
+                <a href="#version-history" class="list-group-item list-group-item-action list-group-item-info">
+                    <i class="bi bi-clock-history"></i> Version History
                 </a>
             </div>
         </div>
@@ -730,6 +736,205 @@ spring.h2.console.enabled=true</code></pre>
                         </div>
                         <div class="alert alert-danger" role="alert">
                             <i class="bi bi-x-circle-fill"></i> <strong>Error:</strong> Critical issue that needs resolution.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Version History -->
+                <div id="version-history" class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h4><i class="bi bi-clock-history"></i> Version History & Changelog</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Track the historical journey and progress of this template.</p>
+                        
+                        <div class="accordion" id="versionHistoryAccordion">
+                            <!-- Version 1.0.0 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#version100">
+                                        <span class="badge bg-success me-2">Current</span>
+                                        <strong>Version 1.0.0 - Initial Release</strong>
+                                        <small class="ms-2 text-muted">January 16, 2026</small>
+                                    </button>
+                                </h2>
+                                <div id="version100" class="accordion-collapse collapse show" data-bs-parent="#versionHistoryAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Overview</h5>
+                                        <p>First complete release of the comprehensive Bootstrap technical tutorial template with all major components and features.</p>
+                                        
+                                        <h5>Features Implemented</h5>
+                                        
+                                        <h6 class="text-primary mt-3"><i class="bi bi-layout-text-sidebar"></i> Navigation & Layout</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Sticky navigation bar with brand, links, dropdown, and search</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Off-canvas sidebar for table of contents</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Responsive mobile-first design</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Fixed position theme controls</li>
+                                        </ul>
+                                        
+                                        <h6 class="text-primary mt-3"><i class="bi bi-palette"></i> Theme System</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Dark/Light theme toggle with smooth transitions</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Three color flavors (Blue, Green, Purple) for light mode</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> CSS custom properties for easy theming</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Bootstrap 5.3 native dark mode support</li>
+                                        </ul>
+                                        
+                                        <h6 class="text-primary mt-3"><i class="bi bi-layers"></i> Content Components</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Jumbotron/Hero section with gradient backgrounds</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Carousel for visual content showcase</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Tab groups (Overview, Diagrams, Code, Output)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Accordion for collapsible topics</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Card layouts (3-column grid)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> List groups (steps/checklist, resources)</li>
+                                        </ul>
+                                        
+                                        <h6 class="text-primary mt-3"><i class="bi bi-code-square"></i> Code & Technical Features</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Prism.js syntax highlighting (200+ languages)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Copy-to-clipboard functionality for code blocks</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Console output display with dark terminal theme</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> ASCII diagram support with monospace styling</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> PlantUML syntax examples</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Configuration file examples</li>
+                                        </ul>
+                                        
+                                        <h6 class="text-primary mt-3"><i class="bi bi-ui-checks"></i> Interactive Elements</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Form elements (text, select, textarea, checkbox, radio, range)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Button showcase (all Bootstrap variants)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Alert messages (info, success, warning, danger)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Toast notifications</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Tooltips with hover support</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Popovers with click interaction</li>
+                                        </ul>
+                                        
+                                        <h5 class="mt-4">Technical Stack</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <ul>
+                                                    <li><strong>Bootstrap:</strong> 5.3.2</li>
+                                                    <li><strong>Bootstrap Icons:</strong> 1.11.3</li>
+                                                    <li><strong>Prism.js:</strong> 1.29.0</li>
+                                                    <li><strong>JavaScript:</strong> Vanilla (no dependencies)</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul>
+                                                    <li><strong>File Size:</strong> ~40KB uncompressed</li>
+                                                    <li><strong>Components:</strong> 14 major</li>
+                                                    <li><strong>Lines of Code:</strong> ~900</li>
+                                                    <li><strong>CDN Resources:</strong> 4</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        
+                                        <h5 class="mt-4">Known Limitations</h5>
+                                        <div class="alert alert-warning">
+                                            <ul class="mb-0">
+                                                <li><strong>Color Flavors:</strong> Only work in light mode (design choice)</li>
+                                                <li><strong>PlantUML:</strong> Requires external rendering (not auto-generated)</li>
+                                                <li><strong>Code Copy:</strong> Requires HTTPS or localhost for clipboard API</li>
+                                                <li><strong>Theme Persistence:</strong> Session-only (no localStorage implementation)</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <h5 class="mt-4">Future Enhancement Ideas</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <ul>
+                                                    <li>LocalStorage theme preference persistence</li>
+                                                    <li>More color flavor options</li>
+                                                    <li>Dark mode color flavors</li>
+                                                    <li>Print stylesheet optimization</li>
+                                                    <li>Search functionality implementation</li>
+                                                    <li>Progress indicator for long tutorials</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul>
+                                                    <li>Multi-language code tabs</li>
+                                                    <li>Automatic PlantUML rendering</li>
+                                                    <li>Breadcrumb navigation</li>
+                                                    <li>Back-to-top button</li>
+                                                    <li>Reading time estimates</li>
+                                                    <li>Export to PDF functionality</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Future Versions Placeholder -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#futureVersions">
+                                        <i class="bi bi-plus-circle me-2"></i> Future Versions
+                                    </button>
+                                </h2>
+                                <div id="futureVersions" class="accordion-collapse collapse" data-bs-parent="#versionHistoryAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Semantic Versioning</h5>
+                                        <p>This template follows Semantic Versioning (SemVer): <strong>MAJOR.MINOR.PATCH</strong></p>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="card bg-light">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title text-danger"><i class="bi bi-exclamation-octagon"></i> MAJOR (X.0.0)</h6>
+                                                        <p class="card-text small">Breaking changes, major redesign</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card bg-light">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title text-primary"><i class="bi bi-plus-square"></i> MINOR (0.X.0)</h6>
+                                                        <p class="card-text small">New features, backward compatible</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card bg-light">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title text-success"><i class="bi bi-wrench"></i> PATCH (0.0.X)</h6>
+                                                        <p class="card-text small">Bug fixes, minor improvements</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <h5 class="mt-4">Roadmap</h5>
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <h6 class="mb-1"><i class="bi bi-speedometer2"></i> Short Term (v1.x)</h6>
+                                                <p class="mb-1 small">Gather user feedback, fix discovered bugs, minor enhancements</p>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <h6 class="mb-1"><i class="bi bi-graph-up-arrow"></i> Medium Term (v2.x)</h6>
+                                                <p class="mb-1 small">Bootstrap 6 migration (when available), enhanced theme system, more interactive components</p>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <h6 class="mb-1"><i class="bi bi-rocket-takeoff"></i> Long Term (v3.x)</h6>
+                                                <p class="mb-1 small">Framework-agnostic version, component library separation, template generator tool</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="alert alert-info mt-4">
+                                            <i class="bi bi-info-circle"></i> <strong>Note:</strong> New versions will be added to this section as they are released. Check back for updates!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <span class="badge bg-secondary">Status: Active Development</span>
+                            <span class="badge bg-info">Current: v1.0.0</span>
+                            <span class="badge bg-success">Last Updated: January 16, 2026</span>
                         </div>
                     </div>
                 </div>
