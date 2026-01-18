@@ -118,6 +118,41 @@
         .console-output {
             white-space: pre-line;
         }
+
+        /* Enhanced search styles */
+        .search-results-panel {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1050;
+            min-width: 280px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+        }
+
+        [data-bs-theme="dark"] .search-results-panel {
+            background: #212529;
+            border: 1px solid #495057;
+        }
+
+        .search-highlight {
+            background-color: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        [data-bs-theme="dark"] .search-highlight {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .search-highlight.current {
+            background-color: #ff5722;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -2885,6 +2920,35 @@ mongoose.connect(process.env.MONGODB_URI)
         </div>
     </div>
 
+    <!-- Search Results Panel -->
+    <div class="search-results-panel" id="searchResultsPanel">
+        <div class="card mb-0">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-search"></i> Search Results</span>
+                <button class="btn btn-sm btn-close btn-close-white" id="closeSearchPanel"></button>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <strong id="searchResultCount">0 matches</strong>
+                        <div class="small text-muted" id="searchTerm"></div>
+                    </div>
+                </div>
+                <div class="btn-group w-100" role="group">
+                    <button class="btn btn-outline-primary" id="prevMatch">
+                        <i class="bi bi-chevron-up"></i> Previous
+                    </button>
+                    <button class="btn btn-outline-primary" id="nextMatch">
+                        <i class="bi bi-chevron-down"></i> Next
+                    </button>
+                </div>
+                <div class="mt-2 text-center">
+                    <small class="text-muted">Match <span id="currentMatchNum">0</span> of <span id="totalMatches">0</span></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Version Badge -->
     <span class="badge bg-secondary version-badge" data-bs-toggle="tooltip" title="Tutorial Version">v1.0.0</span>
 
@@ -3029,10 +3093,10 @@ mongoose.connect(process.env.MONGODB_URI)
             });
         });
 
-        // Search functionality
+        // Simple Search functionality with results panel
         document.querySelector('form[role="search"]').addEventListener('submit', (e) => {
             e.preventDefault();
-            const searchTerm = e.target.querySelector('input[type="search"]').value.toLowerCase();
+            const searchTerm = e.target.querySelector('input[type="search"]').value;
             
             if (!searchTerm) return;
             
@@ -3044,6 +3108,7 @@ mongoose.connect(process.env.MONGODB_URI)
             // Find and highlight matches in card bodies
             const cards = document.querySelectorAll('.card-body');
             let firstMatch = null;
+            let totalMatches = 0;
             
             cards.forEach(card => {
                 const walker = document.createTreeWalker(
@@ -3056,7 +3121,8 @@ mongoose.connect(process.env.MONGODB_URI)
                 while (walker.nextNode()) {
                     if (walker.currentNode.parentElement.tagName !== 'SCRIPT' && 
                         walker.currentNode.parentElement.tagName !== 'STYLE' &&
-                        !walker.currentNode.parentElement.closest('code')) {
+                        !walker.currentNode.parentElement.closest('code') &&
+                        !walker.currentNode.parentElement.closest('pre')) {
                         textNodes.push(walker.currentNode);
                     }
                 }
@@ -3064,22 +3130,66 @@ mongoose.connect(process.env.MONGODB_URI)
                 textNodes.forEach(node => {
                     const text = node.textContent;
                     const lowerText = text.toLowerCase();
-                    if (lowerText.includes(searchTerm)) {
-                        const regex = new RegExp(`(${searchTerm})`, 'gi');
+                    if (lowerText.includes(searchTerm.toLowerCase())) {
+                        const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                        const matches = text.match(regex);
+                        if (matches) {
+                            totalMatches += matches.length;
+                        }
                         const span = document.createElement('span');
                         span.innerHTML = text.replace(regex, '<mark class="search-highlight">$1</mark>');
                         node.replaceWith(span);
-                        if (!firstMatch) firstMatch = span;
+                        if (!firstMatch) firstMatch = span.querySelector('.search-highlight');
                     }
                 });
             });
             
-            // Scroll to first match
-            if (firstMatch) {
+            // Update panel
+            const panel = document.getElementById('searchResultsPanel');
+            if (totalMatches > 0) {
+                panel.style.display = 'block';
+                document.getElementById('searchResultCount').textContent = `${totalMatches} ${totalMatches === 1 ? 'match' : 'matches'}`;
+                document.getElementById('searchTerm').textContent = `for "${searchTerm}"`;
+                document.getElementById('totalMatches').textContent = totalMatches;
+                document.getElementById('currentMatchNum').textContent = '1';
+                
+                // Scroll to first match
                 firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
-                alert(`No results found for "${searchTerm}"`);
+                panel.style.display = 'block';
+                document.getElementById('searchResultCount').textContent = 'No matches';
+                document.getElementById('searchTerm').textContent = `for "${searchTerm}"`;
+                document.getElementById('totalMatches').textContent = '0';
+                document.getElementById('currentMatchNum').textContent = '0';
             }
+        });
+        
+        // Close panel
+        document.getElementById('closeSearchPanel').addEventListener('click', () => {
+            document.getElementById('searchResultsPanel').style.display = 'none';
+            document.querySelectorAll('.search-highlight').forEach(el => {
+                el.outerHTML = el.innerHTML;
+            });
+        });
+        
+        // Navigation using browser's native find (Ctrl+F style)
+        let currentSearchTerm = '';
+        
+        document.getElementById('prevMatch').addEventListener('click', () => {
+            if (currentSearchTerm) {
+                window.find(currentSearchTerm, false, true, false, false, true, false);
+            }
+        });
+        
+        document.getElementById('nextMatch').addEventListener('click', () => {
+            if (currentSearchTerm) {
+                window.find(currentSearchTerm, false, false, false, false, true, false);
+            }
+        });
+        
+        // Store search term for navigation
+        document.querySelector('form[role="search"]').addEventListener('submit', (e) => {
+            currentSearchTerm = e.target.querySelector('input[type="search"]').value;
         });
     </script>
 </body>
