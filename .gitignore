@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Test Coverage
+coverage/
+*.lcov
+
+# Jest
+.jest-cache/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
