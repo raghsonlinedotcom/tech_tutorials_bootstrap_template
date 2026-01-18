@@ -313,6 +313,11 @@
                                     <i class="bi bi-diagram-2"></i> PlantUML Diagram
                                 </button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="plantuml-image-tab" data-bs-toggle="tab" data-bs-target="#plantuml-image" type="button" role="tab">
+                                    <i class="bi bi-diagram-2"></i> PlantUML Diagram
+                                </button>
+                            </li>
                         </ul>
                         
                         <div class="tab-content border border-top-0 p-3" id="architectureTabContent">
@@ -417,6 +422,14 @@ note over Client, Server: TCP Connection Terminated end note
                                     </div>
                                 </div>
                             </div>
+			    
+                            <div class="tab-pane fade" id="plantuml-image" role="tabpanel">
+                                <div class="plantuml-container">
+					<pre>
+						<img src="images/WebSockets-Connection-LifeCycle-PlantUML.png" alt="WebSockets ConnectionLifeCycle"/>
+				        </pre>
+				</div>
+			    </div>
                         </div>
 
                         <h4 class="mt-4"><i class="bi bi-layers"></i> Architecture Components</h4>
