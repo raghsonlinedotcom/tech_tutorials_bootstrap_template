@@ -94,6 +94,30 @@
         .comparison-table {
             font-size: 0.9rem;
         }
+
+        /* Code copy button styles */
+        .code-wrapper {
+            position: relative;
+        }
+        
+        .code-copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        
+        .code-copy-btn:hover {
+            opacity: 1;
+        }
+
+        .console-output {
+            white-space: pre-line;
+        }
     </style>
 </head>
 <body>
@@ -142,6 +166,8 @@
                             <li><a class="dropdown-item" href="#api-methods">API Methods</a></li>
                             <li><a class="dropdown-item" href="#real-time-example">Real-Time Example</a></li>
                             <li><a class="dropdown-item" href="#faqs">FAQs</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#version-history">Version History</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -194,6 +220,9 @@
                 </a>
                 <a href="#faqs" class="list-group-item list-group-item-action">
                     <i class="bi bi-9-circle"></i> FAQs
+                </a>
+                <a href="#version-history" class="list-group-item list-group-item-action list-group-item-info">
+                    <i class="bi bi-clock-history"></i> Version History
                 </a>
                 <a href="#resources" class="list-group-item list-group-item-action list-group-item-warning">
                     <i class="bi bi-bookmarks"></i> Resources
@@ -1401,10 +1430,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/websocket-chat', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+// Note: useNewUrlParser and useUnifiedTopology are deprecated in Mongoose 6+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/websocket-chat')
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
@@ -1961,8 +1988,7 @@ NODE_ENV=development</code></pre>
                             </ol>
                         </div>
 
-                        <div class="console-output mt-3">
-$ npm run dev
+                        <div class="console-output mt-3">$ npm run dev
 
 > websocket-chat-app@1.0.0 dev
 > nodemon server.js
@@ -1972,8 +1998,7 @@ MongoDB connected
 Server running on port 3000
 New client connected: xK7jQ2vZ8mN3pL1r
 User123 joined room: general
-Message from User123 in general: Hello everyone!
-                        </div>
+Message from User123 in general: Hello everyone!</div>
                     </div>
                 </div>
 
@@ -2338,6 +2363,87 @@ socket.onopen = () => {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
+        });
+
+        // Code copy functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wrap all code blocks with copy button
+            document.querySelectorAll('pre:has(code)').forEach((pre) => {
+                // Skip if already wrapped
+                if (pre.parentElement.classList.contains('code-wrapper')) return;
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+                
+                const button = document.createElement('button');
+                button.className = 'btn btn-sm btn-secondary code-copy-btn';
+                button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                button.onclick = () => {
+                    const code = pre.querySelector('code').textContent;
+                    navigator.clipboard.writeText(code).then(() => {
+                        button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                        }, 2000);
+                    });
+                };
+                wrapper.insertBefore(button, pre);
+            });
+        });
+
+        // Search functionality
+        document.querySelector('form[role="search"]').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const searchTerm = e.target.querySelector('input[type="search"]').value.toLowerCase();
+            
+            if (!searchTerm) return;
+            
+            // Remove previous highlights
+            document.querySelectorAll('.search-highlight').forEach(el => {
+                el.outerHTML = el.innerHTML;
+            });
+            
+            // Find and highlight matches in card bodies
+            const cards = document.querySelectorAll('.card-body');
+            let firstMatch = null;
+            
+            cards.forEach(card => {
+                const walker = document.createTreeWalker(
+                    card,
+                    NodeFilter.SHOW_TEXT,
+                    null
+                );
+                
+                const textNodes = [];
+                while (walker.nextNode()) {
+                    if (walker.currentNode.parentElement.tagName !== 'SCRIPT' && 
+                        walker.currentNode.parentElement.tagName !== 'STYLE' &&
+                        !walker.currentNode.parentElement.closest('code')) {
+                        textNodes.push(walker.currentNode);
+                    }
+                }
+                
+                textNodes.forEach(node => {
+                    const text = node.textContent;
+                    const lowerText = text.toLowerCase();
+                    if (lowerText.includes(searchTerm)) {
+                        const regex = new RegExp(`(${searchTerm})`, 'gi');
+                        const span = document.createElement('span');
+                        span.innerHTML = text.replace(regex, '<mark class="search-highlight">$1</mark>');
+                        node.replaceWith(span);
+                        if (!firstMatch) firstMatch = span;
+                    }
+                });
+            });
+            
+            // Scroll to first match
+            if (firstMatch) {
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                alert(`No results found for "${searchTerm}"`);
+            }
         });
     </script>
 </body>
