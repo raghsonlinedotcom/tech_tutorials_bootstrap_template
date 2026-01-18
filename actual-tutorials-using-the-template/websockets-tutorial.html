@@ -1975,6 +1975,281 @@ NODE_ENV=development</code></pre>
   }
 }</code></pre>
 
+                        <!-- Code Explanations -->
+                        <h4 class="mt-4"><i class="bi bi-file-text"></i> Code Explanations</h4>
+                        <p>Detailed explanations of each source code file in the application:</p>
+                        
+                        <div class="accordion" id="codeExplanationsAccordion">
+                            <!-- Server.js Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#explainServer">
+                                        <i class="bi bi-server me-2"></i> <strong>server.js - Main Server File</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainServer" class="accordion-collapse collapse show" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Purpose & Structure</h5>
+                                        <p>The server.js file is the entry point of the application, responsible for:</p>
+                                        <ul>
+                                            <li><strong>Server Initialization:</strong> Creates Express app and HTTP server</li>
+                                            <li><strong>Socket.IO Integration:</strong> Wraps HTTP server with Socket.IO for WebSocket support</li>
+                                            <li><strong>Database Connection:</strong> Connects to MongoDB using Mongoose</li>
+                                            <li><strong>Real-time Event Handling:</strong> Manages WebSocket events (join, sendMessage, typing, disconnect)</li>
+                                            <li><strong>REST API Endpoints:</strong> Provides traditional HTTP endpoints for rooms management</li>
+                                        </ul>
+
+                                        <h5 class="mt-3">Key Components</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-body">
+                                                        <h6><i class="bi bi-gear text-primary"></i> CORS Configuration</h6>
+                                                        <p class="small mb-0">Allows cross-origin requests from any domain. In production, restrict this to specific domains for security.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-body">
+                                                        <h6><i class="bi bi-database text-success"></i> Connection Pool</h6>
+                                                        <p class="small mb-0">Mongoose maintains a connection pool to MongoDB, reusing connections for better performance.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="mt-3">Active Users Management</h5>
+                                        <p>The <code>activeUsers</code> Map stores currently connected users with their socket IDs as keys. This allows:</p>
+                                        <ul>
+                                            <li>Tracking which user is in which room</li>
+                                            <li>Cleaning up user data on disconnect</li>
+                                            <li>Broadcasting user lists to room participants</li>
+                                        </ul>
+
+                                        <h5 class="mt-3">Socket Event Flow</h5>
+                                        <ol>
+                                            <li><strong>connection:</strong> New client connects, socket ID assigned</li>
+                                            <li><strong>join:</strong> User joins a room, past messages loaded from DB</li>
+                                            <li><strong>sendMessage:</strong> Message saved to DB and broadcast to room</li>
+                                            <li><strong>typing/stopTyping:</strong> Real-time typing indicators broadcast</li>
+                                            <li><strong>disconnect:</strong> User removed from active list, room notified</li>
+                                        </ol>
+
+                                        <div class="alert alert-warning mt-3">
+                                            <i class="bi bi-exclamation-triangle"></i> <strong>Mongoose Deprecation Note:</strong>
+                                            <p class="mb-0">The options <code>useNewUrlParser</code> and <code>useUnifiedTopology</code> were required in Mongoose 5.x but are now deprecated and removed in Mongoose 6+. These options are no longer needed as the new parser and topology engine are the default. If you see deprecation warnings, you're using Mongoose 5.x - upgrade to Mongoose 6+ and remove these options.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Message Model Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainMessage">
+                                        <i class="bi bi-chat-left-text me-2"></i> <strong>models/Message.js - Message Schema</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainMessage" class="accordion-collapse collapse" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Schema Design</h5>
+                                        <p>The Message model defines the structure of chat messages stored in MongoDB:</p>
+                                        
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Field</th>
+                                                    <th>Type</th>
+                                                    <th>Purpose</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>sender</code></td>
+                                                    <td>String</td>
+                                                    <td>Username of message author (in production, use User reference)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>content</code></td>
+                                                    <td>String (max 1000)</td>
+                                                    <td>Message text with validation to prevent huge messages</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>room</code></td>
+                                                    <td>String</td>
+                                                    <td>Room identifier for message organization</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>timestamp</code></td>
+                                                    <td>Date</td>
+                                                    <td>When message was sent (auto-generated)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>edited</code></td>
+                                                    <td>Boolean</td>
+                                                    <td>Flag for message editing feature</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Indexing Strategy</h5>
+                                        <p>The compound index on <code>{room: 1, timestamp: -1}</code> optimizes queries that:</p>
+                                        <ul>
+                                            <li>Fetch messages for a specific room</li>
+                                            <li>Sort by timestamp in descending order (newest first)</li>
+                                            <li>Are used in the pagination of chat history</li>
+                                        </ul>
+                                        <p class="small text-muted">This index significantly improves performance when loading recent messages for a room.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- User Model Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainUser">
+                                        <i class="bi bi-person me-2"></i> <strong>models/User.js - User Schema</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainUser" class="accordion-collapse collapse" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>User Data Structure</h5>
+                                        <p>Stores user account information and presence status:</p>
+                                        
+                                        <ul>
+                                            <li><strong>username:</strong> Unique identifier with 3+ characters (indexed)</li>
+                                            <li><strong>email:</strong> Unique, auto-lowercase for case-insensitive matching</li>
+                                            <li><strong>password:</strong> Should be hashed with bcrypt before storage (not shown in example)</li>
+                                            <li><strong>online:</strong> Presence indicator updated on connect/disconnect</li>
+                                            <li><strong>lastSeen:</strong> Timestamp of last activity for "last seen" feature</li>
+                                        </ul>
+
+                                        <h5 class="mt-3">Security Considerations</h5>
+                                        <div class="alert alert-danger">
+                                            <strong><i class="bi bi-shield-x"></i> Production Enhancement Required:</strong>
+                                            <p>Before deploying:</p>
+                                            <ul class="mb-0">
+                                                <li>Add password hashing using bcrypt (10-12 rounds)</li>
+                                                <li>Implement password validation (min length, complexity)</li>
+                                                <li>Add email verification flow</li>
+                                                <li>Implement rate limiting for login attempts</li>
+                                                <li>Add JWT-based authentication</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Room Model Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainRoom">
+                                        <i class="bi bi-door-open me-2"></i> <strong>models/Room.js - Room Schema</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainRoom" class="accordion-collapse collapse" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Room Management</h5>
+                                        <p>Organizes chat into separate spaces with permissions:</p>
+                                        
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Field</th>
+                                                    <th>Purpose</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>name</code></td>
+                                                    <td>Unique room identifier (e.g., "general", "tech-talk")</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>description</code></td>
+                                                    <td>Room purpose/topic for users to understand context</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>participants[]</code></td>
+                                                    <td>Array of User IDs with access (for private rooms)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>isPrivate</code></td>
+                                                    <td>Controls visibility and access permissions</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Room Types</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card border-success mb-2">
+                                                    <div class="card-header bg-success text-white">Public Rooms</div>
+                                                    <div class="card-body">
+                                                        <p class="small mb-0"><code>isPrivate: false</code> - Anyone can join and view messages. Good for community channels.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card border-warning mb-2">
+                                                    <div class="card-header bg-warning">Private Rooms</div>
+                                                    <div class="card-body">
+                                                        <p class="small mb-0"><code>isPrivate: true</code> - Only participants can access. Requires permission check before joining.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Client Code Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainClient">
+                                        <i class="bi bi-browser-chrome me-2"></i> <strong>public/app.js - Client-Side Logic</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainClient" class="accordion-collapse collapse" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Client Architecture</h5>
+                                        <p>The client JavaScript handles UI interactions and WebSocket communication:</p>
+
+                                        <h6 class="mt-3"><i class="bi bi-1-circle"></i> Connection Management</h6>
+                                        <pre><code class="language-javascript">socket = io('http://localhost:3000');  // Connect to Socket.IO server
+socket.emit('join', { username, room });  // Join specific room</code></pre>
+                                        <p class="small">Socket.IO client automatically handles reconnection, fallbacks, and protocol negotiation.</p>
+
+                                        <h6 class="mt-3"><i class="bi bi-2-circle"></i> Event Listeners</h6>
+                                        <ul>
+                                            <li><code>loadMessages</code> - Receives historical messages on join</li>
+                                            <li><code>newMessage</code> - Real-time message from other users</li>
+                                            <li><code>userJoined</code> / <code>userLeft</code> - Presence notifications</li>
+                                            <li><code>updateUserList</code> - Refreshed list of online users</li>
+                                            <li><code>userTyping</code> / <code>userStoppedTyping</code> - Typing indicators</li>
+                                        </ul>
+
+                                        <h6 class="mt-3"><i class="bi bi-3-circle"></i> XSS Prevention</h6>
+                                        <p>The <code>escapeHtml()</code> function is critical for security:</p>
+                                        <pre><code class="language-javascript">function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;  // Browser auto-escapes
+  return div.innerHTML;     // Returns escaped HTML
+}</code></pre>
+                                        <p class="small">This prevents malicious scripts in messages from executing. Always sanitize user input!</p>
+
+                                        <h6 class="mt-3"><i class="bi bi-4-circle"></i> Typing Indicator Debouncing</h6>
+                                        <p>Typing events are rate-limited using a timer to avoid flooding the server:</p>
+                                        <ul>
+                                            <li>User starts typing → emit "typing" event immediately</li>
+                                            <li>Timer resets on each keystroke</li>
+                                            <li>After 1 second of inactivity → emit "stopTyping"</li>
+                                        </ul>
+                                        <p class="small">This reduces server load while maintaining responsive UI.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>			
                         <!-- Running the Application -->
                         <h4 class="mt-4"><i class="bi bi-play-circle"></i> Running the Application</h4>
                         <div class="alert alert-success">
@@ -2008,14 +2283,14 @@ Message from User123 in general: Hello everyone!</div>
                         <h2><i class="bi bi-question-circle"></i> Frequently Asked Questions</h2>
                     </div>
                     <div class="card-body">
-                        <div class="accordion" id="faqAccordion">
+                        <div class="accordion" id="">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
                                         <strong>Q1: What's the difference between WebSocket and Socket.IO?</strong>
                                     </button>
                                 </h2>
-                                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#">
                                     <div class="accordion-body">
                                         <p><strong>WebSocket</strong> is a protocol (like HTTP), while <strong>Socket.IO</strong> is a library built on top of WebSocket.</p>
                                         <ul>
@@ -2033,7 +2308,7 @@ Message from User123 in general: Hello everyone!</div>
                                         <strong>Q2: Can WebSockets work through proxies and firewalls?</strong>
                                     </button>
                                 </h2>
-                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#">
                                     <div class="accordion-body">
                                         <p>It depends on the proxy/firewall configuration:</p>
                                         <ul>
@@ -2057,7 +2332,7 @@ Message from User123 in general: Hello everyone!</div>
                                         <strong>Q3: How do I scale WebSocket applications horizontally?</strong>
                                     </button>
                                 </h2>
-                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#">
                                     <div class="accordion-body">
                                         <p>Scaling WebSocket applications across multiple servers requires:</p>
                                         <ol>
@@ -2080,7 +2355,7 @@ io.adapter(redisAdapter({ host: 'redis-host', port: 6379 }));</code></pre>
                                         <strong>Q4: How do I secure WebSocket connections?</strong>
                                     </button>
                                 </h2>
-                                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#">
                                     <div class="accordion-body">
                                         <p>Security best practices for WebSocket applications:</p>
                                         <ul>
@@ -2110,7 +2385,7 @@ io.use((socket, next) => {
                                         <strong>Q5: What happens when a WebSocket connection drops?</strong>
                                     </button>
                                 </h2>
-                                <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#">
                                     <div class="accordion-body">
                                         <p>When a WebSocket connection is lost:</p>
                                         <ul>
@@ -2138,7 +2413,7 @@ io.use((socket, next) => {
                                         <strong>Q6: Can I send binary data over WebSockets?</strong>
                                     </button>
                                 </h2>
-                                <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#">
                                     <div class="accordion-body">
                                         <p>Yes! WebSockets support both text and binary data:</p>
                                         <pre><code class="language-javascript">// Client: Set binary type
@@ -2168,7 +2443,7 @@ socket.onmessage = (event) => {
                                         <strong>Q7: What are WebSocket subprotocols?</strong>
                                     </button>
                                 </h2>
-                                <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#">
                                     <div class="accordion-body">
                                         <p>Subprotocols define the message format/protocol used over WebSocket:</p>
                                         <ul>
@@ -2193,7 +2468,7 @@ socket.onopen = () => {
                                         <strong>Q8: How many WebSocket connections can a server handle?</strong>
                                     </button>
                                 </h2>
-                                <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#">
                                     <div class="accordion-body">
                                         <p>The number depends on:</p>
                                         <ul>
@@ -2216,9 +2491,288 @@ socket.onopen = () => {
                                     </div>
                                 </div>
                             </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq9">
+                                        <strong>Q9: What about useNewUrlParser and useUnifiedTopology warnings?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq9" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Understanding Mongoose Connection Options</h5>
+                                        <p>You may encounter deprecated warnings related to MongoDB connection options:</p>
+
+                                        <div class="alert alert-warning">
+                                            <strong><i class="bi bi-exclamation-triangle"></i> Historical Context:</strong>
+                                            <p>In Mongoose 5.x, these options were required:</p>
+                                            <pre><code class="language-javascript">mongoose.connect(uri, {
+  useNewUrlParser: true,       // Use new MongoDB connection string parser
+  useUnifiedTopology: true,    // Use new topology engine
+  useFindAndModify: false,     // Use native findOneAndUpdate()
+  useCreateIndex: true         // Use createIndex() instead of ensureIndex()
+});</code></pre>
+                                        </div>
+
+                                        <h5 class="mt-3">Modern Approach (Mongoose 6+)</h5>
+                                        <p>These options are <strong>no longer needed</strong> and cause warnings. Simply use:</p>
+                                        <pre><code class="language-javascript">// Clean connection (Mongoose 6+)
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('Connection error:', err));</code></pre>
+
+                                        <h5 class="mt-3">What Each Option Did</h5>
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Purpose</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>useNewUrlParser</code></td>
+                                                    <td>Enabled MongoDB's new connection string parser</td>
+                                                    <td><span class="badge bg-success">Default in Mongoose 6+</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>useUnifiedTopology</code></td>
+                                                    <td>Used new Server Discover and Monitoring engine</td>
+                                                    <td><span class="badge bg-success">Default in Mongoose 6+</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>useFindAndModify</code></td>
+                                                    <td>Controlled which update methods to use</td>
+                                                    <td><span class="badge bg-danger">Removed</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>useCreateIndex</code></td>
+                                                    <td>Used createIndex() vs deprecated ensureIndex()</td>
+                                                    <td><span class="badge bg-danger">Removed</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Migration Checklist</h5>
+                                        <ol>
+                                            <li>Check your Mongoose version: <code>npm list mongoose</code></li>
+                                            <li>If using Mongoose 5.x, upgrade: <code>npm install mongoose@latest</code></li>
+                                            <li>Remove all four deprecated options from <code>mongoose.connect()</code></li>
+                                            <li>Test your application thoroughly</li>
+                                            <li>Update <code>package.json</code> to lock Mongoose 6+ version</li>
+                                        </ol>
+
+                                        <p class="mt-3"><strong>Further Reading:</strong></p>
+                                        <ul>
+                                            <li><a href="https://mongoosejs.com/docs/migrating_to_6.html" target="_blank">Mongoose 6 Migration Guide</a></li>
+                                            <li><a href="https://github.com/Automattic/mongoose/blob/master/CHANGELOG.md" target="_blank">Mongoose Changelog</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>			    
                         </div>
                     </div>
                 </div>
+                <!-- Version History Section -->
+                <div class="card mb-4" id="version-history">
+                    <div class="card-header bg-info text-white">
+                        <h2><i class="bi bi-clock-history"></i> Version History & Changelog</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Track the historical journey and progress of this WebSockets tutorial.</p>
+
+                        <div class="accordion" id="versionHistoryAccordion">
+                            <!-- Version 1.0.0 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#version100">
+                                        <div class="d-flex align-items-center w-100">
+                                            <span class="badge bg-success me-2">Current</span>
+                                            <strong>Version 1.0.0 - Initial Release</strong>
+                                            <span class="ms-auto text-muted small">January 18, 2026</span>
+                                        </div>
+                                    </button>
+                                </h2>
+                                <div id="version100" class="accordion-collapse collapse show" data-bs-parent="#versionHistoryAccordion">
+                                    <div class="accordion-body">
+                                        <h5><i class="bi bi-stars"></i> Overview</h5>
+                                        <p>First complete release of the comprehensive WebSockets tutorial, covering protocol fundamentals through production-ready implementation.</p>
+
+                                        <h5 class="mt-3"><i class="bi bi-list-check"></i> Features Included</h5>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h6><i class="bi bi-book text-primary"></i> Educational Content</h6>
+                                                <ul>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Complete WebSocket protocol introduction</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Architecture diagrams (ASCII + PlantUML)</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Comprehensive ecosystem overview</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Advantages vs disadvantages analysis</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> 6 practical use cases with examples</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> 4 technology comparison tables</li>
+                                                </ul>
+
+                                                <h6 class="mt-3"><i class="bi bi-code-square text-success"></i> Code Examples</h6>
+                                                <ul>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Complete WebSocket API reference</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> MEBN stack implementation</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Real-time chat application</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> MongoDB models (Message, User, Room)</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Socket.IO server implementation</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Bootstrap-based client UI</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Code explanation accordions</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <h6><i class="bi bi-gear text-warning"></i> Interactive Features</h6>
+                                                <ul>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Copy-to-clipboard for all code blocks</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Working search functionality</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Dark/light theme toggle</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Three color flavor themes</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Smooth scrolling navigation</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Table of contents offcanvas</li>
+                                                </ul>
+
+                                                <h6 class="mt-3"><i class="bi bi-question-circle text-info"></i> Help & Documentation</h6>
+                                                <ul>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> 9 comprehensive FAQs</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Mongoose deprecation explanation</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Security best practices</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Scaling strategies</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Official documentation links</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Recommended learning path</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="mt-4"><i class="bi bi-stack"></i> Technical Stack</h5>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Bootstrap:</strong> 5.3.2</li>
+                                                    <li><strong>Bootstrap Icons:</strong> 1.11.3</li>
+                                                    <li><strong>Prism.js:</strong> 1.29.0</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Node.js:</strong> 16+ recommended</li>
+                                                    <li><strong>Socket.IO:</strong> Latest</li>
+                                                    <li><strong>Mongoose:</strong> 6+</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Express:</strong> 4.x</li>
+                                                    <li><strong>MongoDB:</strong> 4.0+</li>
+                                                    <li><strong>PlantUML:</strong> Supported</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="mt-4"><i class="bi bi-exclamation-triangle text-warning"></i> Known Limitations</h5>
+                                        <div class="alert alert-warning">
+                                            <ul class="mb-0">
+                                                <li><strong>Authentication:</strong> Example uses simple username without real authentication (add JWT for production)</li>
+                                                <li><strong>Password Hashing:</strong> Not implemented in example (use bcrypt)</li>
+                                                <li><strong>Rate Limiting:</strong> No protection against spam/DoS (add express-rate-limit)</li>
+                                                <li><strong>Horizontal Scaling:</strong> Requires Redis adapter for multi-server deployment</li>
+                                                <li><strong>PlantUML Rendering:</strong> Requires external service or local renderer</li>
+                                            </ul>
+                                        </div>
+
+                                        <h5 class="mt-4"><i class="bi bi-lightbulb text-primary"></i> Future Enhancement Ideas</h5>
+                                        <ul>
+                                            <li>File upload/sharing via WebSocket</li>
+                                            <li>Message reactions and threading</li>
+                                            <li>User presence indicators (online/offline/away)</li>
+                                            <li>Message search and filtering</li>
+                                            <li>Private messaging (DMs)</li>
+                                            <li>Voice/video call integration with WebRTC</li>
+                                            <li>Message encryption (end-to-end)</li>
+                                            <li>Notification sounds and desktop alerts</li>
+                                            <li>Mobile responsive improvements</li>
+                                            <li>Accessibility enhancements (ARIA labels)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Future Versions Placeholder -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#futureVersions">
+                                        <i class="bi bi-plus-circle me-2"></i> <strong>Future Versions</strong>
+                                    </button>
+                                </h2>
+                                <div id="futureVersions" class="accordion-collapse collapse" data-bs-parent="#versionHistoryAccordion">
+                                    <div class="accordion-body">
+                                        <h5><i class="bi bi-map"></i> Roadmap</h5>
+                                        
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1"><i class="bi bi-speedometer2 text-primary"></i> Version 1.1.0 (Planned)</h6>
+                                                    <small class="text-muted">Q2 2026</small>
+                                                </div>
+                                                <p class="mb-1"><strong>Focus:</strong> Security & Authentication</p>
+                                                <ul class="small">
+                                                    <li>JWT-based authentication</li>
+                                                    <li>Password hashing with bcrypt</li>
+                                                    <li>Rate limiting implementation</li>
+                                                    <li>CSRF protection</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1"><i class="bi bi-graph-up-arrow text-success"></i> Version 1.2.0 (Planned)</h6>
+                                                    <small class="text-muted">Q3 2026</small>
+                                                </div>
+                                                <p class="mb-1"><strong>Focus:</strong> Scaling & Performance</p>
+                                                <ul class="small">
+                                                    <li>Redis adapter for horizontal scaling</li>
+                                                    <li>Load balancer configuration examples</li>
+                                                    <li>Monitoring and logging setup</li>
+                                                    <li>Performance optimization guide</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1"><i class="bi bi-rocket-takeoff text-warning"></i> Version 2.0.0 (Future)</h6>
+                                                    <small class="text-muted">2027</small>
+                                                </div>
+                                                <p class="mb-1"><strong>Focus:</strong> Advanced Features</p>
+                                                <ul class="small">
+                                                    <li>WebRTC integration for video calls</li>
+                                                    <li>End-to-end encryption</li>
+                                                    <li>React/Vue client implementations</li>
+                                                    <li>Docker deployment examples</li>
+                                                    <li>Kubernetes orchestration</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="alert alert-info mt-3">
+                                            <i class="bi bi-info-circle"></i> <strong>Note:</strong> New versions and updates will be added to this section as the tutorial evolves. Check back regularly for improvements and new content!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Badges -->
+                        <div class="mt-4 text-center">
+                            <span class="badge bg-secondary me-2">Status: Active Development</span>
+                            <span class="badge bg-info me-2">Current: v1.0.0</span>
+                            <span class="badge bg-success">Last Updated: January 18, 2026</span>
+                        </div>
+                    </div>
+                </div>	
+
 
                 <!-- Resources Section -->
                 <div class="card mb-4" id="resources">
