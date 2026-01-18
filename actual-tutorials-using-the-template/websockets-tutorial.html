@@ -319,7 +319,7 @@
                             <div class="tab-pane fade show active" id="ascii-architecture" role="tabpanel">
                                 <div class="ascii-art">
 ┌─────────────────────────────────────────────────────────────────┐
-│                    WebSocket Connection Lifecycle                │
+│                    WebSocket Connection Lifecycle               │
 └─────────────────────────────────────────────────────────────────┘
 
      Client                                    Server
@@ -336,12 +336,12 @@
         │  Sec-WebSocket-Accept: [hash]           │
         │                                         │
         │═══════════════════════════════════════════════════════════
-        │           WebSocket Connection Established               │
+        │           WebSocket Connection Established              │
         │═══════════════════════════════════════════════════════════
         │                                         │
-        │  ┌──────────────────────────────────┐  │
-        │  │   Bidirectional Data Frames      │  │
-        │  └──────────────────────────────────┘  │
+        │  ┌──────────────────────────────────┐   │
+        │  │   Bidirectional Data Frames      │   │
+        │  └──────────────────────────────────┘   │
         │                                         │
         │  Text/Binary Frame (Message 1)          │
         │────────────────────────────────────────>│
@@ -369,7 +369,7 @@
         ▼                                         ▼
 
 ┌─────────────────────────────────────────────────────────────────┐
-│  Frame Types:                                                    │
+│  Frame Types:                                                   │
 │  • Text Frame (0x1) - UTF-8 encoded text                        │
 │  • Binary Frame (0x2) - Binary data                             │
 │  • Close Frame (0x8) - Connection termination                   │
@@ -1282,19 +1282,19 @@ client.connect();</code></pre>
               ┌───────────────────────────────────────────┐
               │      Node.js + Express Server             │
               │                                           │
-              │  ┌─────────────────────────────────────┐ │
-              │  │      Socket.IO Server               │ │
-              │  │  • Connection Management            │ │
-              │  │  • Room/Namespace Support           │ │
-              │  │  • Event Broadcasting               │ │
-              │  └─────────────────────────────────────┘ │
+              │  ┌─────────────────────────────────────┐  │
+              │  │      Socket.IO Server               │  │
+              │  │  • Connection Management            │  │
+              │  │  • Room/Namespace Support           │  │
+              │  │  • Event Broadcasting               │  │
+              │  └─────────────────────────────────────┘  │
               │                                           │
-              │  ┌─────────────────────────────────────┐ │
-              │  │      Express Routes                 │ │
-              │  │  • REST API Endpoints               │ │
-              │  │  • Static File Serving              │ │
-              │  │  • Authentication Middleware        │ │
-              │  └─────────────────────────────────────┘ │
+              │  ┌─────────────────────────────────────┐  │
+              │  │      Express Routes                 │  │
+              │  │  • REST API Endpoints               │  │
+              │  │  • Static File Serving              │  │
+              │  │  • Authentication Middleware        │  │
+              │  └─────────────────────────────────────┘  │
               └───────────────────┬───────────────────────┘
                                   │
                                   │ Mongoose ODM
@@ -1303,38 +1303,38 @@ client.connect();</code></pre>
                     │      MongoDB Database       │
                     │                             │
                     │  Collections:               │
-                    │  ┌─────────────────────┐   │
-                    │  │  users              │   │
-                    │  │  • username         │   │
-                    │  │  • email            │   │
-                    │  │  • password (hash)  │   │
-                    │  │  • online status    │   │
-                    │  └─────────────────────┘   │
+                    │  ┌─────────────────────┐    │
+                    │  │  users              │    │
+                    │  │  • username         │    │
+                    │  │  • email            │    │
+                    │  │  • password (hash)  │    │
+                    │  │  • online status    │    │
+                    │  └─────────────────────┘    │
                     │                             │
-                    │  ┌─────────────────────┐   │
-                    │  │  messages           │   │
-                    │  │  • sender           │   │
-                    │  │  • content          │   │
-                    │  │  • timestamp        │   │
-                    │  │  • room             │   │
-                    │  └─────────────────────┘   │
+                    │  ┌─────────────────────┐    │
+                    │  │  messages           │    │
+                    │  │  • sender           │    │
+                    │  │  • content          │    │
+                    │  │  • timestamp        │    │
+                    │  │  • room             │    │
+                    │  └─────────────────────┘    │
                     │                             │
-                    │  ┌─────────────────────┐   │
-                    │  │  rooms              │   │
-                    │  │  • name             │   │
-                    │  │  • participants[]   │   │
-                    │  │  • created_at       │   │
-                    │  └─────────────────────┘   │
+                    │  ┌─────────────────────┐    │
+                    │  │  rooms              │    │
+                    │  │  • name             │    │
+                    │  │  • participants[]   │    │
+                    │  │  • created_at       │    │
+                    │  └─────────────────────┘    │
                     └─────────────────────────────┘
 
 ┌────────────────────────────────────────────────────────────────┐
 │  Message Flow:                                                 │
 │                                                                │
-│  1. Client A sends message via WebSocket                      │
-│  2. Socket.IO server receives message                         │
-│  3. Server saves message to MongoDB                           │
-│  4. Server broadcasts to all clients in the room              │
-│  5. Clients B & C receive message in real-time                │
+│  1. Client A sends message via WebSocket                       │
+│  2. Socket.IO server receives message                          │
+│  3. Server saves message to MongoDB                            │
+│  4. Server broadcasts to all clients in the room               │
+│  5. Clients B & C receive message in real-time                 │
 └────────────────────────────────────────────────────────────────┘
                                 </div>
                             </div>
