@@ -405,13 +405,18 @@ OS name: "mac os x", version: "14.2", arch: "aarch64", family: "mac"</div>
                                     <i class="bi bi-diagram-3"></i> PlantUML
                                 </button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="plantuml-image-tab" data-bs-toggle="tab" data-bs-target="#plantuml-image" type="button" role="tab">
+                                    <i class="bi bi-diagram-3"></i> PlantUML Rendered Image
+                                </button>
+                            </li>
                         </ul>
                         
                         <div class="tab-content border border-top-0 p-3" id="architectureTabContent">
                             <div class="tab-pane fade show active" id="ascii-arch" role="tabpanel">
                                 <pre><code class="language-text">
 ┌─────────────────────────────────────────────────────────────┐
-│                      Maven Architecture                       │
+│                      Maven Architecture                     │
 └─────────────────────────────────────────────────────────────┘
 
                     ┌──────────────┐
@@ -439,8 +444,8 @@ OS name: "mac os x", version: "14.2", arch: "aarch64", family: "mac"</div>
     │         │    │Lifecycle│   │Repository│
     │         │    │ Phases  │   │ ~/.m2    │
     └─────────┘    └────┬────┘   └────┬─────┘
-                        │              │
-                        ▼              ▼
+                        │             │
+                        ▼             ▼
                   ┌──────────┐   ┌──────────┐
                   │ Plugin   │   │ Central  │
                   │Execution │   │Repository│
@@ -451,64 +456,62 @@ OS name: "mac os x", version: "14.2", arch: "aarch64", family: "mac"</div>
                             </div>
                             <div class="tab-pane fade" id="plantuml-arch" role="tabpanel">
                                 <pre><code class="language-plantuml">@startuml
-!theme plain
-skinparam backgroundColor white
-skinparam sequenceMessageAlign center
+title Maven Build Architecture Flow
+
+skinparam participant {
+  BackgroundColor&lt;&lt;cloud&gt;&gt; #E3F2FD
+  BorderColor&lt;&lt;cloud&gt;&gt; #1565C0
+}
 
 actor User
 participant "Maven CLI" as CLI
 participant "Maven Core" as Core
 database "pom.xml" as POM
-participant "Plugin\nManager" as PM
-participant "Repository\nManager" as RM
-database "Local Repo\n~/.m2" as Local
-cloud "Maven\nCentral" as Central
+participant "Plugin Manager" as PM
+participant "Repository Manager" as RM
+database "Local Repository" as Local
+participant "Maven Central" as Central &lt;&lt;cloud&gt;&gt;
 
+== Command Execution ==
 User -> CLI: mvn clean package
-activate CLI
 CLI -> Core: Parse command
-activate Core
-Core -> POM: Read configuration
-activate POM
-POM --> Core: Project details
-deactivate POM
+Core -> POM: Read project configuration
+POM --> Core: Project metadata
 
-Core -> PM: Load plugins
-activate PM
+== Plugin Loading ==
+Core -> PM: Load required plugins
 PM -> RM: Check dependencies
-activate RM
-RM -> Local: Search locally
-activate Local
-Local --> RM: Check result
-deactivate Local
+RM -> Local: Search local cache
 
-alt Dependency not found locally
-    RM -> Central: Download artifacts
-    activate Central
-    Central --> RM: Return artifacts
-    deactivate Central
-    RM -> Local: Cache artifacts
-    activate Local
-    deactivate Local
+alt Dependency found locally
+    Local --> RM: Return cached artifact
+else Dependency not found
+    RM -> Central: Download artifact
+    Central --> RM: Return artifact
+    RM -> Local: Cache for future use
 end
 
 RM --> PM: Dependencies resolved
-deactivate RM
-PM -> Core: Plugins ready
-deactivate PM
+PM --> Core: Plugins ready
 
+== Build Execution ==
 Core -> PM: Execute lifecycle phases
-activate PM
-PM --> Core: Execution complete
-deactivate PM
+PM -> PM: Run clean phase
+PM -> PM: Run compile phase
+PM -> PM: Run test phase
+PM -> PM: Run package phase
+PM --> Core: Build complete
 
-Core --> CLI: Build successful
-deactivate Core
-CLI --> User: Display output
-deactivate CLI
+Core --> CLI: Build success
+CLI --> User: Display build output
 
 @enduml</code></pre>
                             </div>
+                            <div class="tab-pane fade" id="plantuml-image" role="tabpanel">
+                                <pre>
+<img src="images/MavenBuild-Architecture-Flow-PlantUML.png" alt="Maven Build Architecture Flow PlantUML"/>
+			    	</pre>
+			    </div>
                         </div>
 
                         <h4 class="mt-4"><i class="bi bi-boxes"></i> Key Architecture Elements</h4>
@@ -735,7 +738,7 @@ deactivate CLI
                         <h4 class="mt-4"><i class="bi bi-diagram-3"></i> Lifecycle Flow Diagram</h4>
                         <pre><code class="language-text">
 ┌─────────────────────────────────────────────────────────────┐
-│                Maven Build Lifecycle Flow                     │
+│                Maven Build Lifecycle Flow                   │
 └─────────────────────────────────────────────────────────────┘
 
     validate
@@ -2141,6 +2144,755 @@ Total Users: 3
 16:24:01.666 [main] INFO  com.library.service.StorageService - Saved 5 items to data/books.json
 16:24:01.677 [main] INFO  com.library.service.StorageService - Saved 3 items to data/users.json
 16:24:01.688 [main] INFO  com.library.Main - Application completed successfully</div>
+
+                        <!-- Code Explanations Section -->
+                        <h4 class="mt-5 pt-4 border-top"><i class="bi bi-file-text"></i> Detailed Code Explanations</h4>
+                        <p>In-depth explanations of each source code file used in the Library Management System:</p>
+                        
+                        <div class="accordion mt-3" id="detailedCodeExplanations">
+                            <!-- Book.java Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#explainBook">
+                                        <i class="bi bi-book me-2"></i> <strong>Book.java - Domain Model Explanation</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainBook" class="accordion-collapse collapse show" data-bs-parent="#detailedCodeExplanations">
+                                    <div class="accordion-body">
+                                        <h5>Purpose & Design</h5>
+                                        <p>The Book class is a domain entity representing a book in the library system with full CRUD support.</p>
+
+                                        <h5 class="mt-3">Lombok Code Generation</h5>
+                                        <table class="table table-sm table-bordered">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Annotation</th>
+                                                    <th>Generated Methods</th>
+                                                    <th>Line Count Saved</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>@Data</code></td>
+                                                    <td>Getters, Setters, toString(), equals(), hashCode()</td>
+                                                    <td>~80 lines</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>@NoArgsConstructor</code></td>
+                                                    <td>Default constructor</td>
+                                                    <td>~3 lines</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>@AllArgsConstructor</code></td>
+                                                    <td>Constructor with all fields</td>
+                                                    <td>~10 lines</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <p class="text-muted small">Without Lombok, this class would be ~140 lines instead of ~45 lines.</p>
+
+                                        <h5 class="mt-3">Field Design Decisions</h5>
+                                        <ul>
+                                            <li><strong>isbn (String):</strong> Primary identifier following ISBN-13 standard (13 digits). Should add <code>@Pattern</code> validation in production</li>
+                                            <li><strong>available (boolean):</strong> Simple availability flag. For complex scenarios, use enum: AVAILABLE, BORROWED, RESERVED, MAINTENANCE, LOST</li>
+                                            <li><strong>borrowedBy/borrowedDate:</strong> Denormalized data for quick queries. Alternatively, maintain separate Loan/Transaction table</li>
+                                            <li><strong>LocalDate:</strong> Java 8+ Date-Time API - immutable, thread-safe, no millisecond precision needed for borrow dates</li>
+                                        </ul>
+
+                                        <h5 class="mt-3">Business Methods Implementation</h5>
+                                        <p><strong>borrow(String userId)</strong> - Three-field atomic update:</p>
+                                        <pre><code class="language-java">public void borrow(String userId) {
+    this.available = false;         // Mark unavailable
+    this.borrowedBy = userId;       // Track borrower
+    this.borrowedDate = LocalDate.now();  // Timestamp
+    // No explicit save() - service layer handles persistence
+}</code></pre>
+                                        <p class="small text-muted">Note: This is in-memory mutation. The service layer is responsible for calling storage.saveBooks() after this method.</p>
+
+                                        <div class="alert alert-success mt-3">
+                                            <h6><i class="bi bi-check2-circle"></i> Best Practices Followed:</h6>
+                                            <ul class="mb-0">
+                                                <li>Encapsulation: Private fields with controlled access</li>
+                                                <li>Single Responsibility: Only book-related data and state transitions</li>
+                                                <li>Immutability where possible: LocalDate is immutable</li>
+                                                <li>Clear naming: Method names describe actions (borrow, returnBook)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- User.java Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainUser">
+                                        <i class="bi bi-person me-2"></i> <strong>User.java - User Entity Explanation</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainUser" class="accordion-collapse collapse" data-bs-parent="#detailedCodeExplanations">
+                                    <div class="accordion-body">
+                                        <h5>Design Pattern: Aggregate Root</h5>
+                                        <p>User acts as an aggregate root in Domain-Driven Design (DDD), maintaining consistency of borrowed books collection.</p>
+
+                                        <h5 class="mt-3">Collection Management</h5>
+                                        <p>The <code>borrowedBooks</code> list requires careful handling:</p>
+                                        <pre><code class="language-java">private List&lt;String&gt; borrowedBooks = new ArrayList&lt;&gt;();
+// Alternative: Initialize in constructor
+this.borrowedBooks = new ArrayList&lt;&gt;();  // Prevents NullPointerException</code></pre>
+
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Approach</th>
+                                                    <th>Pros</th>
+                                                    <th>Cons</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>List&lt;String&gt; (ISBNs)</td>
+                                                    <td>Simple, no circular refs, JSON-friendly</td>
+                                                    <td>Requires separate lookup to get Book details</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>List&lt;Book&gt; (Objects)</td>
+                                                    <td>Direct access to book info</td>
+                                                    <td>Circular refs, JSON issues, memory overhead</td>
+                                                </tr>
+                                                <tr class="table-success">
+                                                    <td>Set&lt;String&gt; (ISBNs)</td>
+                                                    <td>Enforces uniqueness, fast lookup O(1)</td>
+                                                    <td>No ordering</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Why ISBNs Instead of Book References?</h5>
+                                        <ol>
+                                            <li><strong>JSON Serialization:</strong> Avoids circular dependency (User → Book → borrowedBy → User)</li>
+                                            <li><strong>Storage Efficiency:</strong> String (13 bytes) vs full Book object (~200+ bytes)</li>
+                                            <li><strong>Flexibility:</strong> Book details can change without affecting User entity</li>
+                                            <li><strong>Clear Responsibility:</strong> LibraryService resolves ISBNs to Books when needed</li>
+                                        </ol>
+
+                                        <div class="alert alert-info mt-3">
+                                            <h6><i class="bi bi-database"></i> Database Mapping (if using JPA):</h6>
+                                            <pre class="mb-0"><code class="language-java">@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    private String userId;
+    
+    @ElementCollection
+    @CollectionTable(name = "user_borrowed_books")
+    @Column(name = "isbn")
+    private List&lt;String&gt; borrowedBooks = new ArrayList&lt;&gt;();
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- LibraryException Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainException">
+                                        <i class="bi bi-exclamation-triangle me-2"></i> <strong>LibraryException.java - Custom Exception Explanation</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainException" class="accordion-collapse collapse" data-bs-parent="#detailedCodeExplanations">
+                                    <div class="accordion-body">
+                                        <h5>Checked vs Unchecked Exceptions</h5>
+                                        <p>LibraryException extends <code>Exception</code> (checked) rather than <code>RuntimeException</code> (unchecked). This design choice forces callers to handle exceptions explicitly.</p>
+
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>When to Use</th>
+                                                    <th>Example</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="table-success">
+                                                    <td><strong>Checked</strong></td>
+                                                    <td>Recoverable errors, business rule violations</td>
+                                                    <td>Book not available, User not found</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Unchecked</strong></td>
+                                                    <td>Programming errors, irrecoverable failures</td>
+                                                    <td>NullPointerException, IllegalArgumentException</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Exception Chaining</h5>
+                                        <p>The second constructor wraps underlying exceptions:</p>
+                                        <pre><code class="language-java">try {
+    objectMapper.writeValue(new File("books.json"), books);
+} catch (IOException e) {
+    throw new LibraryException("Failed to save books", e);  // Preserves stack trace
+}</code></pre>
+                                        <p class="small text-muted">Benefits: Maintains original cause, full stack trace for debugging, allows catching at service layer.</p>
+
+                                        <h5 class="mt-3">Usage Scenarios in Application</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card border-danger mb-2">
+                                                    <div class="card-header bg-danger text-white">Business Rules</div>
+                                                    <div class="card-body">
+                                                        <ul class="small mb-0">
+                                                            <li>Duplicate ISBN registration</li>
+                                                            <li>Book already borrowed</li>
+                                                            <li>Book not found</li>
+                                                            <li>User doesn't exist</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card border-warning mb-2">
+                                                    <div class="card-header bg-warning">Technical Failures</div>
+                                                    <div class="card-body">
+                                                        <ul class="small mb-0">
+                                                            <li>File I/O errors</li>
+                                                            <li>JSON parsing failures</li>
+                                                            <li>Permission denied</li>
+                                                            <li>Disk full</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- StorageService Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainStorage">
+                                        <i class="bi bi-hdd me-2"></i> <strong>StorageService.java - Persistence Layer Explanation</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainStorage" class="accordion-collapse collapse" data-bs-parent="#detailedCodeExplanations">
+                                    <div class="accordion-body">
+                                        <h5>Jackson ObjectMapper Configuration</h5>
+                                        <p>Three critical configurations for JSON handling:</p>
+                                        <pre><code class="language-java">private final ObjectMapper objectMapper = new ObjectMapper()
+    .registerModule(new JavaTimeModule())      // 1. Java 8 date/time support
+    .enable(SerializationFeature.INDENT_OUTPUT);  // 2. Pretty-print JSON</code></pre>
+
+                                        <ol>
+                                            <li><strong>JavaTimeModule:</strong> Handles LocalDate serialization (e.g., "2026-01-19" instead of array [2026,1,19])</li>
+                                            <li><strong>INDENT_OUTPUT:</strong> Makes JSON human-readable for debugging</li>
+                                            <li><strong>TypeReference:</strong> Preserves generic types during deserialization</li>
+                                        </ol>
+
+                                        <h5 class="mt-3">Method Deep Dive: loadBooks()</h5>
+                                        <pre><code class="language-java">public List&lt;Book&gt; loadBooks() throws LibraryException {
+    File file = new File(booksFilePath);
+    if (!file.exists()) {
+        logger.info("Books file not found, returning empty list");
+        return new ArrayList&lt;&gt;();  // Graceful degradation
+    }
+    try {
+        List&lt;Book&gt; books = objectMapper.readValue(
+            file, 
+            new TypeReference&lt;List&lt;Book&gt;&gt;() {}  // Anonymous class captures generic
+        );
+        logger.info("Loaded {} books from {}", books.size(), booksFilePath);
+        return books;
+    } catch (IOException e) {
+        throw new LibraryException("Failed to load books: " + e.getMessage(), e);
+    }
+}</code></pre>
+
+                                        <h5 class="mt-3">File System Operations</h5>
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Operation</th>
+                                                    <th>Method</th>
+                                                    <th>Error Handling</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Create directory</td>
+                                                    <td><code>Files.createDirectories()</code></td>
+                                                    <td>Silent if exists</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Write JSON</td>
+                                                    <td><code>objectMapper.writeValue()</code></td>
+                                                    <td>Throws IOException → LibraryException</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Read JSON</td>
+                                                    <td><code>objectMapper.readValue()</code></td>
+                                                    <td>Returns empty list if not found</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <div class="alert alert-warning mt-3">
+                                            <h6><i class="bi bi-exclamation-triangle"></i> Production Limitations:</h6>
+                                            <ul class="mb-0">
+                                                <li><strong>No transactions:</strong> Concurrent writes can corrupt data</li>
+                                                <li><strong>No locking:</strong> Multiple processes can't safely write</li>
+                                                <li><strong>Memory constraints:</strong> Entire file loaded into memory</li>
+                                                <li><strong>No indexing:</strong> Search requires full file read</li>
+                                                <li><strong>Solution:</strong> Migrate to H2/PostgreSQL with proper transaction support</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- LibraryService Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainLibraryService">
+                                        <i class="bi bi-gear me-2"></i> <strong>LibraryService.java - Business Logic Explanation</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainLibraryService" class="accordion-collapse collapse" data-bs-parent="#detailedCodeExplanations">
+                                    <div class="accordion-body">
+                                        <h5>Service Layer Responsibilities</h5>
+                                        <p>LibraryService orchestrates business operations, enforces rules, and coordinates between domain models and persistence.</p>
+
+                                        <h5 class="mt-3">Method Analysis: borrowBook()</h5>
+                                        <p>Complex multi-step operation with proper error handling:</p>
+                                        <pre><code class="language-java">public void borrowBook(String userId, String isbn) throws LibraryException {
+    // 1. Validate user exists
+    User user = users.stream()
+        .filter(u -> u.getUserId().equals(userId))
+        .findFirst()
+        .orElseThrow(() -> new LibraryException("User not found: " + userId));
+    
+    // 2. Find book
+    Book book = books.stream()
+        .filter(b -> b.getIsbn().equals(isbn))
+        .findFirst()
+        .orElseThrow(() -> new LibraryException("Book not found: " + isbn));
+    
+    // 3. Check availability
+    if (!book.isAvailable()) {
+        throw new LibraryException("Book is already borrowed: " + book.getTitle());
+    }
+    
+    // 4. Execute borrow (state changes)
+    book.borrow(userId);
+    user.getBorrowedBooks().add(isbn);
+    
+    // 5. Persist changes
+    storage.saveBooks(books);
+    storage.saveUsers(users);
+    
+    // 6. Log operation
+    logger.info("User {} borrowed book {}", user.getName(), book.getTitle());
+}</code></pre>
+
+                                        <h5 class="mt-3">Stream API Usage Patterns</h5>
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pattern</th>
+                                                    <th>Use Case</th>
+                                                    <th>Performance</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>filter().findFirst()</code></td>
+                                                    <td>Find single match, throw if not found</td>
+                                                    <td>O(n) worst case, stops early</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>filter().collect()</code></td>
+                                                    <td>Collect all matches</td>
+                                                    <td>O(n) always scans all</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>map().collect()</code></td>
+                                                    <td>Transform collection</td>
+                                                    <td>O(n)</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Design Patterns Implemented</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-body">
+                                                        <h6><i class="bi bi-layers text-primary"></i> Facade Pattern</h6>
+                                                        <p class="small mb-0">Provides simplified interface to complex subsystem (storage, models, validation)</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-body">
+                                                        <h6><i class="bi bi-arrow-down-up text-success"></i> Repository Pattern</h6>
+                                                        <p class="small mb-0">Abstracts data access through StorageService interface</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-body">
+                                                        <h6><i class="bi bi-shield text-warning"></i> Defensive Copying</h6>
+                                                        <p class="small mb-0">Returns new lists to prevent external modification of internal state</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-body">
+                                                        <h6><i class="bi bi-box-arrow-in-right text-danger"></i> Dependency Injection</h6>
+                                                        <p class="small mb-0">StorageService injected via constructor for testability</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="alert alert-success mt-3">
+                                            <h6><i class="bi bi-check2-circle"></i> SOLID Principles Applied:</h6>
+                                            <ul class="mb-0">
+                                                <li><strong>Single Responsibility:</strong> Only library operations, no UI or storage details</li>
+                                                <li><strong>Open/Closed:</strong> Can extend with new operations without modifying existing code</li>
+                                                <li><strong>Dependency Inversion:</strong> Depends on StorageService abstraction, not concrete implementation</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Main.java Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainMain">
+                                        <i class="bi bi-play-circle me-2"></i> <strong>Main.java - Application Entry Point Explanation</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainMain" class="accordion-collapse collapse" data-bs-parent="#detailedCodeExplanations">
+                                    <div class="accordion-body">
+                                        <h5>Application Bootstrap</h5>
+                                        <p>Demonstrates complete system initialization and typical workflows.</p>
+
+                                        <h5 class="mt-3">Initialization Sequence</h5>
+                                        <pre><code class="language-java">public static void main(String[] args) {
+    // 1. Create persistence layer
+    StorageService storage = new StorageService("data/books.json", "data/users.json");
+    
+    // 2. Initialize service with storage
+    LibraryService library = new LibraryService(storage);
+    
+    // 3. Populate sample data
+    initializeSampleData(library);
+    
+    // 4. Demonstrate operations
+    demonstrateOperations(library);
+}</code></pre>
+
+                                        <h5 class="mt-3">Exception Handling Strategy</h5>
+                                        <p>Two-tier approach for robustness:</p>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-header">Method-Level</div>
+                                                    <div class="card-body">
+                                                        <pre class="small mb-0"><code class="language-java">try {
+    library.addBook(book);
+} catch (LibraryException e) {
+    logger.error("Failed: {}", e.getMessage());
+    // Continue with other operations
+}</code></pre>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-header">Top-Level</div>
+                                                    <div class="card-body">
+                                                        <pre class="small mb-0"><code class="language-java">try {
+    // All operations
+} catch (Exception e) {
+    logger.error("Fatal error", e);
+    System.exit(1);
+}</code></pre>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="mt-3">Sample Data Design</h5>
+                                        <p>Provides realistic demo data showing various book categories and user types:</p>
+                                        <ul>
+                                            <li><strong>5 books:</strong> Mix of technical, programming, architecture topics</li>
+                                            <li><strong>3 users:</strong> Different names, emails, phone formats</li>
+                                            <li><strong>ISBNs:</strong> Valid ISBN-13 format for real books</li>
+                                        </ul>
+
+                                        <div class="alert alert-info mt-3">
+                                            <h6><i class="bi bi-lightbulb"></i> Evolution Path:</h6>
+                                            <ol class="mb-0">
+                                                <li><strong>CLI Version:</strong> Add interactive menu system (Scanner input)</li>
+                                                <li><strong>REST API:</strong> Spring Boot with @RestController</li>
+                                                <li><strong>Web UI:</strong> Thymeleaf or React frontend</li>
+                                                <li><strong>Microservices:</strong> Separate Book/User/Loan services</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- LibraryServiceTest Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainTests">
+                                        <i class="bi bi-check-circle me-2"></i> <strong>LibraryServiceTest.java - Unit Testing Explanation</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainTests" class="accordion-collapse collapse" data-bs-parent="#detailedCodeExplanations">
+                                    <div class="accordion-body">
+                                        <h5>JUnit 5 Test Architecture</h5>
+                                        <p>Uses modern JUnit 5 (Jupiter) features for organized, readable tests.</p>
+
+                                        <h5 class="mt-3">Test Lifecycle Annotations</h5>
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Annotation</th>
+                                                    <th>Execution</th>
+                                                    <th>Purpose</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>@BeforeEach</code></td>
+                                                    <td>Before each @Test</td>
+                                                    <td>Fresh instance, test isolation</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>@Test</code></td>
+                                                    <td>Test method</td>
+                                                    <td>Mark as executable test</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>@DisplayName</code></td>
+                                                    <td>-</td>
+                                                    <td>Human-readable test report</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>@Order</code></td>
+                                                    <td>Defines sequence</td>
+                                                    <td>Logical flow demonstration</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Assertion Types</h5>
+                                        <pre><code class="language-java">// Equality
+assertEquals(expected, actual);
+
+// Boolean conditions
+assertTrue(condition);
+assertFalse(condition);
+
+// Null checks
+assertNotNull(object);
+assertNull(object);
+
+// Exception testing
+assertThrows(LibraryException.class, () -> {
+    library.borrowBook("INVALID", "123");
+});
+
+// Collection checks
+assertFalse(list.isEmpty());
+assertEquals(expectedSize, list.size());</code></pre>
+
+                                        <h5 class="mt-3">Test Coverage Matrix</h5>
+                                        <table class="table table-sm table-bordered">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Feature</th>
+                                                    <th>Happy Path</th>
+                                                    <th>Error Case</th>
+                                                    <th>Edge Case</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Add Book</td>
+                                                    <td>✓</td>
+                                                    <td>✓ (Duplicate ISBN)</td>
+                                                    <td>✓ (Null check)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Add User</td>
+                                                    <td>✓</td>
+                                                    <td>✓ (Duplicate ID)</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Borrow Book</td>
+                                                    <td>✓</td>
+                                                    <td>✓ (Already borrowed)</td>
+                                                    <td>✓ (Invalid user/book)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Return Book</td>
+                                                    <td>✓</td>
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Search</td>
+                                                    <td>✓</td>
+                                                    <td>-</td>
+                                                    <td>✓ (Case insensitive)</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Why Ordered Tests?</h5>
+                                        <p>Tests are ordered (@TestMethodOrder) to demonstrate realistic workflow:</p>
+                                        <ol>
+                                            <li>Add book → Add user → Borrow → Return</li>
+                                            <li>Shows system lifecycle in documentation</li>
+                                            <li>Each test still independent (@BeforeEach resets state)</li>
+                                        </ol>
+                                        <p class="text-warning"><i class="bi bi-exclamation-triangle"></i> Note: In production tests, prefer random order to ensure true independence.</p>
+
+                                        <div class="alert alert-success mt-3">
+                                            <h6><i class="bi bi-trophy"></i> Code Coverage Report (JaCoCo):</h6>
+                                            <ul class="mb-0">
+                                                <li><strong>Line Coverage:</strong> ~85% (11 tests cover most paths)</li>
+                                                <li><strong>Branch Coverage:</strong> All if/else conditions tested</li>
+                                                <li><strong>Method Coverage:</strong> All public methods have tests</li>
+                                                <li><strong>View Report:</strong> <code>target/site/jacoco/index.html</code> after running tests</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- logback.xml Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainLogback">
+                                        <i class="bi bi-file-earmark-text me-2"></i> <strong>logback.xml - Logging Configuration Explanation</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainLogback" class="accordion-collapse collapse" data-bs-parent="#detailedCodeExplanations">
+                                    <div class="accordion-body">
+                                        <h5>Logback vs SLF4J Relationship</h5>
+                                        <p><strong>SLF4J:</strong> Logging facade/API (org.slf4j.Logger)<br>
+                                        <strong>Logback:</strong> Implementation that executes actual logging</p>
+
+                                        <h5 class="mt-3">Pattern Layout Syntax</h5>
+                                        <pre><code class="language-text">%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+
+16:23:45.123     [main]      INFO   c.l.service.LibraryService   - Added book
+│                │           │      │                            │  │
+│                │           │      │                            │  └─ Message
+│                │           │      │                            └─ Separator  
+│                │           │      └─ Logger name (abbreviated to 36 chars)
+│                │           └─ Log level (left-aligned, 5 chars wide)
+│                └─ Thread name
+└─ Timestamp (HH:mm:ss.milliseconds)</code></pre>
+
+                                        <h5 class="mt-3">Appender Comparison</h5>
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Appender</th>
+                                                    <th>Output</th>
+                                                    <th>Buffered</th>
+                                                    <th>Best For</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>ConsoleAppender</td>
+                                                    <td>stdout/stderr</td>
+                                                    <td>No</td>
+                                                    <td>Development, Docker containers</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>FileAppender</td>
+                                                    <td>Single file</td>
+                                                    <td>Yes</td>
+                                                    <td>Simple apps, testing</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RollingFileAppender</td>
+                                                    <td>Rotating files</td>
+                                                    <td>Yes</td>
+                                                    <td>Production (disk space management)</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Rolling Policy Configuration</h5>
+                                        <pre><code class="language-xml">&lt;rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"&gt;
+    &lt;fileNamePattern&gt;logs/library.%d{yyyy-MM-dd}.log&lt;/fileNamePattern&gt;
+    &lt;maxHistory&gt;30&lt;/maxHistory&gt;
+&lt;/rollingPolicy&gt;</code></pre>
+                                        <p>Behavior:</p>
+                                        <ul>
+                                            <li>New file created at midnight: <code>library.2026-01-19.log</code></li>
+                                            <li>Current day writes to: <code>library.log</code></li>
+                                            <li>Automatically deletes files older than 30 days</li>
+                                            <li>Alternative: SizeBasedRollingPolicy for high-volume apps</li>
+                                        </ul>
+
+                                        <h5 class="mt-3">Logger Hierarchy & Additivity</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-header">Root Logger (INFO)</div>
+                                                    <div class="card-body">
+                                                        <p class="small mb-0">Catches all loggers. Third-party libraries (Jackson, HTTP clients) log at INFO to reduce noise.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-header">com.library (DEBUG)</div>
+                                                    <div class="card-body">
+                                                        <p class="small mb-0">Our package gets DEBUG level. <code>additivity="false"</code> prevents duplicate logs.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="mt-3">Log Levels (Least → Most Verbose)</h5>
+                                        <pre><code>ERROR → WARN → INFO → DEBUG → TRACE
+
+Production: WARN or INFO
+Development: DEBUG
+Troubleshooting: TRACE (very verbose)</code></pre>
+
+                                        <div class="alert alert-warning mt-3">
+                                            <h6><i class="bi bi-gear"></i> Production Enhancements:</h6>
+                                            <ul class="mb-0">
+                                                <li><strong>JSON Encoder:</strong> Use <code>logstash-logback-encoder</code> for ELK stack</li>
+                                                <li><strong>Async Appenders:</strong> Wrap appenders in AsyncAppender for performance</li>
+                                                <li><strong>MDC:</strong> Use Mapped Diagnostic Context for request tracing (correlation IDs)</li>
+                                                <li><strong>SizeAndTimeBasedRollingPolicy:</strong> Roll by both size (100MB) and time (daily)</li>
+                                                <li><strong>Separate ERROR logs:</strong> Create dedicated appender for errors → alerting system</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -2192,38 +2944,38 @@ Total Users: 3
                         <h4 class="mt-4"><i class="bi bi-diagram-3"></i> Docker Architecture</h4>
                         <pre><code class="language-text">
 ┌─────────────────────────────────────────────────────────────┐
-│              Docker + Maven Architecture                      │
+│              Docker + Maven Architecture                    │
 └─────────────────────────────────────────────────────────────┘
 
-┌─────────────────────────────────────────────────────────────┐
-│                      Docker Host                              │
-│                                                               │
+┌────────────────────────────────────────────────────────────┐
+│                      Docker Host                           │
+│                                                            │
 │  ┌────────────────────────────────────────────────────┐    │
-│  │          Maven Build Container                      │    │
-│  │                                                      │    │
-│  │  ┌──────────────────────────────────────────────┐ │    │
-│  │  │  JDK 17 + Maven 3.9.6                        │ │    │
-│  │  │  - Compile Java source                        │ │    │
-│  │  │  - Run tests                                  │ │    │
-│  │  │  - Package JAR                                │ │    │
-│  │  └──────────────────────────────────────────────┘ │    │
-│  │                                                      │    │
-│  │  Volumes:                                           │    │
-│  │  • ./src → /app/src        (source code)         │    │
-│  │  • ./target → /app/target  (build output)        │    │
-│  │  • ~/.m2 → /root/.m2       (Maven cache)         │    │
+│  │          Maven Build Container                     │    │
+│  │                                                    │    │
+│  │  ┌──────────────────────────────────────────────┐  │    │
+│  │  │  JDK 17 + Maven 3.9.6                        │  │    │
+│  │  │  - Compile Java source                       │  │    │
+│  │  │  - Run tests                                 │  │    │
+│  │  │  - Package JAR                               │  │    │
+│  │  └──────────────────────────────────────────────┘  │    │
+│  │                                                    │    │
+│  │  Volumes:                                          │    │
+│  │  • ./src → /app/src        (source code)           │    │
+│  │  • ./target → /app/target  (build output)          │    │
+│  │  • ~/.m2 → /root/.m2       (Maven cache)           │    │
 │  └────────────────────────────────────────────────────┘    │
-│                                                               │
+│                                                            │
 │  ┌────────────────────────────────────────────────────┐    │
-│  │        Application Runtime Container                 │    │
-│  │                                                      │    │
-│  │  ┌──────────────────────────────────────────────┐ │    │
-│  │  │  JRE 17 (smaller image)                      │ │    │
-│  │  │  - Run library-management-system.jar         │ │    │
-│  │  │  - Expose ports if needed                    │ │    │
-│  │  └──────────────────────────────────────────────┘ │    │
+│  │        Application Runtime Container               │    │
+│  │                                                    │    │
+│  │  ┌──────────────────────────────────────────────┐  │    │
+│  │  │  JRE 17 (smaller image)                      │  │    │
+│  │  │  - Run library-management-system.jar         │  │    │
+│  │  │  - Expose ports if needed                    │  │    │
+│  │  └──────────────────────────────────────────────┘  │    │
 │  └────────────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────┘
+└────────────────────────────────────────────────────────────┘
 </code></pre>
 
                         <h4 class="mt-4"><i class="bi bi-file-code"></i> Dockerfile Explained</h4>
@@ -2533,7 +3285,7 @@ node_modules/
                         <h4 class="mt-4"><i class="bi bi-diagram-3"></i> Development Workflow with Docker</h4>
                         <pre><code class="language-text">
 ┌─────────────────────────────────────────────────────────────┐
-│           Development Workflow Comparison                     │
+│           Development Workflow Comparison                   │
 └─────────────────────────────────────────────────────────────┘
 
 Traditional Local Development:
