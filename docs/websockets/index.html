@@ -1,0 +1,3208 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSockets Tutorial - Real-Time Communication Mastery</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --theme-primary: #0d6efd;
+            --theme-secondary: #6c757d;
+        }
+        
+        [data-bs-theme="light"][data-color-flavor="blue"] {
+            --theme-primary: #0d6efd;
+        }
+        
+        [data-bs-theme="light"][data-color-flavor="green"] {
+            --theme-primary: #198754;
+        }
+        
+        [data-bs-theme="light"][data-color-flavor="purple"] {
+            --theme-primary: #6f42c1;
+        }
+        
+        .navbar {
+            background-color: var(--theme-primary) !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--theme-primary);
+            border-color: var(--theme-primary);
+        }
+        
+        .ascii-art {
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .plantuml-container {
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+        
+        pre[class*="language-"] {
+            border-radius: 0.375rem;
+        }
+        
+        .jumbotron-custom {
+            background: linear-gradient(135deg, var(--theme-primary) 0%, var(--bs-secondary-color) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+        
+        .version-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .console-output {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .theme-controls {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .comparison-table {
+            font-size: 0.9rem;
+        }
+
+        /* Code copy button styles */
+        .code-wrapper {
+            position: relative;
+        }
+        
+        .code-copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        
+        .code-copy-btn:hover {
+            opacity: 1;
+        }
+
+        .console-output {
+            white-space: pre-line;
+        }
+
+        /* Enhanced search styles */
+        .search-results-panel {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1050;
+            min-width: 280px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+        }
+
+        [data-bs-theme="dark"] .search-results-panel {
+            background: #212529;
+            border: 1px solid #495057;
+        }
+
+        .search-highlight {
+            background-color: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        [data-bs-theme="dark"] .search-highlight {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .search-highlight.current {
+            background-color: #ff5722;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Controls -->
+    <div class="theme-controls">
+        <div class="btn-group-vertical" role="group">
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="themeToggle" data-bs-toggle="tooltip" title="Toggle Dark/Light">
+                <i class="bi bi-moon-stars"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setColorFlavor('blue')" data-bs-toggle="tooltip" title="Blue Theme">
+                <i class="bi bi-circle-fill text-primary"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success" onclick="setColorFlavor('green')" data-bs-toggle="tooltip" title="Green Theme">
+                <i class="bi bi-circle-fill text-success"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-purple" onclick="setColorFlavor('purple')" data-bs-toggle="tooltip" title="Purple Theme">
+                <i class="bi bi-circle-fill" style="color: #6f42c1;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="bi bi-broadcast"></i> WebSockets Tutorial</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Sections
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#introduction">Introduction</a></li>
+                            <li><a class="dropdown-item" href="#architecture">Architecture</a></li>
+                            <li><a class="dropdown-item" href="#ecosystem">Ecosystem</a></li>
+                            <li><a class="dropdown-item" href="#advantages-disadvantages">Pros & Cons</a></li>
+                            <li><a class="dropdown-item" href="#use-cases">Use Cases</a></li>
+                            <li><a class="dropdown-item" href="#comparisons">Comparisons</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#api-methods">API Methods</a></li>
+                            <li><a class="dropdown-item" href="#real-time-example">Real-Time Example</a></li>
+                            <li><a class="dropdown-item" href="#faqs">FAQs</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#version-history">Version History</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#resources">Resources</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Off Canvas Menu -->
+    <button class="btn btn-primary position-fixed" style="top: 80px; left: 20px; z-index: 999;" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas">
+        <i class="bi bi-list"></i> TOC
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="tocOffcanvas">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="list-group">
+                <a href="#introduction" class="list-group-item list-group-item-action">
+                    <i class="bi bi-1-circle"></i> Introduction
+                </a>
+                <a href="#architecture" class="list-group-item list-group-item-action">
+                    <i class="bi bi-2-circle"></i> Architecture
+                </a>
+                <a href="#ecosystem" class="list-group-item list-group-item-action">
+                    <i class="bi bi-3-circle"></i> Ecosystem
+                </a>
+                <a href="#advantages-disadvantages" class="list-group-item list-group-item-action">
+                    <i class="bi bi-4-circle"></i> Advantages & Disadvantages
+                </a>
+                <a href="#use-cases" class="list-group-item list-group-item-action">
+                    <i class="bi bi-5-circle"></i> Use Cases
+                </a>
+                <a href="#comparisons" class="list-group-item list-group-item-action">
+                    <i class="bi bi-6-circle"></i> Technology Comparisons
+                </a>
+                <a href="#api-methods" class="list-group-item list-group-item-action">
+                    <i class="bi bi-7-circle"></i> API Methods
+                </a>
+                <a href="#real-time-example" class="list-group-item list-group-item-action">
+                    <i class="bi bi-8-circle"></i> Real-Time Example
+                </a>
+                <a href="#faqs" class="list-group-item list-group-item-action">
+                    <i class="bi bi-9-circle"></i> FAQs
+                </a>
+                <a href="#version-history" class="list-group-item list-group-item-action list-group-item-info">
+                    <i class="bi bi-clock-history"></i> Version History
+                </a>
+                <a href="#resources" class="list-group-item list-group-item-action list-group-item-warning">
+                    <i class="bi bi-bookmarks"></i> Resources
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Jumbotron / Hero Section -->
+                <div class="jumbotron-custom text-center" id="home">
+                    <h1 class="display-3"><i class="bi bi-broadcast"></i> WebSockets Mastery</h1>
+                    <p class="lead">Build Real-Time Applications with Full-Duplex Communication</p>
+                    <hr class="my-4" style="border-color: rgba(255,255,255,0.3);">
+                    <p>Master WebSocket protocol, architecture, and build production-ready real-time apps with MEBN Stack</p>
+                    <a class="btn btn-light btn-lg" href="#introduction" role="button">Get Started <i class="bi bi-arrow-right"></i></a>
+                </div>
+
+                <!-- Alert Messages -->
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle"></i> <strong>Complete Tutorial:</strong> This tutorial covers WebSocket fundamentals, architecture, ecosystem, practical examples with Node.js, and comprehensive comparisons.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <!-- Introduction Section -->
+                <div class="card mb-4" id="introduction">
+                    <div class="card-header bg-primary text-white">
+                        <h2><i class="bi bi-book"></i> Introduction to WebSockets</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">WebSocket is a communication protocol that provides full-duplex communication channels over a single TCP connection. Unlike HTTP, which follows a request-response model, WebSockets enable persistent, bidirectional communication between client and server.</p>
+                        
+                        <h4 class="mt-4"><i class="bi bi-lightbulb"></i> What are WebSockets?</h4>
+                        <p>WebSockets were standardized by the IETF as RFC 6455 in 2011 and are now supported by all modern browsers. The protocol enables:</p>
+                        <ul>
+                            <li><strong>Full-Duplex Communication:</strong> Both client and server can send messages independently</li>
+                            <li><strong>Low Latency:</strong> No overhead of establishing new connections for each message</li>
+                            <li><strong>Real-Time Data:</strong> Instant data transfer without polling</li>
+                            <li><strong>Persistent Connection:</strong> Single long-lived connection replaces multiple HTTP requests</li>
+                        </ul>
+
+                        <div class="alert alert-info mt-3">
+                            <i class="bi bi-info-circle"></i> <strong>Key Insight:</strong> WebSockets start as an HTTP connection and then "upgrade" to the WebSocket protocol using the HTTP Upgrade header.
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-graph-up"></i> Why Use WebSockets?</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="bi bi-speedometer2 text-success"></i> Performance</h5>
+                                        <p class="card-text">Reduced overhead compared to HTTP polling, enabling efficient real-time communication.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="bi bi-arrows-angle-contract text-primary"></i> Simplicity</h5>
+                                        <p class="card-text">Single protocol for bidirectional communication, easier than managing multiple HTTP requests.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Architecture Section -->
+                <div class="card mb-4" id="architecture">
+                    <div class="card-header bg-success text-white">
+                        <h2><i class="bi bi-diagram-3"></i> WebSocket Architecture</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Understanding the WebSocket architecture is crucial for building robust real-time applications.</p>
+
+                        <h4 class="mt-4"><i class="bi bi-gear"></i> Connection Lifecycle</h4>
+                        
+                        <ul class="nav nav-tabs" id="architectureTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="ascii-architecture-tab" data-bs-toggle="tab" data-bs-target="#ascii-architecture" type="button" role="tab">
+                                    <i class="bi bi-text-left"></i> ASCII Diagram
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="plantuml-architecture-tab" data-bs-toggle="tab" data-bs-target="#plantuml-architecture" type="button" role="tab">
+                                    <i class="bi bi-diagram-2"></i> PlantUML Diagram
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="plantuml-image-tab" data-bs-toggle="tab" data-bs-target="#plantuml-image" type="button" role="tab">
+                                    <i class="bi bi-diagram-2"></i> PlantUML Diagram
+                                </button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content border border-top-0 p-3" id="architectureTabContent">
+                            <div class="tab-pane fade show active" id="ascii-architecture" role="tabpanel">
+                                <div class="ascii-art">
+┌─────────────────────────────────────────────────────────────────┐
+│                    WebSocket Connection Lifecycle               │
+└─────────────────────────────────────────────────────────────────┘
+
+     Client                                    Server
+        │                                         │
+        │  HTTP GET /chat (Upgrade Request)       │
+        │────────────────────────────────────────>│
+        │  Connection: Upgrade                    │
+        │  Upgrade: websocket                     │
+        │  Sec-WebSocket-Key: [key]               │
+        │                                         │
+        │       HTTP 101 Switching Protocols      │
+        │<────────────────────────────────────────│
+        │  Upgrade: websocket                     │
+        │  Sec-WebSocket-Accept: [hash]           │
+        │                                         │
+        │═══════════════════════════════════════════════════════════
+        │           WebSocket Connection Established              │
+        │═══════════════════════════════════════════════════════════
+        │                                         │
+        │  ┌──────────────────────────────────┐   │
+        │  │   Bidirectional Data Frames      │   │
+        │  └──────────────────────────────────┘   │
+        │                                         │
+        │  Text/Binary Frame (Message 1)          │
+        │────────────────────────────────────────>│
+        │                                         │
+        │          Text/Binary Frame (Response)   │
+        │<────────────────────────────────────────│
+        │                                         │
+        │  Text/Binary Frame (Message 2)          │
+        │────────────────────────────────────────>│
+        │                                         │
+        │  Ping Frame (Heartbeat)                 │
+        │────────────────────────────────────────>│
+        │                                         │
+        │          Pong Frame (Heartbeat Response)│
+        │<────────────────────────────────────────│
+        │                                         │
+        │  Close Frame (code: 1000)               │
+        │────────────────────────────────────────>│
+        │                                         │
+        │          Close Frame (acknowledge)      │
+        │<────────────────────────────────────────│
+        │                                         │
+        │       TCP Connection Closed             │
+        │                                         │
+        ▼                                         ▼
+
+┌─────────────────────────────────────────────────────────────────┐
+│  Frame Types:                                                   │
+│  • Text Frame (0x1) - UTF-8 encoded text                        │
+│  • Binary Frame (0x2) - Binary data                             │
+│  • Close Frame (0x8) - Connection termination                   │
+│  • Ping Frame (0x9) - Keep-alive check                          │
+│  • Pong Frame (0xA) - Keep-alive response                       │
+└─────────────────────────────────────────────────────────────────┘
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="plantuml-architecture" role="tabpanel">
+                                <div class="plantuml-container">
+                                    <pre><code class="language-plantuml">@startuml
+title WebSocket Connection Lifecycle
+
+participant Client
+participant Server
+
+== Handshake Phase ==
+Client -> Server: HTTP GET /chat\nConnection: Upgrade\nUpgrade: websocket\nSec-WebSocket-Key: [random-key]
+Server --> Client: HTTP 101 Switching Protocols\nUpgrade: websocket\nSec-WebSocket-Accept: [hashed-key]
+
+== Connection Established ==
+note over Client, Server
+  Full-Duplex Communication Channel
+  Low latency, persistent connection
+end note
+
+== Data Exchange ==
+Client -> Server: WebSocket Frame (Text/Binary)
+Server --> Client: WebSocket Frame (Response)
+Client -> Server: Multiple Messages...
+Server --> Client: Broadcast to multiple clients
+
+== Keep-Alive ==
+Client -> Server: Ping Frame
+Server --> Client: Pong Frame
+
+== Connection Closure ==
+Client -> Server: Close Frame (code: 1000)
+Server --> Client: Close Frame (acknowledge)
+note over Client, Server: TCP Connection Terminated end note
+
+@enduml</code></pre>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="bi bi-exclamation-triangle"></i> <strong>Note:</strong> To render PlantUML diagrams, use a PlantUML server or local renderer. Copy the code above to <a href="http://www.plantuml.com/plantuml/uml/" target="_blank">PlantUML Online Server</a>.
+                                    </div>
+                                </div>
+                            </div>
+			    
+                            <div class="tab-pane fade" id="plantuml-image" role="tabpanel">
+                                <div class="plantuml-container">
+					<pre>
+						<img src="images/WebSockets-Connection-LifeCycle-PlantUML.png" alt="WebSockets ConnectionLifeCycle"/>
+				        </pre>
+				</div>
+			    </div>
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-layers"></i> Architecture Components</h4>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-header bg-primary text-white">
+                                        <i class="bi bi-browser-chrome"></i> Client Side
+                                    </div>
+                                    <div class="card-body">
+                                        <ul>
+                                            <li>WebSocket API (Browser)</li>
+                                            <li>Event Handlers (onopen, onmessage, onerror, onclose)</li>
+                                            <li>Message Queue</li>
+                                            <li>Reconnection Logic</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-header bg-success text-white">
+                                        <i class="bi bi-server"></i> Server Side
+                                    </div>
+                                    <div class="card-body">
+                                        <ul>
+                                            <li>WebSocket Server (ws, Socket.IO)</li>
+                                            <li>Connection Manager</li>
+                                            <li>Message Router</li>
+                                            <li>Authentication Layer</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-header bg-info text-white">
+                                        <i class="bi bi-hdd-network"></i> Infrastructure
+                                    </div>
+                                    <div class="card-body">
+                                        <ul>
+                                            <li>Load Balancer (sticky sessions)</li>
+                                            <li>Message Broker (Redis, RabbitMQ)</li>
+                                            <li>Database (persistence)</li>
+                                            <li>Monitoring & Logging</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ecosystem Section -->
+                <div class="card mb-4" id="ecosystem">
+                    <div class="card-header bg-info text-white">
+                        <h2><i class="bi bi-globe"></i> WebSocket Ecosystem</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">A rich ecosystem of libraries, frameworks, and tools makes WebSocket development easier across different platforms.</p>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h4><i class="bi bi-code-square text-primary"></i> Server-Side Libraries</h4>
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">Socket.IO</h5>
+                                            <small class="badge bg-success">Popular</small>
+                                        </div>
+                                        <p class="mb-1">Feature-rich library with fallbacks, rooms, and namespaces. Works with Node.js.</p>
+                                        <small class="text-muted">npm install socket.io</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">ws</h5>
+                                            <small class="badge bg-primary">Lightweight</small>
+                                        </div>
+                                        <p class="mb-1">Fast, simple WebSocket library for Node.js with minimal overhead.</p>
+                                        <small class="text-muted">npm install ws</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">µWebSockets</h5>
+                                            <small class="badge bg-warning">High-Performance</small>
+                                        </div>
+                                        <p class="mb-1">Ultra-fast WebSocket server written in C++, with Node.js bindings.</p>
+                                        <small class="text-muted">npm install uWebSockets.js</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">Websocket (Python)</h5>
+                                            <small class="badge bg-info">Python</small>
+                                        </div>
+                                        <p class="mb-1">WebSocket implementation for Python using asyncio.</p>
+                                        <small class="text-muted">pip install websockets</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4><i class="bi bi-browser-chrome text-success"></i> Client-Side Libraries</h4>
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">Native WebSocket API</h5>
+                                            <small class="badge bg-success">Built-in</small>
+                                        </div>
+                                        <p class="mb-1">Browser's native WebSocket implementation, no library needed.</p>
+                                        <small class="text-muted">new WebSocket(url)</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">Socket.IO Client</h5>
+                                            <small class="badge bg-primary">Full-Featured</small>
+                                        </div>
+                                        <p class="mb-1">Client library for Socket.IO with auto-reconnect and fallbacks.</p>
+                                        <small class="text-muted">npm install socket.io-client</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">Reconnecting-WebSocket</h5>
+                                            <small class="badge bg-info">Resilient</small>
+                                        </div>
+                                        <p class="mb-1">WebSocket wrapper with automatic reconnection logic.</p>
+                                        <small class="text-muted">npm install reconnecting-websocket</small>
+                                    </div>
+                                </div>
+
+                                <h4 class="mt-4"><i class="bi bi-box text-warning"></i> Frameworks & Platforms</h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Pusher:</strong> Hosted WebSocket service with SDKs</li>
+                                    <li class="list-group-item"><strong>Ably:</strong> Real-time messaging platform</li>
+                                    <li class="list-group-item"><strong>Firebase:</strong> Real-time database with WebSocket backend</li>
+                                    <li class="list-group-item"><strong>SignalR:</strong> ASP.NET library for real-time web functionality</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advantages & Disadvantages Section -->
+                <div class="card mb-4" id="advantages-disadvantages">
+                    <div class="card-header bg-warning text-dark">
+                        <h2><i class="bi bi-balance-scale"></i> Advantages & Disadvantages</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Understanding the strengths and limitations helps you decide when to use WebSockets.</p>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h4 class="text-success"><i class="bi bi-check-circle-fill"></i> Advantages</h4>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-lightning-charge text-warning"></i> Real-Time Communication</h5>
+                                        <p>Instant bidirectional data transfer without polling overhead. Perfect for live updates.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-speedometer text-success"></i> Low Latency</h5>
+                                        <p>Persistent connection eliminates handshake overhead for each message, reducing latency significantly.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-arrow-down-up text-primary"></i> Reduced Bandwidth</h5>
+                                        <p>No HTTP headers sent with each message after connection, saving bandwidth for high-frequency updates.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-server text-info"></i> Server Push</h5>
+                                        <p>Server can push data to clients without waiting for requests, enabling event-driven architecture.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-universal-access text-secondary"></i> Wide Browser Support</h5>
+                                        <p>Supported by all modern browsers and mobile platforms. IE 10+ and all evergreen browsers.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="text-danger"><i class="bi bi-x-circle-fill"></i> Disadvantages</h4>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-cpu text-danger"></i> Server Resource Usage</h5>
+                                        <p>Maintains persistent connections, consuming server memory and requiring careful resource management.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-diagram-3 text-warning"></i> Scalability Complexity</h5>
+                                        <p>Requires sticky sessions and message brokers (Redis) for horizontal scaling across multiple servers.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-shield-x text-danger"></i> Security Concerns</h5>
+                                        <p>Vulnerable to XSS, CSRF attacks. No built-in authentication. Requires additional security layers.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-diagram-2 text-info"></i> Proxy/Firewall Issues</h5>
+                                        <p>Some corporate proxies and firewalls may block WebSocket connections or terminate idle connections.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-arrow-clockwise text-secondary"></i> Connection Management</h5>
+                                        <p>Requires implementation of reconnection logic, heartbeat mechanisms, and connection state management.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Cases Section -->
+                <div class="card mb-4" id="use-cases">
+                    <div class="card-header bg-danger text-white">
+                        <h2><i class="bi bi-bullseye"></i> Practical Use Cases</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">WebSockets excel in scenarios requiring real-time, bidirectional communication.</p>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-primary">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5><i class="bi bi-chat-dots"></i> Chat Applications</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Why WebSockets?</strong> Instant message delivery, typing indicators, presence detection.</p>
+                                        <p class="mb-0"><strong>Examples:</strong> Slack, WhatsApp Web, Discord</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <h5><i class="bi bi-graph-up"></i> Live Trading Platforms</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Why WebSockets?</strong> Real-time stock prices, order book updates, market data streams.</p>
+                                        <p class="mb-0"><strong>Examples:</strong> Robinhood, Binance, TradingView</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-info">
+                                    <div class="card-header bg-info text-white">
+                                        <h5><i class="bi bi-joystick"></i> Multiplayer Games</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Why WebSockets?</strong> Low-latency player actions, game state synchronization.</p>
+                                        <p class="mb-0"><strong>Examples:</strong> Agar.io, Slither.io, Chess.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-warning">
+                                    <div class="card-header bg-warning text-dark">
+                                        <h5><i class="bi bi-file-earmark-text"></i> Collaborative Editing</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Why WebSockets?</strong> Real-time document synchronization, cursor positions, live updates.</p>
+                                        <p class="mb-0"><strong>Examples:</strong> Google Docs, Figma, CodeSandbox</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-danger">
+                                    <div class="card-header bg-danger text-white">
+                                        <h5><i class="bi bi-bell"></i> Live Notifications</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Why WebSockets?</strong> Instant push notifications, activity feeds, real-time alerts.</p>
+                                        <p class="mb-0"><strong>Examples:</strong> Facebook, Twitter, LinkedIn</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-secondary">
+                                    <div class="card-header bg-secondary text-white">
+                                        <h5><i class="bi bi-broadcast"></i> Live Streaming Data</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Why WebSockets?</strong> Continuous data feeds, dashboards, monitoring systems.</p>
+                                        <p class="mb-0"><strong>Examples:</strong> IoT dashboards, Analytics, Sports scores</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-success mt-4">
+                            <h5><i class="bi bi-lightbulb"></i> Best Fit Scenarios</h5>
+                            <ul class="mb-0">
+                                <li>High-frequency updates (multiple times per second)</li>
+                                <li>Low-latency requirements (under 100ms)</li>
+                                <li>Server-initiated communication needed</li>
+                                <li>Long-lived connections (users stay online for extended periods)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technology Comparisons Section -->
+                <div class="card mb-4" id="comparisons">
+                    <div class="card-header bg-dark text-white">
+                        <h2><i class="bi bi-arrow-left-right"></i> WebSockets vs. Competing Technologies</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Comparing WebSockets with alternative real-time communication technologies.</p>
+
+                        <!-- WebSockets vs HTTP Polling -->
+                        <h4 class="mt-4"><i class="bi bi-1-circle"></i> WebSockets vs. HTTP Polling</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped comparison-table">
+                                <thead class="table-primary">
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>WebSockets</th>
+                                        <th>HTTP Polling</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Connection Type</strong></td>
+                                        <td>Persistent, bidirectional</td>
+                                        <td>Multiple short-lived connections</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Latency</strong></td>
+                                        <td>Very low (instant)</td>
+                                        <td>High (polling interval + network delay)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Bandwidth Usage</strong></td>
+                                        <td>Low (minimal overhead)</td>
+                                        <td>High (HTTP headers on every request)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Server Load</strong></td>
+                                        <td>Moderate (persistent connections)</td>
+                                        <td>High (constant requests)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Real-Time Capability</strong></td>
+                                        <td>Excellent</td>
+                                        <td>Poor (depends on polling frequency)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Implementation Complexity</strong></td>
+                                        <td>Moderate</td>
+                                        <td>Simple</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Best For</strong></td>
+                                        <td>High-frequency, real-time updates</td>
+                                        <td>Infrequent updates, simple scenarios</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- WebSockets vs Long Polling -->
+                        <h4 class="mt-4"><i class="bi bi-2-circle"></i> WebSockets vs. Long Polling</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped comparison-table">
+                                <thead class="table-success">
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>WebSockets</th>
+                                        <th>Long Polling</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Connection Pattern</strong></td>
+                                        <td>Single persistent connection</td>
+                                        <td>Sequential long-lived requests</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Server Push</strong></td>
+                                        <td>Native support</td>
+                                        <td>Simulated (response held until data available)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Latency</strong></td>
+                                        <td>Very low</td>
+                                        <td>Low (but requires reconnection)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Overhead</strong></td>
+                                        <td>Minimal after handshake</td>
+                                        <td>Moderate (reconnection overhead)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Firewall Compatibility</strong></td>
+                                        <td>Sometimes blocked</td>
+                                        <td>Better (uses standard HTTP)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Scalability</strong></td>
+                                        <td>Requires connection management</td>
+                                        <td>Easier (stateless requests)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Best For</strong></td>
+                                        <td>True real-time, high-frequency updates</td>
+                                        <td>Fallback mechanism, moderate real-time needs</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- WebSockets vs Server-Sent Events -->
+                        <h4 class="mt-4"><i class="bi bi-3-circle"></i> WebSockets vs. Server-Sent Events (SSE)</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped comparison-table">
+                                <thead class="table-info">
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>WebSockets</th>
+                                        <th>Server-Sent Events (SSE)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Communication</strong></td>
+                                        <td>Full-duplex (bidirectional)</td>
+                                        <td>Simplex (server to client only)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Protocol</strong></td>
+                                        <td>WebSocket protocol</td>
+                                        <td>HTTP/2 or HTTP/1.1</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Data Format</strong></td>
+                                        <td>Text or binary</td>
+                                        <td>Text only (UTF-8)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Automatic Reconnection</strong></td>
+                                        <td>Manual implementation required</td>
+                                        <td>Built-in automatic reconnection</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Browser Support</strong></td>
+                                        <td>All modern browsers</td>
+                                        <td>All modern browsers (not IE)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Message IDs</strong></td>
+                                        <td>Not built-in</td>
+                                        <td>Built-in event IDs and types</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Best For</strong></td>
+                                        <td>Chat, gaming, collaborative apps</td>
+                                        <td>Live feeds, notifications, stock tickers</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- WebSockets vs WebRTC -->
+                        <h4 class="mt-4"><i class="bi bi-4-circle"></i> WebSockets vs. WebRTC</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped comparison-table">
+                                <thead class="table-warning">
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>WebSockets</th>
+                                        <th>WebRTC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Architecture</strong></td>
+                                        <td>Client-Server</td>
+                                        <td>Peer-to-Peer</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Primary Use Case</strong></td>
+                                        <td>Data messaging</td>
+                                        <td>Audio/Video streaming, Data channels</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Latency</strong></td>
+                                        <td>Very low (via server)</td>
+                                        <td>Ultra-low (direct peer connection)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Setup Complexity</strong></td>
+                                        <td>Simple</td>
+                                        <td>Complex (signaling, STUN/TURN servers)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Reliability</strong></td>
+                                        <td>TCP (guaranteed delivery)</td>
+                                        <td>UDP (optional reliability)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Bandwidth</strong></td>
+                                        <td>Moderate</td>
+                                        <td>High (media streams)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Best For</strong></td>
+                                        <td>Chat, notifications, data sync</td>
+                                        <td>Video calls, file sharing, gaming</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="alert alert-info mt-4">
+                            <h5><i class="bi bi-lightbulb"></i> Decision Guide</h5>
+                            <ul class="mb-0">
+                                <li><strong>Choose WebSockets:</strong> Bidirectional communication, chat, collaborative editing, gaming</li>
+                                <li><strong>Choose HTTP Polling:</strong> Simple scenarios, infrequent updates, maximum compatibility</li>
+                                <li><strong>Choose Long Polling:</strong> Fallback for WebSocket, moderate real-time needs</li>
+                                <li><strong>Choose SSE:</strong> One-way server push, live feeds, simpler than WebSockets</li>
+                                <li><strong>Choose WebRTC:</strong> P2P communication, video/audio streaming, ultra-low latency</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Methods Section -->
+                <div class="card mb-4" id="api-methods">
+                    <div class="card-header bg-secondary text-white">
+                        <h2><i class="bi bi-code-slash"></i> WebSocket API Methods & Events</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Complete reference for the WebSocket API available in modern browsers.</p>
+
+                        <h4 class="mt-4"><i class="bi bi-gear"></i> Constructor</h4>
+                        <pre><code class="language-javascript">// Create a new WebSocket connection
+const socket = new WebSocket('ws://localhost:8080');
+
+// Secure WebSocket connection
+const secureSocket = new WebSocket('wss://example.com/socket');
+
+// With sub-protocols
+const socketWithProtocol = new WebSocket('ws://localhost:8080', ['protocol1', 'protocol2']);</code></pre>
+
+                        <h4 class="mt-4"><i class="bi bi-diagram-3"></i> Properties</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Property</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><code>socket.readyState</code></td>
+                                        <td>Number</td>
+                                        <td>Connection state: CONNECTING (0), OPEN (1), CLOSING (2), CLOSED (3)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>socket.url</code></td>
+                                        <td>String</td>
+                                        <td>The WebSocket URL</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>socket.protocol</code></td>
+                                        <td>String</td>
+                                        <td>The sub-protocol selected by the server</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>socket.bufferedAmount</code></td>
+                                        <td>Number</td>
+                                        <td>Number of bytes queued but not yet sent</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>socket.extensions</code></td>
+                                        <td>String</td>
+                                        <td>Extensions selected by the server</td>
+                                    </tr>
+                                    <tr>
+                                        <td><code>socket.binaryType</code></td>
+                                        <td>String</td>
+                                        <td>Binary data type: 'blob' (default) or 'arraybuffer'</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-play-circle"></i> Methods</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-header"><code>socket.send(data)</code></div>
+                                    <div class="card-body">
+                                        <p><strong>Purpose:</strong> Send data through the WebSocket connection</p>
+                                        <p><strong>Parameters:</strong> String, Blob, ArrayBuffer, or ArrayBufferView</p>
+                                        <pre><code class="language-javascript">// Send text
+socket.send('Hello Server');
+
+// Send JSON
+socket.send(JSON.stringify({ 
+  type: 'message', 
+  content: 'Hello' 
+}));
+
+// Send binary
+const buffer = new ArrayBuffer(8);
+socket.send(buffer);</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-header"><code>socket.close([code], [reason])</code></div>
+                                    <div class="card-body">
+                                        <p><strong>Purpose:</strong> Close the WebSocket connection</p>
+                                        <p><strong>Parameters:</strong> Optional close code and reason</p>
+                                        <pre><code class="language-javascript">// Normal closure
+socket.close();
+
+// With code and reason
+socket.close(1000, 'Work complete');
+
+// Common close codes:
+// 1000 - Normal closure
+// 1001 - Going away
+// 1002 - Protocol error
+// 1003 - Unsupported data</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-bell"></i> Event Handlers</h4>
+                        <div class="accordion" id="eventHandlersAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#onopen">
+                                        <i class="bi bi-unlock me-2"></i> onopen Event
+                                    </button>
+                                </h2>
+                                <div id="onopen" class="accordion-collapse collapse show" data-bs-parent="#eventHandlersAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Triggered:</strong> When the connection is successfully established</p>
+                                        <pre><code class="language-javascript">socket.onopen = (event) => {
+  console.log('WebSocket connection opened:', event);
+  console.log('Ready state:', socket.readyState); // 1 (OPEN)
+  
+  // Now safe to send messages
+  socket.send('Hello Server!');
+};</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#onmessage">
+                                        <i class="bi bi-envelope me-2"></i> onmessage Event
+                                    </button>
+                                </h2>
+                                <div id="onmessage" class="accordion-collapse collapse" data-bs-parent="#eventHandlersAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Triggered:</strong> When a message is received from the server</p>
+                                        <pre><code class="language-javascript">socket.onmessage = (event) => {
+  console.log('Message received:', event.data);
+  
+  // Handle text data
+  if (typeof event.data === 'string') {
+    const message = JSON.parse(event.data);
+    console.log('Parsed message:', message);
+  }
+  
+  // Handle binary data
+  if (event.data instanceof Blob) {
+    const reader = new FileReader();
+    reader.onload = () => console.log(reader.result);
+    reader.readAsText(event.data);
+  }
+};</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#onerror">
+                                        <i class="bi bi-exclamation-triangle me-2"></i> onerror Event
+                                    </button>
+                                </h2>
+                                <div id="onerror" class="accordion-collapse collapse" data-bs-parent="#eventHandlersAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Triggered:</strong> When an error occurs with the connection</p>
+                                        <pre><code class="language-javascript">socket.onerror = (error) => {
+  console.error('WebSocket error:', error);
+  console.log('Error event:', error);
+  
+  // Note: Error details are limited for security reasons
+  // The error event doesn't contain much information
+  
+  // Handle error (e.g., show user notification)
+  showErrorNotification('Connection error occurred');
+};</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#onclose">
+                                        <i class="bi bi-x-circle me-2"></i> onclose Event
+                                    </button>
+                                </h2>
+                                <div id="onclose" class="accordion-collapse collapse" data-bs-parent="#eventHandlersAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Triggered:</strong> When the connection is closed</p>
+                                        <pre><code class="language-javascript">socket.onclose = (event) => {
+  console.log('WebSocket connection closed');
+  console.log('Close code:', event.code);
+  console.log('Close reason:', event.reason);
+  console.log('Was clean close:', event.wasClean);
+  
+  // Handle different close codes
+  if (event.code === 1000) {
+    console.log('Normal closure');
+  } else if (event.code === 1006) {
+    console.log('Abnormal closure (e.g., network error)');
+    // Attempt reconnection
+    setTimeout(() => reconnect(), 5000);
+  }
+};</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-code-square"></i> Complete Example</h4>
+                        <pre><code class="language-javascript">// Complete WebSocket client implementation
+class WebSocketClient {
+  constructor(url) {
+    this.url = url;
+    this.socket = null;
+    this.reconnectAttempts = 0;
+    this.maxReconnectAttempts = 5;
+  }
+
+  connect() {
+    this.socket = new WebSocket(this.url);
+    this.socket.binaryType = 'arraybuffer'; // or 'blob'
+
+    this.socket.onopen = (event) => {
+      console.log('Connected to WebSocket server');
+      this.reconnectAttempts = 0;
+      this.onConnect && this.onConnect(event);
+    };
+
+    this.socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        this.onMessage && this.onMessage(data);
+      } catch (e) {
+        console.error('Failed to parse message:', e);
+      }
+    };
+
+    this.socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+      this.onError && this.onError(error);
+    };
+
+    this.socket.onclose = (event) => {
+      console.log('Connection closed:', event.code, event.reason);
+      this.onClose && this.onClose(event);
+      
+      // Auto-reconnect
+      if (!event.wasClean && this.reconnectAttempts < this.maxReconnectAttempts) {
+        this.reconnectAttempts++;
+        console.log(`Reconnecting... Attempt ${this.reconnectAttempts}`);
+        setTimeout(() => this.connect(), 3000);
+      }
+    };
+  }
+
+  send(data) {
+    if (this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify(data));
+    } else {
+      console.error('WebSocket is not open. Ready state:', this.socket.readyState);
+    }
+  }
+
+  close() {
+    this.socket.close(1000, 'Client closing connection');
+  }
+}
+
+// Usage
+const client = new WebSocketClient('ws://localhost:8080');
+client.onConnect = () => console.log('Connected!');
+client.onMessage = (data) => console.log('Received:', data);
+client.connect();</code></pre>
+                    </div>
+                </div>
+
+                <!-- Real-Time Example Section -->
+                <div class="card mb-4" id="real-time-example">
+                    <div class="card-header bg-primary text-white">
+                        <h2><i class="bi bi-lightning-charge"></i> Real-Time Example: Chat Application (MEBN Stack)</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">A complete real-time chat application using MongoDB, Express, Bootstrap, and Node.js with WebSockets.</p>
+
+                        <div class="alert alert-info">
+                            <h5><i class="bi bi-info-circle"></i> MEBN Stack Overview</h5>
+                            <ul class="mb-0">
+                                <li><strong>M</strong>ongoDB - NoSQL database for storing messages and user data</li>
+                                <li><strong>E</strong>xpress - Web application framework for Node.js</li>
+                                <li><strong>B</strong>ootstrap - Frontend framework for responsive UI</li>
+                                <li><strong>N</strong>ode.js - JavaScript runtime for server-side code</li>
+                                <li><strong>+ Socket.IO</strong> - WebSocket library for real-time communication</li>
+                            </ul>
+                        </div>
+
+                        <!-- Architecture Diagram -->
+                        <h4 class="mt-4"><i class="bi bi-diagram-3"></i> Application Architecture</h4>
+                        <ul class="nav nav-tabs" id="exampleArchTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="ascii-example-tab" data-bs-toggle="tab" data-bs-target="#ascii-example" type="button" role="tab">
+                                    <i class="bi bi-text-left"></i> ASCII Diagram
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="plantuml-example-tab" data-bs-toggle="tab" data-bs-target="#plantuml-example" type="button" role="tab">
+                                    <i class="bi bi-diagram-2"></i> PlantUML Snippet
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="plantuml-diagram-tab" data-bs-toggle="tab" data-bs-target="#plantuml-diagram" type="button" role="tab">
+                                    <i class="bi bi-diagram-2"></i> PlantUML Diagram
+                                </button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content border border-top-0 p-3" id="exampleArchTabContent">
+                            <div class="tab-pane fade show active" id="ascii-example" role="tabpanel">
+                                <div class="ascii-art">
+┌────────────────────────────────────────────────────────────────────────┐
+│              Real-Time Chat Application Architecture                   │
+│                         (MEBN Stack)                                   │
+└────────────────────────────────────────────────────────────────────────┘
+
+   ┌─────────────┐         ┌─────────────┐         ┌─────────────┐
+   │  Client A   │         │  Client B   │         │  Client C   │
+   │  (Browser)  │         │  (Browser)  │         │  (Browser)  │
+   └──────┬──────┘         └──────┬──────┘         └──────┬──────┘
+          │                       │                       │
+          │ WebSocket             │ WebSocket             │ WebSocket
+          │ Connection            │ Connection            │ Connection
+          │                       │                       │
+          └───────────────────────┼───────────────────────┘
+                                  │
+                                  ▼
+              ┌───────────────────────────────────────────┐
+              │      Node.js + Express Server             │
+              │                                           │
+              │  ┌─────────────────────────────────────┐  │
+              │  │      Socket.IO Server               │  │
+              │  │  • Connection Management            │  │
+              │  │  • Room/Namespace Support           │  │
+              │  │  • Event Broadcasting               │  │
+              │  └─────────────────────────────────────┘  │
+              │                                           │
+              │  ┌─────────────────────────────────────┐  │
+              │  │      Express Routes                 │  │
+              │  │  • REST API Endpoints               │  │
+              │  │  • Static File Serving              │  │
+              │  │  • Authentication Middleware        │  │
+              │  └─────────────────────────────────────┘  │
+              └───────────────────┬───────────────────────┘
+                                  │
+                                  │ Mongoose ODM
+                                  ▼
+                    ┌─────────────────────────────┐
+                    │      MongoDB Database       │
+                    │                             │
+                    │  Collections:               │
+                    │  ┌─────────────────────┐    │
+                    │  │  users              │    │
+                    │  │  • username         │    │
+                    │  │  • email            │    │
+                    │  │  • password (hash)  │    │
+                    │  │  • online status    │    │
+                    │  └─────────────────────┘    │
+                    │                             │
+                    │  ┌─────────────────────┐    │
+                    │  │  messages           │    │
+                    │  │  • sender           │    │
+                    │  │  • content          │    │
+                    │  │  • timestamp        │    │
+                    │  │  • room             │    │
+                    │  └─────────────────────┘    │
+                    │                             │
+                    │  ┌─────────────────────┐    │
+                    │  │  rooms              │    │
+                    │  │  • name             │    │
+                    │  │  • participants[]   │    │
+                    │  │  • created_at       │    │
+                    │  └─────────────────────┘    │
+                    └─────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────┐
+│  Message Flow:                                                 │
+│                                                                │
+│  1. Client A sends message via WebSocket                       │
+│  2. Socket.IO server receives message                          │
+│  3. Server saves message to MongoDB                            │
+│  4. Server broadcasts to all clients in the room               │
+│  5. Clients B & C receive message in real-time                 │
+└────────────────────────────────────────────────────────────────┘
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="plantuml-example" role="tabpanel">
+                                <div class="plantuml-container">
+                                    <pre><code class="language-plantuml">@startuml
+title Real-Time Chat Application - MEBN Stack Architecture
+
+actor "User A" as userA
+actor "User B" as userB
+participant "Browser\n(Bootstrap UI)" as browser
+participant "Socket.IO Client" as socketClient
+participant "Node.js + Express" as express
+participant "Socket.IO Server" as socketServer
+database "MongoDB" as mongo
+
+== Connection Establishment ==
+userA -> browser: Open Chat App
+browser -> socketClient: Initialize WebSocket
+socketClient -> socketServer: Connect (ws://)
+socketServer --> socketClient: Connection Acknowledged
+socketClient -> socketServer: Authenticate User
+socketServer -> mongo: Verify User Credentials
+mongo --> socketServer: User Data
+socketServer --> socketClient: Auth Success
+
+== Message Exchange ==
+userA -> browser: Type & Send Message
+browser -> socketClient: emit('sendMessage', data)
+socketClient -> socketServer: WebSocket Frame (message)
+socketServer -> mongo: Save Message
+mongo --> socketServer: Saved
+socketServer -> socketServer: Broadcast to Room
+socketServer --> socketClient: emit('newMessage', data)
+socketServer --> userB: emit('newMessage', data)
+socketClient -> browser: Update UI
+browser -> userA: Display Message
+browser -> userB: Display Message (real-time)
+
+== User Typing Indicator ==
+userA -> browser: Start Typing
+browser -> socketClient: emit('typing', {user})
+socketClient -> socketServer: Typing Event
+socketServer --> userB: broadcast('userTyping')
+userB -> browser: Show "User A is typing..."
+
+== User Presence ==
+socketServer -> mongo: Update User Online Status
+socketServer --> socketClient: Broadcast User List
+socketClient -> browser: Update Online Users
+
+@enduml</code></pre>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="bi bi-exclamation-triangle"></i> <strong>Note:</strong> To render PlantUML diagrams, use a PlantUML server or local renderer. Copy the code above to <a href="http://www.plantuml.com/plantuml/uml/" target="_blank">PlantUML Online Server</a>.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="plantuml-diagram" role="tabpanel">
+                                <div class="plantuml-container">
+                                    <pre>
+		<img src="images/WebSockets-RealTimeChatApp-MEBNStack-PlantUML.png" alt="WebSockets RealTimeChatApp MEBN Stack PlantUML"/>
+				    </pre>
+				 </div>
+			    </div>
+                        </div>
+
+                        <!-- Server Code -->
+                        <h4 class="mt-4"><i class="bi bi-server"></i> Server-Side Implementation</h4>
+                        
+                        <h5 class="mt-3">1. Project Setup & Dependencies</h5>
+                        <pre><code class="language-bash"># Initialize project
+mkdir websocket-chat-app
+cd websocket-chat-app
+npm init -y
+
+# Install dependencies
+npm install express socket.io mongoose dotenv bcryptjs jsonwebtoken
+npm install -D nodemon</code></pre>
+
+                        <h5 class="mt-3">2. Server Configuration (server.js)</h5>
+                        <pre><code class="language-javascript">// server.js
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const mongoose = require('mongoose');
+const path = require('path');
+require('dotenv').config();
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+// Middleware
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// MongoDB Connection
+// Note: useNewUrlParser and useUnifiedTopology are deprecated in Mongoose 6+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/websocket-chat')
+.then(() => console.log('MongoDB connected'))
+.catch(err => console.error('MongoDB connection error:', err));
+
+// Models
+const Message = require('./models/Message');
+const User = require('./models/User');
+const Room = require('./models/Room');
+
+// Store active users
+const activeUsers = new Map();
+
+// Socket.IO Connection Handler
+io.on('connection', (socket) => {
+  console.log('New client connected:', socket.id);
+
+  // User joins with username
+  socket.on('join', async ({ username, room }) => {
+    try {
+      // Add user to active users
+      activeUsers.set(socket.id, { username, room });
+      socket.join(room);
+
+      // Load recent messages
+      const messages = await Message.find({ room })
+        .sort({ timestamp: -1 })
+        .limit(50)
+        .populate('sender', 'username');
+
+      socket.emit('loadMessages', messages.reverse());
+
+      // Notify room about new user
+      io.to(room).emit('userJoined', {
+        username,
+        message: `${username} has joined the chat`,
+        timestamp: new Date()
+      });
+
+      // Send updated user list
+      const roomUsers = Array.from(activeUsers.values())
+        .filter(user => user.room === room)
+        .map(user => user.username);
+      io.to(room).emit('updateUserList', roomUsers);
+
+      console.log(`${username} joined room: ${room}`);
+    } catch (error) {
+      console.error('Error in join handler:', error);
+      socket.emit('error', { message: 'Failed to join room' });
+    }
+  });
+
+  // Receive message from client
+  socket.on('sendMessage', async ({ username, message, room }) => {
+    try {
+      // Save message to database
+      const newMessage = new Message({
+        sender: username,
+        content: message,
+        room: room,
+        timestamp: new Date()
+      });
+      await newMessage.save();
+
+      // Broadcast message to room
+      const messageData = {
+        id: newMessage._id,
+        username,
+        message,
+        timestamp: newMessage.timestamp
+      };
+
+      io.to(room).emit('newMessage', messageData);
+      console.log(`Message from ${username} in ${room}: ${message}`);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      socket.emit('error', { message: 'Failed to send message' });
+    }
+  });
+
+  // Typing indicator
+  socket.on('typing', ({ username, room }) => {
+    socket.to(room).emit('userTyping', { username });
+  });
+
+  socket.on('stopTyping', ({ room }) => {
+    socket.to(room).emit('userStoppedTyping');
+  });
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    const user = activeUsers.get(socket.id);
+    if (user) {
+      const { username, room } = user;
+      activeUsers.delete(socket.id);
+
+      // Notify room
+      io.to(room).emit('userLeft', {
+        username,
+        message: `${username} has left the chat`,
+        timestamp: new Date()
+      });
+
+      // Update user list
+      const roomUsers = Array.from(activeUsers.values())
+        .filter(u => u.room === room)
+        .map(u => u.username);
+      io.to(room).emit('updateUserList', roomUsers);
+
+      console.log(`${username} disconnected from ${room}`);
+    }
+  });
+});
+
+// REST API Routes
+app.get('/api/rooms', async (req, res) => {
+  try {
+    const rooms = await Room.find();
+    res.json(rooms);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch rooms' });
+  }
+});
+
+app.post('/api/rooms', async (req, res) => {
+  try {
+    const { name } = req.body;
+    const room = new Room({ name });
+    await room.save();
+    res.status(201).json(room);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to create room' });
+  }
+});
+
+// Start server
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});</code></pre>
+
+                        <h5 class="mt-3">3. Database Models</h5>
+                        <div class="accordion" id="modelsAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#messageModel">
+                                        models/Message.js
+                                    </button>
+                                </h2>
+                                <div id="messageModel" class="accordion-collapse collapse show" data-bs-parent="#modelsAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-javascript">// models/Message.js
+const mongoose = require('mongoose');
+
+const messageSchema = new mongoose.Schema({
+  sender: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true,
+    maxlength: 1000
+  },
+  room: {
+    type: String,
+    required: true,
+    default: 'general'
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now
+  },
+  edited: {
+    type: Boolean,
+    default: false
+  }
+});
+
+// Index for efficient querying
+messageSchema.index({ room: 1, timestamp: -1 });
+
+module.exports = mongoose.model('Message', messageSchema);</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userModel">
+                                        models/User.js
+                                    </button>
+                                </h2>
+                                <div id="userModel" class="accordion-collapse collapse" data-bs-parent="#modelsAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-javascript">// models/User.js
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 3
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  online: {
+    type: Boolean,
+    default: false
+  },
+  lastSeen: {
+    type: Date,
+    default: Date.now
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+module.exports = mongoose.model('User', userSchema);</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#roomModel">
+                                        models/Room.js
+                                    </button>
+                                </h2>
+                                <div id="roomModel" class="accordion-collapse collapse" data-bs-parent="#modelsAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-javascript">// models/Room.js
+const mongoose = require('mongoose');
+
+const roomSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true
+  },
+  description: {
+    type: String,
+    maxlength: 200
+  },
+  participants: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  isPrivate: {
+    type: Boolean,
+    default: false
+  }
+});
+
+module.exports = mongoose.model('Room', roomSchema);</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client Code -->
+                        <h4 class="mt-4"><i class="bi bi-browser-chrome"></i> Client-Side Implementation</h4>
+                        
+                        <h5 class="mt-3">HTML Interface (public/index.html)</h5>
+                        <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Real-Time Chat - WebSocket Demo&lt;/title&gt;
+    &lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+    &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"&gt;
+    &lt;style&gt;
+        #chat-container { height: 500px; overflow-y: auto; }
+        .message { margin-bottom: 10px; padding: 10px; border-radius: 8px; }
+        .message.own { background-color: #007bff; color: white; margin-left: 20%; }
+        .message.other { background-color: #e9ecef; margin-right: 20%; }
+        .typing-indicator { font-style: italic; color: #6c757d; }
+        #user-list { max-height: 500px; overflow-y: auto; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container mt-5"&gt;
+        &lt;h1 class="text-center"&gt;&lt;i class="bi bi-chat-dots"&gt;&lt;/i&gt; Real-Time Chat&lt;/h1&gt;
+        
+        &lt;div class="row mt-4"&gt;
+            &lt;div class="col-md-9"&gt;
+                &lt;div class="card"&gt;
+                    &lt;div class="card-header bg-primary text-white"&gt;
+                        &lt;h5&gt;Chat Room: &lt;span id="room-name"&gt;General&lt;/span&gt;&lt;/h5&gt;
+                    &lt;/div&gt;
+                    &lt;div class="card-body" id="chat-container"&gt;&lt;/div&gt;
+                    &lt;div class="card-footer"&gt;
+                        &lt;div id="typing-indicator" class="typing-indicator mb-2"&gt;&lt;/div&gt;
+                        &lt;div class="input-group"&gt;
+                            &lt;input type="text" id="message-input" class="form-control" placeholder="Type a message..."&gt;
+                            &lt;button class="btn btn-primary" id="send-btn"&gt;&lt;i class="bi bi-send"&gt;&lt;/i&gt; Send&lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            
+            &lt;div class="col-md-3"&gt;
+                &lt;div class="card"&gt;
+                    &lt;div class="card-header bg-success text-white"&gt;
+                        &lt;h5&gt;&lt;i class="bi bi-people"&gt;&lt;/i&gt; Online Users&lt;/h5&gt;
+                    &lt;/div&gt;
+                    &lt;div class="card-body" id="user-list"&gt;&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Join Modal --&gt;
+    &lt;div class="modal fade" id="joinModal" data-bs-backdrop="static" tabindex="-1"&gt;
+        &lt;div class="modal-dialog"&gt;
+            &lt;div class="modal-content"&gt;
+                &lt;div class="modal-header"&gt;
+                    &lt;h5 class="modal-title"&gt;Join Chat&lt;/h5&gt;
+                &lt;/div&gt;
+                &lt;div class="modal-body"&gt;
+                    &lt;div class="mb-3"&gt;
+                        &lt;label for="username" class="form-label"&gt;Username&lt;/label&gt;
+                        &lt;input type="text" class="form-control" id="username" required&gt;
+                    &lt;/div&gt;
+                    &lt;div class="mb-3"&gt;
+                        &lt;label for="room" class="form-label"&gt;Room&lt;/label&gt;
+                        &lt;input type="text" class="form-control" id="room" value="general"&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="modal-footer"&gt;
+                    &lt;button type="button" class="btn btn-primary" id="join-btn"&gt;Join Chat&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+    &lt;script src="/socket.io/socket.io.js"&gt;&lt;/script&gt;
+    &lt;script src="app.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+                        <h5 class="mt-3">JavaScript Client (public/app.js)</h5>
+                        <pre><code class="language-javascript">// public/app.js
+let socket;
+let username;
+let room;
+let typingTimer;
+
+// DOM Elements
+const joinModal = new bootstrap.Modal(document.getElementById('joinModal'));
+const joinBtn = document.getElementById('join-btn');
+const sendBtn = document.getElementById('send-btn');
+const messageInput = document.getElementById('message-input');
+const chatContainer = document.getElementById('chat-container');
+const userList = document.getElementById('user-list');
+const typingIndicator = document.getElementById('typing-indicator');
+
+// Show join modal on load
+joinModal.show();
+
+// Join chat
+joinBtn.addEventListener('click', () => {
+  username = document.getElementById('username').value.trim();
+  room = document.getElementById('room').value.trim();
+
+  if (username && room) {
+    // Connect to Socket.IO server
+    socket = io('http://localhost:3000');
+
+    // Setup socket event listeners
+    setupSocketListeners();
+
+    // Join the room
+    socket.emit('join', { username, room });
+
+    // Close modal
+    joinModal.hide();
+    document.getElementById('room-name').textContent = room;
+  }
+});
+
+function setupSocketListeners() {
+  // Load previous messages
+  socket.on('loadMessages', (messages) => {
+    messages.forEach(msg => {
+      displayMessage(msg.sender, msg.content, msg.timestamp, false);
+    });
+  });
+
+  // New message received
+  socket.on('newMessage', (data) => {
+    displayMessage(data.username, data.message, data.timestamp, data.username === username);
+    scrollToBottom();
+  });
+
+  // User joined
+  socket.on('userJoined', (data) => {
+    displaySystemMessage(`${data.username} joined the chat`);
+  });
+
+  // User left
+  socket.on('userLeft', (data) => {
+    displaySystemMessage(`${data.username} left the chat`);
+  });
+
+  // Update user list
+  socket.on('updateUserList', (users) => {
+    userList.innerHTML = '';
+    users.forEach(user => {
+      const userElement = document.createElement('div');
+      userElement.className = 'mb-2';
+      userElement.innerHTML = `
+        <span class="badge bg-success">
+          <i class="bi bi-person-circle"></i> ${user}
+        </span>
+      `;
+      userList.appendChild(userElement);
+    });
+  });
+
+  // Typing indicator
+  socket.on('userTyping', (data) => {
+    typingIndicator.textContent = `${data.username} is typing...`;
+  });
+
+  socket.on('userStoppedTyping', () => {
+    typingIndicator.textContent = '';
+  });
+
+  // Connection error
+  socket.on('error', (data) => {
+    alert('Error: ' + data.message);
+  });
+}
+
+// Send message
+sendBtn.addEventListener('click', sendMessage);
+messageInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
+
+function sendMessage() {
+  const message = messageInput.value.trim();
+  
+  if (message && socket) {
+    socket.emit('sendMessage', {
+      username,
+      message,
+      room
+    });
+    messageInput.value = '';
+    socket.emit('stopTyping', { room });
+  }
+}
+
+// Typing indicator
+messageInput.addEventListener('input', () => {
+  if (socket) {
+    socket.emit('typing', { username, room });
+    
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(() => {
+      socket.emit('stopTyping', { room });
+    }, 1000);
+  }
+});
+
+// Display message in chat
+function displayMessage(sender, message, timestamp, isOwn) {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `message ${isOwn ? 'own' : 'other'}`;
+  
+  const time = new Date(timestamp).toLocaleTimeString([], { 
+    hour: '2-digit', 
+    minute: '2-digit' 
+  });
+  
+  messageDiv.innerHTML = `
+    <div class="d-flex justify-content-between">
+      <strong>${sender}</strong>
+      <small>${time}</small>
+    </div>
+    <div>${escapeHtml(message)}</div>
+  `;
+  
+  chatContainer.appendChild(messageDiv);
+  scrollToBottom();
+}
+
+// Display system message
+function displaySystemMessage(message) {
+  const messageDiv = document.createElement('div');
+  messageDiv.className = 'text-center text-muted my-2';
+  messageDiv.innerHTML = `<small><em>${message}</em></small>`;
+  chatContainer.appendChild(messageDiv);
+  scrollToBottom();
+}
+
+// Scroll to bottom
+function scrollToBottom() {
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}</code></pre>
+
+                        <h5 class="mt-3">Environment Configuration (.env)</h5>
+                        <pre><code class="language-bash"># .env
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/websocket-chat
+NODE_ENV=development</code></pre>
+
+                        <h5 class="mt-3">Package.json Scripts</h5>
+                        <pre><code class="language-json">{
+  "name": "websocket-chat-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  }
+}</code></pre>
+
+                        <!-- Code Explanations -->
+                        <h4 class="mt-4"><i class="bi bi-file-text"></i> Code Explanations</h4>
+                        <p>Detailed explanations of each source code file in the application:</p>
+                        
+                        <div class="accordion" id="codeExplanationsAccordion">
+                            <!-- Server.js Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#explainServer">
+                                        <i class="bi bi-server me-2"></i> <strong>server.js - Main Server File</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainServer" class="accordion-collapse collapse show" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Purpose & Structure</h5>
+                                        <p>The server.js file is the entry point of the application, responsible for:</p>
+                                        <ul>
+                                            <li><strong>Server Initialization:</strong> Creates Express app and HTTP server</li>
+                                            <li><strong>Socket.IO Integration:</strong> Wraps HTTP server with Socket.IO for WebSocket support</li>
+                                            <li><strong>Database Connection:</strong> Connects to MongoDB using Mongoose</li>
+                                            <li><strong>Real-time Event Handling:</strong> Manages WebSocket events (join, sendMessage, typing, disconnect)</li>
+                                            <li><strong>REST API Endpoints:</strong> Provides traditional HTTP endpoints for rooms management</li>
+                                        </ul>
+
+                                        <h5 class="mt-3">Key Components</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-body">
+                                                        <h6><i class="bi bi-gear text-primary"></i> CORS Configuration</h6>
+                                                        <p class="small mb-0">Allows cross-origin requests from any domain. In production, restrict this to specific domains for security.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card bg-light mb-2">
+                                                    <div class="card-body">
+                                                        <h6><i class="bi bi-database text-success"></i> Connection Pool</h6>
+                                                        <p class="small mb-0">Mongoose maintains a connection pool to MongoDB, reusing connections for better performance.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="mt-3">Active Users Management</h5>
+                                        <p>The <code>activeUsers</code> Map stores currently connected users with their socket IDs as keys. This allows:</p>
+                                        <ul>
+                                            <li>Tracking which user is in which room</li>
+                                            <li>Cleaning up user data on disconnect</li>
+                                            <li>Broadcasting user lists to room participants</li>
+                                        </ul>
+
+                                        <h5 class="mt-3">Socket Event Flow</h5>
+                                        <ol>
+                                            <li><strong>connection:</strong> New client connects, socket ID assigned</li>
+                                            <li><strong>join:</strong> User joins a room, past messages loaded from DB</li>
+                                            <li><strong>sendMessage:</strong> Message saved to DB and broadcast to room</li>
+                                            <li><strong>typing/stopTyping:</strong> Real-time typing indicators broadcast</li>
+                                            <li><strong>disconnect:</strong> User removed from active list, room notified</li>
+                                        </ol>
+
+                                        <div class="alert alert-warning mt-3">
+                                            <i class="bi bi-exclamation-triangle"></i> <strong>Mongoose Deprecation Note:</strong>
+                                            <p class="mb-0">The options <code>useNewUrlParser</code> and <code>useUnifiedTopology</code> were required in Mongoose 5.x but are now deprecated and removed in Mongoose 6+. These options are no longer needed as the new parser and topology engine are the default. If you see deprecation warnings, you're using Mongoose 5.x - upgrade to Mongoose 6+ and remove these options.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Message Model Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainMessage">
+                                        <i class="bi bi-chat-left-text me-2"></i> <strong>models/Message.js - Message Schema</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainMessage" class="accordion-collapse collapse" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Schema Design</h5>
+                                        <p>The Message model defines the structure of chat messages stored in MongoDB:</p>
+                                        
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Field</th>
+                                                    <th>Type</th>
+                                                    <th>Purpose</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>sender</code></td>
+                                                    <td>String</td>
+                                                    <td>Username of message author (in production, use User reference)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>content</code></td>
+                                                    <td>String (max 1000)</td>
+                                                    <td>Message text with validation to prevent huge messages</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>room</code></td>
+                                                    <td>String</td>
+                                                    <td>Room identifier for message organization</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>timestamp</code></td>
+                                                    <td>Date</td>
+                                                    <td>When message was sent (auto-generated)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>edited</code></td>
+                                                    <td>Boolean</td>
+                                                    <td>Flag for message editing feature</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Indexing Strategy</h5>
+                                        <p>The compound index on <code>{room: 1, timestamp: -1}</code> optimizes queries that:</p>
+                                        <ul>
+                                            <li>Fetch messages for a specific room</li>
+                                            <li>Sort by timestamp in descending order (newest first)</li>
+                                            <li>Are used in the pagination of chat history</li>
+                                        </ul>
+                                        <p class="small text-muted">This index significantly improves performance when loading recent messages for a room.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- User Model Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainUser">
+                                        <i class="bi bi-person me-2"></i> <strong>models/User.js - User Schema</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainUser" class="accordion-collapse collapse" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>User Data Structure</h5>
+                                        <p>Stores user account information and presence status:</p>
+                                        
+                                        <ul>
+                                            <li><strong>username:</strong> Unique identifier with 3+ characters (indexed)</li>
+                                            <li><strong>email:</strong> Unique, auto-lowercase for case-insensitive matching</li>
+                                            <li><strong>password:</strong> Should be hashed with bcrypt before storage (not shown in example)</li>
+                                            <li><strong>online:</strong> Presence indicator updated on connect/disconnect</li>
+                                            <li><strong>lastSeen:</strong> Timestamp of last activity for "last seen" feature</li>
+                                        </ul>
+
+                                        <h5 class="mt-3">Security Considerations</h5>
+                                        <div class="alert alert-danger">
+                                            <strong><i class="bi bi-shield-x"></i> Production Enhancement Required:</strong>
+                                            <p>Before deploying:</p>
+                                            <ul class="mb-0">
+                                                <li>Add password hashing using bcrypt (10-12 rounds)</li>
+                                                <li>Implement password validation (min length, complexity)</li>
+                                                <li>Add email verification flow</li>
+                                                <li>Implement rate limiting for login attempts</li>
+                                                <li>Add JWT-based authentication</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Room Model Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainRoom">
+                                        <i class="bi bi-door-open me-2"></i> <strong>models/Room.js - Room Schema</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainRoom" class="accordion-collapse collapse" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Room Management</h5>
+                                        <p>Organizes chat into separate spaces with permissions:</p>
+                                        
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Field</th>
+                                                    <th>Purpose</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>name</code></td>
+                                                    <td>Unique room identifier (e.g., "general", "tech-talk")</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>description</code></td>
+                                                    <td>Room purpose/topic for users to understand context</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>participants[]</code></td>
+                                                    <td>Array of User IDs with access (for private rooms)</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>isPrivate</code></td>
+                                                    <td>Controls visibility and access permissions</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Room Types</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card border-success mb-2">
+                                                    <div class="card-header bg-success text-white">Public Rooms</div>
+                                                    <div class="card-body">
+                                                        <p class="small mb-0"><code>isPrivate: false</code> - Anyone can join and view messages. Good for community channels.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card border-warning mb-2">
+                                                    <div class="card-header bg-warning">Private Rooms</div>
+                                                    <div class="card-body">
+                                                        <p class="small mb-0"><code>isPrivate: true</code> - Only participants can access. Requires permission check before joining.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Client Code Explanation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainClient">
+                                        <i class="bi bi-browser-chrome me-2"></i> <strong>public/app.js - Client-Side Logic</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainClient" class="accordion-collapse collapse" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Client Architecture</h5>
+                                        <p>The client JavaScript handles UI interactions and WebSocket communication:</p>
+
+                                        <h6 class="mt-3"><i class="bi bi-1-circle"></i> Connection Management</h6>
+                                        <pre><code class="language-javascript">socket = io('http://localhost:3000');  // Connect to Socket.IO server
+socket.emit('join', { username, room });  // Join specific room</code></pre>
+                                        <p class="small">Socket.IO client automatically handles reconnection, fallbacks, and protocol negotiation.</p>
+
+                                        <h6 class="mt-3"><i class="bi bi-2-circle"></i> Event Listeners</h6>
+                                        <ul>
+                                            <li><code>loadMessages</code> - Receives historical messages on join</li>
+                                            <li><code>newMessage</code> - Real-time message from other users</li>
+                                            <li><code>userJoined</code> / <code>userLeft</code> - Presence notifications</li>
+                                            <li><code>updateUserList</code> - Refreshed list of online users</li>
+                                            <li><code>userTyping</code> / <code>userStoppedTyping</code> - Typing indicators</li>
+                                        </ul>
+
+                                        <h6 class="mt-3"><i class="bi bi-3-circle"></i> XSS Prevention</h6>
+                                        <p>The <code>escapeHtml()</code> function is critical for security:</p>
+                                        <pre><code class="language-javascript">function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;  // Browser auto-escapes
+  return div.innerHTML;     // Returns escaped HTML
+}</code></pre>
+                                        <p class="small">This prevents malicious scripts in messages from executing. Always sanitize user input!</p>
+
+                                        <h6 class="mt-3"><i class="bi bi-4-circle"></i> Typing Indicator Debouncing</h6>
+                                        <p>Typing events are rate-limited using a timer to avoid flooding the server:</p>
+                                        <ul>
+                                            <li>User starts typing → emit "typing" event immediately</li>
+                                            <li>Timer resets on each keystroke</li>
+                                            <li>After 1 second of inactivity → emit "stopTyping"</li>
+                                        </ul>
+                                        <p class="small">This reduces server load while maintaining responsive UI.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>			
+                        <!-- Running the Application -->
+                        <h4 class="mt-4"><i class="bi bi-play-circle"></i> Running the Application</h4>
+                        <div class="alert alert-success">
+                            <h5><i class="bi bi-terminal"></i> Step-by-Step Instructions</h5>
+                            <ol>
+                                <li>Ensure MongoDB is running locally or use MongoDB Atlas</li>
+                                <li>Install dependencies: <code>npm install</code></li>
+                                <li>Start the server: <code>npm run dev</code></li>
+                                <li>Open browser: <code>http://localhost:3000</code></li>
+                                <li>Open multiple browser tabs/windows to test real-time chat</li>
+                            </ol>
+                        </div>
+
+                        <div class="console-output mt-3">$ npm run dev
+
+> websocket-chat-app@1.0.0 dev
+> nodemon server.js
+
+[nodemon] starting `node server.js`
+MongoDB connected
+Server running on port 3000
+New client connected: xK7jQ2vZ8mN3pL1r
+User123 joined room: general
+Message from User123 in general: Hello everyone!</div>
+                    </div>
+                </div>
+
+                <!-- FAQs Section -->
+                <div class="card mb-4" id="faqs">
+                    <div class="card-header bg-warning text-dark">
+                        <h2><i class="bi bi-question-circle"></i> Frequently Asked Questions</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="accordion" id="">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                        <strong>Q1: What's the difference between WebSocket and Socket.IO?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#">
+                                    <div class="accordion-body">
+                                        <p><strong>WebSocket</strong> is a protocol (like HTTP), while <strong>Socket.IO</strong> is a library built on top of WebSocket.</p>
+                                        <ul>
+                                            <li><strong>WebSocket:</strong> Native browser API, standardized protocol (RFC 6455), no fallbacks</li>
+                                            <li><strong>Socket.IO:</strong> Feature-rich library with automatic fallbacks (long polling), rooms, namespaces, and reconnection logic</li>
+                                        </ul>
+                                        <p><strong>Use WebSocket</strong> for lightweight, standards-based communication. <strong>Use Socket.IO</strong> for easier development with built-in features and broader compatibility.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                        <strong>Q2: Can WebSockets work through proxies and firewalls?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#">
+                                    <div class="accordion-body">
+                                        <p>It depends on the proxy/firewall configuration:</p>
+                                        <ul>
+                                            <li><strong>Modern Proxies:</strong> Most support WebSocket protocol after the HTTP upgrade</li>
+                                            <li><strong>Corporate Firewalls:</strong> Some block WebSocket connections or terminate idle connections</li>
+                                            <li><strong>Solutions:</strong>
+                                                <ul>
+                                                    <li>Use secure WebSockets (wss://) on port 443</li>
+                                                    <li>Implement heartbeat/ping-pong to keep connections alive</li>
+                                                    <li>Have fallback mechanisms (Socket.IO's long polling)</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                        <strong>Q3: How do I scale WebSocket applications horizontally?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#">
+                                    <div class="accordion-body">
+                                        <p>Scaling WebSocket applications across multiple servers requires:</p>
+                                        <ol>
+                                            <li><strong>Sticky Sessions:</strong> Load balancer must route all requests from a client to the same server</li>
+                                            <li><strong>Message Broker:</strong> Use Redis Pub/Sub or RabbitMQ to synchronize messages across servers</li>
+                                            <li><strong>Socket.IO with Redis:</strong>
+                                                <pre><code class="language-javascript">const io = require('socket.io')(server);
+const redisAdapter = require('socket.io-redis');
+io.adapter(redisAdapter({ host: 'redis-host', port: 6379 }));</code></pre>
+                                            </li>
+                                            <li><strong>Session Storage:</strong> Use Redis or MongoDB for shared session state</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                        <strong>Q4: How do I secure WebSocket connections?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#">
+                                    <div class="accordion-body">
+                                        <p>Security best practices for WebSocket applications:</p>
+                                        <ul>
+                                            <li><strong>Use WSS (WebSocket Secure):</strong> Always use wss:// in production (like HTTPS)</li>
+                                            <li><strong>Authentication:</strong> Verify user identity during handshake using JWT or session tokens</li>
+                                            <li><strong>Origin Validation:</strong> Check Origin header to prevent CSRF attacks</li>
+                                            <li><strong>Input Validation:</strong> Sanitize all incoming messages to prevent XSS</li>
+                                            <li><strong>Rate Limiting:</strong> Prevent DoS attacks by limiting message frequency</li>
+                                            <li><strong>Authorization:</strong> Verify user permissions for each action (joining rooms, sending messages)</li>
+                                        </ul>
+                                        <pre><code class="language-javascript">// Example: Authentication middleware
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+  if (isValidToken(token)) {
+    next();
+  } else {
+    next(new Error('Authentication error'));
+  }
+});</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                        <strong>Q5: What happens when a WebSocket connection drops?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#">
+                                    <div class="accordion-body">
+                                        <p>When a WebSocket connection is lost:</p>
+                                        <ul>
+                                            <li><strong>Client Side:</strong> The <code>onclose</code> event fires, indicating the connection ended</li>
+                                            <li><strong>Server Side:</strong> The <code>disconnect</code> event fires</li>
+                                            <li><strong>No Automatic Reconnection:</strong> Native WebSocket doesn't auto-reconnect (Socket.IO does)</li>
+                                            <li><strong>Implement Reconnection:</strong>
+                                                <pre><code class="language-javascript">function connect() {
+  const socket = new WebSocket('ws://localhost:8080');
+  
+  socket.onclose = () => {
+    console.log('Disconnected. Reconnecting in 5s...');
+    setTimeout(connect, 5000);
+  };
+}</code></pre>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                        <strong>Q6: Can I send binary data over WebSockets?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#">
+                                    <div class="accordion-body">
+                                        <p>Yes! WebSockets support both text and binary data:</p>
+                                        <pre><code class="language-javascript">// Client: Set binary type
+socket.binaryType = 'arraybuffer'; // or 'blob'
+
+// Send binary data
+const buffer = new ArrayBuffer(8);
+const view = new DataView(buffer);
+view.setInt32(0, 42);
+socket.send(buffer);
+
+// Receive binary data
+socket.onmessage = (event) => {
+  if (event.data instanceof ArrayBuffer) {
+    const view = new DataView(event.data);
+    console.log('Received number:', view.getInt32(0));
+  }
+};</code></pre>
+                                        <p>Use cases: File transfers, image streaming, audio/video data, game state synchronization</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                                        <strong>Q7: What are WebSocket subprotocols?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#">
+                                    <div class="accordion-body">
+                                        <p>Subprotocols define the message format/protocol used over WebSocket:</p>
+                                        <ul>
+                                            <li>Specified during connection: <code>new WebSocket(url, ['protocol1', 'protocol2'])</code></li>
+                                            <li>Server selects one: <code>socket.protocol</code> returns chosen subprotocol</li>
+                                            <li>Examples: STOMP, WAMP, MQTT over WebSocket</li>
+                                        </ul>
+                                        <pre><code class="language-javascript">// Client requests STOMP subprotocol
+const socket = new WebSocket('ws://localhost:8080', ['v12.stomp']);
+
+// Check selected protocol
+socket.onopen = () => {
+  console.log('Using protocol:', socket.protocol);
+};</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">
+                                        <strong>Q8: How many WebSocket connections can a server handle?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#">
+                                    <div class="accordion-body">
+                                        <p>The number depends on:</p>
+                                        <ul>
+                                            <li><strong>Server Resources:</strong> Memory (~10-100KB per connection), CPU, file descriptors</li>
+                                            <li><strong>OS Limits:</strong> Default file descriptor limit (e.g., 1024 on Linux, increase with <code>ulimit</code>)</li>
+                                            <li><strong>Typical Numbers:</strong>
+                                                <ul>
+                                                    <li>Node.js with <code>ws</code>: 10,000-60,000 connections per server (4-8GB RAM)</li>
+                                                    <li>High-performance servers (µWebSockets): 100,000+ connections</li>
+                                                </ul>
+                                            </li>
+                                            <li><strong>Optimization:</strong>
+                                                <ul>
+                                                    <li>Use efficient WebSocket libraries (µWebSockets.js)</li>
+                                                    <li>Implement connection pooling and idle timeout</li>
+                                                    <li>Horizontal scaling with load balancers</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq9">
+                                        <strong>Q9: What about useNewUrlParser and useUnifiedTopology warnings?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq9" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Understanding Mongoose Connection Options</h5>
+                                        <p>You may encounter deprecated warnings related to MongoDB connection options:</p>
+
+                                        <div class="alert alert-warning">
+                                            <strong><i class="bi bi-exclamation-triangle"></i> Historical Context:</strong>
+                                            <p>In Mongoose 5.x, these options were required:</p>
+                                            <pre><code class="language-javascript">mongoose.connect(uri, {
+  useNewUrlParser: true,       // Use new MongoDB connection string parser
+  useUnifiedTopology: true,    // Use new topology engine
+  useFindAndModify: false,     // Use native findOneAndUpdate()
+  useCreateIndex: true         // Use createIndex() instead of ensureIndex()
+});</code></pre>
+                                        </div>
+
+                                        <h5 class="mt-3">Modern Approach (Mongoose 6+)</h5>
+                                        <p>These options are <strong>no longer needed</strong> and cause warnings. Simply use:</p>
+                                        <pre><code class="language-javascript">// Clean connection (Mongoose 6+)
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('Connection error:', err));</code></pre>
+
+                                        <h5 class="mt-3">What Each Option Did</h5>
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Option</th>
+                                                    <th>Purpose</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><code>useNewUrlParser</code></td>
+                                                    <td>Enabled MongoDB's new connection string parser</td>
+                                                    <td><span class="badge bg-success">Default in Mongoose 6+</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>useUnifiedTopology</code></td>
+                                                    <td>Used new Server Discover and Monitoring engine</td>
+                                                    <td><span class="badge bg-success">Default in Mongoose 6+</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>useFindAndModify</code></td>
+                                                    <td>Controlled which update methods to use</td>
+                                                    <td><span class="badge bg-danger">Removed</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><code>useCreateIndex</code></td>
+                                                    <td>Used createIndex() vs deprecated ensureIndex()</td>
+                                                    <td><span class="badge bg-danger">Removed</span></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <h5 class="mt-3">Migration Checklist</h5>
+                                        <ol>
+                                            <li>Check your Mongoose version: <code>npm list mongoose</code></li>
+                                            <li>If using Mongoose 5.x, upgrade: <code>npm install mongoose@latest</code></li>
+                                            <li>Remove all four deprecated options from <code>mongoose.connect()</code></li>
+                                            <li>Test your application thoroughly</li>
+                                            <li>Update <code>package.json</code> to lock Mongoose 6+ version</li>
+                                        </ol>
+
+                                        <p class="mt-3"><strong>Further Reading:</strong></p>
+                                        <ul>
+                                            <li><a href="https://mongoosejs.com/docs/migrating_to_6.html" target="_blank">Mongoose 6 Migration Guide</a></li>
+                                            <li><a href="https://github.com/Automattic/mongoose/blob/master/CHANGELOG.md" target="_blank">Mongoose Changelog</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>			    
+                        </div>
+                    </div>
+                </div>
+                <!-- Version History Section -->
+                <div class="card mb-4" id="version-history">
+                    <div class="card-header bg-info text-white">
+                        <h2><i class="bi bi-clock-history"></i> Version History & Changelog</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Track the historical journey and progress of this WebSockets tutorial.</p>
+
+                        <div class="accordion" id="versionHistoryAccordion">
+                            <!-- Version 1.0.0 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#version100">
+                                        <div class="d-flex align-items-center w-100">
+                                            <span class="badge bg-success me-2">Current</span>
+                                            <strong>Version 1.0.0 - Initial Release</strong>
+                                            <span class="ms-auto text-muted small">January 18, 2026</span>
+                                        </div>
+                                    </button>
+                                </h2>
+                                <div id="version100" class="accordion-collapse collapse show" data-bs-parent="#versionHistoryAccordion">
+                                    <div class="accordion-body">
+                                        <h5><i class="bi bi-stars"></i> Overview</h5>
+                                        <p>First complete release of the comprehensive WebSockets tutorial, covering protocol fundamentals through production-ready implementation.</p>
+
+                                        <h5 class="mt-3"><i class="bi bi-list-check"></i> Features Included</h5>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h6><i class="bi bi-book text-primary"></i> Educational Content</h6>
+                                                <ul>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Complete WebSocket protocol introduction</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Architecture diagrams (ASCII + PlantUML)</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Comprehensive ecosystem overview</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Advantages vs disadvantages analysis</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> 6 practical use cases with examples</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> 4 technology comparison tables</li>
+                                                </ul>
+
+                                                <h6 class="mt-3"><i class="bi bi-code-square text-success"></i> Code Examples</h6>
+                                                <ul>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Complete WebSocket API reference</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> MEBN stack implementation</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Real-time chat application</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> MongoDB models (Message, User, Room)</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Socket.IO server implementation</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Bootstrap-based client UI</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Code explanation accordions</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <h6><i class="bi bi-gear text-warning"></i> Interactive Features</h6>
+                                                <ul>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Copy-to-clipboard for all code blocks</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Working search functionality</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Dark/light theme toggle</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Three color flavor themes</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Smooth scrolling navigation</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Table of contents offcanvas</li>
+                                                </ul>
+
+                                                <h6 class="mt-3"><i class="bi bi-question-circle text-info"></i> Help & Documentation</h6>
+                                                <ul>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> 9 comprehensive FAQs</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Mongoose deprecation explanation</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Security best practices</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Scaling strategies</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Official documentation links</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Recommended learning path</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="mt-4"><i class="bi bi-stack"></i> Technical Stack</h5>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Bootstrap:</strong> 5.3.2</li>
+                                                    <li><strong>Bootstrap Icons:</strong> 1.11.3</li>
+                                                    <li><strong>Prism.js:</strong> 1.29.0</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Node.js:</strong> 16+ recommended</li>
+                                                    <li><strong>Socket.IO:</strong> Latest</li>
+                                                    <li><strong>Mongoose:</strong> 6+</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Express:</strong> 4.x</li>
+                                                    <li><strong>MongoDB:</strong> 4.0+</li>
+                                                    <li><strong>PlantUML:</strong> Supported</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="mt-4"><i class="bi bi-exclamation-triangle text-warning"></i> Known Limitations</h5>
+                                        <div class="alert alert-warning">
+                                            <ul class="mb-0">
+                                                <li><strong>Authentication:</strong> Example uses simple username without real authentication (add JWT for production)</li>
+                                                <li><strong>Password Hashing:</strong> Not implemented in example (use bcrypt)</li>
+                                                <li><strong>Rate Limiting:</strong> No protection against spam/DoS (add express-rate-limit)</li>
+                                                <li><strong>Horizontal Scaling:</strong> Requires Redis adapter for multi-server deployment</li>
+                                                <li><strong>PlantUML Rendering:</strong> Requires external service or local renderer</li>
+                                            </ul>
+                                        </div>
+
+                                        <h5 class="mt-4"><i class="bi bi-lightbulb text-primary"></i> Future Enhancement Ideas</h5>
+                                        <ul>
+                                            <li>File upload/sharing via WebSocket</li>
+                                            <li>Message reactions and threading</li>
+                                            <li>User presence indicators (online/offline/away)</li>
+                                            <li>Message search and filtering</li>
+                                            <li>Private messaging (DMs)</li>
+                                            <li>Voice/video call integration with WebRTC</li>
+                                            <li>Message encryption (end-to-end)</li>
+                                            <li>Notification sounds and desktop alerts</li>
+                                            <li>Mobile responsive improvements</li>
+                                            <li>Accessibility enhancements (ARIA labels)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Future Versions Placeholder -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#futureVersions">
+                                        <i class="bi bi-plus-circle me-2"></i> <strong>Future Versions</strong>
+                                    </button>
+                                </h2>
+                                <div id="futureVersions" class="accordion-collapse collapse" data-bs-parent="#versionHistoryAccordion">
+                                    <div class="accordion-body">
+                                        <h5><i class="bi bi-map"></i> Roadmap</h5>
+                                        
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1"><i class="bi bi-speedometer2 text-primary"></i> Version 1.1.0 (Planned)</h6>
+                                                    <small class="text-muted">Q2 2026</small>
+                                                </div>
+                                                <p class="mb-1"><strong>Focus:</strong> Security & Authentication</p>
+                                                <ul class="small">
+                                                    <li>JWT-based authentication</li>
+                                                    <li>Password hashing with bcrypt</li>
+                                                    <li>Rate limiting implementation</li>
+                                                    <li>CSRF protection</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1"><i class="bi bi-graph-up-arrow text-success"></i> Version 1.2.0 (Planned)</h6>
+                                                    <small class="text-muted">Q3 2026</small>
+                                                </div>
+                                                <p class="mb-1"><strong>Focus:</strong> Scaling & Performance</p>
+                                                <ul class="small">
+                                                    <li>Redis adapter for horizontal scaling</li>
+                                                    <li>Load balancer configuration examples</li>
+                                                    <li>Monitoring and logging setup</li>
+                                                    <li>Performance optimization guide</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1"><i class="bi bi-rocket-takeoff text-warning"></i> Version 2.0.0 (Future)</h6>
+                                                    <small class="text-muted">2027</small>
+                                                </div>
+                                                <p class="mb-1"><strong>Focus:</strong> Advanced Features</p>
+                                                <ul class="small">
+                                                    <li>WebRTC integration for video calls</li>
+                                                    <li>End-to-end encryption</li>
+                                                    <li>React/Vue client implementations</li>
+                                                    <li>Docker deployment examples</li>
+                                                    <li>Kubernetes orchestration</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <div class="alert alert-info mt-3">
+                                            <i class="bi bi-info-circle"></i> <strong>Note:</strong> New versions and updates will be added to this section as the tutorial evolves. Check back regularly for improvements and new content!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status Badges -->
+                        <div class="mt-4 text-center">
+                            <span class="badge bg-secondary me-2">Status: Active Development</span>
+                            <span class="badge bg-info me-2">Current: v1.0.0</span>
+                            <span class="badge bg-success">Last Updated: January 18, 2026</span>
+                        </div>
+                    </div>
+                </div>	
+
+
+                <!-- Resources Section -->
+                <div class="card mb-4" id="resources">
+                    <div class="card-header bg-info text-white">
+                        <h2><i class="bi bi-bookmarks"></i> Resources & References</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4><i class="bi bi-book"></i> Official Documentation</h4>
+                                <ul class="list-group mb-4">
+                                    <li class="list-group-item">
+                                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSocket" target="_blank">
+                                            <i class="bi bi-link-45deg"></i> MDN WebSocket API Reference
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="https://socket.io/docs/" target="_blank">
+                                            <i class="bi bi-link-45deg"></i> Socket.IO Documentation
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="https://datatracker.ietf.org/doc/html/rfc6455" target="_blank">
+                                            <i class="bi bi-link-45deg"></i> RFC 6455 - WebSocket Protocol
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="https://github.com/websockets/ws" target="_blank">
+                                            <i class="bi bi-link-45deg"></i> ws - Node.js WebSocket Library
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <h4><i class="bi bi-mortarboard"></i> Tutorials & Guides</h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <a href="https://javascript.info/websocket" target="_blank">
+                                            <i class="bi bi-link-45deg"></i> JavaScript.info WebSocket Guide
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="https://www.freecodecamp.org/news/build-a-realtime-chat-app-with-react-express-socketio-and-harperdb/" target="_blank">
+                                            <i class="bi bi-link-45deg"></i> FreeCodeCamp - Real-Time Chat Tutorial
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h4><i class="bi bi-tools"></i> Tools & Libraries</h4>
+                                <ul class="list-group mb-4">
+                                    <li class="list-group-item">
+                                        <strong>Testing:</strong> <a href="https://github.com/websockets/wscat" target="_blank">wscat</a> - WebSocket client for testing
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Monitoring:</strong> <a href="https://www.honeybadger.io/" target="_blank">Honeybadger</a> - Error tracking
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Load Testing:</strong> <a href="https://k6.io/" target="_blank">k6</a> - Performance testing tool
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Browser Extension:</strong> <a href="https://chrome.google.com/webstore/detail/simple-websocket-client/" target="_blank">Simple WebSocket Client</a>
+                                    </li>
+                                </ul>
+
+                                <h4><i class="bi bi-github"></i> Example Projects</h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <a href="https://github.com/socketio/socket.io/tree/main/examples" target="_blank">
+                                            <i class="bi bi-github"></i> Socket.IO Official Examples
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="https://github.com/rauchg/chat-example" target="_blank">
+                                            <i class="bi bi-github"></i> Simple Chat Application
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="alert alert-success mt-4">
+                                    <h5><i class="bi bi-star"></i> Recommended Learning Path</h5>
+                                    <ol class="mb-0">
+                                        <li>Understand HTTP request-response model</li>
+                                        <li>Learn WebSocket protocol basics</li>
+                                        <li>Build simple chat application</li>
+                                        <li>Explore Socket.IO features (rooms, namespaces)</li>
+                                        <li>Implement authentication & security</li>
+                                        <li>Scale with Redis and load balancers</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Results Panel -->
+    <div class="search-results-panel" id="searchResultsPanel">
+        <div class="card mb-0">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-search"></i> Search Results</span>
+                <button class="btn btn-sm btn-close btn-close-white" id="closeSearchPanel"></button>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <strong id="searchResultCount">0 matches</strong>
+                        <div class="small text-muted" id="searchTerm"></div>
+                    </div>
+                </div>
+                <div class="btn-group w-100" role="group">
+                    <button class="btn btn-outline-primary" id="prevMatch">
+                        <i class="bi bi-chevron-up"></i> Previous
+                    </button>
+                    <button class="btn btn-outline-primary" id="nextMatch">
+                        <i class="bi bi-chevron-down"></i> Next
+                    </button>
+                </div>
+                <div class="mt-2 text-center">
+                    <small class="text-muted">Match <span id="currentMatchNum">0</span> of <span id="totalMatches">0</span></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Version Badge -->
+    <span class="badge bg-secondary version-badge" data-bs-toggle="tooltip" title="Tutorial Version">v1.0.0</span>
+
+    <!-- Footer Section -->
+    <footer class="mt-5 py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-top: 5px solid #f8f9fa;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center mb-3 mb-md-0">
+                        <div class="me-4">
+                            <i class="bi bi-person-circle" style="font-size: 3rem; color: #ffffff;"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-2" style="color: #ffffff; font-weight: 600;">
+                                <i class="bi bi-pencil-square me-2"></i>Conceptually Authored By
+                            </h5>
+                            <p class="mb-1" style="color: #f8f9fa; font-size: 1.1rem; font-weight: 500;">
+                                <strong>Raghavan alias Saravanan Muthu</strong>
+                            </p>
+                            <p class="mb-0">
+                                <a href="https://github.com/itsraghz" target="_blank" rel="noopener noreferrer" 
+                                   class="text-white text-decoration-none d-inline-flex align-items-center" 
+                                   style="font-size: 0.95rem; transition: opacity 0.3s;"
+                                   onmouseover="this.style.opacity='0.8'" 
+                                   onmouseout="this.style.opacity='1'">
+                                    <i class="bi bi-github me-2" style="font-size: 1.2rem;"></i>
+                                    <span>@itsraghz</span>
+                                    <i class="bi bi-box-arrow-up-right ms-2" style="font-size: 0.8rem;"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex align-items-center justify-content-md-end">
+                        <div class="me-3">
+                            <i class="bi bi-cpu" style="font-size: 2.5rem; color: #ffd700;"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1" style="color: #ffffff; font-weight: 600;">
+                                <i class="bi bi-robot me-1"></i>AI Assisted
+                            </h6>
+                            <p class="mb-0" style="color: #f8f9fa; font-size: 0.95rem;">
+                                <strong>Warp AI Agent</strong>
+                            </p>
+                            <p class="mb-0" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.9;">
+                                Technical content enhanced by AI
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255, 255, 255, 0.3); margin: 1.5rem 0;">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0" style="color: #f8f9fa; font-size: 0.9rem;">
+                        <i class="bi bi-info-circle me-1"></i>
+                        This tutorial represents a collaborative effort combining human expertise with AI-powered assistance
+                    </p>
+                    <p class="mb-0 mt-2" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.8;">
+                        <i class="bi bi-calendar-event me-1"></i>
+                        Created January 2026 | 
+                        <i class="bi bi-tag-fill mx-1"></i>
+                        Version 1.0.0 | 
+                        <i class="bi bi-code-slash mx-1"></i>
+                        Built with Bootstrap 5 & Modern Web Standards
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-bs-theme', newTheme);
+            
+            const icon = themeToggle.querySelector('i');
+            icon.className = newTheme === 'light' ? 'bi bi-moon-stars' : 'bi bi-sun';
+        });
+
+        // Color Flavor
+        function setColorFlavor(flavor) {
+            html.setAttribute('data-color-flavor', flavor);
+        }
+
+        // Initialize tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Code copy functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wrap all code blocks with copy button
+            document.querySelectorAll('pre:has(code)').forEach((pre) => {
+                // Skip if already wrapped
+                if (pre.parentElement.classList.contains('code-wrapper')) return;
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+                
+                const button = document.createElement('button');
+                button.className = 'btn btn-sm btn-secondary code-copy-btn';
+                button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                button.onclick = () => {
+                    const code = pre.querySelector('code').textContent;
+                    navigator.clipboard.writeText(code).then(() => {
+                        button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                        }, 2000);
+                    });
+                };
+                wrapper.insertBefore(button, pre);
+            });
+        });
+
+        // Simple Search functionality with results panel
+        document.querySelector('form[role="search"]').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const searchTerm = e.target.querySelector('input[type="search"]').value;
+            
+            if (!searchTerm) return;
+            
+            // Remove previous highlights
+            document.querySelectorAll('.search-highlight').forEach(el => {
+                el.outerHTML = el.innerHTML;
+            });
+            
+            // Find and highlight matches in card bodies
+            const cards = document.querySelectorAll('.card-body');
+            let firstMatch = null;
+            let totalMatches = 0;
+            
+            cards.forEach(card => {
+                const walker = document.createTreeWalker(
+                    card,
+                    NodeFilter.SHOW_TEXT,
+                    null
+                );
+                
+                const textNodes = [];
+                while (walker.nextNode()) {
+                    if (walker.currentNode.parentElement.tagName !== 'SCRIPT' && 
+                        walker.currentNode.parentElement.tagName !== 'STYLE' &&
+                        !walker.currentNode.parentElement.closest('code') &&
+                        !walker.currentNode.parentElement.closest('pre')) {
+                        textNodes.push(walker.currentNode);
+                    }
+                }
+                
+                textNodes.forEach(node => {
+                    const text = node.textContent;
+                    const lowerText = text.toLowerCase();
+                    if (lowerText.includes(searchTerm.toLowerCase())) {
+                        const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                        const matches = text.match(regex);
+                        if (matches) {
+                            totalMatches += matches.length;
+                        }
+                        const span = document.createElement('span');
+                        span.innerHTML = text.replace(regex, '<mark class="search-highlight">$1</mark>');
+                        node.replaceWith(span);
+                        if (!firstMatch) firstMatch = span.querySelector('.search-highlight');
+                    }
+                });
+            });
+            
+            // Update panel
+            const panel = document.getElementById('searchResultsPanel');
+            if (totalMatches > 0) {
+                panel.style.display = 'block';
+                document.getElementById('searchResultCount').textContent = `${totalMatches} ${totalMatches === 1 ? 'match' : 'matches'}`;
+                document.getElementById('searchTerm').textContent = `for "${searchTerm}"`;
+                document.getElementById('totalMatches').textContent = totalMatches;
+                document.getElementById('currentMatchNum').textContent = '1';
+                
+                // Scroll to first match
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                panel.style.display = 'block';
+                document.getElementById('searchResultCount').textContent = 'No matches';
+                document.getElementById('searchTerm').textContent = `for "${searchTerm}"`;
+                document.getElementById('totalMatches').textContent = '0';
+                document.getElementById('currentMatchNum').textContent = '0';
+            }
+        });
+        
+        // Close panel
+        document.getElementById('closeSearchPanel').addEventListener('click', () => {
+            document.getElementById('searchResultsPanel').style.display = 'none';
+            document.querySelectorAll('.search-highlight').forEach(el => {
+                el.outerHTML = el.innerHTML;
+            });
+        });
+        
+        // Navigation using browser's native find (Ctrl+F style)
+        let currentSearchTerm = '';
+        
+        document.getElementById('prevMatch').addEventListener('click', () => {
+            if (currentSearchTerm) {
+                window.find(currentSearchTerm, false, true, false, false, true, false);
+            }
+        });
+        
+        document.getElementById('nextMatch').addEventListener('click', () => {
+            if (currentSearchTerm) {
+                window.find(currentSearchTerm, false, false, false, false, true, false);
+            }
+        });
+        
+        // Store search term for navigation
+        document.querySelector('form[role="search"]').addEventListener('submit', (e) => {
+            currentSearchTerm = e.target.querySelector('input[type="search"]').value;
+        });
+    </script>
+</body>
+</html>
