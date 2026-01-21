@@ -542,6 +542,11 @@ sudo make install</code></pre>
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="arch-plantuml-image-tab" data-bs-toggle="tab" data-bs-target="#arch-plantuml-image" type="button">
+                                    <i class="bi bi-diagram-3"></i> PlantUML Rendered Image
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="ecosystem-tab" data-bs-toggle="tab" data-bs-target="#ecosystem" type="button">
                                     <i class="bi bi-globe"></i> Ecosystem
                                 </button>
@@ -736,7 +741,17 @@ deactivate CLI
                                 </div>
                             </div>
 
-                            <!-- Ecosystem -->
+                            <!-- PlantUML Diagram -->
+                            <div class="tab-pane fade" id="arch-plantuml-image" role="tabpanel">
+                                <h5>jq Sequence Diagram - PlantUML Rendered</h5>
+                                <div class="plantuml-container">
+                                    <pre>
+	    <img src="images/jq-sequence-diagram-PlantUML.png" alt="jq Sequence Diagram PlantUML"/>
+				    </pre>
+                            	</div>
+			    </div>
+
+			    <!-- Ecosystem -->
                             <div class="tab-pane fade" id="ecosystem" role="tabpanel">
                                 <h5>jq Ecosystem & Toolkit</h5>
 
@@ -3028,16 +3043,12 @@ jq 'false' file.json</code></pre>
                     </div>
                 </div>
 
-                <!-- Footer -->
-                <footer class="mt-5 mb-3 text-center text-muted">
-                    <hr>
-                    <p><i class="bi bi-c-circle"></i> 2026 jq Tutorial | Built with Bootstrap 5</p>
-                    <p>
-                        <a href="https://github.com/jqlang/jq" class="text-decoration-none me-3" target="_blank"><i class="bi bi-github"></i> jq on GitHub</a>
-                        <a href="https://jqplay.org/" class="text-decoration-none me-3" target="_blank"><i class="bi bi-play-circle"></i> jq Playground</a>
-                        <a href="#" class="text-decoration-none"><i class="bi bi-arrow-up-circle"></i> Back to Top</a>
-                    </p>
-                </footer>
+                <!-- Additional Resources Links -->
+                <div class="text-center my-4">
+                    <a href="https://github.com/jqlang/jq" class="btn btn-outline-primary me-2" target="_blank"><i class="bi bi-github"></i> jq on GitHub</a>
+                    <a href="https://jqplay.org/" class="btn btn-outline-success me-2" target="_blank"><i class="bi bi-play-circle"></i> jq Playground</a>
+                    <a href="#home" class="btn btn-outline-secondary"><i class="bi bi-arrow-up-circle"></i> Back to Top</a>
+                </div>
             </div>
         </div>
     </div>
@@ -3058,7 +3069,76 @@ jq 'false' file.json</code></pre>
     </div>
 
     <!-- Version Badge -->
-    <span class="badge bg-secondary version-badge" data-bs-toggle="tooltip" title="jq Version">jq 1.7.1</span>
+    <span class="badge bg-secondary version-badge" data-bs-toggle="tooltip" title="Tutorial Version">v1.0.0</span>
+
+    <!-- Footer Section -->
+    <footer class="mt-5 py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-top: 5px solid #f8f9fa;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center mb-3 mb-md-0">
+                        <div class="me-4">
+                            <i class="bi bi-person-circle" style="font-size: 3rem; color: #ffffff;"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-2" style="color: #ffffff; font-weight: 600;">
+                                <i class="bi bi-pencil-square me-2"></i>Conceptually Authored By
+                            </h5>
+                            <p class="mb-1" style="color: #f8f9fa; font-size: 1.1rem; font-weight: 500;">
+                                <strong>Raghavan alias Saravanan Muthu</strong>
+                            </p>
+                            <p class="mb-0">
+                                <a href="https://github.com/itsraghz" target="_blank" rel="noopener noreferrer" 
+                                   class="text-white text-decoration-none d-inline-flex align-items-center" 
+                                   style="font-size: 0.95rem; transition: opacity 0.3s;"
+                                   onmouseover="this.style.opacity='0.8'" 
+                                   onmouseout="this.style.opacity='1'">
+                                    <i class="bi bi-github me-2" style="font-size: 1.2rem;"></i>
+                                    <span>@itsraghz</span>
+                                    <i class="bi bi-box-arrow-up-right ms-2" style="font-size: 0.8rem;"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex align-items-center justify-content-md-end">
+                        <div class="me-3">
+                            <i class="bi bi-cpu" style="font-size: 2.5rem; color: #ffd700;"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1" style="color: #ffffff; font-weight: 600;">
+                                <i class="bi bi-robot me-1"></i>AI Assisted
+                            </h6>
+                            <p class="mb-0" style="color: #f8f9fa; font-size: 0.95rem;">
+                                <strong>Warp AI Agent</strong>
+                            </p>
+                            <p class="mb-0" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.9;">
+                                Technical content enhanced by AI
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255, 255, 255, 0.3); margin: 1.5rem 0;">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0" style="color: #f8f9fa; font-size: 0.9rem;">
+                        <i class="bi bi-info-circle me-1"></i>
+                        This tutorial represents a collaborative effort combining human expertise with AI-powered assistance
+                    </p>
+                    <p class="mb-0 mt-2" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.8;">
+                        <i class="bi bi-calendar-event me-1"></i>
+                        Created January 21, 2026 | 
+                        <i class="bi bi-tag-fill mx-1"></i>
+                        Version 1.0.0 | 
+                        <i class="bi bi-code-slash mx-1"></i>
+                        Built with Bootstrap 5 & Modern Web Standards
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -3100,7 +3180,7 @@ jq 'false' file.json</code></pre>
             htmlElement.setAttribute('data-color-flavor', flavor);
         }
 
-        // Copy Code Function
+        // Copy Code Function (for manual copy buttons)
         function copyCode(elementId) {
             const codeElement = document.getElementById(elementId);
             const code = codeElement.textContent;
@@ -3109,6 +3189,34 @@ jq 'false' file.json</code></pre>
                 toast.show();
             });
         }
+
+        // Auto-add copy buttons to all code blocks
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wrap all code blocks with copy button
+            document.querySelectorAll('pre:has(code)').forEach((pre) => {
+                // Skip if already wrapped
+                if (pre.parentElement.classList.contains('code-wrapper')) return;
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+                
+                const button = document.createElement('button');
+                button.className = 'btn btn-sm btn-secondary code-copy-btn';
+                button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                button.onclick = () => {
+                    const code = pre.querySelector('code').textContent;
+                    navigator.clipboard.writeText(code).then(() => {
+                        button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                        }, 2000);
+                    });
+                };
+                wrapper.insertBefore(button, pre);
+            });
+        });
 
         // Smooth Scroll for Anchor Links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
