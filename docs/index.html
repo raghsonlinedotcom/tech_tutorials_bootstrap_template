@@ -129,6 +129,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#java"><i class="bi bi-code-square"></i> Java & JVM</a></li>
+            <li><a class="dropdown-item" href="#comm-coming"><i class="bi bi-broadcast"></i> Communication Protocols</a></li>
             <li><a class="dropdown-item" href="#testing"><i class="bi bi-shield-check"></i> Testing & Quality</a></li>
             <li><a class="dropdown-item" href="#spring"><i class="bi bi-diagram-3"></i> Spring Framework</a></li>
             <li><a class="dropdown-item" href="#web"><i class="bi bi-browser-chrome"></i> Web Development</a></li>
@@ -165,13 +166,13 @@
       </div>
       <div class="col-md-3">
         <div class="stats-card p-3 rounded bg-white text-dark">
-          <h3 class="mb-0" id="comingSoonCount">33</h3>
+          <h3 class="mb-0" id="comingSoonCount">35</h3>
           <small>Coming Soon</small>
         </div>
       </div>
       <div class="col-md-3">
         <div class="stats-card p-3 rounded bg-white text-dark">
-          <h3 class="mb-0">12</h3>
+          <h3 class="mb-0">13</h3>
           <small>Categories</small>
         </div>
       </div>
@@ -321,7 +322,7 @@
   <section class="mb-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2><i class="bi bi-hourglass-split text-warning"></i> Coming Soon</h2>
-      <span class="badge bg-warning text-dark">33 Tutorials</span>
+      <span class="badge bg-warning text-dark">35 Tutorials</span>
     </div>
     
     <div class="alert alert-info">
@@ -364,6 +365,39 @@
           <div class="card-body">
             <h5 class="card-title">Java Design Patterns <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Gang of Four patterns, architectural patterns, and best practices.</p>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
+          </div>
+        </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Communication Protocols Category (Coming Soon) -->
+      <div class="accordion-item category-section" id="comm-coming">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommComing">
+            <i class="bi bi-broadcast me-2"></i> Communication Protocols <span class="badge bg-primary ms-2">2</span>
+          </button>
+        </h2>
+        <div id="collapseCommComing" class="accordion-collapse collapse" data-bs-parent="#categoriesAccordion">
+          <div class="accordion-body">
+            <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-warning">
+          <div class="card-body">
+            <h5 class="card-title">REST API <span class="badge bg-warning text-dark">Coming Soon</span></h5>
+            <p class="card-text">RESTful architecture, HTTP methods, API design, and best practices.</p>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card h-100 shadow-sm border-warning">
+          <div class="card-body">
+            <h5 class="card-title">GraphQL <span class="badge bg-warning text-dark">Coming Soon</span></h5>
+            <p class="card-text">Query language for APIs, schema design, resolvers, and efficient data fetching.</p>
             <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
@@ -788,10 +822,10 @@
 
             <h6 class="mt-3"><i class="bi bi-wrench text-primary"></i> Improvements</h6>
             <ul>
-              <li>Organized ALL tutorials (available and coming soon) into 12 categories</li>
+              <li>Organized ALL tutorials (available and coming soon) into 13 categories</li>
               <li>Available tutorials categorized: Build Tools, Communication Protocols, Command-Line Tools, Templates & Resources</li>
-              <li>Added 33 tutorial placeholders across 8 "Coming Soon" categories</li>
-              <li>New categories: Testing & Quality (JUnit, Mockito, TestContainers) and Messaging & Event Streaming (Kafka)</li>
+              <li>Added 35 tutorial placeholders across 9 "Coming Soon" categories</li>
+              <li>New categories: Communication Protocols (REST API, GraphQL), Testing & Quality (JUnit, Mockito, TestContainers), and Messaging & Event Streaming (Kafka)</li>
               <li>Added Docker and OpenShift to Build Tools & DevOps category</li>
               <li>Improved card hover effects with lift and shadow</li>
               <li>Better dark theme support with proper contrast</li>
@@ -808,7 +842,7 @@
               <li>Stats cards with visual indicators</li>
             </ul>
 
-            <h6 class="mt-3"><i class="bi bi-list-check text-info"></i> All 12 Categories</h6>
+            <h6 class="mt-3"><i class="bi bi-list-check text-info"></i> All 13 Categories</h6>
             <div class="row">
               <div class="col-md-6">
                 <h6 class="text-success">Available (4 categories)</h6>
@@ -818,9 +852,10 @@
                   <li>Command-Line Tools (1)</li>
                   <li>Templates & Resources (1)</li>
                 </ul>
-                <h6 class="text-warning mt-3">Coming Soon (8 categories)</h6>
+                <h6 class="text-warning mt-3">Coming Soon (9 categories)</h6>
                 <ul>
                   <li>Java & JVM (3)</li>
+                  <li>Communication Protocols (2) <span class="badge bg-info">NEW</span></li>
                   <li>Testing & Quality (3) <span class="badge bg-info">NEW</span></li>
                   <li>Spring Framework (6)</li>
                   <li>Web Development (5)</li>
@@ -971,8 +1006,8 @@
         <div class="mt-3">
           <span class="badge bg-light text-dark me-2">Project Started: January 19, 2026</span>
           <span class="badge bg-light text-dark me-2">Current Version: v2.0.0</span>
-          <span class="badge bg-light text-dark me-2">Total Tutorials: 37 (4 Available, 33 Coming Soon)</span>
-          <span class="badge bg-light text-dark">Categories: 12 (4 Available, 8 Coming Soon)</span>
+          <span class="badge bg-light text-dark me-2">Total Tutorials: 39 (4 Available, 35 Coming Soon)</span>
+          <span class="badge bg-light text-dark">Categories: 13 (4 Available, 9 Coming Soon)</span>
         </div>
         <p class="mb-0 mt-3" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.8;">
           <i class="bi bi-calendar-event me-1"></i>
