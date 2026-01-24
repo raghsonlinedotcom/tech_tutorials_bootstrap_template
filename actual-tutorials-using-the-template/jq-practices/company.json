@@ -1,0 +1,165 @@
+{
+  "company": {
+    "name": "TechCorp Solutions",
+    "founded": 2015,
+    "headquarters": {
+      "city": "San Francisco",
+      "country": "USA",
+      "address": {
+        "street": "123 Innovation Drive",
+        "zipCode": "94105",
+        "coordinates": {
+          "latitude": 37.7749,
+          "longitude": -122.4194
+        }
+      }
+    },
+    "departments": [
+      {
+        "id": "d001",
+        "name": "Engineering",
+        "budget": 5000000,
+        "teams": [
+          {
+            "name": "Backend",
+            "lead": "John Smith",
+            "members": [
+              {
+                "id": "e001",
+                "name": "Alice Johnson",
+                "role": "Senior Engineer",
+                "salary": 150000,
+                "skills": ["Python", "Go", "Docker"],
+                "performance": {
+                  "rating": 4.5,
+                  "reviews": [
+                    {"year": 2024, "score": 4.5, "comments": "Excellent work"},
+                    {"year": 2023, "score": 4.3, "comments": "Great team player"}
+                  ]
+                }
+              },
+              {
+                "id": "e002",
+                "name": "Bob Williams",
+                "role": "Engineer",
+                "salary": 120000,
+                "skills": ["Java", "Spring", "Kubernetes"],
+                "performance": {
+                  "rating": 4.2,
+                  "reviews": [
+                    {"year": 2024, "score": 4.2, "comments": "Solid performance"},
+                    {"year": 2023, "score": 4.0, "comments": "Good progress"}
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "Frontend",
+            "lead": "Sarah Davis",
+            "members": [
+              {
+                "id": "e003",
+                "name": "Carol Martinez",
+                "role": "Senior Engineer",
+                "salary": 145000,
+                "skills": ["React", "TypeScript", "CSS"],
+                "performance": {
+                  "rating": 4.7,
+                  "reviews": [
+                    {"year": 2024, "score": 4.7, "comments": "Outstanding"},
+                    {"year": 2023, "score": 4.5, "comments": "Exceptional"}
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "d002",
+        "name": "Sales",
+        "budget": 3000000,
+        "teams": [
+          {
+            "name": "Enterprise",
+            "lead": "David Brown",
+            "members": [
+              {
+                "id": "s001",
+                "name": "Emma Wilson",
+                "role": "Sales Manager",
+                "salary": 130000,
+                "skills": ["Negotiation", "CRM", "Analytics"],
+                "performance": {
+                  "rating": 4.4,
+                  "reviews": [
+                    {"year": 2024, "score": 4.4, "comments": "Strong closer"},
+                    {"year": 2023, "score": 4.2, "comments": "Consistent"}
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "d003",
+        "name": "HR",
+        "budget": 1500000,
+        "teams": [
+          {
+            "name": "Recruiting",
+            "lead": "Frank Garcia",
+            "members": [
+              {
+                "id": "h001",
+                "name": "Grace Lee",
+                "role": "Recruiter",
+                "salary": 85000,
+                "skills": ["Talent Sourcing", "Interviewing", "ATS"],
+                "performance": {
+                  "rating": 4.3,
+                  "reviews": [
+                    {"year": 2024, "score": 4.3, "comments": "Great hires"},
+                    {"year": 2023, "score": 4.1, "comments": "Good work"}
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "financials": {
+      "revenue": {
+        "2024": 15000000,
+        "2023": 12000000,
+        "2022": 9000000
+      },
+      "expenses": {
+        "2024": 11000000,
+        "2023": 9500000,
+        "2022": 7500000
+      }
+    },
+    "projects": [
+      {
+        "id": "p001",
+        "name": "CloudMigration",
+        "status": "active",
+        "priority": "high",
+        "budget": 500000,
+        "team_members": ["e001", "e002", "e003"]
+      },
+      {
+        "id": "p002",
+        "name": "MobileApp",
+        "status": "planning",
+        "priority": "medium",
+        "budget": 300000,
+        "team_members": ["e003"]
+      }
+    ]
+  }
+}
