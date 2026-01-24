@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Tutorial Template</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --theme-primary: #0d6efd;
+            --theme-secondary: #6c757d;
+        }
+        
+        [data-bs-theme="light"][data-color-flavor="blue"] {
+            --theme-primary: #0d6efd;
+        }
+        
+        [data-bs-theme="light"][data-color-flavor="green"] {
+            --theme-primary: #198754;
+        }
+        
+        [data-bs-theme="light"][data-color-flavor="purple"] {
+            --theme-primary: #6f42c1;
+        }
+        
+        .navbar {
+            background-color: var(--theme-primary) !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--theme-primary);
+            border-color: var(--theme-primary);
+        }
+        
+        .ascii-art {
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+        }
+        
+        .plantuml-container {
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+        
+        pre[class*="language-"] {
+            border-radius: 0.375rem;
+        }
+        
+        .jumbotron-custom {
+            background: linear-gradient(135deg, var(--theme-primary) 0%, var(--bs-secondary-color) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+        
+        .version-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .console-output {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .theme-controls {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Controls -->
+    <div class="theme-controls">
+        <div class="btn-group-vertical" role="group">
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="themeToggle" data-bs-toggle="tooltip" title="Toggle Dark/Light">
+                <i class="bi bi-moon-stars"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setColorFlavor('blue')" data-bs-toggle="tooltip" title="Blue Theme">
+                <i class="bi bi-circle-fill text-primary"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success" onclick="setColorFlavor('green')" data-bs-toggle="tooltip" title="Green Theme">
+                <i class="bi bi-circle-fill text-success"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-purple" onclick="setColorFlavor('purple')" data-bs-toggle="tooltip" title="Purple Theme">
+                <i class="bi bi-circle-fill" style="color: #6f42c1;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="bi bi-book"></i> Tech Tutorial</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../">Tutorials Index</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Sections
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#introduction">Introduction</a></li>
+                            <li><a class="dropdown-item" href="#concepts">Core Concepts</a></li>
+                            <li><a class="dropdown-item" href="#examples">Code Examples</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#advanced">Advanced Topics</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#resources">Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#version-history"><i class="bi bi-clock-history"></i> Version History</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Off Canvas Menu -->
+    <button class="btn btn-primary position-fixed" style="top: 80px; left: 20px; z-index: 999;" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas">
+        <i class="bi bi-list"></i> TOC
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="tocOffcanvas">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="list-group">
+                <a href="#introduction" class="list-group-item list-group-item-action">
+                    <i class="bi bi-1-circle"></i> Introduction
+                </a>
+                <a href="#concepts" class="list-group-item list-group-item-action">
+                    <i class="bi bi-2-circle"></i> Core Concepts
+                </a>
+                <a href="#architecture" class="list-group-item list-group-item-action">
+                    <i class="bi bi-3-circle"></i> Architecture
+                </a>
+                <a href="#examples" class="list-group-item list-group-item-action">
+                    <i class="bi bi-4-circle"></i> Code Examples
+                </a>
+                <a href="#best-practices" class="list-group-item list-group-item-action">
+                    <i class="bi bi-5-circle"></i> Best Practices
+                </a>
+                <a href="#version-history" class="list-group-item list-group-item-action list-group-item-info">
+                    <i class="bi bi-clock-history"></i> Version History
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Jumbotron / Hero Section -->
+                <div class="jumbotron-custom text-center">
+                    <h1 class="display-3"><i class="bi bi-stars"></i> Welcome to Your Technical Tutorial</h1>
+                    <p class="lead">A comprehensive guide with interactive examples and detailed explanations</p>
+                    <hr class="my-4" style="border-color: rgba(255,255,255,0.3);">
+                    <p>Learn step-by-step with code examples, diagrams, and best practices</p>
+                    <a class="btn btn-light btn-lg" href="#introduction" role="button">Get Started <i class="bi bi-arrow-right"></i></a>
+                </div>
+
+                <!-- Alert Messages -->
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <i class="bi bi-info-circle"></i> <strong>Info:</strong> This template includes all Bootstrap components for creating professional technical tutorials.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <!-- Carousel for Visual Content -->
+                <div id="tutorialCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#tutorialCarousel" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#tutorialCarousel" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#tutorialCarousel" data-bs-slide-to="2"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="bg-secondary text-white p-5 text-center" style="min-height: 300px;">
+                                <h3>Key Feature 1</h3>
+                                <p>Visual representation of important concepts</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="bg-primary text-white p-5 text-center" style="min-height: 300px;">
+                                <h3>Key Feature 2</h3>
+                                <p>Interactive examples and demonstrations</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="bg-success text-white p-5 text-center" style="min-height: 300px;">
+                                <h3>Key Feature 3</h3>
+                                <p>Comprehensive documentation and resources</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#tutorialCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#tutorialCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+
+                <!-- Tab Group for Different Content Types -->
+                <ul class="nav nav-tabs mb-3" id="contentTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button">
+                            <i class="bi bi-journal-text"></i> Overview
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="diagrams-tab" data-bs-toggle="tab" data-bs-target="#diagrams" type="button">
+                            <i class="bi bi-diagram-3"></i> Diagrams
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="code-tab" data-bs-toggle="tab" data-bs-target="#code" type="button">
+                            <i class="bi bi-code-slash"></i> Code
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="output-tab" data-bs-toggle="tab" data-bs-target="#output" type="button">
+                            <i class="bi bi-terminal"></i> Output
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content mb-4" id="contentTabsContent">
+                    <!-- Overview Tab -->
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4><i class="bi bi-info-circle"></i> Section Overview</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="lead">This section provides a comprehensive overview of the topic.</p>
+                                <p>Use this tab to present textual content, introductions, and explanations. The card layout provides a clean, organized way to present information with proper hierarchy.</p>
+                                
+                                <h5>Key Points:</h5>
+                                <ul class="list-group list-group-flush mb-3">
+                                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Clear and concise explanations</li>
+                                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Step-by-step guidance</li>
+                                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Real-world examples</li>
+                                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Best practices and tips</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diagrams Tab -->
+                    <div class="tab-pane fade" id="diagrams" role="tabpanel">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h5><i class="bi bi-diagram-2"></i> ASCII Diagrams</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>ASCII diagrams are perfect for representing simple structures and flows:</p>
+                                <div class="ascii-art">
+┌─────────────────────────────────────────┐
+│           Application Layer             │
+│  ┌──────────┐  ┌──────────┐            │
+│  │ Service  │  │ Service  │            │
+│  │    A     │  │    B     │            │
+│  └────┬─────┘  └─────┬────┘            │
+└───────┼──────────────┼─────────────────┘
+        │              │
+        ▼              ▼
+┌─────────────────────────────────────────┐
+│          Business Logic Layer           │
+│  ┌──────────────────────────────┐      │
+│  │     Processing Engine         │      │
+│  └──────────────┬────────────────┘      │
+└─────────────────┼───────────────────────┘
+                  │
+                  ▼
+┌─────────────────────────────────────────┐
+│            Data Layer                   │
+│  ┌──────────┐  ┌──────────┐            │
+│  │ Database │  │  Cache   │            │
+│  └──────────┘  └──────────┘            │
+└─────────────────────────────────────────┘
+</div>
+                                <p class="mt-3"><strong>Usage:</strong> ASCII diagrams work well for system architecture, data flows, and hierarchical structures. They're accessible and render consistently across all platforms.</p>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="bi bi-diagram-3"></i> PlantUML Diagrams</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>For more complex diagrams, use PlantUML syntax with rendering services:</p>
+                                <div class="plantuml-container">
+                                    <pre><code class="language-plantuml">@startuml
+actor User
+participant "Web App" as Web
+participant "API Server" as API
+database "Database" as DB
+
+User -> Web: Request Page
+Web -> API: GET /api/data
+API -> DB: Query
+DB --> API: Results
+API --> Web: JSON Response
+Web --> User: Render Page
+@enduml</code></pre>
+                                </div>
+                                <p class="mt-3"><strong>Usage:</strong> PlantUML is excellent for sequence diagrams, class diagrams, and component diagrams. You can render them using the PlantUML server: <code>http://www.plantuml.com/plantuml/</code></p>
+                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="popover" 
+                                        data-bs-title="Rendering PlantUML" 
+                                        data-bs-content="Use online PlantUML servers or local rendering tools to convert the syntax into visual diagrams.">
+                                    <i class="bi bi-question-circle"></i> How to render?
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Code Tab -->
+                    <div class="tab-pane fade" id="code" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5><i class="bi bi-code-square"></i> Code Examples</h5>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="copyCode('codeExample1')" data-bs-toggle="tooltip" title="Copy code">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <p>Syntax-highlighted code examples with copy functionality:</p>
+                                <pre id="codeExample1"><code class="language-java">public class SpringBootApplication {
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    public static void main(String[] args) {
+        SpringApplication.run(SpringBootApplication.class, args);
+    }
+    
+    @GetMapping("/users")
+    public List&lt;User&gt; getAllUsers() {
+        return userRepository.findAll();
+    }
+    
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+        return userRepository.save(user);
+    }
+}</code></pre>
+                                <div class="alert alert-warning mt-3" role="alert">
+                                    <i class="bi bi-exclamation-triangle"></i> <strong>Note:</strong> Make sure to handle exceptions properly in production code.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-3">
+                            <div class="card-header">
+                                <h5><i class="bi bi-file-earmark-code"></i> Configuration Files</h5>
+                            </div>
+                            <div class="card-body">
+                                <pre><code class="language-properties"># application.properties
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.h2.console.enabled=true</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Tab -->
+                    <div class="tab-pane fade" id="output" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="bi bi-terminal-fill"></i> Console Output</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Display command-line output and execution results:</p>
+                                <div class="console-output">$ mvn clean install
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------< com.learning:springdatajpa >-----------------
+[INFO] Building Spring Data JPA Learning 1.0.0
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.2.0:clean (default-clean) @ springdatajpa ---
+[INFO] Deleting target
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.11.0:compile (default-compile) @ springdatajpa ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 15 source files to target/classes
+[INFO] 
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.847 s
+[INFO] Finished at: 2026-01-16T07:45:32Z
+[INFO] ------------------------------------------------------------------------</div>
+                                <button type="button" class="btn btn-success mt-3" id="toastTrigger">
+                                    <i class="bi bi-play-circle"></i> Show Success Toast
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion for Detailed Topics -->
+                <div class="accordion mb-4" id="topicsAccordion">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#topic1">
+                                <i class="bi bi-1-circle-fill me-2"></i> Topic 1: Introduction
+                            </button>
+                        </h2>
+                        <div id="topic1" class="accordion-collapse collapse show" data-bs-parent="#topicsAccordion">
+                            <div class="accordion-body">
+                                <h5>Purpose</h5>
+                                <p>Use accordions to organize multiple topics in a collapsible format, saving space while maintaining accessibility to all content.</p>
+                                <p><strong>Best for:</strong> FAQ sections, step-by-step tutorials, or topic-based content where users may want to focus on specific sections.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#topic2">
+                                <i class="bi bi-2-circle-fill me-2"></i> Topic 2: Core Concepts
+                            </button>
+                        </h2>
+                        <div id="topic2" class="accordion-collapse collapse" data-bs-parent="#topicsAccordion">
+                            <div class="accordion-body">
+                                <h5>Core Concept Explanation</h5>
+                                <p>Each accordion item can contain rich content including text, images, code, and nested components.</p>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <h6 class="card-title">Sub-concept A</h6>
+                                                <p class="card-text">Detailed explanation with examples.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card bg-light">
+                                            <div class="card-body">
+                                                <h6 class="card-title">Sub-concept B</h6>
+                                                <p class="card-text">Additional details and context.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#topic3">
+                                <i class="bi bi-3-circle-fill me-2"></i> Topic 3: Advanced Features
+                            </button>
+                        </h2>
+                        <div id="topic3" class="accordion-collapse collapse" data-bs-parent="#topicsAccordion">
+                            <div class="accordion-body">
+                                <h5>Advanced Implementation</h5>
+                                <div class="alert alert-success" role="alert">
+                                    <i class="bi bi-lightbulb"></i> <strong>Tip:</strong> Combine multiple Bootstrap components for rich, interactive tutorials.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Layout for Features/Sections -->
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-header bg-primary text-white">
+                                <i class="bi bi-book"></i> Documentation
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Comprehensive Docs</h5>
+                                <p class="card-text">Cards are perfect for presenting features, modules, or sections with consistent styling.</p>
+                                <a href="#" class="btn btn-outline-primary">Read More</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                                Updated: Jan 2026
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-header bg-success text-white">
+                                <i class="bi bi-code-slash"></i> Examples
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Code Samples</h5>
+                                <p class="card-text">Use cards to showcase different code examples or implementation approaches.</p>
+                                <a href="#" class="btn btn-outline-success">View Examples</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                                15+ examples
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100">
+                            <div class="card-header bg-warning">
+                                <i class="bi bi-tools"></i> Tools
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Development Tools</h5>
+                                <p class="card-text">Highlight tools, utilities, or resources that complement your tutorial.</p>
+                                <a href="#" class="btn btn-outline-warning">Explore Tools</a>
+                            </div>
+                            <div class="card-footer text-muted">
+                                Free & Open Source
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Elements for Interactive Content -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4><i class="bi bi-ui-checks"></i> Interactive Form Elements</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Use forms to create interactive examples or configuration builders:</p>
+                        
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="exampleInput" class="form-label">Text Input</label>
+                                    <input type="text" class="form-control" id="exampleInput" placeholder="Enter value...">
+                                    <div class="form-text">Use for user input or parameter configuration.</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="exampleSelect" class="form-label">Select Option</label>
+                                    <select class="form-select" id="exampleSelect">
+                                        <option selected>Choose an option...</option>
+                                        <option value="1">Option 1</option>
+                                        <option value="2">Option 2</option>
+                                        <option value="3">Option 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="exampleTextarea" class="form-label">Textarea</label>
+                                <textarea class="form-control" id="exampleTextarea" rows="3" placeholder="Paste code or configuration..."></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="check1" checked>
+                                    <label class="form-check-label" for="check1">
+                                        Enable feature 1
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="check2">
+                                    <label class="form-check-label" for="check2">
+                                        Enable feature 2
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="radioOptions" id="radio1" value="option1" checked>
+                                    <label class="form-check-label" for="radio1">Option A</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="radioOptions" id="radio2" value="option2">
+                                    <label class="form-check-label" for="radio2">Option B</label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="rangeInput" class="form-label">Range Input</label>
+                                <input type="range" class="form-range" id="rangeInput" min="0" max="100" value="50">
+                            </div>
+                            
+                            <button type="button" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Apply
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                <i class="bi bi-arrow-counterclockwise"></i> Reset
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Button Showcase -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4><i class="bi bi-mouse"></i> Button Styles and Actions</h4>
+                    </div>
+                    <div class="card-body">
+                        <h5>Standard Buttons</h5>
+                        <p>Use buttons for CTAs, actions, and navigation:</p>
+                        <button type="button" class="btn btn-primary">Primary</button>
+                        <button type="button" class="btn btn-secondary">Secondary</button>
+                        <button type="button" class="btn btn-success">Success</button>
+                        <button type="button" class="btn btn-danger">Danger</button>
+                        <button type="button" class="btn btn-warning">Warning</button>
+                        <button type="button" class="btn btn-info">Info</button>
+                        <button type="button" class="btn btn-light">Light</button>
+                        <button type="button" class="btn btn-dark">Dark</button>
+                        
+                        <hr>
+                        
+                        <h5>Outline Buttons</h5>
+                        <button type="button" class="btn btn-outline-primary">Primary</button>
+                        <button type="button" class="btn btn-outline-secondary">Secondary</button>
+                        <button type="button" class="btn btn-outline-success">Success</button>
+                        
+                        <hr>
+                        
+                        <h5>Button Sizes & Groups</h5>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-primary">
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </button>
+                            <button type="button" class="btn btn-outline-primary">
+                                <i class="bi bi-house"></i> Home
+                            </button>
+                            <button type="button" class="btn btn-outline-primary">
+                                Next <i class="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- List Groups -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4><i class="bi bi-list-ul"></i> List Groups for Organized Content</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Steps/Checklist</h5>
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item list-group-item-action active">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><i class="bi bi-1-circle"></i> Setup Environment</h6>
+                                            <small class="text-white">Required</small>
+                                        </div>
+                                        <p class="mb-1">Install necessary tools and dependencies.</p>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><i class="bi bi-2-circle"></i> Configure Project</h6>
+                                            <small>5 mins</small>
+                                        </div>
+                                        <p class="mb-1">Set up configuration files and properties.</p>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1"><i class="bi bi-3-circle"></i> Run Application</h6>
+                                            <small>2 mins</small>
+                                        </div>
+                                        <p class="mb-1">Execute and verify the application.</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Resources/Links</h5>
+                                <div class="list-group">
+                                    <a href="#" class="list-group-item list-group-item-action list-group-item-primary">
+                                        <i class="bi bi-github"></i> GitHub Repository
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action list-group-item-success">
+                                        <i class="bi bi-file-earmark-text"></i> Official Documentation
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action list-group-item-warning">
+                                        <i class="bi bi-stack-overflow"></i> Stack Overflow Questions
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action list-group-item-info">
+                                        <i class="bi bi-youtube"></i> Video Tutorials
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alert Messages -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4><i class="bi bi-exclamation-triangle"></i> Alert Messages for Important Info</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-primary" role="alert">
+                            <i class="bi bi-info-circle-fill"></i> <strong>Info:</strong> General information or tips.
+                        </div>
+                        <div class="alert alert-success" role="alert">
+                            <i class="bi bi-check-circle-fill"></i> <strong>Success:</strong> Operation completed successfully!
+                        </div>
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill"></i> <strong>Warning:</strong> Pay attention to this important note.
+                        </div>
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-x-circle-fill"></i> <strong>Error:</strong> Critical issue that needs resolution.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Version History -->
+                <div id="version-history" class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h4><i class="bi bi-clock-history"></i> Version History & Changelog</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Track the historical journey and progress of this template.</p>
+                        
+                        <div class="accordion" id="versionHistoryAccordion">
+                            <!-- Version 1.0.0 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#version100">
+                                        <span class="badge bg-success me-2">Current</span>
+                                        <strong>Version 1.0.0 - Initial Release</strong>
+                                        <small class="ms-2 text-muted">January 16, 2026</small>
+                                    </button>
+                                </h2>
+                                <div id="version100" class="accordion-collapse collapse show" data-bs-parent="#versionHistoryAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Overview</h5>
+                                        <p>First complete release of the comprehensive Bootstrap technical tutorial template with all major components and features.</p>
+                                        
+                                        <h5>Features Implemented</h5>
+                                        
+                                        <h6 class="text-primary mt-3"><i class="bi bi-layout-text-sidebar"></i> Navigation & Layout</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Sticky navigation bar with brand, links, dropdown, and search</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Off-canvas sidebar for table of contents</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Responsive mobile-first design</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Fixed position theme controls</li>
+                                        </ul>
+                                        
+                                        <h6 class="text-primary mt-3"><i class="bi bi-palette"></i> Theme System</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Dark/Light theme toggle with smooth transitions</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Three color flavors (Blue, Green, Purple) for light mode</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> CSS custom properties for easy theming</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Bootstrap 5.3 native dark mode support</li>
+                                        </ul>
+                                        
+                                        <h6 class="text-primary mt-3"><i class="bi bi-layers"></i> Content Components</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Jumbotron/Hero section with gradient backgrounds</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Carousel for visual content showcase</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Tab groups (Overview, Diagrams, Code, Output)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Accordion for collapsible topics</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Card layouts (3-column grid)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> List groups (steps/checklist, resources)</li>
+                                        </ul>
+                                        
+                                        <h6 class="text-primary mt-3"><i class="bi bi-code-square"></i> Code & Technical Features</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Prism.js syntax highlighting (200+ languages)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Copy-to-clipboard functionality for code blocks</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Console output display with dark terminal theme</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> ASCII diagram support with monospace styling</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> PlantUML syntax examples</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Configuration file examples</li>
+                                        </ul>
+                                        
+                                        <h6 class="text-primary mt-3"><i class="bi bi-ui-checks"></i> Interactive Elements</h6>
+                                        <ul class="list-unstyled">
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Form elements (text, select, textarea, checkbox, radio, range)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Button showcase (all Bootstrap variants)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Alert messages (info, success, warning, danger)</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Toast notifications</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Tooltips with hover support</li>
+                                            <li><i class="bi bi-check-circle-fill text-success"></i> Popovers with click interaction</li>
+                                        </ul>
+                                        
+                                        <h5 class="mt-4">Technical Stack</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <ul>
+                                                    <li><strong>Bootstrap:</strong> 5.3.2</li>
+                                                    <li><strong>Bootstrap Icons:</strong> 1.11.3</li>
+                                                    <li><strong>Prism.js:</strong> 1.29.0</li>
+                                                    <li><strong>JavaScript:</strong> Vanilla (no dependencies)</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul>
+                                                    <li><strong>File Size:</strong> ~40KB uncompressed</li>
+                                                    <li><strong>Components:</strong> 14 major</li>
+                                                    <li><strong>Lines of Code:</strong> ~900</li>
+                                                    <li><strong>CDN Resources:</strong> 4</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        
+                                        <h5 class="mt-4">Known Limitations</h5>
+                                        <div class="alert alert-warning">
+                                            <ul class="mb-0">
+                                                <li><strong>Color Flavors:</strong> Only work in light mode (design choice)</li>
+                                                <li><strong>PlantUML:</strong> Requires external rendering (not auto-generated)</li>
+                                                <li><strong>Code Copy:</strong> Requires HTTPS or localhost for clipboard API</li>
+                                                <li><strong>Theme Persistence:</strong> Session-only (no localStorage implementation)</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <h5 class="mt-4">Future Enhancement Ideas</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <ul>
+                                                    <li>LocalStorage theme preference persistence</li>
+                                                    <li>More color flavor options</li>
+                                                    <li>Dark mode color flavors</li>
+                                                    <li>Print stylesheet optimization</li>
+                                                    <li>Search functionality implementation</li>
+                                                    <li>Progress indicator for long tutorials</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul>
+                                                    <li>Multi-language code tabs</li>
+                                                    <li>Automatic PlantUML rendering</li>
+                                                    <li>Breadcrumb navigation</li>
+                                                    <li>Back-to-top button</li>
+                                                    <li>Reading time estimates</li>
+                                                    <li>Export to PDF functionality</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Future Versions Placeholder -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#futureVersions">
+                                        <i class="bi bi-plus-circle me-2"></i> Future Versions
+                                    </button>
+                                </h2>
+                                <div id="futureVersions" class="accordion-collapse collapse" data-bs-parent="#versionHistoryAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Semantic Versioning</h5>
+                                        <p>This template follows Semantic Versioning (SemVer): <strong>MAJOR.MINOR.PATCH</strong></p>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="card bg-light">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title text-danger"><i class="bi bi-exclamation-octagon"></i> MAJOR (X.0.0)</h6>
+                                                        <p class="card-text small">Breaking changes, major redesign</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card bg-light">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title text-primary"><i class="bi bi-plus-square"></i> MINOR (0.X.0)</h6>
+                                                        <p class="card-text small">New features, backward compatible</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="card bg-light">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title text-success"><i class="bi bi-wrench"></i> PATCH (0.0.X)</h6>
+                                                        <p class="card-text small">Bug fixes, minor improvements</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <h5 class="mt-4">Roadmap</h5>
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <h6 class="mb-1"><i class="bi bi-speedometer2"></i> Short Term (v1.x)</h6>
+                                                <p class="mb-1 small">Gather user feedback, fix discovered bugs, minor enhancements</p>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <h6 class="mb-1"><i class="bi bi-graph-up-arrow"></i> Medium Term (v2.x)</h6>
+                                                <p class="mb-1 small">Bootstrap 6 migration (when available), enhanced theme system, more interactive components</p>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <h6 class="mb-1"><i class="bi bi-rocket-takeoff"></i> Long Term (v3.x)</h6>
+                                                <p class="mb-1 small">Framework-agnostic version, component library separation, template generator tool</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="alert alert-info mt-4">
+                                            <i class="bi bi-info-circle"></i> <strong>Note:</strong> New versions will be added to this section as they are released. Check back for updates!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4">
+                            <span class="badge bg-secondary">Status: Active Development</span>
+                            <span class="badge bg-info">Current: v1.0.0</span>
+                            <span class="badge bg-success">Last Updated: January 16, 2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="mt-5 mb-3 text-center text-muted">
+                    <hr>
+                    <p><i class="bi bi-c-circle"></i> 2026 Technical Tutorial Template | Built with Bootstrap 5</p>
+                    <p>
+                        <a href="#" class="text-decoration-none me-3"><i class="bi bi-github"></i> GitHub</a>
+                        <a href="#" class="text-decoration-none me-3"><i class="bi bi-twitter"></i> Twitter</a>
+                        <a href="#" class="text-decoration-none"><i class="bi bi-envelope"></i> Contact</a>
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                Your action was completed successfully!
+            </div>
+        </div>
+    </div>
+
+    <!-- Version Badge -->
+    <span class="badge bg-secondary version-badge" data-bs-toggle="tooltip" title="Template Version">v1.0.0</span>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        // Initialize tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        // Initialize popovers
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            
+            const icon = themeToggle.querySelector('i');
+            if (newTheme === 'dark') {
+                icon.classList.remove('bi-moon-stars');
+                icon.classList.add('bi-sun');
+            } else {
+                icon.classList.remove('bi-sun');
+                icon.classList.add('bi-moon-stars');
+            }
+        });
+
+        // Color Flavor Toggle
+        function setColorFlavor(flavor) {
+            htmlElement.setAttribute('data-color-flavor', flavor);
+        }
+
+        // Toast Trigger
+        document.getElementById('toastTrigger')?.addEventListener('click', () => {
+            const toast = new bootstrap.Toast(document.getElementById('successToast'));
+            toast.show();
+        });
+
+        // Copy Code Function
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const code = codeElement.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const toast = new bootstrap.Toast(document.getElementById('successToast'));
+                document.querySelector('#successToast .toast-body').textContent = 'Code copied to clipboard!';
+                toast.show();
+            });
+        }
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

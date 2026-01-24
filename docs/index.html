@@ -128,6 +128,10 @@
             <i class="bi bi-list-stars"></i> Categories
           </a>
           <ul class="dropdown-menu">
+            <li><h6 class="dropdown-header">Available Now</h6></li>
+            <li><a class="dropdown-item" href="#available"><i class="bi bi-cash-coin"></i> Finance & Money</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><h6 class="dropdown-header">Coming Soon</h6></li>
             <li><a class="dropdown-item" href="#java"><i class="bi bi-code-square"></i> Java & JVM</a></li>
             <li><a class="dropdown-item" href="#java-versions"><i class="bi bi-layers"></i> Java Versions</a></li>
             <li><a class="dropdown-item" href="#comm-coming"><i class="bi bi-broadcast"></i> Communication Protocols</a></li>
@@ -162,7 +166,7 @@
     <div class="row justify-content-center mb-4">
       <div class="col-md-3">
         <div class="stats-card p-3 rounded bg-white text-dark">
-          <h3 class="mb-0" id="availableCount">4</h3>
+          <h3 class="mb-0" id="availableCount">7</h3>
           <small>Available Now</small>
         </div>
       </div>
@@ -174,7 +178,7 @@
       </div>
       <div class="col-md-3">
         <div class="stats-card p-3 rounded bg-white text-dark">
-          <h3 class="mb-0">15</h3>
+          <h3 class="mb-0">16</h3>
           <small>Categories</small>
         </div>
       </div>
@@ -199,7 +203,7 @@
   <section class="mb-5 category-section" id="available">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2><i class="bi bi-check-circle-fill text-success"></i> Available Now</h2>
-      <span class="badge bg-success">4 Tutorials</span>
+      <span class="badge bg-success">7 Tutorials</span>
     </div>
     
     <div class="alert alert-success">
@@ -309,6 +313,57 @@
                       Template for the Tutorials using Bootstrap 5 for the rich UI/UX experience
                     </p>
                     <a href="template/" class="btn btn-info">Open Template</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Finance & Money Category -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvailableFinance">
+            <i class="bi bi-cash-coin me-2"></i> Finance & Money <span class="badge bg-success ms-2">3</span>
+          </button>
+        </h2>
+        <div id="collapseAvailableFinance" class="accordion-collapse collapse" data-bs-parent="#availableAccordion">
+          <div class="accordion-body">
+            <div class="row g-4">
+              <!-- Income Tax -->
+              <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-success">
+                  <div class="card-body">
+                    <h5 class="card-title">Income Tax</h5>
+                    <p class="card-text">
+                      Tax planning, deductions, filing strategies, and compliance guide.
+                    </p>
+                    <a href="finance/income-tax/" class="btn btn-primary">Open Tutorial</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Personal Finance -->
+              <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-success">
+                  <div class="card-body">
+                    <h5 class="card-title">Personal Finance</h5>
+                    <p class="card-text">
+                      Budgeting, savings, debt management, and financial independence.
+                    </p>
+                    <a href="finance/personal-finance/" class="btn btn-primary">Open Tutorial</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Investments -->
+              <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-success">
+                  <div class="card-body">
+                    <h5 class="card-title">Investments</h5>
+                    <p class="card-text">
+                      Stocks, bonds, mutual funds, portfolio diversification, and wealth building.
+                    </p>
+                    <a href="finance/investments/" class="btn btn-primary">Open Tutorial</a>
                   </div>
                 </div>
               </div>
@@ -1043,8 +1098,9 @@
 
             <h6 class="mt-3"><i class="bi bi-wrench text-primary"></i> Improvements</h6>
             <ul>
-              <li>Organized ALL tutorials (available and coming soon) into 15 categories</li>
-              <li>Available tutorials categorized: Build Tools, Communication Protocols, Command-Line Tools, Templates & Resources</li>
+              <li>Organized ALL tutorials (available and coming soon) into 16 categories</li>
+              <li>Available tutorials categorized: Build Tools, Communication Protocols, Command-Line Tools, Templates & Resources, Finance & Money</li>
+              <li><strong>NEW: Finance & Money category</strong> with 3 tutorials: Income Tax, Personal Finance, Investments</li>
               <li>Added 56 tutorial placeholders across 11 "Coming Soon" categories</li>
               <li>Split Backend & Databases into two categories: Backend Frameworks (3) and Databases (7)</li>
               <li>New Java Versions category with 16 version-specific tutorials (Java 2, 5, 7-25)</li>
@@ -1065,15 +1121,16 @@
               <li>Stats cards with visual indicators</li>
             </ul>
 
-            <h6 class="mt-3"><i class="bi bi-list-check text-info"></i> All 15 Categories</h6>
+            <h6 class="mt-3"><i class="bi bi-list-check text-info"></i> All 16 Categories</h6>
             <div class="row">
               <div class="col-md-6">
-                <h6 class="text-success">Available (4 categories)</h6>
+                <h6 class="text-success">Available (5 categories)</h6>
                 <ul>
                   <li>Build Tools (1)</li>
                   <li>Communication Protocols (1)</li>
                   <li>Command-Line Tools (1)</li>
                   <li>Templates & Resources (1)</li>
+                  <li>Finance & Money (3) <span class="badge bg-success">NEW</span></li>
                 </ul>
                 <h6 class="text-warning mt-3">Coming Soon (11 categories)</h6>
                 <ul>
@@ -1231,8 +1288,8 @@
         <div class="mt-3">
           <span class="badge bg-light text-dark me-2">Project Started: January 19, 2026</span>
           <span class="badge bg-light text-dark me-2">Current Version: v2.0.0</span>
-          <span class="badge bg-light text-dark me-2">Total Tutorials: 60 (4 Available, 56 Coming Soon)</span>
-          <span class="badge bg-light text-dark">Categories: 15 (4 Available, 11 Coming Soon)</span>
+          <span class="badge bg-light text-dark me-2">Total Tutorials: 63 (7 Available, 56 Coming Soon)</span>
+          <span class="badge bg-light text-dark">Categories: 16 (5 Available, 11 Coming Soon)</span>
         </div>
         <p class="mb-0 mt-3" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.8;">
           <i class="bi bi-calendar-event me-1"></i>
