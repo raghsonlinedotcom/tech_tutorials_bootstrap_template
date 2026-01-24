@@ -349,7 +349,7 @@
           <div class="card-body">
             <h5 class="card-title">Core Java <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Fundamentals, OOP, collections, streams, and modern Java features.</p>
-            <a href="coming-soon/java-jvm/core-java/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -358,7 +358,7 @@
           <div class="card-body">
             <h5 class="card-title">Advanced Java <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Concurrency, JVM internals, performance tuning, and advanced patterns.</p>
-            <a href="coming-soon/java-jvm/advanced-java/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -367,7 +367,7 @@
           <div class="card-body">
             <h5 class="card-title">Java Design Patterns <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Gang of Four patterns, architectural patterns, and best practices.</p>
-            <a href="coming-soon/java-jvm/java-design-patterns/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
@@ -391,7 +391,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 2 (1.2) <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Swing GUI, Collections framework, and strictfp keyword.</p>
-            <a href="coming-soon/java-jvm/core-java/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -400,7 +400,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 5 (1.5) <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Generics, annotations, enums, varargs, and enhanced for loop.</p>
-            <a href="coming-soon/java-jvm/advanced-java/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -409,7 +409,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 7 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Try-with-resources, diamond operator, strings in switch, and NIO.2.</p>
-            <a href="coming-soon/java-jvm/java-design-patterns/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -418,7 +418,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 8 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Lambda expressions, Stream API, Optional, and functional programming.</p>
-            <a href="coming-soon/java-versions/java2/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -427,7 +427,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 9 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Module system (Jigsaw), JShell, and reactive streams.</p>
-            <a href="coming-soon/java-versions/java5/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -436,7 +436,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 10 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Local variable type inference (var), application class-data sharing.</p>
-            <a href="coming-soon/java-versions/java7/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -445,7 +445,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 11 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">LTS release, HTTP Client API, string methods, and performance improvements.</p>
-            <a href="coming-soon/java-versions/java8/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -454,7 +454,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 12 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Switch expressions (preview), compact number formatting.</p>
-            <a href="coming-soon/java-versions/java9/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -463,7 +463,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 13 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Text blocks (preview), dynamic CDS archives.</p>
-            <a href="coming-soon/java-versions/java10/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -472,7 +472,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 14 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Records (preview), pattern matching for instanceof (preview).</p>
-            <a href="coming-soon/java-versions/java11/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -481,7 +481,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 15 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Text blocks, sealed classes (preview), hidden classes.</p>
-            <a href="coming-soon/java-versions/java12/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -490,7 +490,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 16 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Records, pattern matching, Unix-Domain socket channels.</p>
-            <a href="coming-soon/java-versions/java13/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -499,7 +499,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 17 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">LTS release, sealed classes, pattern matching, strong encapsulation.</p>
-            <a href="coming-soon/java-versions/java14/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -508,7 +508,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 19 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Virtual threads (preview), structured concurrency (incubator).</p>
-            <a href="coming-soon/java-versions/java15/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -517,7 +517,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 21 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">LTS release, virtual threads, sequenced collections, pattern matching.</p>
-            <a href="coming-soon/java-versions/java16/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -526,7 +526,7 @@
           <div class="card-body">
             <h5 class="card-title">Java 25 <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Latest features, preview enhancements, and performance improvements.</p>
-            <a href="coming-soon/java-versions/java17/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
@@ -550,7 +550,7 @@
           <div class="card-body">
             <h5 class="card-title">REST API <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">RESTful architecture, HTTP methods, API design, and best practices.</p>
-            <a href="coming-soon/java-versions/java19/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -559,7 +559,7 @@
           <div class="card-body">
             <h5 class="card-title">GraphQL <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Query language for APIs, schema design, resolvers, and efficient data fetching.</p>
-            <a href="coming-soon/java-versions/java21/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
@@ -583,7 +583,7 @@
           <div class="card-body">
             <h5 class="card-title">JUnit <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Unit testing framework, assertions, test lifecycle, and JUnit 5 features.</p>
-            <a href="coming-soon/java-versions/java25/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -592,7 +592,7 @@
           <div class="card-body">
             <h5 class="card-title">Mockito <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Mocking framework, test doubles, stubbing, and verification.</p>
-            <a href="coming-soon/communication-protocols/rest-api/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -601,7 +601,7 @@
           <div class="card-body">
             <h5 class="card-title">TestContainers <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Integration testing with Docker containers, databases, and services.</p>
-            <a href="coming-soon/communication-protocols/graphql/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
@@ -625,7 +625,7 @@
           <div class="card-body">
             <h5 class="card-title">Spring Core <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">IoC, DI, AOP, and core Spring concepts.</p>
-            <a href="coming-soon/testing-quality/junit/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -634,7 +634,7 @@
           <div class="card-body">
             <h5 class="card-title">Spring Boot <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Auto-configuration, starters, actuator, and rapid development.</p>
-            <a href="coming-soon/testing-quality/mockito/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -643,7 +643,7 @@
           <div class="card-body">
             <h5 class="card-title">Spring Data JPA <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Data access, repositories, queries, and database integration.</p>
-            <a href="coming-soon/testing-quality/testcontainers/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -652,7 +652,7 @@
           <div class="card-body">
             <h5 class="card-title">Spring Web MVC <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Web applications, controllers, views, and MVC architecture.</p>
-            <a href="coming-soon/spring-framework/spring-core/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -661,7 +661,7 @@
           <div class="card-body">
             <h5 class="card-title">Spring REST <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">RESTful APIs, REST controllers, and API best practices.</p>
-            <a href="coming-soon/spring-framework/spring-boot/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -670,7 +670,7 @@
           <div class="card-body">
             <h5 class="card-title">Spring Transactions <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Transaction management, isolation levels, and data consistency.</p>
-            <a href="coming-soon/spring-framework/spring-data-jpa/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
@@ -694,7 +694,7 @@
           <div class="card-body">
             <h5 class="card-title">HTML <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Markup fundamentals, semantic HTML, and modern standards.</p>
-            <a href="coming-soon/spring-framework/spring-web-mvc/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -703,7 +703,7 @@
           <div class="card-body">
             <h5 class="card-title">CSS <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Styling, layouts, responsive design, and modern CSS.</p>
-            <a href="coming-soon/spring-framework/spring-rest/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -712,7 +712,7 @@
           <div class="card-body">
             <h5 class="card-title">JavaScript <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">ES6+, DOM manipulation, async programming, and modern JS.</p>
-            <a href="coming-soon/spring-framework/spring-transactions/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -721,7 +721,7 @@
           <div class="card-body">
             <h5 class="card-title">Bootstrap <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Responsive framework, components, and utility classes.</p>
-            <a href="coming-soon/web-development/html/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -730,7 +730,7 @@
           <div class="card-body">
             <h5 class="card-title">Angular <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Components, services, routing, and TypeScript integration.</p>
-            <a href="coming-soon/web-development/css/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
@@ -754,7 +754,7 @@
           <div class="card-body">
             <h5 class="card-title">Node.js <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Server-side JavaScript, async I/O, and Node ecosystem.</p>
-            <a href="coming-soon/web-development/javascript/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -763,7 +763,7 @@
           <div class="card-body">
             <h5 class="card-title">Express.js <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Web framework, middleware, routing, and API development.</p>
-            <a href="coming-soon/web-development/bootstrap/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -772,7 +772,7 @@
           <div class="card-body">
             <h5 class="card-title">PHP <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Server-side scripting, web development, and modern PHP.</p>
-            <a href="coming-soon/web-development/angular/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
@@ -796,7 +796,7 @@
           <div class="card-body">
             <h5 class="card-title">RDBMS <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Relational database fundamentals, SQL, ACID properties, and normalization.</p>
-            <a href="coming-soon/backend-frameworks/nodejs/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -805,7 +805,7 @@
           <div class="card-body">
             <h5 class="card-title">MySQL <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Open-source relational database, queries, indexing, and optimization.</p>
-            <a href="coming-soon/backend-frameworks/expressjs/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -814,7 +814,7 @@
           <div class="card-body">
             <h5 class="card-title">PostgreSQL <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Advanced open-source database, JSONB, full-text search, and extensions.</p>
-            <a href="coming-soon/backend-frameworks/php/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -823,7 +823,7 @@
           <div class="card-body">
             <h5 class="card-title">SQLite <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Embedded database, serverless architecture, and lightweight SQL engine.</p>
-            <a href="coming-soon/databases/rdbms/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -832,7 +832,7 @@
           <div class="card-body">
             <h5 class="card-title">H2 Database <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Java SQL database, in-memory mode, and embedded/server modes.</p>
-            <a href="coming-soon/databases/mysql/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -841,7 +841,7 @@
           <div class="card-body">
             <h5 class="card-title">MongoDB <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">NoSQL database, document model, and scalable data storage.</p>
-            <a href="coming-soon/databases/postgresql/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -850,7 +850,7 @@
           <div class="card-body">
             <h5 class="card-title">Firebase <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Real-time database, authentication, and cloud services.</p>
-            <a href="coming-soon/databases/sqlite/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
@@ -874,7 +874,7 @@
           <div class="card-body">
             <h5 class="card-title">Gradle <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Build automation, dependency management, and Groovy DSL.</p>
-            <a href="coming-soon/databases/h2/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -883,7 +883,7 @@
           <div class="card-body">
             <h5 class="card-title">Git <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Version control, branching, merging, and collaboration.</p>
-            <a href="coming-soon/databases/mongodb/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -892,7 +892,7 @@
           <div class="card-body">
             <h5 class="card-title">Jenkins <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">CI/CD, automation, pipelines, and continuous delivery.</p>
-            <a href="coming-soon/databases/firebase/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -901,7 +901,7 @@
           <div class="card-body">
             <h5 class="card-title">Docker <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Containerization, images, Docker Compose, and orchestration basics.</p>
-            <a href="coming-soon/build-tools-devops/gradle/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -910,7 +910,7 @@
           <div class="card-body">
             <h5 class="card-title">OpenShift <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Kubernetes platform, container orchestration, and enterprise deployment.</p>
-            <a href="coming-soon/build-tools-devops/git/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
@@ -934,7 +934,7 @@
           <div class="card-body">
             <h5 class="card-title">Kafka <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Distributed streaming platform, event-driven architecture, and message queues.</p>
-            <a href="coming-soon/messaging-event-streaming/kafka/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
@@ -958,7 +958,7 @@
           <div class="card-body">
             <h5 class="card-title">Python <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Programming fundamentals, libraries, and data processing.</p>
-            <a href="coming-soon/build-tools-devops/jenkins/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -967,7 +967,7 @@
           <div class="card-body">
             <h5 class="card-title">Bash <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Shell scripting, automation, and command-line mastery.</p>
-            <a href="coming-soon/build-tools-devops/docker/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -976,7 +976,7 @@
           <div class="card-body">
             <h5 class="card-title">Regex <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Pattern matching, text processing, and regular expressions.</p>
-            <a href="coming-soon/build-tools-devops/openshift/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -985,7 +985,7 @@
           <div class="card-body">
             <h5 class="card-title">Markdown <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Documentation, formatting, and lightweight markup.</p>
-            <a href="coming-soon/other-languages-tools/python/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
       </div>
@@ -994,7 +994,7 @@
           <div class="card-body">
             <h5 class="card-title">Agile <span class="badge bg-warning text-dark">Coming Soon</span></h5>
             <p class="card-text">Methodologies, Scrum, Kanban, and project management.</p>
-            <a href="coming-soon/other-languages-tools/bash/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
+            <button class="btn btn-outline-secondary" disabled>Coming Soon</button>
           </div>
         </div>
               </div>
