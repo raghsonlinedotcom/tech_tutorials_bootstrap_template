@@ -148,7 +148,7 @@
       </div>
       <div class="col-md-3">
         <div class="stats-card p-3 rounded bg-white text-dark">
-          <h3 class="mb-0">6</h3>
+          <h3 class="mb-0">10</h3>
           <small>Categories</small>
         </div>
       </div>
@@ -168,60 +168,122 @@
 
   <!-- Available Tutorials Section -->
   <section class="mb-5 category-section" id="available">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
       <h2><i class="bi bi-check-circle-fill text-success"></i> Available Now</h2>
       <span class="badge bg-success">4 Tutorials</span>
     </div>
-    <div class="row g-4">
+    
+    <div class="alert alert-success">
+      <i class="bi bi-check-circle"></i> These tutorials are ready to explore! Click on any category below to expand.
+    </div>
 
-      <!-- Template -->
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-success">
-          <div class="card-body">
-            <h5 class="card-title">Template</h5>
-            <p class="card-text">
-              Template for the Tutorials using Bootstrap 5 for the rich UI/UX experience
-            </p>
-            <a href="template/" class="btn btn-info">Open Template</a>
+    <!-- Accordion for Available Tutorials -->
+    <div class="accordion" id="availableAccordion">
+      
+      <!-- Build Tools Category -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvailableBuild">
+            <i class="bi bi-tools me-2"></i> Build Tools <span class="badge bg-success ms-2">1</span>
+          </button>
+        </h2>
+        <div id="collapseAvailableBuild" class="accordion-collapse collapse show" data-bs-parent="#availableAccordion">
+          <div class="accordion-body">
+            <div class="row g-4">
+              <!-- Maven -->
+              <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-success">
+                  <div class="card-body">
+                    <h5 class="card-title">Maven</h5>
+                    <p class="card-text">
+                      Build automation, dependency management, lifecycle mastery.
+                    </p>
+                    <a href="maven/" class="btn btn-primary">Open Tutorial</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Maven -->
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-success">
-          <div class="card-body">
-            <h5 class="card-title">Maven</h5>
-            <p class="card-text">
-              Build automation, dependency management, lifecycle mastery.
-            </p>
-            <a href="maven/" class="btn btn-primary">Open Tutorial</a>
+      <!-- Communication Protocols Category -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvailableComm">
+            <i class="bi bi-broadcast me-2"></i> Communication Protocols <span class="badge bg-success ms-2">1</span>
+          </button>
+        </h2>
+        <div id="collapseAvailableComm" class="accordion-collapse collapse" data-bs-parent="#availableAccordion">
+          <div class="accordion-body">
+            <div class="row g-4">
+              <!-- WebSockets -->
+              <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-success">
+                  <div class="card-body">
+                    <h5 class="card-title">WebSockets</h5>
+                    <p class="card-text">
+                      Real-time communication, full-duplex messaging.
+                    </p>
+                    <a href="websockets/" class="btn btn-primary">Open Tutorial</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- WebSockets -->
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-success">
-          <div class="card-body">
-            <h5 class="card-title">WebSockets</h5>
-            <p class="card-text">
-              Real-time communication, full-duplex messaging.
-            </p>
-            <a href="websockets/" class="btn btn-primary">Open Tutorial</a>
+      <!-- Command-Line Tools Category -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvailableCLI">
+            <i class="bi bi-terminal me-2"></i> Command-Line Tools <span class="badge bg-success ms-2">1</span>
+          </button>
+        </h2>
+        <div id="collapseAvailableCLI" class="accordion-collapse collapse" data-bs-parent="#availableAccordion">
+          <div class="accordion-body">
+            <div class="row g-4">
+              <!-- jq -->
+              <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-success">
+                  <div class="card-body">
+                    <h5 class="card-title">jq utility</h5>
+                    <p class="card-text">
+                      A lightweight and flexible command-line JSON processor for parsing, filtering, and transforming JSON data
+                    </p>
+                    <a href="jq/" class="btn btn-primary">Open Tutorial</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- jq -->
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-success">
-          <div class="card-body">
-            <h5 class="card-title">jq utility</h5>
-            <p class="card-text">
-              A lightweight and flexible command-line JSON processor for parsing, filtering, and transforming JSON data
-            </p>
-            <a href="jq/" class="btn btn-primary">Open Tutorial</a>
+      <!-- Templates & Resources Category -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvailableTemplate">
+            <i class="bi bi-palette me-2"></i> Templates & Resources <span class="badge bg-success ms-2">1</span>
+          </button>
+        </h2>
+        <div id="collapseAvailableTemplate" class="accordion-collapse collapse" data-bs-parent="#availableAccordion">
+          <div class="accordion-body">
+            <div class="row g-4">
+              <!-- Template -->
+              <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-success">
+                  <div class="card-body">
+                    <h5 class="card-title">Template</h5>
+                    <p class="card-text">
+                      Template for the Tutorials using Bootstrap 5 for the rich UI/UX experience
+                    </p>
+                    <a href="template/" class="btn btn-info">Open Template</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -615,7 +677,9 @@
 
             <h6 class="mt-3"><i class="bi bi-wrench text-primary"></i> Improvements</h6>
             <ul>
-              <li>Added 27 new tutorial placeholders across 6 categories</li>
+              <li>Organized ALL tutorials (available and coming soon) into 10 categories</li>
+              <li>Available tutorials categorized: Build Tools, Communication Protocols, Command-Line Tools, Templates & Resources</li>
+              <li>Added 27 new tutorial placeholders across 6 "Coming Soon" categories</li>
               <li>Improved card hover effects with lift and shadow</li>
               <li>Better dark theme support with proper contrast</li>
               <li>Responsive design for mobile, tablet, and desktop</li>
@@ -631,20 +695,29 @@
               <li>Stats cards with visual indicators</li>
             </ul>
 
-            <h6 class="mt-3"><i class="bi bi-list-check text-info"></i> Categories Added</h6>
+            <h6 class="mt-3"><i class="bi bi-list-check text-info"></i> All 10 Categories</h6>
             <div class="row">
               <div class="col-md-6">
+                <h6 class="text-success">Available (4 categories)</h6>
                 <ul>
-                  <li>Java & JVM (3 tutorials)</li>
-                  <li>Spring Framework (6 tutorials)</li>
-                  <li>Web Development (5 tutorials)</li>
+                  <li>Build Tools (1)</li>
+                  <li>Communication Protocols (1)</li>
+                  <li>Command-Line Tools (1)</li>
+                  <li>Templates & Resources (1)</li>
+                </ul>
+                <h6 class="text-warning mt-3">Coming Soon (6 categories)</h6>
+                <ul>
+                  <li>Java & JVM (3)</li>
+                  <li>Spring Framework (6)</li>
+                  <li>Web Development (5)</li>
                 </ul>
               </div>
               <div class="col-md-6">
-                <ul>
-                  <li>Backend & Databases (5 tutorials)</li>
-                  <li>Build Tools & DevOps (3 tutorials)</li>
-                  <li>Other Languages & Tools (5 tutorials)</li>
+                <br/>
+                <ul style="margin-top: 146px;">
+                  <li>Backend & Databases (5)</li>
+                  <li>Build Tools & DevOps (3)</li>
+                  <li>Other Languages & Tools (5)</li>
                 </ul>
               </div>
             </div>
@@ -752,6 +825,9 @@
 
   // Search Functionality with Accordion Auto-expand
   const searchInput = document.getElementById('tutorialSearch');
+  const availableAccordion = document.getElementById('availableAccordion');
+  const categoriesAccordion = document.getElementById('categoriesAccordion');
+  
   searchInput.addEventListener('input', (e) => {
     const searchTerm = e.target.value.toLowerCase();
     const cards = document.querySelectorAll('.card');
@@ -759,33 +835,88 @@
     
     // If search is active, expand all accordions
     if (searchTerm.length > 0) {
+      // Expand all accordion sections
       document.querySelectorAll('.accordion-collapse').forEach(collapse => {
         collapse.classList.add('show');
       });
       document.querySelectorAll('.accordion-button').forEach(btn => {
         btn.classList.remove('collapsed');
       });
-    } else {
-      // Collapse all when search is cleared
-      document.querySelectorAll('.accordion-collapse').forEach(collapse => {
-        collapse.classList.remove('show');
-      });
-      document.querySelectorAll('.accordion-button').forEach(btn => {
-        btn.classList.add('collapsed');
-      });
-    }
-    
-    cards.forEach(card => {
-      const title = card.querySelector('.card-title').textContent.toLowerCase();
-      const text = card.querySelector('.card-text').textContent.toLowerCase();
       
-      if (title.includes(searchTerm) || text.includes(searchTerm)) {
-        card.closest('.col-md-4').style.display = '';
-        hasResults = true;
-      } else {
-        card.closest('.col-md-4').style.display = 'none';
+      // Filter cards
+      cards.forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const text = card.querySelector('.card-text').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || text.includes(searchTerm)) {
+          card.closest('.col-md-4').style.display = '';
+          hasResults = true;
+        } else {
+          card.closest('.col-md-4').style.display = 'none';
+        }
+      });
+      
+      // Hide empty accordion sections
+      let firstVisibleSection = null;
+      document.querySelectorAll('.accordion-item').forEach(item => {
+        const visibleCards = item.querySelectorAll('.col-md-4:not([style*="display: none"])');
+        if (visibleCards.length === 0) {
+          item.style.display = 'none';
+        } else {
+          item.style.display = '';
+          if (!firstVisibleSection) {
+            firstVisibleSection = item;
+          }
+        }
+      });
+      
+      // Scroll to first visible result
+      if (hasResults && firstVisibleSection) {
+        setTimeout(() => {
+          firstVisibleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
       }
-    });
+      
+    } else {
+      // Reset when search is cleared
+      // Show all cards
+      cards.forEach(card => {
+        card.closest('.col-md-4').style.display = '';
+      });
+      
+      // Show all accordion sections
+      document.querySelectorAll('.accordion-item').forEach(item => {
+        item.style.display = '';
+      });
+      
+      // Restore default accordion state for Available (first one open)
+      if (availableAccordion) {
+        availableAccordion.querySelectorAll('.accordion-collapse').forEach((collapse, index) => {
+          if (index === 0) {
+            collapse.classList.add('show');
+          } else {
+            collapse.classList.remove('show');
+          }
+        });
+        availableAccordion.querySelectorAll('.accordion-button').forEach((btn, index) => {
+          if (index === 0) {
+            btn.classList.remove('collapsed');
+          } else {
+            btn.classList.add('collapsed');
+          }
+        });
+      }
+      
+      // Collapse all Coming Soon sections
+      if (categoriesAccordion) {
+        categoriesAccordion.querySelectorAll('.accordion-collapse').forEach(collapse => {
+          collapse.classList.remove('show');
+        });
+        categoriesAccordion.querySelectorAll('.accordion-button').forEach(btn => {
+          btn.classList.add('collapsed');
+        });
+      }
+    }
   });
 
   // Smooth Scrolling
