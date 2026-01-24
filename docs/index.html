@@ -159,6 +159,9 @@
         <i class="bi bi-search"></i>
       </button>
     </div>
+    <small class="text-white-50 mt-2 d-block">
+      <i class="bi bi-info-circle"></i> Type to filter • Press <kbd>Enter</kbd> or click <i class="bi bi-search"></i> to jump to results
+    </small>
   </div>
 </div>
 
@@ -668,7 +671,8 @@
             <ul>
               <li><strong>Accordion Layout:</strong> Categories now collapsible for better organization and reduced clutter</li>
               <li><strong>Hero Section:</strong> Added statistics dashboard showing available/coming soon tutorials</li>
-              <li><strong>Live Search:</strong> Real-time search with auto-expand/collapse accordion functionality</li>
+              <li><strong>Smart Search:</strong> Real-time filtering as you type, press Enter or click 🔍 to auto-scroll to results</li>
+              <li><strong>Search Hints:</strong> Helpful tooltip explaining search behavior for better UX</li>
               <li><strong>Sticky Navigation:</strong> Enhanced navbar with Categories dropdown menu</li>
               <li><strong>Dark/Light Theme:</strong> Toggle between themes with persistent preferences</li>
               <li><strong>Back-to-Top Button:</strong> Smooth scroll to top for long pages</li>
@@ -825,11 +829,13 @@
 
   // Search Functionality with Accordion Auto-expand
   const searchInput = document.getElementById('tutorialSearch');
+  const searchButton = document.querySelector('#searchInput .btn');
   const availableAccordion = document.getElementById('availableAccordion');
   const categoriesAccordion = document.getElementById('categoriesAccordion');
   
-  searchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value.toLowerCase();
+  // Perform the search filtering (without scrolling)
+  function performSearch(shouldScroll = false) {
+    const searchTerm = searchInput.value.toLowerCase();
     const cards = document.querySelectorAll('.card');
     let hasResults = false;
     
@@ -870,8 +876,8 @@
         }
       });
       
-      // Scroll to first visible result
-      if (hasResults && firstVisibleSection) {
+      // Scroll to first visible result only if requested
+      if (shouldScroll && hasResults && firstVisibleSection) {
         setTimeout(() => {
           firstVisibleSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
@@ -917,6 +923,24 @@
         });
       }
     }
+  }
+  
+  // Listen for typing (filter without scrolling)
+  searchInput.addEventListener('input', () => {
+    performSearch(false);
+  });
+  
+  // Listen for Enter key (filter and scroll)
+  searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      performSearch(true);
+    }
+  });
+  
+  // Listen for search button click (filter and scroll)
+  searchButton.addEventListener('click', () => {
+    performSearch(true);
   });
 
   // Smooth Scrolling
