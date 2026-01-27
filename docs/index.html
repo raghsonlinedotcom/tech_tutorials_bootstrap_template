@@ -170,7 +170,7 @@
     <div class="row justify-content-center mb-4">
       <div class="col-md-3">
         <div class="stats-card p-3 rounded bg-white text-dark">
-          <h3 class="mb-0" id="availableCount">9</h3>
+          <h3 class="mb-0" id="availableCount">10</h3>
           <small>Available Now</small>
         </div>
       </div>
@@ -207,7 +207,7 @@
   <section class="mb-5 category-section" id="available">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2><i class="bi bi-check-circle-fill text-success"></i> Available Now</h2>
-      <span class="badge bg-success">9 Tutorials</span>
+      <span class="badge bg-success">10 Tutorials</span>
     </div>
     
     <div class="alert alert-success">
@@ -248,7 +248,7 @@
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvailableComm">
-            <i class="bi bi-broadcast me-2"></i> Communication Protocols <span class="badge bg-success ms-2">3</span>
+            <i class="bi bi-broadcast me-2"></i> Communication Protocols <span class="badge bg-success ms-2">4</span>
           </button>
         </h2>
         <div id="collapseAvailableComm" class="accordion-collapse collapse" data-bs-parent="#availableAccordion">
@@ -287,6 +287,18 @@
                       Complete guide with Spring Boot, Microservices, Kafka, MongoDB & Docker.
                     </p>
                     <a href="communication-protocols/domain-driven-design-tutorial-warpAI/" class="btn btn-primary">Open Tutorial</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Domain-Driven Design (Restaurant - Beginner) -->
+              <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-success">
+                  <div class="card-body">
+                    <h5 class="card-title">DDD: Restaurant <span class="badge" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">Deep Dive</span></h5>
+                    <p class="card-text">
+                      Comprehensive beginner's guide with in-depth DDD jargon explanations using Restaurant domain.
+                    </p>
+                    <a href="communication-protocols/domain-driven-design-tutorial-restaurant/" class="btn btn-primary">Open Tutorial</a>
                   </div>
                 </div>
               </div>
@@ -1148,21 +1160,61 @@
   <section class="mb-5 category-section" id="version-history">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2><i class="bi bi-clock-history text-info"></i> Version History</h2>
-      <span class="badge bg-info">v2.1.2</span>
+      <span class="badge bg-info">v2.1.3</span>
     </div>
 
     <div class="accordion" id="versionAccordion">
       
+      <!-- Version 2.1.3 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#v213">
+            <span class="badge bg-success me-2">Current</span>
+            <strong>Version 2.1.3</strong>
+            <small class="ms-2 text-muted">January 27, 2026</small>
+          </button>
+        </h2>
+        <div id="v213" class="accordion-collapse collapse show" data-bs-parent="#versionAccordion">
+          <div class="accordion-body">
+            <h5>🍽️ New Restaurant DDD Tutorial - Deep Beginner's Guide</h5>
+            
+            <h6 class="mt-3"><i class="bi bi-check-circle text-success"></i> New Tutorial Added</h6>
+            <ul>
+              <li><strong>Domain-Driven Design (Restaurant):</strong> Comprehensive beginner-focused tutorial using Restaurant Management domain</li>
+              <li>Deep explanations of every DDD jargon with Why/What/How/When/Trade-offs</li>
+              <li>Restaurant domain examples (Front-of-House, Kitchen, Inventory, Billing contexts)</li>
+              <li>Separate tutorial file for clarity and easy reference</li>
+            </ul>
+            
+            <h6 class="mt-3"><i class="bi bi-code-square text-primary"></i> Tutorial Features</h6>
+            <ul>
+              <li><strong>Beginner-Oriented:</strong> 200-400 word explanations for each concept</li>
+              <li><strong>Unique Domain:</strong> Restaurant/Food Ordering (not e-commerce)</li>
+              <li><strong>Trade-offs Discussion:</strong> Benefits vs costs for every pattern</li>
+              <li><strong>Practical Guidance:</strong> When to use vs when NOT to use each pattern</li>
+              <li><strong>Visual Learning:</strong> ASCII diagrams, PlantUML, comparison tables</li>
+              <li><strong>Copy Functionality:</strong> All code/diagrams have copy-to-clipboard buttons</li>
+            </ul>
+            
+            <h6 class="mt-3"><i class="bi bi-bar-chart text-success"></i> Statistics</h6>
+            <ul>
+              <li><strong>Available tutorials:</strong> 9 → 10</li>
+              <li>Communication Protocols (Available): 3 → 4</li>
+              <li>Total: 72 tutorials (10 Available, 62 Coming Soon)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
       <!-- Version 2.1.2 -->
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#v212">
-            <span class="badge bg-success me-2">Current</span>
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#v212">
             <strong>Version 2.1.2</strong>
             <small class="ms-2 text-muted">January 27, 2026</small>
           </button>
         </h2>
-        <div id="v212" class="accordion-collapse collapse show" data-bs-parent="#versionAccordion">
+        <div id="v212" class="accordion-collapse collapse" data-bs-parent="#versionAccordion">
           <div class="accordion-body">
             <h5>🤖 New Comprehensive DDD Tutorial</h5>
             
@@ -1188,7 +1240,7 @@
             <ul>
               <li><strong>Available tutorials:</strong> 8 → 9</li>
               <li>Communication Protocols (Available): 2 → 3</li>
-              <li>Total: 71 tutorials (9 Available, 62 Coming Soon)</li>
+              <li>Total: 71 tutorials (9 Available, 62 Coming Soon) → Updated in v2.1.3</li>
             </ul>
           </div>
         </div>
@@ -1466,8 +1518,8 @@
         </p>
         <div class="mt-3">
           <span class="badge bg-light text-dark me-2">Project Started: January 19, 2026</span>
-          <span class="badge bg-light text-dark me-2">Current Version: v2.1.2</span>
-          <span class="badge bg-light text-dark me-2">Total Tutorials: 71 (9 Available, 62 Coming Soon)</span>
+          <span class="badge bg-light text-dark me-2">Current Version: v2.1.3</span>
+          <span class="badge bg-light text-dark me-2">Total Tutorials: 72 (10 Available, 62 Coming Soon)</span>
           <span class="badge bg-light text-dark">Categories: 16 (5 Available, 11 Coming Soon)</span>
         </div>
         <p class="mb-0 mt-3" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.8;">
