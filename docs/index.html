@@ -128,7 +128,11 @@
             <i class="bi bi-list-stars"></i> Categories
           </a>
           <ul class="dropdown-menu">
-            <li><h6 class="dropdown-header">Available Now</h6></li>
+            <li><h6 class="dropdown-header">Available Now (5)</h6></li>
+            <li><a class="dropdown-item" href="#available"><i class="bi bi-tools"></i> Build Tools</a></li>
+            <li><a class="dropdown-item" href="#available"><i class="bi bi-broadcast"></i> Communication Protocols</a></li>
+            <li><a class="dropdown-item" href="#available"><i class="bi bi-terminal"></i> Command-Line Tools</a></li>
+            <li><a class="dropdown-item" href="#available"><i class="bi bi-palette"></i> Templates & Resources</a></li>
             <li><a class="dropdown-item" href="#available"><i class="bi bi-cash-coin"></i> Finance & Money</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><h6 class="dropdown-header">Coming Soon</h6></li>
@@ -166,13 +170,13 @@
     <div class="row justify-content-center mb-4">
       <div class="col-md-3">
         <div class="stats-card p-3 rounded bg-white text-dark">
-          <h3 class="mb-0" id="availableCount">7</h3>
+          <h3 class="mb-0" id="availableCount">8</h3>
           <small>Available Now</small>
         </div>
       </div>
       <div class="col-md-3">
         <div class="stats-card p-3 rounded bg-white text-dark">
-          <h3 class="mb-0" id="comingSoonCount">63</h3>
+          <h3 class="mb-0" id="comingSoonCount">62</h3>
           <small>Coming Soon</small>
         </div>
       </div>
@@ -203,7 +207,7 @@
   <section class="mb-5 category-section" id="available">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2><i class="bi bi-check-circle-fill text-success"></i> Available Now</h2>
-      <span class="badge bg-success">7 Tutorials</span>
+      <span class="badge bg-success">8 Tutorials</span>
     </div>
     
     <div class="alert alert-success">
@@ -244,7 +248,7 @@
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAvailableComm">
-            <i class="bi bi-broadcast me-2"></i> Communication Protocols <span class="badge bg-success ms-2">1</span>
+            <i class="bi bi-broadcast me-2"></i> Communication Protocols <span class="badge bg-success ms-2">2</span>
           </button>
         </h2>
         <div id="collapseAvailableComm" class="accordion-collapse collapse" data-bs-parent="#availableAccordion">
@@ -259,6 +263,18 @@
                       Real-time communication, full-duplex messaging.
                     </p>
                     <a href="websockets/" class="btn btn-primary">Open Tutorial</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Domain-Driven Design -->
+              <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-success">
+                  <div class="card-body">
+                    <h5 class="card-title">Domain-Driven Design</h5>
+                    <p class="card-text">
+                      Strategic design, bounded contexts, aggregates, and tactical patterns.
+                    </p>
+                    <a href="communication-protocols/domain-driven-design-tutorial-claude/" class="btn btn-primary">Open Tutorial</a>
                   </div>
                 </div>
               </div>
@@ -379,7 +395,7 @@
   <section class="mb-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2><i class="bi bi-hourglass-split text-warning"></i> Coming Soon</h2>
-      <span class="badge bg-warning text-dark">56 Tutorials</span>
+      <span class="badge bg-warning text-dark">62 Tutorials</span>
     </div>
     
     <div class="alert alert-info">
@@ -594,7 +610,7 @@
       <div class="accordion-item category-section" id="comm-coming">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCommComing">
-            <i class="bi bi-broadcast me-2"></i> Communication Protocols <span class="badge bg-primary ms-2">3</span>
+            <i class="bi bi-broadcast me-2"></i> Communication Protocols <span class="badge bg-primary ms-2">2</span>
           </button>
         </h2>
         <div id="collapseCommComing" class="accordion-collapse collapse" data-bs-parent="#categoriesAccordion">
@@ -618,15 +634,6 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card h-100 shadow-sm border-warning">
-          <div class="card-body">
-            <h5 class="card-title">Domain-Driven Design <span class="badge bg-warning text-dark">Coming Soon</span></h5>
-            <p class="card-text">Strategic design, bounded contexts, aggregates, and tactical patterns.</p>
-            <a href="coming-soon/communication-protocols/domain-driven-design-tutorial/" class="btn btn-outline-secondary disabled" aria-disabled="true">Coming Soon</a>
-          </div>
-        </div>
-              </div>
             </div>
           </div>
         </div>
@@ -1129,21 +1136,50 @@
   <section class="mb-5 category-section" id="version-history">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2><i class="bi bi-clock-history text-info"></i> Version History</h2>
-      <span class="badge bg-info">v2.1.0</span>
+      <span class="badge bg-info">v2.1.1</span>
     </div>
 
     <div class="accordion" id="versionAccordion">
       
+      <!-- Version 2.1.1 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#v211">
+            <span class="badge bg-success me-2">Current</span>
+            <strong>Version 2.1.1</strong>
+            <small class="ms-2 text-muted">January 27, 2026</small>
+          </button>
+        </h2>
+        <div id="v211" class="accordion-collapse collapse show" data-bs-parent="#versionAccordion">
+          <div class="accordion-body">
+            <h5>🎯 Tutorial Published</h5>
+            
+            <h6 class="mt-3"><i class="bi bi-check-circle text-success"></i> New Available Tutorial</h6>
+            <ul>
+              <li><strong>Domain-Driven Design:</strong> Now available! Strategic design, bounded contexts, aggregates, and tactical patterns.</li>
+              <li>Moved from Coming Soon to Available section under Communication Protocols</li>
+            </ul>
+            
+            <h6 class="mt-3"><i class="bi bi-bar-chart text-primary"></i> Statistics Update</h6>
+            <ul>
+              <li><strong>Available tutorials:</strong> 7 → 8</li>
+              <li><strong>Coming Soon tutorials:</strong> 63 → 62</li>
+              <li>Communication Protocols (Available): 1 → 2</li>
+              <li>Communication Protocols (Coming Soon): 3 → 2</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <!-- Version 2.1.0 -->
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#v210">
-            <span class="badge bg-success me-2">Current</span>
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#v210">
             <strong>Version 2.1.0</strong>
             <small class="ms-2 text-muted">January 27, 2026</small>
           </button>
         </h2>
-        <div id="v210" class="accordion-collapse collapse show" data-bs-parent="#versionAccordion">
+        <div id="v210" class="accordion-collapse collapse" data-bs-parent="#versionAccordion">
           <div class="accordion-body">
             <h5>📚 Content Expansion</h5>
             
@@ -1378,8 +1414,8 @@
         </p>
         <div class="mt-3">
           <span class="badge bg-light text-dark me-2">Project Started: January 19, 2026</span>
-          <span class="badge bg-light text-dark me-2">Current Version: v2.1.0</span>
-          <span class="badge bg-light text-dark me-2">Total Tutorials: 70 (7 Available, 63 Coming Soon)</span>
+          <span class="badge bg-light text-dark me-2">Current Version: v2.1.1</span>
+          <span class="badge bg-light text-dark me-2">Total Tutorials: 70 (8 Available, 62 Coming Soon)</span>
           <span class="badge bg-light text-dark">Categories: 16 (5 Available, 11 Coming Soon)</span>
         </div>
         <p class="mb-0 mt-3" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.8;">

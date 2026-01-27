@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain-Driven Design with Spring Boot - Complete Guide</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+        }
+        
+        body {
+            padding-top: 56px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+        
+        .jumbotron-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-icon {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        
+        .architecture-diagram {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+        
+        .layer-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            margin: 0.25rem;
+            font-weight: 600;
+        }
+        
+        .presentation-layer { background: #e3f2fd; color: #1565c0; }
+        .application-layer { background: #f3e5f5; color: #6a1b9a; }
+        .domain-layer { background: #fff3e0; color: #e65100; }
+        .infrastructure-layer { background: #e8f5e9; color: #2e7d32; }
+        
+        pre[class*="language-"] {
+            margin: 0;
+            border-radius: 0.5rem;
+        }
+        
+        .flow-step {
+            border-left: 3px solid var(--primary-color);
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .offcanvas {
+            width: 400px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .offcanvas {
+                width: 85% !important;
+            }
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbar-example">
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="welcomeToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-primary text-white">
+                <i class="bi bi-bookmark-star-fill me-2"></i>
+                <strong class="me-auto">Welcome!</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                <strong>Welcome to DDD Microservices Guide!</strong><br>
+                Explore comprehensive Domain-Driven Design patterns with Spring Boot.
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav id="navbar-example" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-diagram-3-fill"></i> DDD Microservices
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#overview">Overview</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#architecture">Architecture</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#concepts">DDD Concepts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#implementation">Implementation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#examples">Code Examples</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#diagrams">Diagrams</a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light btn-sm ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#quickReference">
+                            <i class="bi bi-journals"></i> Quick Ref
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Off-Canvas Quick Reference -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="quickReference">
+        <div class="offcanvas-header bg-primary text-white">
+            <h5 class="offcanvas-title">
+                <i class="bi bi-book"></i> Quick Reference
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <h6 class="text-primary"><i class="bi bi-terminal"></i> Tech Stack</h6>
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Spring Boot
+                    <span class="badge bg-success">v3.x</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    MongoDB
+                    <span class="badge bg-success">v6.x</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Apache Kafka
+                    <span class="badge bg-success">Latest</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Docker
+                    <span class="badge bg-success">Latest</span>
+                </li>
+            </ul>
+
+            <h6 class="text-primary"><i class="bi bi-key"></i> Key Patterns</h6>
+            <div class="list-group mb-3">
+                <a href="#" class="list-group-item list-group-item-action" 
+                   data-bs-toggle="popover" 
+                   data-bs-trigger="hover"
+                   data-bs-placement="left"
+                   data-bs-content="Objects with unique identity tracked through lifecycle">
+                    <i class="bi bi-box"></i> Entity
+                </a>
+                <a href="#" class="list-group-item list-group-item-action"
+                   data-bs-toggle="popover" 
+                   data-bs-trigger="hover"
+                   data-bs-placement="left"
+                   data-bs-content="Immutable objects defined by their attributes">
+                    <i class="bi bi-gem"></i> Value Object
+                </a>
+                <a href="#" class="list-group-item list-group-item-action"
+                   data-bs-toggle="popover" 
+                   data-bs-trigger="hover"
+                   data-bs-placement="left"
+                   data-bs-content="Cluster of domain objects treated as a single unit">
+                    <i class="bi bi-collection"></i> Aggregate
+                </a>
+                <a href="#" class="list-group-item list-group-item-action"
+                   data-bs-toggle="popover" 
+                   data-bs-trigger="hover"
+                   data-bs-placement="left"
+                   data-bs-content="Abstraction for data access and persistence">
+                    <i class="bi bi-database"></i> Repository
+                </a>
+            </div>
+
+            <h6 class="text-primary"><i class="bi bi-layers"></i> Layers</h6>
+            <div class="d-flex flex-column gap-2">
+                <span class="layer-badge presentation-layer">Presentation</span>
+                <span class="layer-badge application-layer">Application</span>
+                <span class="layer-badge domain-layer">Domain</span>
+                <span class="layer-badge infrastructure-layer">Infrastructure</span>
+            </div>
+
+            <hr>
+            
+            <h6 class="text-primary"><i class="bi bi-file-earmark-code"></i> Useful Links</h6>
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary btn-sm" onclick="showToast('GitHub', 'Repository link copied!')">
+                    <i class="bi bi-github"></i> GitHub Repo
+                </button>
+                <button class="btn btn-outline-primary btn-sm" onclick="showToast('Documentation', 'Opening docs...')">
+                    <i class="bi bi-file-text"></i> Documentation
+                </button>
+                <button class="btn btn-outline-primary btn-sm" onclick="showToast('Download', 'Starting download...')">
+                    <i class="bi bi-download"></i> Download Code
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        
+        <!-- Jumbotron Hero Section -->
+        <div id="overview" class="jumbotron-custom text-center">
+            <h1 class="display-4 fw-bold">
+                <i class="bi bi-diagram-3"></i> Domain-Driven Design
+            </h1>
+            <p class="lead">Complete Guide with Spring Boot, Microservices, Kafka, MongoDB & Docker</p>
+            <hr class="my-4 bg-white">
+            <p class="mb-4">Build scalable, maintainable enterprise applications using DDD principles and modern technologies</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <button class="btn btn-light btn-lg" onclick="showToast('Success', 'Ready to start coding!')">
+                    <i class="bi bi-play-fill"></i> Get Started
+                </button>
+                <button class="btn btn-outline-light btn-lg" data-bs-toggle="modal" data-bs-target="#videoModal">
+                    <i class="bi bi-camera-video"></i> Watch Tutorial
+                </button>
+            </div>
+        </div>
+
+        <!-- Video Modal -->
+        <div class="modal fade" id="videoModal" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="bi bi-play-circle"></i> DDD Tutorial Video</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="ratio ratio-16x9">
+                            <div class="d-flex align-items-center justify-content-center bg-dark text-white">
+                                <div class="text-center">
+                                    <i class="bi bi-camera-video display-1"></i>
+                                    <p class="mt-3">Video tutorial would be embedded here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Cards with Tooltips -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="feature-icon bg-primary bg-gradient text-white mx-auto">
+                            <i class="bi bi-boxes"></i>
+                        </div>
+                        <h5 class="card-title">Microservices</h5>
+                        <p class="card-text">Independent, scalable services</p>
+                        <button class="btn btn-sm btn-outline-primary" 
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="bottom" 
+                                data-bs-title="Build loosely coupled services that can be deployed independently">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="feature-icon bg-success bg-gradient text-white mx-auto">
+                            <i class="bi bi-diagram-3"></i>
+                        </div>
+                        <h5 class="card-title">DDD Patterns</h5>
+                        <p class="card-text">Battle-tested design patterns</p>
+                        <button class="btn btn-sm btn-outline-success"
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="bottom" 
+                                data-bs-title="Entities, Aggregates, Value Objects, Repositories and more">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="feature-icon bg-warning bg-gradient text-white mx-auto">
+                            <i class="bi bi-lightning-charge"></i>
+                        </div>
+                        <h5 class="card-title">Event-Driven</h5>
+                        <p class="card-text">Kafka message streaming</p>
+                        <button class="btn btn-sm btn-outline-warning"
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="bottom" 
+                                data-bs-title="Publish and subscribe to domain events for loose coupling">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body">
+                        <div class="feature-icon bg-info bg-gradient text-white mx-auto">
+                            <i class="bi bi-database"></i>
+                        </div>
+                        <h5 class="card-title">NoSQL Ready</h5>
+                        <p class="card-text">MongoDB integration</p>
+                        <button class="btn btn-sm btn-outline-info"
+                                data-bs-toggle="tooltip" 
+                                data-bs-placement="bottom" 
+                                data-bs-title="Flexible document storage perfect for aggregate persistence">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture Carousel -->
+        <section id="architecture" class="mb-5">
+            <h2 class="mb-4">
+                <i class="bi bi-building"></i> System Architecture
+                <span class="badge bg-primary ms-2">Interactive</span>
+            </h2>
+            
+            <div id="architectureCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#architectureCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#architectureCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#architectureCarousel" data-bs-slide-to="2"></button>
+                </div>
+                
+                <div class="carousel-inner">
+                    <!-- Slide 1: System Overview -->
+                    <div class="carousel-item active">
+                        <div class="architecture-diagram">
+<pre style="margin: 0;">
+┌─────────────────────────────────────────────────────────────┐
+│                  API Gateway / Client                       │
+└──────────────┬──────────────────────────┬───────────────────┘
+               │                          │
+       ┌───────▼────────┐        ┌────────▼────────┐
+       │  Order Service │        │ Customer Service│
+       │   (Port 8081)  │        │   (Port 8082)   │
+       └───────┬────────┘        └────────┬────────┘
+               │                          │
+       ┌───────▼────────┐        ┌────────▼────────┐
+       │   MongoDB      │        │   MongoDB       │
+       │  (orders-db)   │        │ (customers-db)  │
+       └───────┬────────┘        └────────┬────────┘
+               │                          │
+               └──────────┬───────────────┘
+                          │
+                    ┌─────▼──────┐
+                    │   Kafka    │
+                    │  (Events)  │
+                    └────────────┘
+</pre>
+                        </div>
+                        <div class="carousel-caption bg-dark bg-opacity-75 rounded p-3">
+                            <h5>High-Level System Architecture</h5>
+                            <p>Microservices communicate via Kafka events, each with dedicated MongoDB database</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 2: Layered Architecture -->
+                    <div class="carousel-item">
+                        <div class="architecture-diagram">
+<pre style="margin: 0;">
+┌─────────────────────────────────────────────────────┐
+│      Presentation Layer (Controllers)               │
+│  - REST endpoints                                   │
+│  - Request/Response DTOs                            │
+└──────────────────┬──────────────────────────────────┘
+                   │
+┌──────────────────▼──────────────────────────────────┐
+│      Application Layer (Use Cases)                  │
+│  - Application Services                             │
+│  - Command/Query handlers                           │
+│  - Event publishers                                 │
+└──────────────────┬──────────────────────────────────┘
+                   │
+┌──────────────────▼──────────────────────────────────┐
+│        Domain Layer (Business Logic)                │
+│  - Entities, Value Objects                          │
+│  - Aggregates                                       │
+│  - Domain Services                                  │
+│  - Domain Events                                    │
+└──────────────────┬──────────────────────────────────┘
+                   │
+┌──────────────────▼──────────────────────────────────┐
+│     Infrastructure Layer (Technical)                │
+│  - Repository implementations                       │
+│  - Kafka producers/consumers                        │
+│  - MongoDB configurations                           │
+└─────────────────────────────────────────────────────┘
+</pre>
+                        </div>
+                        <div class="carousel-caption bg-dark bg-opacity-75 rounded p-3">
+                            <h5>DDD Layered Architecture</h5>
+                            <p>Clean separation of concerns with Domain at the core</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Slide 3: Project Structure -->
+                    <div class="carousel-item">
+                        <div class="architecture-diagram">
+<pre style="margin: 0; font-size: 0.75rem;">
+order-service/
+├── src/main/java/com/example/order/
+│   ├── domain/
+│   │   ├── model/
+│   │   │   ├── Order.java              (Aggregate Root)
+│   │   │   ├── OrderId.java            (Value Object)
+│   │   │   ├── OrderItem.java          (Entity)
+│   │   │   ├── Money.java              (Value Object)
+│   │   │   └── OrderStatus.java        (Enum)
+│   │   ├── repository/
+│   │   │   └── OrderRepository.java    (Interface)
+│   │   ├── service/
+│   │   │   └── OrderDomainService.java
+│   │   └── event/
+│   │       └── OrderCreatedEvent.java
+│   ├── application/
+│   │   ├── service/
+│   │   │   └── OrderApplicationService.java
+│   │   └── dto/
+│   │       ├── CreateOrderRequest.java
+│   │       └── OrderResponse.java
+│   ├── infrastructure/
+│   │   ├── persistence/
+│   │   │   ├── OrderMongoRepository.java
+│   │   │   └── OrderDocument.java
+│   │   └── messaging/
+│   │       └── KafkaEventPublisher.java
+│   └── presentation/
+│       └── controller/
+│           └── OrderController.java
+└── pom.xml
+</pre>
+                        </div>
+                        <div class="carousel-caption bg-dark bg-opacity-75 rounded p-3">
+                            <h5>Project Structure</h5>
+                            <p>Organized by DDD layers for maximum maintainability</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="carousel-control-prev" type="button" data-bs-target="#architectureCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#architectureCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </section>
+
+        <!-- DDD Concepts Accordion -->
+        <section id="concepts" class="mb-5">
+            <h2 class="mb-4">
+                <i class="bi bi-lightbulb"></i> Core DDD Concepts
+            </h2>
+            
+            <div class="accordion" id="dddConceptsAccordion">
+                <!-- Entity -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#entity">
+                            <i class="bi bi-box text-primary me-2"></i>
+                            <strong>Entity</strong>
+                            <span class="badge bg-primary ms-2">Core Pattern</span>
+                        </button>
+                    </h2>
+                    <div id="entity" class="accordion-collapse collapse show" data-bs-parent="#dddConceptsAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Definition:</strong> An object with unique identity that is tracked through its lifecycle.</p>
+                            <p><strong>Key Characteristics:</strong></p>
+                            <ul>
+                                <li>Has a unique identifier (ID)</li>
+                                <li>Mutable - can change over time</li>
+                                <li>Identity remains constant</li>
+                                <li>Equality based on ID, not attributes</li>
+                            </ul>
+                            <p><strong>Example:</strong> <code>Order</code>, <code>Customer</code>, <code>Product</code></p>
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i>
+                                <strong>Real-world analogy:</strong> Think of a person - they have a unique identity (SSN) and their attributes (name, address) can change, but they're still the same person.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Value Object -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#valueObject">
+                            <i class="bi bi-gem text-success me-2"></i>
+                            <strong>Value Object</strong>
+                            <span class="badge bg-success ms-2">Core Pattern</span>
+                        </button>
+                    </h2>
+                    <div id="valueObject" class="accordion-collapse collapse" data-bs-parent="#dddConceptsAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Definition:</strong> Immutable object defined entirely by its attributes.</p>
+                            <p><strong>Key Characteristics:</strong></p>
+                            <ul>
+                                <li>No unique identifier</li>
+                                <li>Immutable - cannot change after creation</li>
+                                <li>Equality based on all attributes</li>
+                                <li>Can be freely shared and replaced</li>
+                            </ul>
+                            <p><strong>Example:</strong> <code>Money</code>, <code>Address</code>, <code>DateRange</code>, <code>Email</code></p>
+                            <div class="alert alert-success">
+                                <i class="bi bi-check-circle"></i>
+                                <strong>Best Practice:</strong> Use Value Objects to encapsulate validation logic and make your domain model more expressive.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aggregate -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#aggregate">
+                            <i class="bi bi-collection text-warning me-2"></i>
+                            <strong>Aggregate</strong>
+                            <span class="badge bg-warning text-dark ms-2">Advanced</span>
+                        </button>
+                    </h2>
+                    <div id="aggregate" class="accordion-collapse collapse" data-bs-parent="#dddConceptsAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Definition:</strong> A cluster of domain objects treated as a single unit with one root entity.</p>
+                            <p><strong>Key Characteristics:</strong></p>
+                            <ul>
+                                <li>Has one Aggregate Root (entry point)</li>
+                                <li>Enforces consistency boundaries</li>
+                                <li>External objects can only reference the root</li>
+                                <li>Saved/loaded as a complete unit</li>
+                            </ul>
+                            <p><strong>Example:</strong> <code>Order</code> (root) contains <code>OrderItem</code> entities</p>
+                            <div class="alert alert-warning">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <strong>Important:</strong> Keep aggregates small. Large aggregates can cause performance and concurrency issues.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Repository -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#repository">
+                            <i class="bi bi-database text-danger me-2"></i>
+                            <strong>Repository</strong>
+                            <span class="badge bg-danger ms-2">Infrastructure</span>
+                        </button>
+                    </h2>
+                    <div id="repository" class="accordion-collapse collapse" data-bs-parent="#dddConceptsAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Definition:</strong> Abstraction that provides collection-like interface for accessing domain objects.</p>
+                            <p><strong>Key Characteristics:</strong></p>
+                            <ul>
+                                <li>Hides persistence details</li>
+                                <li>One repository per Aggregate Root</li>
+                                <li>Defined as interface in Domain layer</li>
+                                <li>Implemented in Infrastructure layer</li>
+                            </ul>
+                            <p><strong>Example:</strong> <code>OrderRepository</code> with methods like <code>save()</code>, <code>findById()</code></p>
+                            <div class="alert alert-danger">
+                                <i class="bi bi-shield-check"></i>
+                                <strong>Isolation:</strong> Repositories protect domain logic from persistence concerns, allowing technology changes without domain modifications.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Domain Service -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#domainService">
+                            <i class="bi bi-gear text-info me-2"></i>
+                            <strong>Domain Service</strong>
+                        </button>
+                    </h2>
+                    <div id="domainService" class="accordion-collapse collapse" data-bs-parent="#dddConceptsAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Definition:</strong> Stateless service that contains domain logic not belonging to a specific entity.</p>
+                            <p><strong>When to Use:</strong></p>
+                            <ul>
+                                <li>Logic involves multiple aggregates</li>
+                                <li>Logic doesn't naturally fit in any entity</li>
+                                <li>Complex calculations or algorithms</li>
+                            </ul>
+                            <p><strong>Example:</strong> <code>PricingService</code>, <code>InventoryService</code></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Domain Events -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#domainEvents">
+                            <i class="bi bi-broadcast text-primary me-2"></i>
+                            <strong>Domain Events</strong>
+                            <span class="badge bg-info ms-2">Event-Driven</span>
+                        </button>
+                    </h2>
+                    <div id="domainEvents" class="accordion-collapse collapse" data-bs-parent="#dddConceptsAccordion">
+                        <div class="accordion-body">
+                            <p><strong>Definition:</strong> Something that happened in the domain that domain experts care about.</p>
+                            <p><strong>Key Characteristics:</strong></p>
+                            <ul>
+                                <li>Named in past tense (OrderCreated, PaymentProcessed)</li>
+                                <li>Immutable once created</li>
+                                <li>Contains relevant data about what happened</li>
+                                <li>Enables loose coupling between services</li>
+                            </ul>
+                            <p><strong>Example:</strong> <code>OrderCreatedEvent</code>, <code>CustomerRegisteredEvent</code></p>
+                            <div class="alert alert-info">
+                                <i class="bi bi-lightning"></i>
+                                <strong>Benefits:</strong> Events enable reactive architectures, audit trails, and eventual consistency across microservices.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Implementation with Tabs -->
+        <section id="implementation" class="mb-5">
+            <h2 class="mb-4">
+                <i class="bi bi-code-slash"></i> Implementation Guide
+            </h2>
+
+            <ul class="nav nav-tabs" id="implementationTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="domain-tab" data-bs-toggle="tab" data-bs-target="#domain-content" type="button">
+                        <i class="bi bi-box-seam"></i> Domain Layer
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="application-tab" data-bs-toggle="tab" data-bs-target="#application-content" type="button">
+                        <i class="bi bi-layers"></i> Application Layer
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="infrastructure-tab" data-bs-toggle="tab" data-bs-target="#infrastructure-content" type="button">
+                        <i class="bi bi-hdd-rack"></i> Infrastructure
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="presentation-tab" data-bs-toggle="tab" data-bs-target="#presentation-content" type="button">
+                        <i class="bi bi-window"></i> Presentation
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="config-tab" data-bs-toggle="tab" data-bs-target="#config-content" type="button">
+                        <i class="bi bi-gear"></i> Configuration
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content border border-top-0 p-4" id="implementationTabContent">
+                <!-- Domain Layer Tab -->
+                <div class="tab-pane fade show active" id="domain-content" role="tabpanel">
+                    <h4 class="mb-3">Domain Layer Implementation</h4>
+                    <p>The heart of your application - contains business logic and rules.</p>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-warning bg-opacity-10">
+                                    <strong><i class="bi bi-file-code"></i> Order.java (Aggregate Root)</strong>
+                                </div>
+                                <div class="card-body">
+                                    <pre class="mb-0"><code class="language-java">public class Order {
+    private OrderId orderId;
+    private String customerId;
+    private List&lt;OrderItem&gt; items;
+    private OrderStatus status;
+    private Money totalAmount;
+    
+    public void confirm() {
+        if (status != OrderStatus.PENDING) {
+            throw new IllegalStateException(
+                "Only pending orders can be confirmed"
+            );
+        }
+        this.status = OrderStatus.CONFIRMED;
+    }
+    
+    public void cancel() {
+        if (status == OrderStatus.SHIPPED) {
+            throw new IllegalStateException(
+                "Cannot cancel shipped orders"
+            );
+        }
+        this.status = OrderStatus.CANCELLED;
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-header bg-success bg-opacity-10">
+                                    <strong><i class="bi bi-file-code"></i> Money.java (Value Object)</strong>
+                                </div>
+                                <div class="card-body">
+                                    <pre class="mb-0"><code class="language-java">public class Money {
+    private final BigDecimal amount;
+    private final String currency;
+    
+    public Money(BigDecimal amount, String currency) {
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException(
+                "Amount must be positive"
+            );
+        }
+        this.amount = amount;
+        this.currency = currency;
+    }
+    
+    public Money add(Money other) {
+        if (!this.currency.equals(other.currency)) {
+            throw new IllegalArgumentException(
+                "Currency mismatch"
+            );
+        }
+        return new Money(
+            this.amount.add(other.amount), 
+            this.currency
+        );
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning mt-3">
+                        <i class="bi bi-star"></i> <strong>Key Point:</strong> Business rules live in the domain objects, not in services!
+                    </div>
+                </div>
+
+                <!-- Application Layer Tab -->
+                <div class="tab-pane fade" id="application-content" role="tabpanel">
+                    <h4 class="mb-3">Application Layer Implementation</h4>
+                    <p>Orchestrates use cases and coordinates domain objects.</p>
+                    
+                    <div class="card">
+                        <div class="card-header bg-primary bg-opacity-10">
+                            <strong><i class="bi bi-file-code"></i> OrderApplicationService.java</strong>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-java">@Service
+public class OrderApplicationService {
+    
+    private final OrderRepository orderRepository;
+    private final KafkaEventPublisher eventPublisher;
+    
+    @Transactional
+    public OrderResponse createOrder(CreateOrderRequest request) {
+        // 1. Map DTO to domain objects
+        List&lt;OrderItem&gt; items = request.getItems().stream()
+            .map(item -> new OrderItem(
+                item.getProductId(),
+                item.getQuantity(),
+                new Money(item.getUnitPrice(), "USD")
+            ))
+            .collect(Collectors.toList());
+        
+        // 2. Create domain object (business logic here)
+        Order order = new Order(request.getCustomerId(), items);
+        
+        // 3. Persist
+        Order savedOrder = orderRepository.save(order);
+        
+        // 4. Publish event
+        OrderCreatedEvent event = new OrderCreatedEvent(
+            savedOrder.getOrderId().getValue(),
+            savedOrder.getCustomerId(),
+            savedOrder.getTotalAmount().getAmount().toString()
+        );
+        eventPublisher.publishOrderCreated(event);
+        
+        // 5. Return response
+        return toResponse(savedOrder);
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-3">
+                        <i class="bi bi-info-circle"></i> Application services are thin orchestrators - they delegate to domain objects for business logic.
+                    </div>
+                </div>
+
+                <!-- Infrastructure Tab -->
+                <div class="tab-pane fade" id="infrastructure-content" role="tabpanel">
+                    <h4 class="mb-3">Infrastructure Layer Implementation</h4>
+                    <p>Technical implementations for persistence, messaging, etc.</p>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-danger bg-opacity-10">
+                                    <strong><i class="bi bi-database"></i> MongoDB Repository</strong>
+                                </div>
+                                <div class="card-body">
+                                    <pre><code class="language-java">@Repository
+public class OrderMongoRepository 
+    implements OrderRepository {
+    
+    private final MongoTemplate mongoTemplate;
+    
+    @Override
+    public Order save(Order order) {
+        OrderDocument doc = toDocument(order);
+        mongoTemplate.save(doc);
+        return order;
+    }
+    
+    @Override
+    public Optional&lt;Order&gt; findById(OrderId id) {
+        OrderDocument doc = mongoTemplate
+            .findById(id.getValue(), 
+                     OrderDocument.class);
+        return Optional.ofNullable(doc)
+            .map(this::toDomain);
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-info bg-opacity-10">
+                                    <strong><i class="bi bi-broadcast"></i> Kafka Publisher</strong>
+                                </div>
+                                <div class="card-body">
+                                    <pre><code class="language-java">@Component
+public class KafkaEventPublisher {
+    
+    private final KafkaTemplate&lt;String, String&gt; 
+        kafkaTemplate;
+    private final ObjectMapper objectMapper;
+    
+    public void publishOrderCreated(
+        OrderCreatedEvent event) {
+        try {
+            String message = objectMapper
+                .writeValueAsString(event);
+            kafkaTemplate.send(
+                "order-events", 
+                event.getOrderId(), 
+                message
+            );
+        } catch (Exception e) {
+            throw new RuntimeException(
+                "Failed to publish event", e
+            );
+        }
+    }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presentation Tab -->
+                <div class="tab-pane fade" id="presentation-content" role="tabpanel">
+                    <h4 class="mb-3">Presentation Layer - REST Controllers</h4>
+                    <p>HTTP endpoints for external clients.</p>
+                    
+                    <div class="card">
+                        <div class="card-header bg-success bg-opacity-10">
+                            <strong><i class="bi bi-window"></i> OrderController.java</strong>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-java">@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+    
+    private final OrderApplicationService orderService;
+    
+    @PostMapping
+    public ResponseEntity&lt;OrderResponse&gt; createOrder(
+        @RequestBody CreateOrderRequest request) {
+        OrderResponse response = orderService.createOrder(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+    
+    @GetMapping("/{orderId}")
+    public ResponseEntity&lt;OrderResponse&gt; getOrder(
+        @PathVariable String orderId) {
+        OrderResponse response = orderService.getOrder(orderId);
+        return ResponseEntity.ok(response);
+    }
+    
+    @PutMapping("/{orderId}/confirm")
+    public ResponseEntity&lt;OrderResponse&gt; confirmOrder(
+        @PathVariable String orderId) {
+        OrderResponse response = orderService.confirmOrder(orderId);
+        return ResponseEntity.ok(response);
+    }
+    
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity&lt;Void&gt; deleteOrder(
+        @PathVariable String orderId) {
+        orderService.deleteOrder(orderId);
+        return ResponseEntity.noContent().build();
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuration Tab -->
+                <div class="tab-pane fade" id="config-content" role="tabpanel">
+                    <h4 class="mb-3">Configuration Files</h4>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <strong><i class="bi bi-file-earmark-code"></i> application.yml</strong>
+                                </div>
+                                <div class="card-body">
+                                    <pre><code class="language-yaml">spring:
+  application:
+    name: order-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/orders-db
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+server:
+  port: 8081</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <strong><i class="bi bi-file-earmark-code"></i> docker-compose.yml</strong>
+                                </div>
+                                <div class="card-body">
+                                    <pre><code class="language-yaml">version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+      - kafka
+
+volumes:
+  mongo-data:</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CRUD Examples Section -->
+        <section id="examples" class="mb-5">
+            <h2 class="mb-4">
+                <i class="bi bi-journal-code"></i> Complete CRUD Examples
+            </h2>
+
+            <div class="row g-4">
+                <!-- CREATE -->
+                <div class="col-md-6">
+                    <div class="card border-success">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-plus-circle"></i> CREATE Order
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <h6>Request:</h6>
+                            <pre><code class="language-bash">POST /api/orders
+Content-Type: application/json
+
+{
+  "customerId": "cust-123",
+  "items": [
+    {
+      "productId": "prod-456",
+      "quantity": 2,
+      "unitPrice": 29.99
+    }
+  ]
+}</code></pre>
+                            
+                            <h6 class="mt-3">Flow:</h6>
+                            <div class="flow-step">
+                                <small><i class="bi bi-arrow-right"></i> Controller receives request</small>
+                            </div>
+                            <div class="flow-step">
+                                <small><i class="bi bi-arrow-right"></i> Application Service creates Order aggregate</small>
+                            </div>
+                            <div class="flow-step">
+                                <small><i class="bi bi-arrow-right"></i> Repository persists to MongoDB</small>
+                            </div>
+                            <div class="flow-step">
+                                <small><i class="bi bi-arrow-right"></i> Event published to Kafka</small>
+                            </div>
+                            <div class="flow-step">
+                                <small><i class="bi bi-check-circle text-success"></i> Return 201 Created</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- READ -->
+                <div class="col-md-6">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-eye"></i> READ Order
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <h6>Request:</h6>
+                            <pre><code class="language-bash">GET /api/orders/{orderId}</code></pre>
+                            
+                            <h6 class="mt-3">Response:</h6>
+                            <pre><code class="language-json">{
+  "orderId": "ord-789",
+  "customerId": "cust-123",
+  "status": "PENDING",
+  "totalAmount": 59.98,
+  "currency": "USD",
+  "items": [
+    {
+      "productId": "prod-456",
+      "quantity": 2,
+      "unitPrice": 29.99
+    }
+  ],
+  "createdAt": "2026-01-27T10:30:00"
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UPDATE -->
+                <div class="col-md-6">
+                    <div class="card border-warning">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">
+                                <i class="bi bi-pencil"></i> UPDATE Order
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <h6>Request:</h6>
+                            <pre><code class="language-bash">PUT /api/orders/{orderId}/confirm</code></pre>
+                            
+                            <h6 class="mt-3">Business Logic:</h6>
+                            <pre><code class="language-java">public void confirm() {
+    if (status != OrderStatus.PENDING) {
+        throw new IllegalStateException(
+            "Only pending orders can be confirmed"
+        );
+    }
+    this.status = OrderStatus.CONFIRMED;
+    this.updatedAt = LocalDateTime.now();
+}</code></pre>
+                            
+                            <div class="alert alert-warning mt-2 mb-0">
+                                <small><i class="bi bi-shield"></i> Domain enforces business rules!</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DELETE -->
+                <div class="col-md-6">
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-trash"></i> DELETE Order
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <h6>Request:</h6>
+                            <pre><code class="language-bash">DELETE /api/orders/{orderId}</code></pre>
+                            
+                            <h6 class="mt-3">Implementation:</h6>
+                            <pre><code class="language-java">@Transactional
+public void deleteOrder(String orderId) {
+    orderRepository.deleteById(
+        new OrderId(orderId)
+    );
+}</code></pre>
+                            
+                            <h6 class="mt-3">Response:</h6>
+                            <pre class="mb-0"><code class="language-bash">204 No Content</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diagrams Section -->
+        <section id="diagrams" class="mb-5">
+            <h2 class="mb-4">
+                <i class="bi bi-diagram-2"></i> Visual Diagrams
+            </h2>
+
+            <div class="row g-4">
+                <!-- Component Diagram Card -->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="bi bi-boxes"></i> Component Diagram</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="architecture-diagram">
+<pre style="margin: 0;">
+package "Order Service" {
+  [Order Controller]
+  [Order Application Service]
+  [Order Domain]
+  [Order Repository]
+  [Kafka Publisher]
+}
+
+database "MongoDB"
+queue "Kafka"
+
+[Order Controller] --> [Order Application Service] : uses
+[Order Application Service] --> [Order Domain] : orchestrates
+[Order Application Service] --> [Order Repository] : persists via
+[Order Application Service] --> [Kafka Publisher] : publishes events
+[Order Repository] --> "MongoDB" : stores
+[Kafka Publisher] --> "Kafka" : sends to
+
+Note: Order Domain Contains:
+  - Order (Aggregate Root)
+  - OrderItem (Entity)
+  - Money (Value Object)
+  - OrderId (Value Object)
+  - Business Logic
+</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sequence Diagram Card -->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="bi bi-arrow-left-right"></i> Sequence Diagram - Create Order</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="architecture-diagram">
+<pre style="margin: 0;">
+User              OrderController    OrderApplicationService    Order    OrderRepository    MongoDB    KafkaPublisher    Kafka
+ |                       |                    |                  |             |              |              |              |
+ |--POST /api/orders---->|                    |                  |             |              |              |              |
+ |                       |                    |                  |             |              |              |              |
+ |                       |--createOrder()---->|                  |             |              |              |              |
+ |                       |                    |                  |             |              |              |              |
+ |                       |                    |--new Order()---->|             |              |              |              |
+ |                       |                    |                  |             |              |              |              |
+ |                       |                    |                  |--validate() |              |              |              |
+ |                       |                    |                  |             |              |              |              |
+ |                       |                    |<------order------|             |              |              |              |
+ |                       |                    |                  |             |              |              |              |
+ |                       |                    |-------save()---->|             |              |              |              |
+ |                       |                    |                  |---insert--->|              |              |              |
+ |                       |                    |                  |             |--save------->|              |              |
+ |                       |                    |                  |             |<--saved------|              |              |
+ |                       |                    |<---savedOrder----|             |              |              |              |
+ |                       |                    |                  |             |              |              |              |
+ |                       |                    |--publishOrderCreated()-------->|              |              |              |
+ |                       |                    |                  |             |              |---send()---->|              |
+ |                       |                    |                  |             |              |              |--message---->|
+ |                       |                    |                  |             |              |              |<--ack--------|
+ |                       |                    |                  |             |              |<-------------|              |
+ |                       |                    |                  |             |              |              |              |
+ |                       |<--OrderResponse----|                  |             |              |              |              |
+ |                       |                    |                  |             |              |              |              |
+ |<--201 Created---------|                    |                  |             |              |              |              |
+ |   OrderResponse       |                    |                  |             |              |              |              |
+</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Class Diagram Card -->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="bi bi-diagram-3"></i> Class Diagram - Domain Model</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="architecture-diagram">
+<pre style="margin: 0;">
+┌────────────────────────────────┐
+│   Order «AggregateRoot»        │
+├────────────────────────────────┤
+│ - orderId: OrderId             │
+│ - customerId: String           │
+│ - items: List&lt;OrderItem&gt;       │
+│ - status: OrderStatus          │
+│ - totalAmount: Money           │
+│ - createdAt: LocalDateTime     │
+├────────────────────────────────┤
+│ + confirm(): void              │
+│ + cancel(): void               │
+│ + ship(): void                 │
+└───────────┬────────────────────┘
+            │ contains
+            │ 1..*
+            ▼
+┌────────────────────────────────┐         ┌──────────────────────┐
+│   OrderItem «Entity»           │         │ OrderId «ValueObject»│
+├────────────────────────────────┤         ├──────────────────────┤
+│ - productId: String            │         │ - value: String      │
+│ - quantity: int                │◄────────┤                      │
+│ - unitPrice: Money             │   1     ├──────────────────────┤
+├────────────────────────────────┤         │ + generate(): OrderId│
+│ + getTotalPrice(): Money       │         └──────────────────────┘
+└───────────┬────────────────────┘
+            │ has
+            │ 1
+            ▼
+┌────────────────────────────────┐
+│   Money «ValueObject»          │
+├────────────────────────────────┤
+│ - amount: BigDecimal           │
+│ - currency: String             │
+├────────────────────────────────┤
+│ + add(Money): Money            │
+└────────────────────────────────┘
+
+┌─────────────────────────────┐
+│ OrderStatus «Enumeration»   │
+├─────────────────────────────┤
+│ PENDING                     │
+│ CONFIRMED                   │
+│ SHIPPED                     │
+│ DELIVERED                   │
+│ CANCELLED                   │
+└─────────────────────────────┘
+
+┌────────────────────────────────────────┐
+│   «interface»                          │
+│   OrderRepository                      │
+├────────────────────────────────────────┤
+│ + save(Order): Order                   │
+│ + findById(OrderId): Optional&lt;Order&gt;   │
+│ + findByCustomerId(String): List&lt;Order&gt;│
+│ + findAll(): List&lt;Order&gt;               │
+│ + deleteById(OrderId): void            │
+└────────────────────────────────────────┘
+</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Best Practices Card Grid -->
+        <section class="mb-5">
+            <h2 class="mb-4">
+                <i class="bi bi-star"></i> Best Practices & Tips
+            </h2>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="card border-success h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">
+                                <i class="bi bi-check-circle"></i> Do's
+                            </h5>
+                            <ul class="list-unstyled">
+                                <li>✓ Keep aggregates small</li>
+                                <li>✓ Use Value Objects for validation</li>
+                                <li>✓ Make domain models rich in behavior</li>
+                                <li>✓ Use domain events for decoupling</li>
+                                <li>✓ Test domain logic thoroughly</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-danger h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-danger">
+                                <i class="bi bi-x-circle"></i> Don'ts
+                            </h5>
+                            <ul class="list-unstyled">
+                                <li>✗ Don't create anemic domain models</li>
+                                <li>✗ Don't put business logic in services</li>
+                                <li>✗ Don't create large aggregates</li>
+                                <li>✗ Don't expose internal state</li>
+                                <li>✗ Don't skip validation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-info h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-info">
+                                <i class="bi bi-lightbulb"></i> Tips
+                            </h5>
+                            <ul class="list-unstyled">
+                                <li>💡 Use ubiquitous language</li>
+                                <li>💡 Model behaviors, not data</li>
+                                <li>💡 Start with bounded contexts</li>
+                                <li>💡 Iterate and refine</li>
+                                <li>💡 Collaborate with domain experts</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="mb-5">
+            <div class="card bg-dark text-white">
+                <div class="card-body text-center p-5">
+                    <h2 class="mb-3">Ready to Build Your Microservices?</h2>
+                    <p class="lead mb-4">Start implementing Domain-Driven Design patterns today!</p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <button class="btn btn-primary btn-lg" onclick="showToast('Download', 'Source code package ready!')">
+                            <i class="bi bi-download"></i> Download Full Source Code
+                        </button>
+                        <button class="btn btn-outline-light btn-lg" onclick="showToast('Tutorial', 'Opening step-by-step guide...')">
+                            <i class="bi bi-book"></i> View Step-by-Step Tutorial
+                        </button>
+                        <button class="btn btn-outline-light btn-lg" data-bs-toggle="offcanvas" data-bs-target="#quickReference">
+                            <i class="bi bi-journals"></i> Quick Reference
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="bi bi-diagram-3"></i> DDD Microservices Guide</h5>
+                    <p class="text-muted">Complete guide to Domain-Driven Design with Spring Boot</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted mb-0">
+                        Built with <i class="bi bi-heart-fill text-danger"></i> using Bootstrap 5
+                    </p>
+                    <p class="text-muted">
+                        <a href="#" class="text-white text-decoration-none">Documentation</a> | 
+                        <a href="#" class="text-white text-decoration-none">GitHub</a> | 
+                        <a href="#" class="text-white text-decoration-none">Support</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+
+    <script>
+        // Initialize tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        // Initialize popovers
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+
+        // Show welcome toast on page load
+        window.addEventListener('load', function() {
+            const welcomeToast = new bootstrap.Toast(document.getElementById('welcomeToast'));
+            welcomeToast.show();
+        });
+
+        // Function to show custom toast messages
+        function showToast(title, message) {
+            // Create toast HTML
+            const toastHTML = `
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header bg-success text-white">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <strong class="me-auto">${title}</strong>
+                        <small>now</small>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+            
+            // Add to container
+            const container = document.querySelector('.toast-container');
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = toastHTML;
+            const toastElement = tempDiv.firstElementChild;
+            container.appendChild(toastElement);
+            
+            // Show toast
+            const toast = new bootstrap.Toast(toastElement);
+            toast.show();
+            
+            // Remove after hidden
+            toastElement.addEventListener('hidden.bs.toast', function() {
+                toastElement.remove();
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && href !== '#quickReference') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Auto-hide navbar on scroll down, show on scroll up
+        let lastScrollTop = 0;
+        const navbar = document.querySelector('.navbar');
+        
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                navbar.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+    </script>
+</body>
+</html>
+
