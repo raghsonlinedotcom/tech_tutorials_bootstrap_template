@@ -1,0 +1,2864 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" data-color-flavor="blue">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain-Driven Design Tutorial - Complete Guide with Spring Boot & Microservices</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Prism.js for Code Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root[data-bs-theme="light"] {
+            --jumbotron-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        :root[data-bs-theme="dark"] {
+            --jumbotron-bg: linear-gradient(135deg, #434343 0%, #000000 100%);
+        }
+        
+        :root[data-color-flavor="blue"] .navbar,
+        :root[data-color-flavor="blue"] .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        
+        :root[data-color-flavor="green"] .navbar,
+        :root[data-color-flavor="green"] .btn-primary {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border: none;
+        }
+        
+        :root[data-color-flavor="purple"] .navbar,
+        :root[data-color-flavor="purple"] .btn-primary {
+            background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+            border: none;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .jumbotron-custom {
+            background: var(--jumbotron-bg);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .version-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+        
+        .card {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .theme-controls {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .code-wrapper {
+            position: relative;
+        }
+        
+        .code-copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        
+        .code-copy-btn:hover {
+            opacity: 1;
+        }
+
+        .console-output {
+            white-space: pre-wrap;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            border-left: 4px solid #007acc;
+        }
+        
+        [data-bs-theme="dark"] .console-output {
+            background-color: #0d1117;
+            border-left-color: #58a6ff;
+        }
+
+        .ascii-art {
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            line-height: 1.2;
+        }
+        
+        .plantuml-container {
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+
+        .ddd-term {
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .example-box {
+            background-color: var(--bs-light-bg-subtle);
+            border: 1px solid var(--bs-border-color);
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Controls -->
+    <div class="theme-controls">
+        <div class="btn-group-vertical" role="group">
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="themeToggle" data-bs-toggle="tooltip" title="Toggle Dark/Light">
+                <i class="bi bi-moon-stars"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setColorFlavor('blue')" data-bs-toggle="tooltip" title="Blue Theme">
+                <i class="bi bi-circle-fill text-primary"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success" onclick="setColorFlavor('green')" data-bs-toggle="tooltip" title="Green Theme">
+                <i class="bi bi-circle-fill text-success"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-purple" onclick="setColorFlavor('purple')" data-bs-toggle="tooltip" title="Purple Theme">
+                <i class="bi bi-circle-fill" style="color: #6f42c1;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="bi bi-diagram-3"></i> Domain-Driven Design</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../../">Tutorials Index</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Fundamentals
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#introduction">Introduction</a></li>
+                            <li><a class="dropdown-item" href="#architecture">DDD Architecture</a></li>
+                            <li><a class="dropdown-item" href="#strategic-design">Strategic Design</a></li>
+                            <li><a class="dropdown-item" href="#tactical-design">Tactical Design</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Implementation
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#project-setup">Project Setup</a></li>
+                            <li><a class="dropdown-item" href="#crud-example">CRUD Example</a></li>
+                            <li><a class="dropdown-item" href="#microservices">Microservices</a></li>
+                            <li><a class="dropdown-item" href="#kafka-integration">Kafka Integration</a></li>
+                            <li><a class="dropdown-item" href="#docker">Docker Setup</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pros-cons">Pros & Cons</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#footer">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="container mt-4" id="home">
+        <div class="jumbotron-custom text-center">
+            <h1 class="display-4"><i class="bi bi-diagram-3"></i> Domain-Driven Design</h1>
+            <p class="lead">Master DDD with Spring Boot, Microservices, Kafka, MongoDB & Docker</p>
+            <p class="mt-3">
+                <span class="badge bg-light text-dark me-2">Spring Boot 3.x</span>
+                <span class="badge bg-light text-dark me-2">Microservices</span>
+                <span class="badge bg-light text-dark me-2">Apache Kafka</span>
+                <span class="badge bg-light text-dark me-2">MongoDB</span>
+                <span class="badge bg-light text-dark">Docker</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        
+        <!-- Introduction -->
+        <section id="introduction" class="mb-5">
+            <h2><i class="bi bi-book"></i> Introduction to Domain-Driven Design</h2>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">What is Domain-Driven Design?</h5>
+                    <p>Domain-Driven Design (DDD) is a software development approach that focuses on creating a shared understanding of the business domain between technical and non-technical stakeholders. It emphasizes modeling software to match the domain, using a ubiquitous language, and organizing code around business concepts.</p>
+                    
+                    <div class="alert alert-info">
+                        <strong><i class="bi bi-lightbulb"></i> Key Insight:</strong> DDD is not about technology—it's about aligning software with business needs through strategic and tactical patterns.
+                    </div>
+
+                    <h6 class="mt-4">Why Use DDD?</h6>
+                    <ul>
+                        <li><strong>Complexity Management:</strong> Handles complex business logic effectively</li>
+                        <li><strong>Shared Understanding:</strong> Creates common language between developers and domain experts</li>
+                        <li><strong>Flexibility:</strong> Adapts to changing business requirements</li>
+                        <li><strong>Modularity:</strong> Promotes clean separation of concerns</li>
+                        <li><strong>Maintainability:</strong> Easier to understand and modify over time</li>
+                    </ul>
+
+                    <h6 class="mt-4" id="architecture">Architecture Overview</h6>
+                    <div class="ascii-art">
+┌───────────────────────────────────────────────────────────────┐
+│                      DDD Architecture Layers                  │
+├───────────────────────────────────────────────────────────────┤
+│                                                               │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │           User Interface / Presentation Layer           │  │
+│  │  (REST Controllers, GraphQL, Web UI, Mobile Apps)       │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                            ▼                                  │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │              Application Layer                          │  │
+│  │  (Use Cases, Application Services, DTOs)                │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                            ▼                                  │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │               Domain Layer (Core)                       │  │
+│  │  ┌───────────┐  ┌──────────┐  ┌──────────────────┐      │  │
+│  │  │ Entities  │  │  Value   │  │  Domain Services │      │  │
+│  │  │           │  │  Objects │  │                  │      │  │
+│  │  └───────────┘  └──────────┘  └──────────────────┘      │  │
+│  │  ┌───────────┐  ┌──────────┐  ┌──────────────────┐      │  │
+│  │  │Aggregates │  │ Domain   │  │   Repositories   │      │  │
+│  │  │           │  │  Events  │  │   (Interfaces)   │      │  │
+│  │  └───────────┘  └──────────┘  └──────────────────┘      │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                            ▼                                  │
+│  ┌─────────────────────────────────────────────────────────┐  │
+│  │           Infrastructure Layer                          │  │
+│  │  (Persistence, External APIs, Messaging, Security)      │  │
+│  └─────────────────────────────────────────────────────────┘  │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategic Design -->
+        <section id="strategic-design" class="mb-5">
+            <h2><i class="bi bi-grid-3x3"></i> Strategic Design Patterns</h2>
+            
+            <!-- Bounded Context -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="ddd-term">
+                        <h4><i class="bi bi-box"></i> Bounded Context</h4>
+                        <p><strong>Definition:</strong> A boundary within which a particular domain model is defined and applicable. Each bounded context has its own ubiquitous language.</p>
+                        
+                        <div class="example-box">
+                            <h6><i class="bi bi-cart"></i> Real-World Example: E-Commerce Platform</h6>
+                            <p>In an e-commerce system, "Customer" means different things in different contexts:</p>
+                            <ul>
+                                <li><strong>Sales Context:</strong> Customer has orders, shipping address, payment methods</li>
+                                <li><strong>Support Context:</strong> Customer has tickets, communication history</li>
+                                <li><strong>Marketing Context:</strong> Customer has preferences, segments, campaign responses</li>
+                            </ul>
+                        </div>
+
+                        <h6 class="mt-3">Visual Representation</h6>
+                        <div class="plantuml-container">
+                            <pre>@startuml
+!theme plain
+
+package "E-Commerce System" {
+  
+  rectangle "Sales Bounded Context" as Sales {
+    class Customer {
+      +customerId: UUID
+      +name: String
+      +email: String
+      +shippingAddress
+      +paymentMethods
+      +orders: List<Order>
+    }
+    
+    class Order {
+      +orderId: UUID
+      +items: List<OrderItem>
+      +totalAmount: Money
+      +status: OrderStatus
+    }
+  }
+  
+  rectangle "Support Bounded Context" as Support {
+    class Customer {
+      +customerId: UUID
+      +name: String
+      +tickets: List<Ticket>
+      +communicationHistory
+    }
+    
+    class Ticket {
+      +ticketId: UUID
+      +subject: String
+      +status: TicketStatus
+      +messages: List<Message>
+    }
+  }
+  
+  rectangle "Marketing Bounded Context" as Marketing {
+    class Customer {
+      +customerId: UUID
+      +email: String
+      +preferences
+      +segments: List<Segment>
+      +campaigns
+    }
+    
+    class Campaign {
+      +campaignId: UUID
+      +name: String
+      +targetSegments
+    }
+  }
+}
+
+Sales -[hidden]-> Support
+Support -[hidden]-> Marketing
+
+@enduml</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ubiquitous Language -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="ddd-term">
+                        <h4><i class="bi bi-chat-text"></i> Ubiquitous Language</h4>
+                        <p><strong>Definition:</strong> A common language shared by developers and domain experts, used consistently in code, documentation, and conversations.</p>
+                        
+                        <div class="example-box">
+                            <h6><i class="bi bi-hospital"></i> Real-World Example: Healthcare System</h6>
+                            <p><strong>Scenario:</strong> Scheduling a medical appointment</p>
+                            
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="alert alert-danger">
+                                        <strong>❌ Without Ubiquitous Language:</strong>
+                                        <ul class="mt-2 mb-0">
+                                            <li>Developer: "Create booking record"</li>
+                                            <li>Code: <code>createRecord()</code></li>
+                                            <li>Database: <code>bookings</code> table</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-success">
+                                        <strong>✅ With Ubiquitous Language:</strong>
+                                        <ul class="mt-2 mb-0">
+                                            <li>Doctor: "Schedule appointment"</li>
+                                            <li>Code: <code>scheduleAppointment()</code></li>
+                                            <li>Database: <code>appointments</code> table</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Context Map -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="ddd-term">
+                        <h4><i class="bi bi-diagram-2"></i> Context Map</h4>
+                        <p><strong>Definition:</strong> A visual representation showing how different bounded contexts relate to and integrate with each other.</p>
+                        
+                        <div class="ascii-art mt-3">
+┌──────────────────────────────────────────────────────────────────────┐
+│                        E-Commerce Context Map                        │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│   ┌────────────────┐                                                 │
+│   │   Identity &   │                                                 │
+│   │ Authentication │ ◄─── Shared Kernel ────┐                        │
+│   │   Context      │                          │                      │
+│   └────────────────┘                          │                      │
+│          │                                    │                      │
+│          │ ACL (Anti-Corruption Layer)        │                      │
+│          ▼                                    ▼                      │
+│   ┌────────────────┐      Event-Driven   ┌────────────────┐          │
+│   │  Order         │◄────────────────────┤   Inventory    │          │
+│   │  Management    │    Domain Events    │   Management   │          │
+│   │  Context       │                     │   Context      │          │
+│   └────────────────┘                     └────────────────┘          │
+│          │                                        │                  │
+│          │ Published Language (REST API)          │                  │
+│          ▼                                        ▼                  │
+│   ┌────────────────┐      Conformist      ┌────────────────┐         │
+│   │   Payment      │◄─────────────────────┤   Shipping     │         │
+│   │   Context      │                      │   Context      │         │
+│   └────────────────┘                      └────────────────┘         │
+│          │                                                           │
+│          │ Customer-Supplier                                         │
+│          ▼                                                           │
+│   ┌────────────────┐                                                 │
+│   │ Notification   │                                                 │
+│   │   Context      │                                                 │
+│   └────────────────┘                                                 │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+
+Integration Patterns:
+• Shared Kernel: Two contexts share a subset of domain model
+• ACL: Translates between contexts to prevent corruption
+• Published Language: Well-defined interface (REST, GraphQL)
+• Customer-Supplier: Downstream depends on upstream
+• Conformist: Downstream conforms to upstream model
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tactical Design -->
+        <section id="tactical-design" class="mb-5">
+            <h2><i class="bi bi-puzzle"></i> Tactical Design Patterns</h2>
+            
+            <!-- Entity -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="ddd-term">
+                        <h4><i class="bi bi-fingerprint"></i> Entity</h4>
+                        <p><strong>Definition:</strong> An object with a unique identity that persists over time, even when its attributes change.</p>
+                        
+                        <div class="example-box">
+                            <h6><i class="bi bi-person-badge"></i> Real-World Example: Customer Entity</h6>
+                            <p>A customer is identifiable by their unique ID, even if their name, address, or email changes.</p>
+                        </div>
+
+                        <div class="accordion mt-3" id="entityCode">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#entityCodeContent">
+                                        <i class="bi bi-code-square me-2"></i> View Entity Implementation
+                                    </button>
+                                </h2>
+                                <div id="entityCodeContent" class="accordion-collapse collapse" data-bs-parent="#entityCode">
+                                    <div class="accordion-body">
+                                        <div class="code-wrapper">
+                                            <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                                <i class="bi bi-clipboard"></i> Copy
+                                            </button>
+                                            <pre><code class="language-java">package com.example.ecommerce.domain.model;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.UUID;
+
+/**
+ * Customer Entity - Has unique identity (customerId)
+ * Identity remains constant even when attributes change
+ */
+@Document(collection = "customers")
+public class Customer {
+    
+    @Id
+    private final String customerId;  // Unique identifier
+    private String name;
+    private Email email;              // Value Object
+    private Address shippingAddress;  // Value Object
+    private CustomerStatus status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    
+    // Private constructor enforces creation through factory method
+    private Customer(String customerId, String name, Email email) {
+        this.customerId = customerId;
+        this.name = Objects.requireNonNull(name, "Name cannot be null");
+        this.email = Objects.requireNonNull(email, "Email cannot be null");
+        this.status = CustomerStatus.ACTIVE;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+    
+    // Factory method
+    public static Customer create(String name, Email email) {
+        return new Customer(UUID.randomUUID().toString(), name, email);
+    }
+    
+    // Business method: Update shipping address
+    public void updateShippingAddress(Address newAddress) {
+        this.shippingAddress = Objects.requireNonNull(newAddress);
+        this.updatedAt = LocalDateTime.now();
+        // Domain event could be raised here
+    }
+    
+    // Business method: Deactivate customer
+    public void deactivate() {
+        if (this.status == CustomerStatus.INACTIVE) {
+            throw new IllegalStateException("Customer is already inactive");
+        }
+        this.status = CustomerStatus.INACTIVE;
+        this.updatedAt = LocalDateTime.now();
+    }
+    
+    // Identity-based equals and hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        Customer customer = (Customer) o;
+        return customerId.equals(customer.customerId);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(customerId);
+    }
+    
+    // Getters
+    public String getCustomerId() { return customerId; }
+    public String getName() { return name; }
+    public Email getEmail() { return email; }
+    public Address getShippingAddress() { return shippingAddress; }
+    public CustomerStatus getStatus() { return status; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+}
+
+enum CustomerStatus {
+    ACTIVE, INACTIVE, SUSPENDED
+}</code></pre>
+                                        </div>
+                                        
+                                        <div class="alert alert-info mt-3">
+                                            <strong><i class="bi bi-info-circle"></i> Key Points:</strong>
+                                            <ul class="mb-0">
+                                                <li><code>customerId</code> is immutable and unique</li>
+                                                <li>Equality based on identity, not attributes</li>
+                                                <li>Business methods encapsulate domain logic</li>
+                                                <li>Factory method controls object creation</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Value Object -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="ddd-term">
+                        <h4><i class="bi bi-gem"></i> Value Object</h4>
+                        <p><strong>Definition:</strong> An immutable object with no unique identity, defined entirely by its attributes. Two value objects with the same attributes are considered equal.</p>
+                        
+                        <div class="example-box">
+                            <h6><i class="bi bi-currency-dollar"></i> Real-World Example: Money Value Object</h6>
+                            <p>$50 USD is the same as any other $50 USD—it has no unique identity, only its amount and currency matter.</p>
+                        </div>
+
+                        <div class="accordion mt-3" id="valueObjectCode">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#valueObjectCodeContent">
+                                        <i class="bi bi-code-square me-2"></i> View Value Object Implementations
+                                    </button>
+                                </h2>
+                                <div id="valueObjectCodeContent" class="accordion-collapse collapse" data-bs-parent="#valueObjectCode">
+                                    <div class="accordion-body">
+                                        <div class="code-wrapper">
+                                            <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                                <i class="bi bi-clipboard"></i> Copy
+                                            </button>
+                                            <pre><code class="language-java">package com.example.ecommerce.domain.valueobject;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+import java.util.Objects;
+
+/**
+ * Money Value Object - Immutable, no identity
+ * Equality based on attributes (amount + currency)
+ */
+public final class Money {
+    
+    private final BigDecimal amount;
+    private final Currency currency;
+    
+    private Money(BigDecimal amount, Currency currency) {
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
+        }
+        this.amount = amount;
+        this.currency = Objects.requireNonNull(currency, "Currency cannot be null");
+    }
+    
+    public static Money of(BigDecimal amount, String currencyCode) {
+        return new Money(amount, Currency.getInstance(currencyCode));
+    }
+    
+    public static Money usd(double amount) {
+        return new Money(BigDecimal.valueOf(amount), Currency.getInstance("USD"));
+    }
+    
+    // Value object operations return new instances
+    public Money add(Money other) {
+        if (!this.currency.equals(other.currency)) {
+            throw new IllegalArgumentException("Cannot add different currencies");
+        }
+        return new Money(this.amount.add(other.amount), this.currency);
+    }
+    
+    public Money multiply(int multiplier) {
+        return new Money(
+            this.amount.multiply(BigDecimal.valueOf(multiplier)), 
+            this.currency
+        );
+    }
+    
+    public boolean isGreaterThan(Money other) {
+        if (!this.currency.equals(other.currency)) {
+            throw new IllegalArgumentException("Cannot compare different currencies");
+        }
+        return this.amount.compareTo(other.amount) > 0;
+    }
+    
+    // Attribute-based equals and hashCode
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Money)) return false;
+        Money money = (Money) o;
+        return amount.equals(money.amount) && currency.equals(money.currency);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(amount, currency);
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("%s %s", currency.getSymbol(), amount);
+    }
+    
+    public BigDecimal getAmount() { return amount; }
+    public Currency getCurrency() { return currency; }
+}
+
+// ===================================================================
+
+/**
+ * Email Value Object - Validates and encapsulates email address
+ */
+public final class Email {
+    
+    private final String value;
+    
+    private Email(String value) {
+        if (value == null || !isValid(value)) {
+            throw new IllegalArgumentException("Invalid email address: " + value);
+        }
+        this.value = value.toLowerCase();
+    }
+    
+    public static Email of(String email) {
+        return new Email(email);
+    }
+    
+    private static boolean isValid(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    }
+    
+    public String getValue() { return value; }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Email)) return false;
+        Email email = (Email) o;
+        return value.equals(email.value);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+    
+    @Override
+    public String toString() {
+        return value;
+    }
+}
+
+// ===================================================================
+
+/**
+ * Address Value Object - Represents a shipping/billing address
+ */
+public final class Address {
+    
+    private final String street;
+    private final String city;
+    private final String state;
+    private final String zipCode;
+    private final String country;
+    
+    private Address(String street, String city, String state, 
+                   String zipCode, String country) {
+        this.street = Objects.requireNonNull(street);
+        this.city = Objects.requireNonNull(city);
+        this.state = Objects.requireNonNull(state);
+        this.zipCode = Objects.requireNonNull(zipCode);
+        this.country = Objects.requireNonNull(country);
+    }
+    
+    public static Address of(String street, String city, String state, 
+                            String zipCode, String country) {
+        return new Address(street, city, state, zipCode, country);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Address)) return false;
+        Address address = (Address) o;
+        return street.equals(address.street) &&
+               city.equals(address.city) &&
+               state.equals(address.state) &&
+               zipCode.equals(address.zipCode) &&
+               country.equals(address.country);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(street, city, state, zipCode, country);
+    }
+    
+    // Getters omitted for brevity
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aggregate -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="ddd-term">
+                        <h4><i class="bi bi-collection"></i> Aggregate</h4>
+                        <p><strong>Definition:</strong> A cluster of domain objects (entities and value objects) treated as a single unit. An aggregate has a root entity that controls access to its members and enforces invariants.</p>
+                        
+                        <div class="example-box">
+                            <h6><i class="bi bi-cart3"></i> Real-World Example: Order Aggregate</h6>
+                            <p>An Order (aggregate root) contains OrderItems (entities). You cannot add/remove items directly—you must go through the Order.</p>
+                            
+                            <div class="ascii-art mt-3">
+┌─────────────────────────────────────────────────────┐
+│         Order Aggregate (Aggregate Root)            │
+├─────────────────────────────────────────────────────┤
+│  Order Entity (Root)                                │
+│  • orderId: UUID                                    │
+│  • customerId: UUID                                 │
+│  • status: OrderStatus                              │
+│  • totalAmount: Money                               │
+│  • createdAt: DateTime                              │
+│                                                     │
+│  ┌────────────────────────────────────────────┐     │
+│  │  OrderItem Entity (inside aggregate)       │     │
+│  │  • orderItemId: UUID                       │     │
+│  │  • productId: UUID                         │     │
+│  │  • quantity: int                           │     │
+│  │  • price: Money                            │     │
+│  └────────────────────────────────────────────┘     │
+│                                                     │
+│  ┌────────────────────────────────────────────┐     │
+│  │  ShippingInfo Value Object                 │     │
+│  │  • address: Address                        │     │
+│  │  • carrier: String                         │     │
+│  │  • trackingNumber: String                  │     │
+│  └────────────────────────────────────────────┘     │
+│                                                     │
+│  Business Rules (Invariants):                       │
+│  • Order must have at least one item                │
+│  • Total amount = sum of all item prices            │
+│  • Cannot modify order after it's shipped           │
+└─────────────────────────────────────────────────────┘
+
+External objects can only:
+✓ Reference Order by orderId
+✗ Cannot directly access OrderItems
+✗ Cannot create OrderItems independently
+                            </div>
+                        </div>
+
+                        <div class="accordion mt-3" id="aggregateCode">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#aggregateCodeContent">
+                                        <i class="bi bi-code-square me-2"></i> View Aggregate Implementation
+                                    </button>
+                                </h2>
+                                <div id="aggregateCodeContent" class="accordion-collapse collapse" data-bs-parent="#aggregateCode">
+                                    <div class="accordion-body">
+                                        <div class="code-wrapper">
+                                            <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                                <i class="bi bi-clipboard"></i> Copy
+                                            </button>
+                                            <pre><code class="language-java">package com.example.ecommerce.domain.aggregate;
+
+import com.example.ecommerce.domain.valueobject.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.LocalDateTime;
+import java.util.*;
+
+/**
+ * Order Aggregate Root
+ * Controls access to OrderItems and enforces business rules
+ */
+@Document(collection = "orders")
+public class Order {
+    
+    @Id
+    private final String orderId;
+    private final String customerId;
+    private final List<OrderItem> items;  // Aggregate members
+    private Money totalAmount;
+    private OrderStatus status;
+    private ShippingInfo shippingInfo;
+    private final LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    
+    // Private constructor
+    private Order(String orderId, String customerId) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.items = new ArrayList<>();
+        this.totalAmount = Money.usd(0);
+        this.status = OrderStatus.PENDING;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+    
+    // Factory method
+    public static Order create(String customerId) {
+        return new Order(UUID.randomUUID().toString(), customerId);
+    }
+    
+    // Business method: Add item to order
+    public void addItem(String productId, int quantity, Money price) {
+        validateOrderCanBeModified();
+        
+        // Check if product already in order
+        Optional<OrderItem> existing = items.stream()
+            .filter(item -> item.getProductId().equals(productId))
+            .findFirst();
+            
+        if (existing.isPresent()) {
+            existing.get().increaseQuantity(quantity);
+        } else {
+            items.add(new OrderItem(
+                UUID.randomUUID().toString(), 
+                productId, 
+                quantity, 
+                price
+            ));
+        }
+        
+        recalculateTotal();
+        this.updatedAt = LocalDateTime.now();
+    }
+    
+    // Business method: Remove item
+    public void removeItem(String orderItemId) {
+        validateOrderCanBeModified();
+        
+        items.removeIf(item -> item.getOrderItemId().equals(orderItemId));
+        
+        if (items.isEmpty()) {
+            throw new IllegalStateException("Order must have at least one item");
+        }
+        
+        recalculateTotal();
+        this.updatedAt = LocalDateTime.now();
+    }
+    
+    // Business method: Update shipping info
+    public void setShippingInfo(Address address, String carrier) {
+        validateOrderCanBeModified();
+        this.shippingInfo = new ShippingInfo(address, carrier);
+        this.updatedAt = LocalDateTime.now();
+    }
+    
+    // Business method: Submit order
+    public void submit() {
+        if (items.isEmpty()) {
+            throw new IllegalStateException("Cannot submit empty order");
+        }
+        if (shippingInfo == null) {
+            throw new IllegalStateException("Shipping info required");
+        }
+        if (status != OrderStatus.PENDING) {
+            throw new IllegalStateException("Can only submit pending orders");
+        }
+        
+        this.status = OrderStatus.SUBMITTED;
+        this.updatedAt = LocalDateTime.now();
+        
+        // Raise domain event
+        // DomainEventPublisher.publish(new OrderSubmittedEvent(this.orderId));
+    }
+    
+    // Business method: Ship order
+    public void ship(String trackingNumber) {
+        if (status != OrderStatus.SUBMITTED) {
+            throw new IllegalStateException("Can only ship submitted orders");
+        }
+        
+        this.shippingInfo.setTrackingNumber(trackingNumber);
+        this.status = OrderStatus.SHIPPED;
+        this.updatedAt = LocalDateTime.now();
+    }
+    
+    // Private method: Enforce invariant
+    private void validateOrderCanBeModified() {
+        if (status == OrderStatus.SHIPPED || status == OrderStatus.DELIVERED) {
+            throw new IllegalStateException(
+                "Cannot modify order in " + status + " status"
+            );
+        }
+    }
+    
+    // Private method: Maintain total consistency
+    private void recalculateTotal() {
+        this.totalAmount = items.stream()
+            .map(OrderItem::getLineTotal)
+            .reduce(Money.usd(0), Money::add);
+    }
+    
+    // Return unmodifiable list to protect aggregate boundary
+    public List<OrderItem> getItems() {
+        return Collections.unmodifiableList(items);
+    }
+    
+    // Getters
+    public String getOrderId() { return orderId; }
+    public String getCustomerId() { return customerId; }
+    public Money getTotalAmount() { return totalAmount; }
+    public OrderStatus getStatus() { return status; }
+    public ShippingInfo getShippingInfo() { return shippingInfo; }
+}
+
+// ===================================================================
+
+/**
+ * OrderItem Entity (inside Order aggregate)
+ * Cannot exist independently - managed by Order
+ */
+class OrderItem {
+    
+    private final String orderItemId;
+    private final String productId;
+    private int quantity;
+    private final Money price;
+    
+    OrderItem(String orderItemId, String productId, int quantity, Money price) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be positive");
+        }
+        this.orderItemId = orderItemId;
+        this.productId = productId;
+        this.quantity = quantity;
+        this.price = price;
+    }
+    
+    void increaseQuantity(int additionalQuantity) {
+        this.quantity += additionalQuantity;
+    }
+    
+    Money getLineTotal() {
+        return price.multiply(quantity);
+    }
+    
+    String getOrderItemId() { return orderItemId; }
+    String getProductId() { return productId; }
+    int getQuantity() { return quantity; }
+    Money getPrice() { return price; }
+}
+
+// ===================================================================
+
+enum OrderStatus {
+    PENDING, SUBMITTED, SHIPPED, DELIVERED, CANCELLED
+}
+
+class ShippingInfo {
+    private final Address address;
+    private final String carrier;
+    private String trackingNumber;
+    
+    ShippingInfo(Address address, String carrier) {
+        this.address = address;
+        this.carrier = carrier;
+    }
+    
+    void setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
+    }
+    
+    public Address getAddress() { return address; }
+    public String getCarrier() { return carrier; }
+    public String getTrackingNumber() { return trackingNumber; }
+}</code></pre>
+                                        </div>
+                                        
+                                        <div class="alert alert-success mt-3">
+                                            <strong><i class="bi bi-check-circle"></i> Aggregate Benefits:</strong>
+                                            <ul class="mb-0">
+                                                <li>Enforces business rules (invariants) consistently</li>
+                                                <li>Clear transactional boundaries</li>
+                                                <li>Prevents invalid states</li>
+                                                <li>Controls access to internal entities</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Domain Service -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="ddd-term">
+                        <h4><i class="bi bi-gear"></i> Domain Service</h4>
+                        <p><strong>Definition:</strong> A stateless service that contains domain logic that doesn't naturally fit within an entity or value object, often involving multiple aggregates.</p>
+                        
+                        <div class="example-box">
+                            <h6><i class="bi bi-currency-exchange"></i> Real-World Example: Fund Transfer</h6>
+                            <p>Transferring money between two bank accounts involves two Account aggregates and doesn't belong to either one exclusively.</p>
+                        </div>
+
+                        <div class="accordion mt-3" id="domainServiceCode">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#domainServiceCodeContent">
+                                        <i class="bi bi-code-square me-2"></i> View Domain Service Implementation
+                                    </button>
+                                </h2>
+                                <div id="domainServiceCodeContent" class="accordion-collapse collapse" data-bs-parent="#domainServiceCode">
+                                    <div class="accordion-body">
+                                        <div class="code-wrapper">
+                                            <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                                <i class="bi bi-clipboard"></i> Copy
+                                            </button>
+                                            <pre><code class="language-java">package com.example.ecommerce.domain.service;
+
+import com.example.ecommerce.domain.aggregate.Order;
+import com.example.ecommerce.domain.model.Product;
+import com.example.ecommerce.domain.repository.ProductRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * PricingService - Domain Service
+ * Handles complex pricing logic involving multiple entities
+ */
+@Service
+public class PricingService {
+    
+    private final ProductRepository productRepository;
+    
+    public PricingService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+    
+    /**
+     * Calculate order total with discounts and tax
+     * Involves Order aggregate, Product entities, and business rules
+     */
+    @Transactional(readOnly = true)
+    public Money calculateOrderTotal(Order order, DiscountPolicy discountPolicy) {
+        Money subtotal = order.getTotalAmount();
+        
+        // Apply quantity discounts
+        Money afterDiscount = applyQuantityDiscounts(order, subtotal);
+        
+        // Apply customer-specific discounts
+        Money afterCustomerDiscount = discountPolicy.apply(afterDiscount, order.getCustomerId());
+        
+        // Calculate and add tax
+        Money tax = calculateTax(afterCustomerDiscount, order.getShippingInfo().getAddress());
+        
+        return afterCustomerDiscount.add(tax);
+    }
+    
+    private Money applyQuantityDiscounts(Order order, Money subtotal) {
+        // Business logic: 10% off for orders > $100, 20% off for orders > $500
+        if (subtotal.isGreaterThan(Money.usd(500))) {
+            return subtotal.multiply(0.80);
+        } else if (subtotal.isGreaterThan(Money.usd(100))) {
+            return subtotal.multiply(0.90);
+        }
+        return subtotal;
+    }
+    
+    private Money calculateTax(Money amount, Address address) {
+        // Tax calculation based on shipping address
+        double taxRate = TaxRateCalculator.getRateForState(address.getState());
+        return Money.of(
+            amount.getAmount().multiply(BigDecimal.valueOf(taxRate)),
+            amount.getCurrency().getCurrencyCode()
+        );
+    }
+}
+
+// ===================================================================
+
+/**
+ * OrderFulfillmentService - Domain Service
+ * Coordinates order fulfillment across inventory and shipping
+ */
+@Service
+public class OrderFulfillmentService {
+    
+    private final InventoryService inventoryService;
+    private final ShippingService shippingService;
+    
+    public OrderFulfillmentService(InventoryService inventoryService, 
+                                  ShippingService shippingService) {
+        this.inventoryService = inventoryService;
+        this.shippingService = shippingService;
+    }
+    
+    /**
+     * Process order fulfillment
+     * Domain logic spanning multiple bounded contexts
+     */
+    @Transactional
+    public FulfillmentResult fulfillOrder(Order order) {
+        // Check inventory availability
+        boolean inventoryAvailable = inventoryService.checkAvailability(order);
+        
+        if (!inventoryAvailable) {
+            return FulfillmentResult.failure("Insufficient inventory");
+        }
+        
+        // Reserve inventory
+        inventoryService.reserve(order);
+        
+        try {
+            // Create shipment
+            String trackingNumber = shippingService.createShipment(order);
+            
+            // Update order with tracking
+            order.ship(trackingNumber);
+            
+            return FulfillmentResult.success(trackingNumber);
+            
+        } catch (Exception e) {
+            // Compensating action: release inventory
+            inventoryService.release(order);
+            throw e;
+        }
+    }
+}
+
+class FulfillmentResult {
+    private final boolean success;
+    private final String message;
+    private final String trackingNumber;
+    
+    private FulfillmentResult(boolean success, String message, String trackingNumber) {
+        this.success = success;
+        this.message = message;
+        this.trackingNumber = trackingNumber;
+    }
+    
+    static FulfillmentResult success(String trackingNumber) {
+        return new FulfillmentResult(true, "Order fulfilled successfully", trackingNumber);
+    }
+    
+    static FulfillmentResult failure(String message) {
+        return new FulfillmentResult(false, message, null);
+    }
+    
+    public boolean isSuccess() { return success; }
+    public String getMessage() { return message; }
+    public String getTrackingNumber() { return trackingNumber; }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Repository -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="ddd-term">
+                        <h4><i class="bi bi-database"></i> Repository</h4>
+                        <p><strong>Definition:</strong> An abstraction that provides access to aggregates, mimicking a collection interface. Hides persistence details from the domain layer.</p>
+                        
+                        <div class="example-box">
+                            <h6><i class="bi bi-box-seam"></i> Real-World Example: Order Repository</h6>
+                            <p>The domain treats OrderRepository as if it's working with an in-memory collection of orders, without knowing about MongoDB, SQL, or any persistence technology.</p>
+                        </div>
+
+                        <div class="accordion mt-3" id="repositoryCode">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#repositoryCodeContent">
+                                        <i class="bi bi-code-square me-2"></i> View Repository Implementation
+                                    </button>
+                                </h2>
+                                <div id="repositoryCodeContent" class="accordion-collapse collapse" data-bs-parent="#repositoryCode">
+                                    <div class="accordion-body">
+                                        <div class="code-wrapper">
+                                            <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                                <i class="bi bi-clipboard"></i> Copy
+                                            </button>
+                                            <pre><code class="language-java">package com.example.ecommerce.domain.repository;
+
+import com.example.ecommerce.domain.aggregate.Order;
+import com.example.ecommerce.domain.model.OrderStatus;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * OrderRepository Interface (in domain layer)
+ * Collection-like interface for Order aggregate
+ */
+public interface OrderRepository {
+    
+    // Collection-like operations
+    void save(Order order);
+    Optional<Order> findById(String orderId);
+    void delete(Order order);
+    
+    // Domain-specific queries
+    List<Order> findByCustomerId(String customerId);
+    List<Order> findByStatus(OrderStatus status);
+    List<Order> findPendingOrdersOlderThan(int hours);
+    boolean existsByCustomerIdAndStatus(String customerId, OrderStatus status);
+}
+
+// ===================================================================
+
+package com.example.ecommerce.infrastructure.persistence;
+
+import com.example.ecommerce.domain.aggregate.Order;
+import com.example.ecommerce.domain.repository.OrderRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Repository;
+import java.time.LocalDateTime;
+
+/**
+ * OrderRepositoryImpl (in infrastructure layer)
+ * MongoDB-specific implementation using Spring Data
+ */
+@Repository
+public interface OrderRepositoryImpl extends MongoRepository<Order, String>, OrderRepository {
+    
+    @Override
+    List<Order> findByCustomerId(String customerId);
+    
+    @Override
+    List<Order> findByStatus(OrderStatus status);
+    
+    @Query("{ 'status': 'PENDING', 'createdAt': { $lt: ?0 } }")
+    @Override
+    List<Order> findPendingOrdersOlderThan(int hours) {
+        LocalDateTime cutoffTime = LocalDateTime.now().minusHours(hours);
+        return findPendingOrdersCreatedBefore(cutoffTime);
+    }
+    
+    List<Order> findPendingOrdersCreatedBefore(LocalDateTime dateTime);
+    
+    @Override
+    boolean existsByCustomerIdAndStatus(String customerId, OrderStatus status);
+}</code></pre>
+                                        </div>
+                                        
+                                        <div class="alert alert-info mt-3">
+                                            <strong><i class="bi bi-info-circle"></i> Repository Pattern Benefits:</strong>
+                                            <ul class="mb-0">
+                                                <li>Domain layer doesn't know about MongoDB, SQL, etc.</li>
+                                                <li>Easy to swap persistence technology</li>
+                                                <li>Simplified testing with mock repositories</li>
+                                                <li>Queries expressed in domain terms</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Domain Events -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="ddd-term">
+                        <h4><i class="bi bi-broadcast"></i> Domain Events</h4>
+                        <p><strong>Definition:</strong> Something that happened in the domain that domain experts care about. Used to trigger side effects and communicate between bounded contexts.</p>
+                        
+                        <div class="example-box">
+                            <h6><i class="bi bi-bell"></i> Real-World Example: Order Submitted Event</h6>
+                            <p>When an order is submitted, multiple actions need to happen: send confirmation email, reserve inventory, notify warehouse, update analytics. Domain events decouple these actions.</p>
+                            
+                            <div class="ascii-art mt-3">
+┌────────────────────────────────────────────────────────────┐
+│            Domain Event Flow: OrderSubmittedEvent          │
+├────────────────────────────────────────────────────────────┤
+│                                                            │
+│   Order Aggregate                                          │
+│   ┌────────────┐                                           │
+│   │   Order    │  order.submit()                           │
+│   │            │ ──────────────► raises OrderSubmittedEvent│
+│   └────────────┘                          │                │
+│                                           │                │
+│                        ┌──────────────────┴─────────────┐  │
+│                        │     Event Publisher            │  │
+│                        │  (Kafka, RabbitMQ, In-Memory)  │  │
+│                        └──────────────────┬─────────────┘  │
+│                                           │                │
+│              ┌────────────────────────────┼────────┐       │
+│              │                            │        │       │
+│              ▼                            ▼        ▼       │
+│    ┌──────────────────┐      ┌─────────────────┐           │
+│    │ Email Service    │      │ Inventory Svc   │ ...       │
+│    │ sendConfirmation │      │ reserveItems    │           │
+│    └──────────────────┘      └─────────────────┘           │
+│                                                            │
+└────────────────────────────────────────────────────────────┘
+                            </div>
+                        </div>
+
+                        <div class="accordion mt-3" id="domainEventCode">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#domainEventCodeContent">
+                                        <i class="bi bi-code-square me-2"></i> View Domain Events Implementation
+                                    </button>
+                                </h2>
+                                <div id="domainEventCodeContent" class="accordion-collapse collapse" data-bs-parent="#domainEventCode">
+                                    <div class="accordion-body">
+                                        <div class="code-wrapper">
+                                            <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                                <i class="bi bi-clipboard"></i> Copy
+                                            </button>
+                                            <pre><code class="language-java">package com.example.ecommerce.domain.event;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+/**
+ * Base Domain Event
+ */
+public abstract class DomainEvent {
+    private final String eventId;
+    private final LocalDateTime occurredOn;
+    
+    protected DomainEvent() {
+        this.eventId = UUID.randomUUID().toString();
+        this.occurredOn = LocalDateTime.now();
+    }
+    
+    public String getEventId() { return eventId; }
+    public LocalDateTime getOccurredOn() { return occurredOn; }
+    public abstract String getEventType();
+}
+
+// ===================================================================
+
+package com.example.ecommerce.domain.event;
+
+import com.example.ecommerce.domain.valueobject.Money;
+
+/**
+ * OrderSubmittedEvent - Raised when order is submitted
+ */
+public class OrderSubmittedEvent extends DomainEvent {
+    
+    private final String orderId;
+    private final String customerId;
+    private final Money totalAmount;
+    private final int itemCount;
+    
+    public OrderSubmittedEvent(String orderId, String customerId, 
+                              Money totalAmount, int itemCount) {
+        super();
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.totalAmount = totalAmount;
+        this.itemCount = itemCount;
+    }
+    
+    @Override
+    public String getEventType() {
+        return "OrderSubmitted";
+    }
+    
+    public String getOrderId() { return orderId; }
+    public String getCustomerId() { return customerId; }
+    public Money getTotalAmount() { return totalAmount; }
+    public int getItemCount() { return itemCount; }
+}
+
+// ===================================================================
+
+/**
+ * OrderShippedEvent - Raised when order is shipped
+ */
+public class OrderShippedEvent extends DomainEvent {
+    
+    private final String orderId;
+    private final String customerId;
+    private final String trackingNumber;
+    private final String carrier;
+    
+    public OrderShippedEvent(String orderId, String customerId,
+                            String trackingNumber, String carrier) {
+        super();
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.trackingNumber = trackingNumber;
+        this.carrier = carrier;
+    }
+    
+    @Override
+    public String getEventType() {
+        return "OrderShipped";
+    }
+    
+    public String getOrderId() { return orderId; }
+    public String getCustomerId() { return customerId; }
+    public String getTrackingNumber() { return trackingNumber; }
+    public String getCarrier() { return carrier; }
+}
+
+// ===================================================================
+
+package com.example.ecommerce.infrastructure.messaging;
+
+import com.example.ecommerce.domain.event.DomainEvent;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * DomainEventPublisher - Infrastructure component
+ * Publishes domain events to Kafka
+ */
+@Component
+public class DomainEventPublisher {
+    
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
+    
+    public DomainEventPublisher(KafkaTemplate<String, String> kafkaTemplate,
+                               ObjectMapper objectMapper) {
+        this.kafkaTemplate = kafkaTemplate;
+        this.objectMapper = objectMapper;
+    }
+    
+    public void publish(DomainEvent event) {
+        try {
+            String topic = "domain-events." + event.getEventType();
+            String eventJson = objectMapper.writeValueAsString(event);
+            
+            kafkaTemplate.send(topic, event.getEventId(), eventJson);
+            
+            System.out.println("Published event: " + event.getEventType() + 
+                             " (ID: " + event.getEventId() + ")");
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to publish domain event", e);
+        }
+    }
+}
+
+// ===================================================================
+
+package com.example.ecommerce.application.eventhandler;
+
+import com.example.ecommerce.domain.event.OrderSubmittedEvent;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
+
+/**
+ * OrderEventHandler - Application Service
+ * Listens to domain events and triggers side effects
+ */
+@Component
+public class OrderEventHandler {
+    
+    private final EmailService emailService;
+    private final InventoryService inventoryService;
+    private final AnalyticsService analyticsService;
+    
+    public OrderEventHandler(EmailService emailService,
+                            InventoryService inventoryService,
+                            AnalyticsService analyticsService) {
+        this.emailService = emailService;
+        this.inventoryService = inventoryService;
+        this.analyticsService = analyticsService;
+    }
+    
+    @KafkaListener(topics = "domain-events.OrderSubmitted", groupId = "order-service")
+    public void handleOrderSubmitted(String eventJson) {
+        try {
+            OrderSubmittedEvent event = parseEvent(eventJson, OrderSubmittedEvent.class);
+            
+            // Send confirmation email
+            emailService.sendOrderConfirmation(event.getOrderId(), event.getCustomerId());
+            
+            // Reserve inventory
+            inventoryService.reserveForOrder(event.getOrderId());
+            
+            // Update analytics
+            analyticsService.recordOrderSubmitted(event);
+            
+        } catch (Exception e) {
+            // Handle error, retry logic, dead letter queue, etc.
+            System.err.println("Error handling OrderSubmittedEvent: " + e.getMessage());
+        }
+    }
+    
+    @KafkaListener(topics = "domain-events.OrderShipped", groupId = "order-service")
+    public void handleOrderShipped(String eventJson) {
+        OrderShippedEvent event = parseEvent(eventJson, OrderShippedEvent.class);
+        
+        // Send shipping notification
+        emailService.sendShippingNotification(
+            event.getOrderId(), 
+            event.getCustomerId(),
+            event.getTrackingNumber()
+        );
+    }
+    
+    private <T> T parseEvent(String json, Class<T> eventClass) {
+        // Parse JSON to event object
+        return new ObjectMapper().readValue(json, eventClass);
+    }
+}</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CRUD Example Implementation -->
+        <section id="crud-example" class="mb-5">
+            <h2><i class="bi bi-code-slash"></i> Complete CRUD Example</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Full-Stack Order Management CRUD</h5>
+                    <p>A complete working example demonstrating all DDD patterns in a Spring Boot application with MongoDB.</p>
+                    
+                    <div class="alert alert-warning">
+                        <strong><i class="bi bi-info-circle"></i> Project Structure:</strong>
+                        <div class="ascii-art mt-2">
+src/
+└── main/
+    └── java/
+        └── com/
+            └── example/
+                └── ecommerce/
+                    ├── domain/                # Domain Layer (Pure business logic)
+                    │   ├── aggregate/
+                    │   │   └── Order.java
+                    │   ├── model/
+                    │   │   └── Customer.java
+                    │   ├── valueobject/
+                    │   │   ├── Money.java
+                    │   │   ├── Email.java
+                    │   │   └── Address.java
+                    │   ├── event/
+                    │   │   └── OrderSubmittedEvent.java
+                    │   ├── service/
+                    │   │   └── PricingService.java
+                    │   └── repository/         # Interfaces only
+                    │       └── OrderRepository.java
+                    ├── application/            # Application Layer (Use cases)
+                    │   ├── service/
+                    │   │   └── OrderApplicationService.java
+                    │   └── dto/
+                    │       ├── CreateOrderRequest.java
+                    │       └── OrderResponse.java
+                    ├── infrastructure/         # Infrastructure Layer
+                    │   ├── persistence/
+                    │   │   └── OrderRepositoryImpl.java
+                    │   ├── messaging/
+                    │   │   └── KafkaEventPublisher.java
+                    │   └── config/
+                    │       └── MongoConfig.java
+                    └── interfaces/             # Presentation Layer
+                        └── rest/
+                            └── OrderController.java
+                        </div>
+                    </div>
+
+                    <!-- Project Setup -->
+                    <h5 class="mt-5" id="project-setup">Project Setup</h5>
+                    <div class="accordion mt-4" id="projectSetup">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#projectSetupContent">
+                                    <i class="bi bi-file-earmark-code me-2"></i> 1. Project Setup (pom.xml)
+                                </button>
+                            </h2>
+                            <div id="projectSetupContent" class="accordion-collapse collapse show" data-bs-parent="#projectSetup">
+                                <div class="accordion-body">
+                                    <p><strong>Configuration:</strong> Spring Boot 3.2, MongoDB, Kafka, Docker support</p>
+                                    <div class="code-wrapper">
+                                        <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                            <i class="bi bi-clipboard"></i> Copy
+                                        </button>
+                                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.2.0&lt;/version&gt;
+    &lt;/parent&gt;
+    
+    &lt;groupId&gt;com.example&lt;/groupId&gt;
+    &lt;artifactId&gt;ecommerce-ddd&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;name&gt;E-Commerce DDD Example&lt;/name&gt;
+    
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+    &lt;/properties&gt;
+    
+    &lt;dependencies&gt;
+        &lt;!-- Spring Boot Web --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        
+        &lt;!-- Spring Data MongoDB --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-mongodb&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        
+        &lt;!-- Spring Kafka --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.kafka&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-kafka&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        
+        &lt;!-- Validation --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        
+        &lt;!-- Lombok (optional, for reducing boilerplate) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        
+        &lt;!-- Testing --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Application Properties -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#appPropertiesContent">
+                                    <i class="bi bi-gear me-2"></i> 2. Application Configuration (application.yml)
+                                </button>
+                            </h2>
+                            <div id="appPropertiesContent" class="accordion-collapse collapse" data-bs-parent="#projectSetup">
+                                <div class="accordion-body">
+                                    <p><strong>Configuration:</strong> MongoDB connection, Kafka settings, logging</p>
+                                    <div class="code-wrapper">
+                                        <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                            <i class="bi bi-clipboard"></i> Copy
+                                        </button>
+                                        <pre><code class="language-yaml">spring:
+  application:
+    name: ecommerce-ddd
+  
+  # MongoDB Configuration
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ecommerce
+      database: ecommerce
+      auto-index-creation: true
+  
+  # Kafka Configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 3
+    consumer:
+      group-id: order-service
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# Logging
+logging:
+  level:
+    com.example.ecommerce: DEBUG
+    org.springframework.data.mongodb: INFO
+    org.springframework.kafka: INFO</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- REST Controller -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#restControllerContent">
+                                    <i class="bi bi-controller me-2"></i> 3. REST Controller (Presentation Layer)
+                                </button>
+                            </h2>
+                            <div id="restControllerContent" class="accordion-collapse collapse" data-bs-parent="#projectSetup">
+                                <div class="accordion-body">
+                                    <p><strong>Purpose:</strong> Exposes HTTP endpoints for order management</p>
+                                    <div class="code-wrapper">
+                                        <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                            <i class="bi bi-clipboard"></i> Copy
+                                        </button>
+                                        <pre><code class="language-java">package com.example.ecommerce.interfaces.rest;
+
+import com.example.ecommerce.application.dto.*;
+import com.example.ecommerce.application.service.OrderApplicationService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+import java.util.List;
+
+/**
+ * OrderController - REST API endpoints
+ * Presentation layer - translates HTTP to application layer
+ */
+@RestController
+@RequestMapping("/orders")
+public class OrderController {
+    
+    private final OrderApplicationService orderApplicationService;
+    
+    public OrderController(OrderApplicationService orderApplicationService) {
+        this.orderApplicationService = orderApplicationService;
+    }
+    
+    /**
+     * CREATE: Create new order
+     * POST /api/orders
+     */
+    @PostMapping
+    public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody CreateOrderRequest request) {
+        OrderResponse response = orderApplicationService.createOrder(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+    
+    /**
+     * READ: Get order by ID
+     * GET /api/orders/{orderId}
+     */
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable String orderId) {
+        OrderResponse response = orderApplicationService.getOrder(orderId);
+        return ResponseEntity.ok(response);
+    }
+    
+    /**
+     * READ: Get all orders for a customer
+     * GET /api/orders?customerId=123
+     */
+    @GetMapping
+    public ResponseEntity<List<OrderResponse>> getCustomerOrders(@RequestParam String customerId) {
+        List<OrderResponse> orders = orderApplicationService.getCustomerOrders(customerId);
+        return ResponseEntity.ok(orders);
+    }
+    
+    /**
+     * UPDATE: Add item to order
+     * POST /api/orders/{orderId}/items
+     */
+    @PostMapping("/{orderId}/items")
+    public ResponseEntity<OrderResponse> addItemToOrder(
+            @PathVariable String orderId,
+            @Valid @RequestBody AddOrderItemRequest request) {
+        OrderResponse response = orderApplicationService.addItemToOrder(orderId, request);
+        return ResponseEntity.ok(response);
+    }
+    
+    /**
+     * UPDATE: Submit order
+     * POST /api/orders/{orderId}/submit
+     */
+    @PostMapping("/{orderId}/submit")
+    public ResponseEntity<OrderResponse> submitOrder(@PathVariable String orderId) {
+        OrderResponse response = orderApplicationService.submitOrder(orderId);
+        return ResponseEntity.ok(response);
+    }
+    
+    /**
+     * UPDATE: Ship order
+     * POST /api/orders/{orderId}/ship
+     */
+    @PostMapping("/{orderId}/ship")
+    public ResponseEntity<OrderResponse> shipOrder(
+            @PathVariable String orderId,
+            @Valid @RequestBody ShipOrderRequest request) {
+        OrderResponse response = orderApplicationService.shipOrder(orderId, request);
+        return ResponseEntity.ok(response);
+    }
+    
+    /**
+     * DELETE: Cancel order
+     * DELETE /api/orders/{orderId}
+     */
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<Void> cancelOrder(@PathVariable String orderId) {
+        orderApplicationService.cancelOrder(orderId);
+        return ResponseEntity.noContent().build();
+    }
+    
+    /**
+     * Exception handler for validation errors
+     */
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalState(IllegalStateException ex) {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(new ErrorResponse(ex.getMessage()));
+    }
+}
+
+// DTOs
+record CreateOrderRequest(String customerId, Address shippingAddress) {}
+record AddOrderItemRequest(String productId, int quantity, double price, String currency) {}
+record ShipOrderRequest(String trackingNumber, String carrier) {}
+record ErrorResponse(String message) {}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Application Service -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#appServiceContent">
+                                    <i class="bi bi-layers me-2"></i> 4. Application Service (Use Cases)
+                                </button>
+                            </h2>
+                            <div id="appServiceContent" class="accordion-collapse collapse" data-bs-parent="#projectSetup">
+                                <div class="accordion-body">
+                                    <p><strong>Purpose:</strong> Orchestrates domain objects, manages transactions</p>
+                                    <div class="code-wrapper">
+                                        <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                            <i class="bi bi-clipboard"></i> Copy
+                                        </button>
+                                        <pre><code class="language-java">package com.example.ecommerce.application.service;
+
+import com.example.ecommerce.application.dto.*;
+import com.example.ecommerce.domain.aggregate.Order;
+import com.example.ecommerce.domain.event.*;
+import com.example.ecommerce.domain.repository.OrderRepository;
+import com.example.ecommerce.domain.valueobject.*;
+import com.example.ecommerce.infrastructure.messaging.DomainEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * OrderApplicationService - Application Layer
+ * Coordinates use cases, manages transactions
+ */
+@Service
+@Transactional
+public class OrderApplicationService {
+    
+    private final OrderRepository orderRepository;
+    private final DomainEventPublisher eventPublisher;
+    
+    public OrderApplicationService(OrderRepository orderRepository,
+                                  DomainEventPublisher eventPublisher) {
+        this.orderRepository = orderRepository;
+        this.eventPublisher = eventPublisher;
+    }
+    
+    /**
+     * Create new order (CREATE)
+     */
+    public OrderResponse createOrder(CreateOrderRequest request) {
+        // Create aggregate
+        Order order = Order.create(request.customerId());
+        
+        // Set shipping info
+        Address address = Address.of(
+            request.shippingAddress().street(),
+            request.shippingAddress().city(),
+            request.shippingAddress().state(),
+            request.shippingAddress().zipCode(),
+            request.shippingAddress().country()
+        );
+        order.setShippingInfo(address, "USPS");
+        
+        // Save
+        orderRepository.save(order);
+        
+        return toResponse(order);
+    }
+    
+    /**
+     * Get order by ID (READ)
+     */
+    @Transactional(readOnly = true)
+    public OrderResponse getOrder(String orderId) {
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+        
+        return toResponse(order);
+    }
+    
+    /**
+     * Get customer orders (READ)
+     */
+    @Transactional(readOnly = true)
+    public List<OrderResponse> getCustomerOrders(String customerId) {
+        List<Order> orders = orderRepository.findByCustomerId(customerId);
+        
+        return orders.stream()
+            .map(this::toResponse)
+            .collect(Collectors.toList());
+    }
+    
+    /**
+     * Add item to order (UPDATE)
+     */
+    public OrderResponse addItemToOrder(String orderId, AddOrderItemRequest request) {
+        // Load aggregate
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+        
+        // Business logic in aggregate
+        Money price = Money.of(
+            BigDecimal.valueOf(request.price()), 
+            request.currency()
+        );
+        order.addItem(request.productId(), request.quantity(), price);
+        
+        // Save modified aggregate
+        orderRepository.save(order);
+        
+        return toResponse(order);
+    }
+    
+    /**
+     * Submit order (UPDATE)
+     */
+    public OrderResponse submitOrder(String orderId) {
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+        
+        // Business logic
+        order.submit();
+        
+        // Save
+        orderRepository.save(order);
+        
+        // Publish domain event
+        OrderSubmittedEvent event = new OrderSubmittedEvent(
+            order.getOrderId(),
+            order.getCustomerId(),
+            order.getTotalAmount(),
+            order.getItems().size()
+        );
+        eventPublisher.publish(event);
+        
+        return toResponse(order);
+    }
+    
+    /**
+     * Ship order (UPDATE)
+     */
+    public OrderResponse shipOrder(String orderId, ShipOrderRequest request) {
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+        
+        // Business logic
+        order.ship(request.trackingNumber());
+        
+        // Save
+        orderRepository.save(order);
+        
+        // Publish event
+        OrderShippedEvent event = new OrderShippedEvent(
+            order.getOrderId(),
+            order.getCustomerId(),
+            request.trackingNumber(),
+            request.carrier()
+        );
+        eventPublisher.publish(event);
+        
+        return toResponse(order);
+    }
+    
+    /**
+     * Cancel order (DELETE)
+     */
+    public void cancelOrder(String orderId) {
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new IllegalArgumentException("Order not found: " + orderId));
+        
+        // Soft delete or status change
+        orderRepository.delete(order);
+    }
+    
+    /**
+     * Convert domain model to DTO
+     */
+    private OrderResponse toResponse(Order order) {
+        List<OrderItemDto> items = order.getItems().stream()
+            .map(item -> new OrderItemDto(
+                item.getOrderItemId(),
+                item.getProductId(),
+                item.getQuantity(),
+                item.getPrice().getAmount().doubleValue()
+            ))
+            .collect(Collectors.toList());
+        
+        return new OrderResponse(
+            order.getOrderId(),
+            order.getCustomerId(),
+            items,
+            order.getTotalAmount().getAmount().doubleValue(),
+            order.getStatus().name(),
+            order.getCreatedAt(),
+            order.getUpdatedAt()
+        );
+    }
+}
+
+// Response DTO
+record OrderResponse(
+    String orderId,
+    String customerId,
+    List<OrderItemDto> items,
+    double totalAmount,
+    String status,
+    LocalDateTime createdAt,
+    LocalDateTime updatedAt
+) {}
+
+record OrderItemDto(String itemId, String productId, int quantity, double price) {}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Docker Compose -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dockerContent">
+                                    <i class="bi bi-box me-2"></i> 5. Docker Compose Setup
+                                </button>
+                            </h2>
+                            <div id="dockerContent" class="accordion-collapse collapse" data-bs-parent="#projectSetup">
+                                <div class="accordion-body">
+                                    <p><strong>Purpose:</strong> Local development environment with MongoDB and Kafka</p>
+                                    <div class="code-wrapper">
+                                        <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                            <i class="bi bi-clipboard"></i> Copy
+                                        </button>
+                                        <pre><code class="language-yaml">version: '3.8'
+
+services:
+  # MongoDB
+  mongodb:
+    image: mongo:7.0
+    container_name: ecommerce-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: ecommerce
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - ecommerce-network
+  
+  # Zookeeper (required for Kafka)
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: ecommerce-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - ecommerce-network
+  
+  # Kafka
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: ecommerce-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+      - ecommerce-network
+  
+  # Spring Boot Application
+  app:
+    build: .
+    container_name: ecommerce-app
+    depends_on:
+      - mongodb
+      - kafka
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://admin:admin123@mongodb:27017/ecommerce?authSource=admin
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:</code></pre>
+                                    </div>
+                                    
+                                    <div class="alert alert-success mt-3">
+                                        <strong><i class="bi bi-terminal"></i> Quick Start Commands:</strong>
+                                        <div class="console-output mt-2"># Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f app
+
+# Stop all services
+docker-compose down
+
+# Clean up (removes volumes)
+docker-compose down -v</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- API Usage Examples -->
+                    <h5 class="mt-5">API Usage Examples</h5>
+                    <div class="console-output">
+# 1. CREATE Order
+curl -X POST http://localhost:8080/api/orders \
+  -H "Content-Type: application/json" \
+  -d '{
+    "customerId": "cust-123",
+    "shippingAddress": {
+      "street": "123 Main St",
+      "city": "New York",
+      "state": "NY",
+      "zipCode": "10001",
+      "country": "USA"
+    }
+  }'
+
+# Response:
+{
+  "orderId": "order-uuid-123",
+  "customerId": "cust-123",
+  "items": [],
+  "totalAmount": 0.0,
+  "status": "PENDING",
+  "createdAt": "2026-01-27T19:00:00",
+  "updatedAt": "2026-01-27T19:00:00"
+}
+
+# 2. ADD Item to Order
+curl -X POST http://localhost:8080/api/orders/order-uuid-123/items \
+  -H "Content-Type: application/json" \
+  -d '{
+    "productId": "prod-456",
+    "quantity": 2,
+    "price": 29.99,
+    "currency": "USD"
+  }'
+
+# 3. SUBMIT Order
+curl -X POST http://localhost:8080/api/orders/order-uuid-123/submit
+
+# 4. GET Order
+curl http://localhost:8080/api/orders/order-uuid-123
+
+# 5. GET Customer Orders
+curl http://localhost:8080/api/orders?customerId=cust-123
+
+# 6. SHIP Order
+curl -X POST http://localhost:8080/api/orders/order-uuid-123/ship \
+  -H "Content-Type: application/json" \
+  -d '{
+    "trackingNumber": "1Z999AA10123456784",
+    "carrier": "UPS"
+  }'
+
+# 7. CANCEL Order
+curl -X DELETE http://localhost:8080/api/orders/order-uuid-123
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kafka Integration -->
+        <section id="kafka-integration" class="mb-5">
+            <h2><i class="bi bi-lightning"></i> Kafka Integration with DDD</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Event-Driven Architecture with Apache Kafka</h5>
+                    <p>Kafka serves as the messaging backbone for publishing and consuming domain events across bounded contexts and microservices.</p>
+                    
+                    <h6 class="mt-4">Kafka Configuration for DDD</h6>
+                    <div class="accordion" id="kafkaConfig">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#kafkaConfigContent">
+                                    <i class="bi bi-gear me-2"></i> Kafka Configuration (application.yml)
+                                </button>
+                            </h2>
+                            <div id="kafkaConfigContent" class="accordion-collapse collapse show" data-bs-parent="#kafkaConfig">
+                                <div class="accordion-body">
+                                    <div class="code-wrapper">
+                                        <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                            <i class="bi bi-clipboard"></i> Copy
+                                        </button>
+                                        <pre><code class="language-yaml">spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 3
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: ecommerce-service
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    listener:
+      ack-mode: manual</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h6 class="mt-4">Topic Naming Strategy</h6>
+                    <div class="alert alert-info">
+                        <p><strong>Convention:</strong> <code>domain-events.{EventType}</code></p>
+                        <ul class="mb-0">
+                            <li><code>domain-events.OrderSubmitted</code></li>
+                            <li><code>domain-events.OrderShipped</code></li>
+                            <li><code>domain-events.OrderCancelled</code></li>
+                            <li><code>domain-events.PaymentProcessed</code></li>
+                        </ul>
+                    </div>
+                    
+                    <h6 class="mt-4">Event Publishing Pattern</h6>
+                    <div class="ascii-art">
+┌─────────────────────────────────────────────────────────┐
+│         Domain Event Publishing Flow                    │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│  1. Domain Action                                       │
+│     ▼                                                   │
+│  ┌──────────────────┐                                   │
+│  │ Order.submit()   │ (Business Logic)                 │
+│  └────────┬─────────┘                                   │
+│           │                                             │
+│           ▼                                             │
+│  2. Create Domain Event                                 │
+│  ┌───────────────────────────┐                          │
+│  │ OrderSubmittedEvent       │                          │
+│  │ - orderId                 │                          │
+│  │ - customerId              │                          │
+│  │ - timestamp               │                          │
+│  └─────────┬─────────────────┘                          │
+│            │                                            │
+│            ▼                                            │
+│  3. Publish to Kafka                                    │
+│  ┌───────────────────────────┐                          │
+│  │ DomainEventPublisher      │                          │
+│  │ .publish(event)           │                          │
+│  └─────────┬─────────────────┘                          │
+│            │                                            │
+│            ▼                                            │
+│  ┌───────────────────────────┐                          │
+│  │ Kafka Topic               │                          │
+│  │ domain-events.            │                          │
+│  │ OrderSubmitted            │                          │
+│  └─────────┬─────────────────┘                          │
+│            │                                            │
+│            ├───────────┬──────────────┐                 │
+│            ▼           ▼              ▼                 │
+│  ┌──────────────┐ ┌────────┐  ┌───────────┐            │
+│  │   Email      │ │Inventory│  │ Analytics │            │
+│  │   Service    │ │ Service │  │  Service  │            │
+│  └──────────────┘ └────────┘  └───────────┘            │
+│  (Consumers listening to the topic)                     │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+                    </div>
+                    
+                    <h6 class="mt-4">Benefits of Kafka with DDD</h6>
+                    <ul>
+                        <li><strong>Decoupling:</strong> Producers don't need to know about consumers</li>
+                        <li><strong>Scalability:</strong> Multiple consumers can process events independently</li>
+                        <li><strong>Reliability:</strong> Events are persisted and can be replayed</li>
+                        <li><strong>Ordering:</strong> Events within a partition maintain order</li>
+                        <li><strong>Event Sourcing:</strong> Complete audit trail of domain changes</li>
+                    </ul>
+                    
+                    <div class="alert alert-warning mt-3">
+                        <strong><i class="bi bi-exclamation-triangle"></i> Important Considerations:</strong>
+                        <ul class="mb-0">
+                            <li>Use idempotent consumers to handle duplicate events</li>
+                            <li>Implement error handling and dead letter queues</li>
+                            <li>Monitor consumer lag and processing times</li>
+                            <li>Version your event schemas for backward compatibility</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Docker Setup -->
+        <section id="docker" class="mb-5">
+            <h2><i class="bi bi-box"></i> Docker Setup</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Containerized DDD Application</h5>
+                    <p>Docker Compose orchestrates MongoDB, Kafka, Zookeeper, and the Spring Boot application.</p>
+                    
+                    <div class="accordion" id="dockerSetup">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#dockerComposeContent">
+                                    <i class="bi bi-file-earmark-code me-2"></i> docker-compose.yml
+                                </button>
+                            </h2>
+                            <div id="dockerComposeContent" class="accordion-collapse collapse show" data-bs-parent="#dockerSetup">
+                                <div class="accordion-body">
+                                    <div class="code-wrapper">
+                                        <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                            <i class="bi bi-clipboard"></i> Copy
+                                        </button>
+                                        <pre><code class="language-yaml">version: '3.8'
+
+services:
+  # MongoDB
+  mongodb:
+    image: mongo:7.0
+    container_name: ecommerce-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: ecommerce
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - ecommerce-network
+
+  # Zookeeper (required for Kafka)
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: ecommerce-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - ecommerce-network
+
+  # Kafka
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: ecommerce-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - ecommerce-network
+
+  # Spring Boot Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce-app
+    depends_on:
+      - mongodb
+      - kafka
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://admin:admin123@mongodb:27017/ecommerce?authSource=admin
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dockerfileContent">
+                                    <i class="bi bi-file-earmark-code me-2"></i> Dockerfile
+                                </button>
+                            </h2>
+                            <div id="dockerfileContent" class="accordion-collapse collapse" data-bs-parent="#dockerSetup">
+                                <div class="accordion-body">
+                                    <div class="code-wrapper">
+                                        <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)">
+                                            <i class="bi bi-clipboard"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dockerfile"># Build stage
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Run stage
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-success mt-4">
+                        <strong><i class="bi bi-terminal"></i> Quick Start Commands:</strong>
+                        <div class="console-output mt-2"># Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f app
+
+# Stop all services
+docker-compose down
+
+# Clean up (removes volumes)
+docker-compose down -v
+
+# Rebuild after code changes
+docker-compose up --build</div>
+                    </div>
+                    
+                    <h6 class="mt-4">Container Architecture</h6>
+                    <div class="ascii-art">
+┌─────────────────────────────────────────────────────┐
+│         Docker Container Network                    │
+├─────────────────────────────────────────────────────┤
+│                                                     │
+│  ┌──────────────────┐                              │
+│  │  Spring Boot App │  Port: 8080                  │
+│  │  (ecommerce-app) │                              │
+│  └────────┬─────────┘                              │
+│           │                                        │
+│           ├──────────────┬──────────────┐          │
+│           ▼              ▼              ▼          │
+│  ┌──────────────┐  ┌──────────┐  ┌──────────┐     │
+│  │   MongoDB    │  │  Kafka   │  │Zookeeper │     │
+│  │ Port: 27017  │  │Port: 9092│  │Port: 2181│     │
+│  └──────────────┘  └──────────┘  └──────────┘     │
+│                                                    │
+│  Network: ecommerce-network (bridge)               │
+│  Volume: mongodb_data (persistent storage)         │
+│                                                    │
+└─────────────────────────────────────────────────────┘
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Microservices Architecture -->
+        <section id="microservices" class="mb-5">
+            <h2><i class="bi bi-diagram-3"></i> Microservices with DDD</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">DDD Bounded Contexts as Microservices</h5>
+                    <p>Each bounded context can become an independent microservice with its own database and deployment.</p>
+                    
+                    <div class="ascii-art">
+┌────────────────────────────────────────────────────────────────────────────┐
+│                    E-Commerce Microservices Architecture                   │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│  ┌─────────────────┐     ┌─────────────────┐     ┌──────────────────┐      │
+│  │  Order Service  │     │ Inventory Svc   │     │  Customer Svc    │      │ 
+│  │  (Bounded Ctx)  │     │ (Bounded Ctx)   │     │ (Bounded Ctx)    │      │
+│  ├─────────────────┤     ├─────────────────┤     ├──────────────────┤      │
+│  │ Spring Boot App │     │ Spring Boot App │     │ Spring Boot App  │      │
+│  │                 │     │                 │     │                  │      │
+│  │ MongoDB         │     │ MongoDB         │     │ PostgreSQL       │      │
+│  └────────┬────────┘     └────────┬────────┘     └────────┬─────────┘      │
+│           │                       │                       │                │
+│           └───────────────────────┴───────────────────────┘                │
+│                                   │                                        │
+│                          ┌────────▼─────────┐                              │ 
+│                          │  Kafka Event Bus │                              │
+│                          │  (Message Broker)│                              │
+│                          └────────┬─────────┘                              │
+│                                   │                                        │
+│           ┌───────────────────────┼──────────────────────┐                 │
+│           │                       │                      │                 │
+│  ┌────────▼────────┐     ┌───────▼────────┐     ┌────────▼────────┐        │
+│  │ Payment Service │     │ Shipping Svc   │     │ Notification    │        │
+│  │                 │     │                │     │     Service     │        │
+│  │ PostgreSQL      │     │ MongoDB        │     │  (Email/SMS)    │        │
+│  └─────────────────┘     └────────────────┘     └─────────────────┘        │
+│                                                                            │
+│  ┌──────────────────────────────────────────────────────────────────┐      │
+│  │                      API Gateway (Spring Cloud Gateway)          │      │
+│  └──────────────────────────────────────────────────────────────────┘      │
+│                                 ▲                                          │
+│                                 │                                          │
+│                          Client Applications                               │
+│                      (Web, Mobile, Third-party)                            │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+Communication Patterns:
+• Synchronous: REST APIs for real-time queries
+• Asynchronous: Domain events via Kafka for eventual consistency
+• Each service owns its data (separate databases)
+                    </div>
+                    
+                    <h6 class="mt-4">Key Microservices Principles with DDD:</h6>
+                    <ul>
+                        <li><strong>Bounded Context = Microservice:</strong> Each context becomes a deployable service</li>
+                        <li><strong>Database per Service:</strong> Each service has its own database (polyglot persistence)</li>
+                        <li><strong>Event-Driven Communication:</strong> Services communicate via domain events</li>
+                        <li><strong>API Gateway:</strong> Single entry point for client applications</li>
+                        <li><strong>Service Discovery:</strong> Services register and discover each other dynamically</li>
+                        <li><strong>Distributed Tracing:</strong> Monitor requests across services</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pros and Cons -->
+        <section id="pros-cons" class="mb-5">
+            <h2><i class="bi bi-balance-scale"></i> Pros & Cons of Domain-Driven Design</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card border-success">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="bi bi-hand-thumbs-up"></i> Advantages</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="pros-cons-list">
+                                <li><strong>Better Business Alignment:</strong> Software matches business needs precisely</li>
+                                <li><strong>Ubiquitous Language:</strong> Shared vocabulary reduces miscommunication</li>
+                                <li><strong>Modularity:</strong> Clear boundaries make code easier to understand</li>
+                                <li><strong>Maintainability:</strong> Business logic centralized in domain layer</li>
+                                <li><strong>Testability:</strong> Domain logic can be tested in isolation</li>
+                                <li><strong>Scalability:</strong> Bounded contexts can scale independently</li>
+                                <li><strong>Flexibility:</strong> Easy to adapt to changing requirements</li>
+                                <li><strong>Team Organization:</strong> Teams can work on different contexts independently</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card border-danger">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0"><i class="bi bi-hand-thumbs-down"></i> Disadvantages</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="pros-cons-list">
+                                <li><strong>Complexity:</strong> Higher initial learning curve and setup cost</li>
+                                <li><strong>Over-Engineering:</strong> Not suitable for simple CRUD applications</li>
+                                <li><strong>Team Skill:</strong> Requires experienced developers familiar with DDD</li>
+                                <li><strong>Time Investment:</strong> Upfront modeling and design takes time</li>
+                                <li><strong>Distributed Challenges:</strong> Eventual consistency, distributed transactions</li>
+                                <li><strong>More Code:</strong> Value objects, aggregates add boilerplate</li>
+                                <li><strong>Context Mapping:</strong> Integration between contexts can be complex</li>
+                                <li><strong>Domain Expert Access:</strong> Requires ongoing collaboration with business</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-info mt-4">
+                <h6><i class="bi bi-lightbulb"></i> When to Use DDD:</h6>
+                <ul class="mb-0">
+                    <li>✅ Complex business logic with many rules and workflows</li>
+                    <li>✅ Long-term projects that will evolve over time</li>
+                    <li>✅ Multiple teams working on different parts of the system</li>
+                    <li>✅ Access to domain experts for collaboration</li>
+                    <li>❌ Simple CRUD applications with minimal business logic</li>
+                    <li>❌ Short-term projects or prototypes</li>
+                    <li>❌ Small teams without DDD experience</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 py-4 bg-dark text-white" id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="bi bi-person-circle"></i> Conceptually Authored By</h5>
+                    <p class="mb-1"><strong>Raghavan alias Saravanan Muthu</strong></p>
+                    <p>
+                        <a href="https://github.com/itsraghz" target="_blank" class="text-white">
+                            <i class="bi bi-github"></i> @itsraghz
+                        </a>
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5><i class="bi bi-robot"></i> Created By</h5>
+                    <p class="mb-1"><strong>Warp AI Agent</strong></p>
+                    <p class="text-muted">Tutorial content generated and structured by AI</p>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-1"><i class="bi bi-calendar-event"></i> Created: January 27, 2026</p>
+                    <p class="mb-0">
+                        <span class="badge bg-primary me-2">Spring Boot 3.x</span>
+                        <span class="badge bg-primary me-2">Microservices</span>
+                        <span class="badge bg-primary me-2">DDD</span>
+                        <span class="badge bg-primary">Kafka</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Version Badge -->
+    <div class="version-badge badge bg-primary">
+        v1.0.0 - January 2026
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js for Code Highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-bs-theme', newTheme);
+            
+            const icon = themeToggle.querySelector('i');
+            icon.className = newTheme === 'light' ? 'bi bi-moon-stars' : 'bi bi-sun';
+        });
+        
+        // Color Flavor
+        function setColorFlavor(flavor) {
+            html.setAttribute('data-color-flavor', flavor);
+        }
+        
+        // Code Copy Function
+        function copyCode(button) {
+            const codeBlock = button.parentElement.querySelector('code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                }, 2000);
+            });
+        }
+        
+        // Initialize Tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+        
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
