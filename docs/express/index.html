@@ -1,284 +1,3238 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light" data-color-flavor="green">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Express.js Tutorial - Build REST APIs with Node.js & Express</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
-  <style>
-    :root[data-bs-theme="light"] { --jumbotron-bg: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
-    :root[data-bs-theme="dark"] { --jumbotron-bg: linear-gradient(135deg, #434343 0%, #000000 100%); }
-    .navbar{box-shadow:0 2px 4px rgba(0,0,0,.1)} .jumbotron-custom{background:var(--jumbotron-bg);color:#fff;padding:4rem 2rem;border-radius:.5rem;margin-bottom:2rem;box-shadow:0 4px 6px rgba(0,0,0,.1)}
-    .code-wrapper{position:relative}.code-copy-btn{position:absolute;top:.5rem;right:.5rem;padding:.25rem .5rem;font-size:.75rem;opacity:.7;transition:opacity .3s;z-index:10}.code-copy-btn:hover{opacity:1}
-    pre{background:#2d2d2d;color:#ccc;padding:1rem;border-radius:.375rem;font-family:'Courier New',monospace;overflow-x:auto}
-    .console-output{white-space:pre-wrap;background:#1e1e1e;color:#d4d4d4;padding:1rem;border-radius:.375rem;font-family:'Courier New',Consolas,monospace;font-size:.875rem;overflow-x:auto;border-left:4px solid #007acc}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Express.js Tutorial - Complete Beginner to Advanced Guide</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Prism.js for Code Highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        :root[data-bs-theme="light"] {
+            --jumbotron-bg: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        :root[data-bs-theme="dark"] {
+            --jumbotron-bg: linear-gradient(135deg, #1f4037 0%, #99f2c8 100%);
+        }
+        
+        :root[data-color-flavor="green"] .navbar,
+        :root[data-color-flavor="green"] .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        
+        :root[data-color-flavor="green"] .navbar,
+        :root[data-color-flavor="green"] .btn-primary {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border: none;
+        }
+        
+        :root[data-color-flavor="purple"] .navbar,
+        :root[data-color-flavor="purple"] .btn-primary {
+            background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+            border: none;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .jumbotron-custom {
+            background: var(--jumbotron-bg);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .version-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+        
+        .card {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .theme-controls {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .comparison-table {
+            font-size: 0.9rem;
+        }
+
+        .code-wrapper {
+            position: relative;
+        }
+        
+        .code-copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        
+        .code-copy-btn:hover {
+            opacity: 1;
+        }
+
+        .console-output {
+            white-space: pre-wrap;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            border-left: 4px solid #007acc;
+        }
+        
+        [data-bs-theme="dark"] .console-output {
+            background-color: #0d1117;
+            border-left-color: #58a6ff;
+        }
+
+        .ascii-art {
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            line-height: 1.2;
+        }
+        
+        .plantuml-container {
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+
+        .pros-cons-list li {
+            padding: 0.5rem 0;
+        }
+    </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%)">
+    <!-- Theme Controls -->
+    <div class="theme-controls">
+        <div class="btn-group-vertical" role="group">
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="themeToggle" data-bs-toggle="tooltip" title="Toggle Dark/Light">
+                <i class="bi bi-moon-stars"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setColorFlavor('blue')" data-bs-toggle="tooltip" title="Blue Theme">
+                <i class="bi bi-circle-fill text-primary"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success" onclick="setColorFlavor('green')" data-bs-toggle="tooltip" title="Green Theme">
+                <i class="bi bi-circle-fill text-success"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-purple" onclick="setColorFlavor('purple')" data-bs-toggle="tooltip" title="Purple Theme">
+                <i class="bi bi-circle-fill" style="color: #6f42c1;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="bi bi-node-plus"></i> Express.js Tutorial</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="../">Tutorials Index</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Sections
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#introduction">Introduction</a></li>
+                            <li><a class="dropdown-item" href="#installation">Installation</a></li>
+                            <li><a class="dropdown-item" href="#architecture">Architecture</a></li>
+                            <li><a class="dropdown-item" href="#basic-usage">Basic Usage</a></li>
+                            <li><a class="dropdown-item" href="#filters">Filters & Operations</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#scenarios">Use Case Scenarios</a></li>
+                            <li><a class="dropdown-item" href="#comparison">Tool Comparison</a></li>
+                            <li><a class="dropdown-item" href="#pros-cons">Pros & Cons</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#version-history"><i class="bi bi-clock-history"></i> Version History</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Off Canvas TOC -->
+    <button class="btn btn-primary position-fixed" style="top: 80px; left: 20px; z-index: 999;" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas">
+        <i class="bi bi-list"></i> TOC
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="tocOffcanvas">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="list-group">
+                <a href="#introduction" class="list-group-item list-group-item-action">
+                    <i class="bi bi-1-circle"></i> Introduction & Objective
+                </a>
+                <a href="#installation" class="list-group-item list-group-item-action">
+                    <i class="bi bi-2-circle"></i> Installation
+                </a>
+                <a href="#architecture" class="list-group-item list-group-item-action">
+                    <i class="bi bi-3-circle"></i> Architecture & Ecosystem
+                </a>
+                <a href="#basic-usage" class="list-group-item list-group-item-action">
+                    <i class="bi bi-4-circle"></i> Basic Usage
+                </a>
+                <a href="#filters" class="list-group-item list-group-item-action">
+                    <i class="bi bi-5-circle"></i> Filters & Operations
+                </a>
+                <a href="#scenarios" class="list-group-item list-group-item-action">
+                    <i class="bi bi-6-circle"></i> Use Case Scenarios
+                </a>
+                <a href="#comparison" class="list-group-item list-group-item-action">
+                    <i class="bi bi-7-circle"></i> Tool Comparison
+                </a>
+                <a href="#pros-cons" class="list-group-item list-group-item-action">
+                    <i class="bi bi-8-circle"></i> Pros & Cons
+                </a>
+                <a href="#version-history" class="list-group-item list-group-item-action list-group-item-info">
+                    <i class="bi bi-clock-history"></i> Version History
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"><i class="bi bi-node-plus"></i> Express.js</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item"><a class="nav-link active" href="../">Tutorials Index</a></li>
-          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Sections</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#introduction">Introduction</a></li>
-              <li><a class="dropdown-item" href="#project-setup">Project Setup</a></li>
-              <li><a class="dropdown-item" href="#routing">Routing</a></li>
-              <li><a class="dropdown-item" href="#middleware">Middleware</a></li>
-              <li><a class="dropdown-item" href="#crud">CRUD API</a></li>
-              <li><a class="dropdown-item" href="#mongodb">MongoDB</a></li>
-              <li><a class="dropdown-item" href="#error-handling">Error Handling</a></li>
-              <li><a class="dropdown-item" href="#auth">Auth (JWT)</a></li>
-              <li><a class="dropdown-item" href="#testing">Testing</a></li>
-              <li><a class="dropdown-item" href="#deployment">Docker & Deployment</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Jumbotron / Hero Section -->
+                <div class="jumbotron-custom text-center" id="home">
+                    <h1 class="display-3"><i class="bi bi-node-plus"></i> Express.js - Build REST APIs with Node.js</h1>
+                    <p class="lead">A lightweight and flexible command-line Node.js web framework for building REST APIs and web applications</p>
+                    <hr class="my-4" style="border-color: rgba(255,255,255,0.3);">
+                    <p>Master building production-ready REST APIs with Express with jq's powerful filtering and transformation capabilities</p>
+                    <a class="btn btn-light btn-lg" href="#introduction" role="button">Get Started <i class="bi bi-arrow-right"></i></a>
+                </div>
 
-  <div class="container mt-4" id="home">
-    <div class="jumbotron-custom text-center">
-      <h1 class="display-4"><i class="bi bi-node-plus"></i> Express.js</h1>
-      <p class="lead">Build fast, minimalist REST APIs with Node.js & Express</p>
-      <p class="mt-3">
-        <span class="badge bg-light text-dark me-2">Node.js 20+</span>
-        <span class="badge bg-light text-dark me-2">Express 4/5</span>
-        <span class="badge bg-light text-dark me-2">MongoDB</span>
-        <span class="badge bg-light text-dark">Docker</span>
-      </p>
-    </div>
-  </div>
+                <!-- Alert Messages -->
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <i class="bi bi-info-circle"></i> <strong>Current Version:</strong> This tutorial covers jq version 1.7.1 (latest as of January 2026) with comprehensive examples and use cases.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
 
-  <div class="container">
-    <section id="introduction" class="mb-5">
-      <h2><i class="bi bi-book"></i> Introduction</h2>
-      <div class="card"><div class="card-body">
-        <p>Express.js is a minimalist web framework for Node.js that makes it easy to build HTTP APIs and web applications. This tutorial takes you from zero to production-ready REST APIs using Express, with best practices for structure, middleware, validation, authentication, and deployment.</p>
-        <ul>
-          <li>Project layout that scales</li>
-          <li>Routing and middleware patterns</li>
-          <li>CRUD with validation and pagination</li>
-          <li>MongoDB with Mongoose</li>
-          <li>Centralized error handling</li>
-          <li>JWT-based auth</li>
-          <li>Testing with Jest and Supertest</li>
-          <li>Dockerized deployment</li>
-        </ul>
-      </div></div>
-    </section>
+                <!-- Carousel for Key Features -->
+                <div id="tutorialCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#tutorialCarousel" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#tutorialCarousel" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#tutorialCarousel" data-bs-slide-to="2"></button>
+                        <button type="button" data-bs-target="#tutorialCarousel" data-bs-slide-to="3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="bg-primary text-white p-5 text-center" style="min-height: 300px;">
+                                <h3><i class="bi bi-filter-circle"></i> Powerful Filtering</h3>
+                                <p class="lead">Extract exactly what you need from complex JSON structures with intuitive filter syntax</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="bg-success text-white p-5 text-center" style="min-height: 300px;">
+                                <h3><i class="bi bi-arrow-left-right"></i> Data Transformation</h3>
+                                <p class="lead">Transform, reshape, and reformat JSON data with powerful built-in functions</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="bg-warning text-dark p-5 text-center" style="min-height: 300px;">
+                                <h3><i class="bi bi-terminal"></i> Command-Line Native</h3>
+                                <p class="lead">Seamlessly integrate with shell scripts, pipelines, and automation workflows</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="bg-danger text-white p-5 text-center" style="min-height: 300px;">
+                                <h3><i class="bi bi-lightning"></i> Lightweight & Fast</h3>
+                                <p class="lead">Process large JSON files efficiently with minimal memory footprint</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#tutorialCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#tutorialCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
 
-    <section id="project-setup" class="mb-5">
-      <h2><i class="bi bi-tools"></i> Project Setup</h2>
-      <div class="card"><div class="card-body">
-        <h5>Initialize project</h5>
-        <div class="code-wrapper">
-          <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
-<pre><code class="language-bash">mkdir express-api && cd express-api
-npm init -y
-npm i express dotenv cors morgan helmet zod mongoose jsonwebtoken bcryptjs
-npm i -D nodemon jest supertest @types/jest ts-node typescript @types/express @types/supertest @types/jsonwebtoken @types/bcryptjs
-npx tsc --init --rootDir src --outDir dist --esModuleInterop --resolveJsonModule --module commonjs --target es2020</code></pre>
-        </div>
-        <h5 class="mt-4">Recommended structure</h5>
-<pre><code class="language-text">express-api/
-├─ src/
-│  ├─ app.ts              # express app
-│  ├─ server.ts           # bootstrap
-│  ├─ config/             # env, db
-│  ├─ routes/             # routers
-│  ├─ controllers/        # route handlers
-│  ├─ services/           # business logic
-│  ├─ models/             # mongoose schemas
-│  ├─ middleware/         # custom middleware
-│  ├─ utils/              # helpers
-│  └─ tests/              # e2e and unit tests
-├─ .env
-├─ package.json
-├─ tsconfig.json
-└─ Dockerfile</code></pre>
-      </div></div>
-    </section>
+                <!-- Introduction Section -->
+                <div id="introduction" class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3><i class="bi bi-book"></i> Introduction - Why jq Was Invented</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>The Problem jq Solves</h5>
+                        <p class="lead">Before jq, working with JSON data on the command line was painful and error-prone.</p>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-danger"><i class="bi bi-x-circle"></i> Challenges Before jq</h6>
+                                        <ul>
+                                            <li>No native JSON parsing in shell scripts</li>
+                                            <li>Complex regex patterns needed for extraction</li>
+                                            <li>Writing custom scripts for simple tasks</li>
+                                            <li>No standard tool for JSON manipulation</li>
+                                            <li>Brittle parsing prone to errors</li>
+                                            <li>Difficulty handling nested structures</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-success"><i class="bi bi-check-circle"></i> Solutions with jq</h6>
+                                        <ul>
+                                            <li>Native JSON understanding</li>
+                                            <li>Declarative filter syntax</li>
+                                            <li>One-liner solutions for common tasks</li>
+                                            <li>Industry-standard tool</li>
+                                            <li>Type-safe operations</li>
+                                            <li>Deep nested data handling</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    <section id="routing" class="mb-5">
-      <h2><i class="bi bi-shuffle"></i> Routing</h2>
-      <div class="card"><div class="card-body">
-        <div class="code-wrapper">
-          <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
-<pre><code class="language-ts">// src/routes/user.routes.ts
-import { Router } from 'express';
-import * as ctrl from '../controllers/user.controller';
-import { requireAuth } from '../middleware/auth';
+                        <h5 class="mt-4">Historical Context</h5>
+                        <p>jq was created by <strong>Stephen Dolan</strong> in 2012 as a response to the growing prevalence of JSON in web APIs, configuration files, and data interchange formats. As JSON became ubiquitous in software development, the need for a specialized command-line tool that could efficiently parse, filter, and transform JSON data became apparent.</p>
+                        
+                        <div class="alert alert-info mt-3">
+                            <i class="bi bi-info-circle"></i> <strong>Design Philosophy:</strong> jq was designed to be like <code>sed</code> for JSON data - a simple, composable tool that does one thing exceptionally well: processing JSON from the command line.
+                        </div>
 
-const router = Router();
-router.get('/', requireAuth, ctrl.listUsers);
-router.post('/', ctrl.createUser);
-router.get('/:id', ctrl.getUser);
-router.patch('/:id', ctrl.updateUser);
-router.delete('/:id', ctrl.deleteUser);
-export default router;</code></pre>
-        </div>
-      </div></div>
-    </section>
+                        <h5 class="mt-4">Core Objectives</h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-bullseye display-4 text-primary"></i>
+                                        <h6 class="mt-3">Simplicity</h6>
+                                        <p class="small">Easy to learn syntax that feels natural for command-line users</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-gear display-4 text-success"></i>
+                                        <h6 class="mt-3">Composability</h6>
+                                        <p class="small">Filters can be chained and combined to build complex operations</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <i class="bi bi-lightning display-4 text-warning"></i>
+                                        <h6 class="mt-3">Performance</h6>
+                                        <p class="small">Written in C for speed and minimal resource usage</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-    <section id="middleware" class="mb-5">
-      <h2><i class="bi bi-diagram-3"></i> Middleware</h2>
-      <div class="card"><div class="card-body">
-<pre><code class="language-ts">// src/app.ts
-import express from 'express';
-import cors from 'cors';
-import helmet from 'helmet';
-import morgan from 'morgan';
-import userRouter from './routes/user.routes';
+                <!-- Installation Section -->
+                <div id="installation" class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h3><i class="bi bi-download"></i> Installation</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">jq is available on all major platforms and can be installed using package managers or from source.</p>
 
-const app = express();
-app.use(helmet());
-app.use(cors({ origin: '*' }));
-app.use(express.json());
-app.use(morgan('dev'));
-app.use('/api/users', userRouter);
-export default app;</code></pre>
-      </div></div>
-    </section>
+                        <div class="accordion" id="installAccordion">
+                            <!-- macOS Installation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#macos-install">
+                                        <i class="bi bi-apple me-2"></i> macOS Installation
+                                    </button>
+                                </h2>
+                                <div id="macos-install" class="accordion-collapse collapse show" data-bs-parent="#installAccordion">
+                                    <div class="accordion-body">
+                                        <h6>Using Homebrew (Recommended)</h6>
+                                        <div class="code-wrapper">
+                                            <button class="btn btn-sm btn-outline-secondary code-copy-btn" onclick="copyCode('macos-brew')">
+                                                <i class="bi bi-clipboard"></i> Copy
+                                            </button>
+                                            <pre id="macos-brew"><code class="language-bash">brew install jq</code></pre>
+                                        </div>
 
-    <section id="crud" class="mb-5">
-      <h2><i class="bi bi-braces"></i> CRUD API + Validation</h2>
-      <div class="card"><div class="card-body">
-<pre><code class="language-ts">// src/controllers/user.controller.ts
-import { Request, Response } from 'express';
-import * as service from '../services/user.service';
+                                        <h6 class="mt-3">Using MacPorts</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">sudo port install jq</code></pre>
+                                        </div>
 
-export async function listUsers(req: Request, res: Response) {
-  const users = await service.list();
-  res.json(users);
+                                        <h6 class="mt-3">Verification</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq --version</code></pre>
+                                        </div>
+                                        <div class="console-output">jq-1.7.1</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Linux Installation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#linux-install">
+                                        <i class="bi bi-ubuntu me-2"></i> Linux Installation
+                                    </button>
+                                </h2>
+                                <div id="linux-install" class="accordion-collapse collapse" data-bs-parent="#installAccordion">
+                                    <div class="accordion-body">
+                                        <h6>Ubuntu/Debian</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">sudo apt-get update
+sudo apt-get install jq</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">Fedora/RHEL/CentOS</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">sudo dnf install jq
+# or
+sudo yum install jq</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">Arch Linux</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">sudo pacman -S jq</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Windows Installation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#windows-install">
+                                        <i class="bi bi-windows me-2"></i> Windows Installation
+                                    </button>
+                                </h2>
+                                <div id="windows-install" class="accordion-collapse collapse" data-bs-parent="#installAccordion">
+                                    <div class="accordion-body">
+                                        <h6>Using Chocolatey</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-powershell">choco install jq</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">Using Scoop</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-powershell">scoop install jq</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">Manual Download</h6>
+                                        <p>Download the Windows executable from: <a href="https://github.com/jqlang/jq/releases" target="_blank">https://github.com/jqlang/jq/releases</a></p>
+                                        <p>Add the directory containing <code>jq.exe</code> to your PATH environment variable.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- From Source -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#source-install">
+                                        <i class="bi bi-code-square me-2"></i> Building from Source
+                                    </button>
+                                </h2>
+                                <div id="source-install" class="accordion-collapse collapse" data-bs-parent="#installAccordion">
+                                    <div class="accordion-body">
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">git clone https://github.com/jqlang/jq.git
+cd jq
+git submodule update --init
+autoreconf -fi
+./configure --with-oniguruma=builtin
+make -j8
+sudo make install</code></pre>
+                                        </div>
+                                        <div class="alert alert-warning mt-3">
+                                            <i class="bi bi-exclamation-triangle"></i> <strong>Dependencies:</strong> Building from source requires autotools, libtool, and other development libraries.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Architecture Section -->
+                <div id="architecture" class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h3><i class="bi bi-diagram-3"></i> Architecture, Ecosystem & Toolkit</h3>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs mb-3" id="archTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="arch-overview-tab" data-bs-toggle="tab" data-bs-target="#arch-overview" type="button">
+                                    <i class="bi bi-diagram-2"></i> Architecture
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="arch-ascii-tab" data-bs-toggle="tab" data-bs-target="#arch-ascii" type="button">
+                                    <i class="bi bi-grid"></i> ASCII Diagram
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="arch-plantuml-tab" data-bs-toggle="tab" data-bs-target="#arch-plantuml" type="button">
+                                    <i class="bi bi-diagram-3"></i> PlantUML
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="arch-plantuml-image-tab" data-bs-toggle="tab" data-bs-target="#arch-plantuml-image" type="button">
+                                    <i class="bi bi-diagram-3"></i> PlantUML Rendered Image
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="ecosystem-tab" data-bs-toggle="tab" data-bs-target="#ecosystem" type="button">
+                                    <i class="bi bi-globe"></i> Ecosystem
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="archTabsContent">
+                            <!-- Architecture Overview -->
+                            <div class="tab-pane fade show active" id="arch-overview" role="tabpanel">
+                                <h5>jq Architecture Overview</h5>
+                                <p>jq is built as a streaming JSON processor with a clear separation of concerns:</p>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-6">
+                                        <div class="card bg-light h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title"><i class="bi bi-layers"></i> Core Components</h6>
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Lexer:</strong> Tokenizes input JSON</li>
+                                                    <li><strong>Parser:</strong> Builds Abstract Syntax Tree (AST)</li>
+                                                    <li><strong>Compiler:</strong> Converts filters to bytecode</li>
+                                                    <li><strong>Runtime:</strong> Executes compiled filters</li>
+                                                    <li><strong>Memory Manager:</strong> Handles JSON values</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card bg-light h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title"><i class="bi bi-gear"></i> Design Patterns</h6>
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Streaming:</strong> Process large files efficiently</li>
+                                                    <li><strong>Functional:</strong> Immutable data transformations</li>
+                                                    <li><strong>Composable:</strong> Filters as building blocks</li>
+                                                    <li><strong>Lazy Evaluation:</strong> Compute only when needed</li>
+                                                    <li><strong>Generator-based:</strong> Multiple outputs per input</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h5 class="mt-4">Processing Pipeline</h5>
+                                <ol>
+                                    <li><strong>Input:</strong> JSON data from stdin, file, or argument</li>
+                                    <li><strong>Parsing:</strong> JSON text converted to internal representation</li>
+                                    <li><strong>Filter Compilation:</strong> jq filter expression compiled to bytecode</li>
+                                    <li><strong>Execution:</strong> Filter applied to parsed JSON</li>
+                                    <li><strong>Output:</strong> Results serialized to JSON and written to stdout</li>
+                                </ol>
+                            </div>
+
+                            <!-- ASCII Diagram -->
+                            <div class="tab-pane fade" id="arch-ascii" role="tabpanel">
+                                <h5>jq Processing Flow - ASCII Diagram</h5>
+                                <div class="ascii-art">
+┌────────────────────────────────────────────────────────────────────┐
+│                         jq Architecture                            │
+└────────────────────────────────────────────────────────────────────┘
+
+INPUT LAYER
+┌──────────┐   ┌──────────┐   ┌──────────┐
+│  stdin   │   │   File   │   │ Argument │
+└────┬─────┘   └─────┬────┘   └────┬─────┘
+     │               │             │
+     └───────────────┴─────────────┘
+                     │
+                     ▼
+         ┌─────────────────────┐
+         │   Input Buffer      │
+         └─────────┬───────────┘
+                   │
+                   ▼
+PARSING LAYER
+         ┌─────────────────────┐
+         │   Lexer/Tokenizer   │
+         │  (JSON Tokenize)    │
+         └─────────┬───────────┘
+                   │
+                   ▼
+         ┌─────────────────────┐
+         │    JSON Parser      │
+         │  (Build JSON Tree)  │
+         └─────────┬───────────┘
+                   │
+                   ▼
+         ┌─────────────────────┐
+         │   Internal JSON     │
+         │   Representation    │
+         └─────────┬───────────┘
+                   │
+                   ├──────────────────────┐
+                   │                      │
+                   ▼                      ▼
+FILTER LAYER
+         ┌─────────────────────┐   ┌─────────────────────┐
+         │  Filter Parser      │   │  Built-in Functions │
+         │  (Parse jq expr)    │   │  - map, select, etc │
+         └─────────┬───────────┘   └──────────┬──────────┘
+                   │                          │
+                   ▼                          │
+         ┌─────────────────────┐              │
+         │  Filter Compiler    │◄─────────────┘
+         │  (Generate bytecode)│
+         └─────────┬───────────┘
+                   │
+                   ▼
+EXECUTION LAYER
+         ┌─────────────────────┐
+         │  Virtual Machine    │
+         │  (Execute bytecode) │
+         └─────────┬───────────┘
+                   │
+                   ▼
+         ┌─────────────────────┐
+         │   Result Generator  │
+         │  (Multiple outputs) │
+         └─────────┬───────────┘
+                   │
+                   ▼
+OUTPUT LAYER
+         ┌─────────────────────┐
+         │   JSON Serializer   │
+         │  (Format output)    │
+         └─────────┬───────────┘
+                   │
+                   ▼
+         ┌─────────────────────┐
+         │      stdout         │
+         └─────────────────────┘
+
+MEMORY MANAGEMENT
+┌────────────────────────────────────┐
+│  Reference-counted JSON values     │
+│  Garbage collection for temp data  │
+└────────────────────────────────────┘
+</div>
+                            </div>
+
+                            <!-- PlantUML Diagram -->
+                            <div class="tab-pane fade" id="arch-plantuml" role="tabpanel">
+                                <h5>jq Sequence Diagram - PlantUML</h5>
+                                <div class="plantuml-container">
+                                    <pre><code class="language-plantuml">@startuml
+!theme plain
+
+actor User
+participant "CLI" as CLI
+participant "Input\nParser" as Parser
+participant "Filter\nCompiler" as Compiler
+participant "Runtime\nVM" as VM
+participant "JSON\nSerializer" as Serializer
+
+User -> CLI: jq '.users[] | select(.age > 25)' data.json
+activate CLI
+
+CLI -> Parser: Read & Parse JSON
+activate Parser
+Parser -> Parser: Tokenize JSON
+Parser -> Parser: Build JSON tree
+Parser --> CLI: JSON Object Tree
+deactivate Parser
+
+CLI -> Compiler: Compile filter expression
+activate Compiler
+Compiler -> Compiler: Parse filter syntax
+Compiler -> Compiler: Generate bytecode
+Compiler --> CLI: Compiled Filter
+deactivate Compiler
+
+CLI -> VM: Execute filter on JSON
+activate VM
+VM -> VM: Apply filter logic
+VM -> VM: Generate results
+VM --> CLI: Result stream
+deactivate VM
+
+CLI -> Serializer: Serialize results
+activate Serializer
+Serializer -> Serializer: Format as JSON
+Serializer --> CLI: JSON output
+deactivate Serializer
+
+CLI --> User: Display output
+deactivate CLI
+
+@enduml</code></pre>
+                                </div>
+                                <div class="alert alert-info mt-3">
+                                    <i class="bi bi-info-circle"></i> To render this PlantUML diagram, visit <a href="http://www.plantuml.com/plantuml/" target="_blank">PlantUML Server</a> and paste the code above.
+                                </div>
+                            </div>
+
+                            <!-- PlantUML Diagram -->
+                            <div class="tab-pane fade" id="arch-plantuml-image" role="tabpanel">
+                                <h5>jq Sequence Diagram - PlantUML Rendered</h5>
+                                <div class="plantuml-container">
+                                    <pre>
+	    <img src="images/jq-sequence-diagram-PlantUML.png" alt="jq Sequence Diagram PlantUML"/>
+				    </pre>
+                            	</div>
+			    </div>
+
+			    <!-- Ecosystem -->
+                            <div class="tab-pane fade" id="ecosystem" role="tabpanel">
+                                <h5>jq Ecosystem & Toolkit</h5>
+
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-primary text-white">
+                                                <i class="bi bi-tools"></i> Core Tools
+                                            </div>
+                                            <div class="card-body">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>jq</strong> - Main CLI tool</li>
+                                                    <li><strong>jq-web</strong> - Browser-based playground</li>
+                                                    <li><strong>gojq</strong> - Go implementation</li>
+                                                    <li><strong>jaq</strong> - Rust implementation</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-success text-white">
+                                                <i class="bi bi-plugin"></i> Language Bindings
+                                            </div>
+                                            <div class="card-body">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Python:</strong> pyjq, jq.py</li>
+                                                    <li><strong>Ruby:</strong> ruby-jq</li>
+                                                    <li><strong>Node.js:</strong> node-jq</li>
+                                                    <li><strong>Java:</strong> jackson-jq</li>
+                                                    <li><strong>Go:</strong> gojq library</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-header bg-info text-white">
+                                                <i class="bi bi-puzzle"></i> Extensions
+                                            </div>
+                                            <div class="card-body">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>VS Code:</strong> jq syntax extension</li>
+                                                    <li><strong>Vim:</strong> jq.vim plugin</li>
+                                                    <li><strong>Emacs:</strong> jq-mode</li>
+                                                    <li><strong>jqplay:</strong> Online playground</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h5 class="mt-4">Integration Points</h5>
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <h6 class="mb-1"><i class="bi bi-terminal"></i> Shell Integration</h6>
+                                        <p class="mb-1 small">Works seamlessly with bash, zsh, fish, and PowerShell</p>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <h6 class="mb-1"><i class="bi bi-server"></i> REST API Tools</h6>
+                                        <p class="mb-1 small">Commonly paired with curl, httpie, and wget</p>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <h6 class="mb-1"><i class="bi bi-database"></i> Data Processing</h6>
+                                        <p class="mb-1 small">Used in ETL pipelines with awk, sed, and grep</p>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <h6 class="mb-1"><i class="bi bi-cloud"></i> Cloud & DevOps</h6>
+                                        <p class="mb-1 small">Integrated with kubectl, aws-cli, terraform, and ansible</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Basic Usage Section -->
+                <div id="basic-usage" class="card mb-4">
+                    <div class="card-header bg-warning">
+                        <h3><i class="bi bi-play-circle"></i> Basic Usage & Syntax</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>Command Structure</h5>
+                        <div class="code-wrapper">
+                            <pre><code class="language-bash">jq [options] &lt;filter&gt; [file...]</code></pre>
+                        </div>
+
+                        <h5 class="mt-4">Common Options & Flags</h5>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Option</th>
+                                    <th>Description</th>
+                                    <th>Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>-r, --raw-output</code></td>
+                                    <td>Output raw text, not JSON strings</td>
+                                    <td><code>jq -r '.name'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>-c, --compact-output</code></td>
+                                    <td>Compact JSON output (single line)</td>
+                                    <td><code>jq -c '.'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>-s, --slurp</code></td>
+                                    <td>Read entire input stream into array</td>
+                                    <td><code>jq -s '.'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>-n, --null-input</code></td>
+                                    <td>Don't read input; filter starts with null</td>
+                                    <td><code>jq -n '{a:1}'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>-e, --exit-status</code></td>
+                                    <td>Set exit status based on output</td>
+                                    <td><code>jq -e '.error'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>-f, --from-file</code></td>
+                                    <td>Read filter from file</td>
+                                    <td><code>jq -f filter.jq</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>-M, --monochrome-output</code></td>
+                                    <td>Disable colored output</td>
+                                    <td><code>jq -M '.'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>-C, --color-output</code></td>
+                                    <td>Force colored output</td>
+                                    <td><code>jq -C '.'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>--tab</code></td>
+                                    <td>Use tabs for indentation</td>
+                                    <td><code>jq --tab '.'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>--indent n</code></td>
+                                    <td>Use n spaces for indentation</td>
+                                    <td><code>jq --indent 2 '.'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>--arg name value</code></td>
+                                    <td>Pass string variable to filter</td>
+                                    <td><code>jq --arg key "val" '.'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>--argjson name json</code></td>
+                                    <td>Pass JSON variable to filter</td>
+                                    <td><code>jq --argjson num 42 '.'</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>--slurpfile var file</code></td>
+                                    <td>Read JSON file into variable</td>
+                                    <td><code>jq --slurpfile data d.json '.'</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h5 class="mt-4">Simple Example</h5>
+                        <p>Let's start with the most basic usage - pretty-printing JSON:</p>
+                        
+                        <div class="code-wrapper">
+                            <button class="btn btn-sm btn-outline-secondary code-copy-btn" onclick="copyCode('basic-example')">
+                                <i class="bi bi-clipboard"></i> Copy
+                            </button>
+                            <pre id="basic-example"><code class="language-bash">echo '{"name":"Alice","age":30}' | jq '.'</code></pre>
+                        </div>
+                        
+                        <p><strong>Output:</strong></p>
+                        <div class="console-output">{
+  "name": "Alice",
+  "age": 30
+}</div>
+
+                        <div class="alert alert-success mt-3">
+                            <i class="bi bi-lightbulb"></i> <strong>Tip:</strong> The <code>.</code> filter is the identity filter - it outputs the input unchanged but pretty-printed.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sample JSON Data -->
+                <div class="card mb-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h4><i class="bi bi-file-earmark-code"></i> Sample JSON Data for Examples</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Throughout this tutorial, we'll use the following complex JSON file with 4-5 nested levels representing a company's organizational structure:</p>
+                        
+                        <div class="code-wrapper">
+                            <button class="btn btn-sm btn-outline-secondary code-copy-btn" onclick="copyCode('sample-json')">
+                                <i class="bi bi-clipboard"></i> Copy
+                            </button>
+                            <pre id="sample-json"><code class="language-json">{
+  "company": {
+    "name": "TechCorp Solutions",
+    "founded": 2015,
+    "headquarters": {
+      "city": "San Francisco",
+      "country": "USA",
+      "address": {
+        "street": "123 Innovation Drive",
+        "zipCode": "94105",
+        "coordinates": {
+          "latitude": 37.7749,
+          "longitude": -122.4194
+        }
+      }
+    },
+    "departments": [
+      {
+        "id": "d001",
+        "name": "Engineering",
+        "budget": 5000000,
+        "teams": [
+          {
+            "name": "Backend",
+            "lead": "John Smith",
+            "members": [
+              {
+                "id": "e001",
+                "name": "Alice Johnson",
+                "role": "Senior Engineer",
+                "salary": 150000,
+                "skills": ["Python", "Go", "Docker"],
+                "performance": {
+                  "rating": 4.5,
+                  "reviews": [
+                    {"year": 2024, "score": 4.5, "comments": "Excellent work"},
+                    {"year": 2023, "score": 4.3, "comments": "Great team player"}
+                  ]
+                }
+              },
+              {
+                "id": "e002",
+                "name": "Bob Williams",
+                "role": "Engineer",
+                "salary": 120000,
+                "skills": ["Java", "Spring", "Kubernetes"],
+                "performance": {
+                  "rating": 4.2,
+                  "reviews": [
+                    {"year": 2024, "score": 4.2, "comments": "Solid performance"},
+                    {"year": 2023, "score": 4.0, "comments": "Good progress"}
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "Frontend",
+            "lead": "Sarah Davis",
+            "members": [
+              {
+                "id": "e003",
+                "name": "Carol Martinez",
+                "role": "Senior Engineer",
+                "salary": 145000,
+                "skills": ["React", "TypeScript", "CSS"],
+                "performance": {
+                  "rating": 4.7,
+                  "reviews": [
+                    {"year": 2024, "score": 4.7, "comments": "Outstanding"},
+                    {"year": 2023, "score": 4.5, "comments": "Exceptional"}
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "d002",
+        "name": "Sales",
+        "budget": 3000000,
+        "teams": [
+          {
+            "name": "Enterprise",
+            "lead": "David Brown",
+            "members": [
+              {
+                "id": "s001",
+                "name": "Emma Wilson",
+                "role": "Sales Manager",
+                "salary": 130000,
+                "skills": ["Negotiation", "CRM", "Analytics"],
+                "performance": {
+                  "rating": 4.4,
+                  "reviews": [
+                    {"year": 2024, "score": 4.4, "comments": "Strong closer"},
+                    {"year": 2023, "score": 4.2, "comments": "Consistent"}
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "d003",
+        "name": "HR",
+        "budget": 1500000,
+        "teams": [
+          {
+            "name": "Recruiting",
+            "lead": "Frank Garcia",
+            "members": [
+              {
+                "id": "h001",
+                "name": "Grace Lee",
+                "role": "Recruiter",
+                "salary": 85000,
+                "skills": ["Talent Sourcing", "Interviewing", "ATS"],
+                "performance": {
+                  "rating": 4.3,
+                  "reviews": [
+                    {"year": 2024, "score": 4.3, "comments": "Great hires"},
+                    {"year": 2023, "score": 4.1, "comments": "Good work"}
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "financials": {
+      "revenue": {
+        "2024": 15000000,
+        "2023": 12000000,
+        "2022": 9000000
+      },
+      "expenses": {
+        "2024": 11000000,
+        "2023": 9500000,
+        "2022": 7500000
+      }
+    },
+    "projects": [
+      {
+        "id": "p001",
+        "name": "CloudMigration",
+        "status": "active",
+        "priority": "high",
+        "budget": 500000,
+        "team_members": ["e001", "e002", "e003"]
+      },
+      {
+        "id": "p002",
+        "name": "MobileApp",
+        "status": "planning",
+        "priority": "medium",
+        "budget": 300000,
+        "team_members": ["e003"]
+      }
+    ]
+  }
 }</code></pre>
-      </div></div>
-    </section>
+                        </div>
 
-    <section id="mongodb" class="mb-5">
-      <h2><i class="bi bi-database"></i> MongoDB with Mongoose</h2>
-      <div class="card"><div class="card-body">
-<pre><code class="language-ts">// src/models/user.model.ts
-import { Schema, model } from 'mongoose';
+                        <p class="mt-3">Save this JSON to a file called <code>company.json</code> to follow along with the examples:</p>
+                        <div class="code-wrapper">
+                            <pre><code class="language-bash"># Save the JSON above to a file
+cat > company.json &lt;&lt;'EOF'
+{...json content...}
+EOF</code></pre>
+                        </div>
+                    </div>
+                </div>
 
-const userSchema = new Schema({
-  email: { type: String, required: true, unique: true },
-  name: { type: String, required: true },
-  passwordHash: { type: String, required: true },
-}, { timestamps: true });
+                <!-- Filters and Operations Section -->
+                <div id="filters" class="card mb-4">
+                    <div class="card-header bg-danger text-white">
+                        <h3><i class="bi bi-funnel"></i> Filters & Operations</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">jq's power comes from its extensive set of filters and operations for manipulating JSON data.</p>
 
-export default model('User', userSchema);</code></pre>
-      </div></div>
-    </section>
+                        <div class="accordion" id="filtersAccordion">
+                            <!-- Basic Filters -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#basic-filters">
+                                        <i class="bi bi-1-circle-fill me-2"></i> Basic Filters & Selection
+                                    </button>
+                                </h2>
+                                <div id="basic-filters" class="accordion-collapse collapse show" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <h6>Identity Filter</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Returns the entire JSON unchanged</p>
 
-    <section id="error-handling" class="mb-5">
-      <h2><i class="bi bi-exclamation-triangle"></i> Error Handling</h2>
-      <div class="card"><div class="card-body">
-<pre><code class="language-ts">// src/middleware/errors.ts
-import { NextFunction, Request, Response } from 'express';
-export function errorHandler(err: any, _req: Request, res: Response, _next: NextFunction) {
-  const status = err.status || 500;
-  res.status(status).json({ message: err.message || 'Internal Server Error' });
-}</code></pre>
-      </div></div>
-    </section>
+                                        <h6 class="mt-3">Object Index</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.name' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"TechCorp Solutions"</div>
 
-    <section id="auth" class="mb-5">
-      <h2><i class="bi bi-shield-lock"></i> Auth (JWT)</h2>
-      <div class="card"><div class="card-body">
-<pre><code class="language-ts">// src/middleware/auth.ts
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-export function requireAuth(req: Request, res: Response, next: NextFunction){
-  const token = req.headers.authorization?.split(' ')[1];
-  if(!token) return res.status(401).json({ message: 'Unauthorized' });
-  try { (req as any).user = jwt.verify(token, process.env.JWT_SECRET!); next(); }
-  catch { return res.status(401).json({ message: 'Invalid token' }); }
-}</code></pre>
-      </div></div>
-    </section>
+                                        <h6 class="mt-3">Array Index</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments[0].name' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"Engineering"</div>
 
-    <section id="testing" class="mb-5">
-      <h2><i class="bi bi-beaker"></i> Testing (Jest + Supertest)</h2>
-      <div class="card"><div class="card-body">
-<pre><code class="language-ts">// src/tests/app.e2e.test.ts
-import request from 'supertest';
-import app from '../app';
+                                        <h6 class="mt-3">Array Slice</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments[0:2]' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Returns first two departments</p>
 
-test('GET /api/users returns 200', async () => {
-  const res = await request(app).get('/api/users');
-  expect(res.status).toBe(200);
-});</code></pre>
-      </div></div>
-    </section>
+                                        <h6 class="mt-3">Array Iterator</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments[].name' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"Engineering"
+"Sales"
+"HR"</div>
 
-    <section id="deployment" class="mb-5">
-      <h2><i class="bi bi-box"></i> Docker & Deployment</h2>
-      <div class="card"><div class="card-body">
-        <div class="code-wrapper">
-          <button class="btn btn-sm btn-secondary code-copy-btn" onclick="copyCode(this)"><i class="bi bi-clipboard"></i> Copy</button>
-<pre><code class="language-dockerfile"># Dockerfile
-FROM node:20-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --omit=dev
-COPY dist ./dist
-ENV NODE_ENV=production
-EXPOSE 3000
-CMD ["node","dist/server.js"]</code></pre>
-        </div>
-      </div></div>
-    </section>
-  </div>
+                                        <h6 class="mt-3">Optional Object Index</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.missing_field?' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Returns null instead of error if field doesn't exist</p>
 
-  <footer class="mt-5 py-4 bg-dark text-white" id="footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <h5><i class="bi bi-person-circle"></i> Conceptually Authored By</h5>
-          <p class="mb-1"><strong>Raghavan alias Saravanan Muthu</strong></p>
-        </div>
-        <div class="col-md-6 text-md-end">
-          <h5><i class="bi bi-robot"></i> Created By</h5>
-          <p class="mb-1"><strong>Warp AI Agent</strong></p>
-          <p class="text-muted">Tutorial content generated and structured by AI</p>
-        </div>
-      </div>
-      <hr class="bg-light">
-      <div class="row">
-        <div class="col-12 text-center">
-          <p class="mb-1"><i class="bi bi-calendar-event"></i> Created: February 2, 2026</p>
-          <p class="mb-0">
-            <span class="badge bg-primary me-2">Express 4/5</span>
-            <span class="badge bg-primary me-2">Node.js 20+</span>
-            <span class="badge bg-primary me-2">MongoDB</span>
-            <span class="badge bg-primary">Docker</span>
-          </p>
-        </div>
-      </div>
-    </div>
-  </footer>
+                                        <h6 class="mt-3">Recursive Descent</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.. | .name? | select(. != null)' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Finds all "name" fields at any depth</p>
+                                    </div>
+                                </div>
+                            </div>
 
-  <div class="version-badge badge bg-primary">v1.0.0 - February 2026</div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
-  <script>
-    function copyCode(button){
-      const code = button.parentElement.querySelector('code') || button.parentElement.querySelector('pre');
-      navigator.clipboard.writeText(code.textContent||'').then(()=>{
-        button.innerHTML = '<i class="bi bi-check"></i> Copied!';
-        setTimeout(()=>button.innerHTML='<i class="bi bi-clipboard"></i> Copy',1500);
-      });
+                            <!-- Array Operations -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#array-ops">
+                                        <i class="bi bi-2-circle-fill me-2"></i> Array Operations
+                                    </button>
+                                </h2>
+                                <div id="array-ops" class="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <h6>map - Transform each element</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments | map(.name)' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">["Engineering", "Sales", "HR"]</div>
+
+                                        <h6 class="mt-3">select - Filter elements</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments[] | select(.budget > 2000000)' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Departments with budget over 2M</p>
+
+                                        <h6 class="mt-3">sort / sort_by - Sort array</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments | sort_by(.budget) | reverse' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Departments sorted by budget (descending)</p>
+
+                                        <h6 class="mt-3">group_by - Group elements</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '[.company.departments[].teams[].members[]] | group_by(.role)' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Employees grouped by role</p>
+
+                                        <h6 class="mt-3">unique / unique_by - Get unique values</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '[.company.departments[].teams[].members[].skills[]] | unique' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> All unique skills across company</p>
+
+                                        <h6 class="mt-3">flatten - Flatten nested arrays</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '[.company.departments[].teams[].members[].skills] | flatten' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Flattened list of all skills</p>
+
+                                        <h6 class="mt-3">add - Sum or concatenate</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '[.company.departments[].budget] | add' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">9500000</div>
+
+                                        <h6 class="mt-3">length - Array length</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments | length' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">3</div>
+
+                                        <h6 class="mt-3">min / max / min_by / max_by</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '[.company.departments[].teams[].members[]] | max_by(.salary)' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Employee with highest salary</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Object Operations -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#object-ops">
+                                        <i class="bi bi-3-circle-fill me-2"></i> Object Operations
+                                    </button>
+                                </h2>
+                                <div id="object-ops" class="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <h6>keys - Get object keys</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.financials.revenue | keys' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">["2022", "2023", "2024"]</div>
+
+                                        <h6 class="mt-3">values - Get object values</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.financials.revenue | values' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> All revenue values</p>
+
+                                        <h6 class="mt-3">has - Check if key exists</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company | has("departments")' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">true</div>
+
+                                        <h6 class="mt-3">del - Delete field</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq 'del(.company.departments[0].budget)' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Removes budget field from first department</p>
+
+                                        <h6 class="mt-3">with_entries - Transform key-value pairs</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.financials.revenue | with_entries(.value *= 1.1)' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Increase all revenue values by 10%</p>
+
+                                        <h6 class="mt-3">to_entries / from_entries - Convert format</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.financials.revenue | to_entries' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">[
+  {"key": "2024", "value": 15000000},
+  {"key": "2023", "value": 12000000},
+  {"key": "2022", "value": 9000000}
+]</div>
+
+                                        <h6 class="mt-3">merge (+) - Merge objects</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.headquarters + {"timezone": "PST"}' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Adds timezone field to headquarters object</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- String Operations -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#string-ops">
+                                        <i class="bi bi-4-circle-fill me-2"></i> String Operations
+                                    </button>
+                                </h2>
+                                <div id="string-ops" class="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <h6>String Interpolation</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments[0] | "\(.name) has budget of $\(.budget)"' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"Engineering has budget of $5000000"</div>
+
+                                        <h6 class="mt-3">split - Split string</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.headquarters.address.street | split(" ")' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">["123", "Innovation", "Drive"]</div>
+
+                                        <h6 class="mt-3">join - Join array to string</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments | map(.name) | join(", ")' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"Engineering, Sales, HR"</div>
+
+                                        <h6 class="mt-3">startswith / endswith - String matching</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments[].name | select(startswith("Eng"))' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"Engineering"</div>
+
+                                        <h6 class="mt-3">test - Regex match</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments[].name | select(test("^[ES]"))' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Department names starting with E or S</p>
+
+                                        <h6 class="mt-3">match - Regex with capture groups</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.headquarters.address.street | match("([0-9]+)")' company.json</code></pre>
+                                        </div>
+                                        <p><strong>Result:</strong> Captures the street number</p>
+
+                                        <h6 class="mt-3">gsub - Global substitution</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.name | gsub("Tech"; "Innovation")' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"InnovationCorp Solutions"</div>
+
+                                        <h6 class="mt-3">ascii_downcase / ascii_upcase</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.name | ascii_upcase' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"TECHCORP SOLUTIONS"</div>
+
+                                        <h6 class="mt-3">ltrimstr / rtrimstr - Trim prefix/suffix</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.name | rtrimstr(" Solutions")' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"TechCorp"</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Math & Logic Operations -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#math-ops">
+                                        <i class="bi bi-5-circle-fill me-2"></i> Math & Logic Operations
+                                    </button>
+                                </h2>
+                                <div id="math-ops" class="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <h6>Arithmetic Operations</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Calculate total payroll
+jq '[.company.departments[].teams[].members[].salary] | add' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">630000</div>
+
+                                        <h6 class="mt-3">Comparison Operators</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># High performers (rating >= 4.5)
+jq '[.company.departments[].teams[].members[]] | map(select(.performance.rating >= 4.5))' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">Logical Operations (and, or, not)</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Senior Engineers with high ratings
+jq '[.company.departments[].teams[].members[]] | map(select(.role == "Senior Engineer" and .performance.rating >= 4.5))' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">floor / ceil / round - Rounding</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.headquarters.address.coordinates.latitude | floor' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">37</div>
+
+                                        <h6 class="mt-3">if-then-else Conditionals</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments[0] | if .budget > 3000000 then "High Budget" else "Normal Budget" end' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"High Budget"</div>
+
+                                        <h6 class="mt-3">any / all - Boolean aggregation</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Check if any department has budget over 4M
+jq '[.company.departments[].budget > 4000000] | any' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">true</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Advanced Filters -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#advanced-filters">
+                                        <i class="bi bi-6-circle-fill me-2"></i> Advanced Filters
+                                    </button>
+                                </h2>
+                                <div id="advanced-filters" class="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <h6>reduce - Aggregation</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Calculate average salary
+jq '[.company.departments[].teams[].members[].salary] | reduce .[] as $s (0; . + $s) / length' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">paths - Get all paths</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Find all paths containing "salary"
+jq '[paths | select(.[-1] == "salary")]' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">getpath / setpath - Dynamic path access</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq 'getpath(["company", "headquarters", "city"])' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"San Francisco"</div>
+
+                                        <h6 class="mt-3">walk - Recursive transformation</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Convert all string values to uppercase
+jq 'walk(if type == "string" then ascii_upcase else . end)' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">limit - Limit output</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Get first 2 employees
+jq 'limit(2; .company.departments[].teams[].members[])' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">until - Loop until condition</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '1 | until(. > 10; . * 2)' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">recurse - Recursive descent</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Find all objects with "name" field
+jq '[recurse | objects | select(has("name"))]' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">Custom Functions</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq 'def avg: add / length; [.company.departments[].teams[].members[].salary] | avg' company.json</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Type Operations -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#type-ops">
+                                        <i class="bi bi-7-circle-fill me-2"></i> Type Operations & Conversions
+                                    </button>
+                                </h2>
+                                <div id="type-ops" class="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <h6>type - Get value type</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments | type' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"array"</div>
+
+                                        <h6 class="mt-3">Type Checking Filters</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Filter only arrays
+jq '.company | to_entries | map(select(.value | type == "array"))' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">tonumber / tostring</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.founded | tostring' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"2015"</div>
+
+                                        <h6 class="mt-3">toarray / arrays - Array operations</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '[.company | to_entries | .[].value | arrays]' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">@base64 / @base64d - Encoding</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.name | @base64' company.json</code></pre>
+                                        </div>
+
+                                        <h6 class="mt-3">@uri / @csv / @tsv / @json / @html - Format conversions</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.departments | map([.name, .budget]) | @csv' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"\"Engineering\",5000000\n\"Sales\",3000000\n\"HR\",1500000"</div>
+
+                                        <h6 class="mt-3">@sh - Shell escape</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.company.name | @sh' company.json</code></pre>
+                                        </div>
+                                        <div class="console-output">"'TechCorp Solutions'"</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Date & Time Operations -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#datetime-ops">
+                                        <i class="bi bi-8-circle-fill me-2"></i> Date & Time Operations
+                                    </button>
+                                </h2>
+                                <div id="datetime-ops" class="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
+                                    <div class="accordion-body">
+                                        <h6>now - Current timestamp</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq -n 'now'</code></pre>
+                                        </div>
+                                        <div class="console-output">1737489994.123456</div>
+
+                                        <h6 class="mt-3">strftime / strptime - Date formatting</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq -n 'now | strftime("%Y-%m-%d %H:%M:%S")'</code></pre>
+                                        </div>
+                                        <div class="console-output">"2026-01-21 18:26:34"</div>
+
+                                        <h6 class="mt-3">todate / todateiso8601 - Date conversion</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq -n 'now | todateiso8601'</code></pre>
+                                        </div>
+                                        <div class="console-output">"2026-01-21T18:26:34Z"</div>
+
+                                        <h6 class="mt-3">Date arithmetic</h6>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Days since founded
+jq -n '"2015-01-01" | strptime("%Y-%m-%d") | mktime | (now - .) / 86400 | floor'</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Case Scenarios Section -->
+                <div id="scenarios" class="card mb-4">
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                        <h3><i class="bi bi-lightbulb"></i> Use Case Scenarios with Examples</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Real-world scenarios demonstrating jq's practical applications with our company dataset.</p>
+
+                        <div class="accordion" id="scenariosAccordion">
+                            <!-- Scenario 1: Data Extraction -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#scenario1">
+                                        <i class="bi bi-1-circle me-2"></i> Scenario 1: Extract All Employee Names and Salaries
+                                    </button>
+                                </h2>
+                                <div id="scenario1" class="accordion-collapse collapse show" data-bs-parent="#scenariosAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="nav nav-tabs mb-3" id="s1Tabs" role="tablist">
+                                            <li class="nav-item">
+                                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#s1-desc">Description</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s1-code">Command</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s1-output">Output</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s1-diagram">ASCII Diagram</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s1-plantuml">PlantUML</button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="s1-desc">
+                                                <h6>Use Case</h6>
+                                                <p>HR needs a simple list of all employees with their salaries for payroll review.</p>
+                                                <h6>Approach</h6>
+                                                <p>Navigate through nested departments and teams to extract member data, then format it nicely.</p>
+                                            </div>
+                                            <div class="tab-pane fade" id="s1-code">
+                                                <div class="code-wrapper">
+                                                    <pre><code class="language-bash">jq '[.company.departments[].teams[].members[]] | map({name, salary})' company.json</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s1-output">
+                                                <div class="console-output">[
+  {
+    "name": "Alice Johnson",
+    "salary": 150000
+  },
+  {
+    "name": "Bob Williams",
+    "salary": 120000
+  },
+  {
+    "name": "Carol Martinez",
+    "salary": 145000
+  },
+  {
+    "name": "Emma Wilson",
+    "salary": 130000
+  },
+  {
+    "name": "Grace Lee",
+    "salary": 85000
+  }
+]</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s1-diagram">
+                                                <div class="ascii-art">
+Data Extraction Flow
+═══════════════════════════════════════
+
+company.json
+    │
+    └─── .company
+           │
+           └─── .departments[] ────┐
+                  │                 │
+                  ├─ [0] Engineering│
+                  │    └─ .teams[]  │
+                  │         └─ .members[]  ──┐
+                  │              ├─ Alice    │
+                  │              └─ Bob      │
+                  │                          │
+                  ├─ [1] Sales               │ Extract
+                  │    └─ .teams[]           │ name & salary
+                  │         └─ .members[]  ──┤
+                  │              └─ Emma     │
+                  │                          │
+                  └─ [2] HR                  │
+                       └─ .teams[]           │
+                            └─ .members[]  ──┘
+                                 └─ Grace
+                                      ↓
+                          ┌──────────────────┐
+                          │  Array of        │
+                          │  {name, salary}  │
+                          └──────────────────┘
+</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s1-plantuml">
+                                                <div class="plantuml-container">
+                                                    <pre><code class="language-plantuml">@startuml
+!theme plain
+start
+:Read company.json;
+:Navigate to .company;
+:Iterate .departments[];
+partition "For Each Department" {
+  :Iterate .teams[];
+  partition "For Each Team" {
+    :Iterate .members[];
+    partition "For Each Member" {
+      :Extract name;
+      :Extract salary;
+      :Create {name, salary} object;
     }
-  </script>
+  }
+}
+:Collect all objects into array;
+:Output JSON array;
+stop
+@enduml</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Scenario 2: Filtering & Selection -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scenario2">
+                                        <i class="bi bi-2-circle me-2"></i> Scenario 2: Find High-Performing Engineers
+                                    </button>
+                                </h2>
+                                <div id="scenario2" class="accordion-collapse collapse" data-bs-parent="#scenariosAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="nav nav-tabs mb-3">
+                                            <li class="nav-item">
+                                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#s2-desc">Description</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s2-code">Command</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s2-output">Output</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s2-diagram">ASCII Diagram</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s2-plantuml">PlantUML</button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="s2-desc">
+                                                <h6>Use Case</h6>
+                                                <p>Management wants to identify engineers with performance ratings above 4.4 for bonus consideration.</p>
+                                                <h6>Approach</h6>
+                                                <p>Filter employees by role containing "Engineer" and performance rating >= 4.4.</p>
+                                            </div>
+                                            <div class="tab-pane fade" id="s2-code">
+                                                <div class="code-wrapper">
+                                                    <pre><code class="language-bash">jq '[.company.departments[].teams[].members[]] | 
+  map(select(.role | contains("Engineer")) | 
+  select(.performance.rating >= 4.4))' company.json</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s2-output">
+                                                <div class="console-output">[
+  {
+    "id": "e001",
+    "name": "Alice Johnson",
+    "role": "Senior Engineer",
+    "salary": 150000,
+    "skills": ["Python", "Go", "Docker"],
+    "performance": {
+      "rating": 4.5,
+      "reviews": [...]
+    }
+  },
+  {
+    "id": "e003",
+    "name": "Carol Martinez",
+    "role": "Senior Engineer",
+    "salary": 145000,
+    "skills": ["React", "TypeScript", "CSS"],
+    "performance": {
+      "rating": 4.7,
+      "reviews": [...]
+    }
+  }
+]</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s2-diagram">
+                                                <div class="ascii-art">
+Filtering Pipeline
+═══════════════════════════════════════
+
+All Employees
+    │
+    ├─ Alice (Engineer, 4.5) ──────┐
+    ├─ Bob (Engineer, 4.2)         │ Filter: Role contains "Engineer"
+    ├─ Carol (Engineer, 4.7) ──────┤
+    ├─ Emma (Manager, 4.4)         │
+    └─ Grace (Recruiter, 4.3)      │
+                                   ↓
+                    ┌──────────────────────────┐
+                    │  Engineers Only          │
+                    │  - Alice (4.5)           │
+                    │  - Bob (4.2)             │
+                    │  - Carol (4.7)           │
+                    └──────────────────────────┘
+                                   │
+                                   │ Filter: Rating >= 4.4
+                                   ↓
+                    ┌──────────────────────────┐
+                    │  High Performers         │
+                    │  - Alice (4.5) ✓         │
+                    │  - Carol (4.7) ✓         │
+                    └──────────────────────────┘
+</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s2-plantuml">
+                                                <div class="plantuml-container">
+                                                    <pre><code class="language-plantuml">@startuml
+!theme plain
+start
+:Collect all members into array;
+partition "Filter Pipeline" {
+  :For each employee;
+  if (Role contains "Engineer"?) then (yes)
+    if (Rating >= 4.4?) then (yes)
+      :Include in results;
+    else (no)
+      :Exclude;
+    endif
+  else (no)
+    :Exclude;
+  endif
+}
+:Output filtered array;
+stop
+@enduml</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Scenario 3: Aggregation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scenario3">
+                                        <i class="bi bi-3-circle me-2"></i> Scenario 3: Calculate Department Statistics
+                                    </button>
+                                </h2>
+                                <div id="scenario3" class="accordion-collapse collapse" data-bs-parent="#scenariosAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="nav nav-tabs mb-3">
+                                            <li class="nav-item">
+                                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#s3-desc">Description</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s3-code">Command</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s3-output">Output</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s3-diagram">ASCII Diagram</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s3-plantuml">PlantUML</button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="s3-desc">
+                                                <h6>Use Case</h6>
+                                                <p>Generate summary statistics for each department including employee count, total payroll, and average salary.</p>
+                                                <h6>Approach</h6>
+                                                <p>Map over departments, calculate aggregates for each team's members.</p>
+                                            </div>
+                                            <div class="tab-pane fade" id="s3-code">
+                                                <div class="code-wrapper">
+                                                    <pre><code class="language-bash">jq '.company.departments | map({
+  department: .name,
+  employee_count: ([.teams[].members[]] | length),
+  total_payroll: ([.teams[].members[].salary] | add),
+  avg_salary: (([.teams[].members[].salary] | add) / ([.teams[].members[]] | length) | round)
+})' company.json</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s3-output">
+                                                <div class="console-output">[
+  {
+    "department": "Engineering",
+    "employee_count": 3,
+    "total_payroll": 415000,
+    "avg_salary": 138333
+  },
+  {
+    "department": "Sales",
+    "employee_count": 1,
+    "total_payroll": 130000,
+    "avg_salary": 130000
+  },
+  {
+    "department": "HR",
+    "employee_count": 1,
+    "total_payroll": 85000,
+    "avg_salary": 85000
+  }
+]</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s3-diagram">
+                                                <div class="ascii-art">
+Aggregation Process
+═══════════════════════════════════════
+
+Engineering Dept
+    ├─ Backend Team
+    │    ├─ Alice ($150k)  ──┐
+    │    └─ Bob ($120k)  ────┤
+    └─ Frontend Team         │
+         └─ Carol ($145k) ───┤
+                             │
+                             ├─ Count: 3
+                             ├─ Sum: $415k
+                             └─ Avg: $138k
+                                  ↓
+                    ┌──────────────────────┐
+                    │  Engineering Stats   │
+                    │  Count: 3            │
+                    │  Payroll: $415k      │
+                    │  Average: $138k      │
+                    └──────────────────────┘
+
+Sales Dept
+    └─ Enterprise Team
+         └─ Emma ($130k) ────┐
+                             ├─ Count: 1
+                             ├─ Sum: $130k
+                             └─ Avg: $130k
+                                  ↓
+                    ┌──────────────────────┐
+                    │  Sales Stats         │
+                    │  Count: 1            │
+                    │  Payroll: $130k      │
+                    │  Average: $130k      │
+                    └──────────────────────┘
+
+HR Dept
+    └─ Recruiting Team
+         └─ Grace ($85k) ────┐
+                             ├─ Count: 1
+                             ├─ Sum: $85k
+                             └─ Avg: $85k
+                                  ↓
+                    ┌──────────────────────┐
+                    │  HR Stats            │
+                    │  Count: 1            │
+                    │  Payroll: $85k       │
+                    │  Average: $85k       │
+                    └──────────────────────┘
+</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s3-plantuml">
+                                                <div class="plantuml-container">
+                                                    <pre><code class="language-plantuml">@startuml
+!theme plain
+start
+:For each department;
+partition "Calculate Statistics" {
+  :Collect all team members;
+  :Count employees;
+  :Sum all salaries (total_payroll);
+  :Calculate average (total / count);
+  :Round average;
+  :Create stats object;
+}
+:Add to results array;
+stop
+@enduml</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Scenario 4: Transformation -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scenario4">
+                                        <i class="bi bi-4-circle me-2"></i> Scenario 4: Restructure Data for External API
+                                    </button>
+                                </h2>
+                                <div id="scenario4" class="accordion-collapse collapse" data-bs-parent="#scenariosAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="nav nav-tabs mb-3">
+                                            <li class="nav-item">
+                                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#s4-desc">Description</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s4-code">Command</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s4-output">Output</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s4-diagram">ASCII Diagram</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s4-plantuml">PlantUML</button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="s4-desc">
+                                                <h6>Use Case</h6>
+                                                <p>Transform internal company data to match an external HR system's API format which expects a flat list with specific fields.</p>
+                                                <h6>Approach</h6>
+                                                <p>Flatten nested structure and rename/restructure fields to match target schema.</p>
+                                            </div>
+                                            <div class="tab-pane fade" id="s4-code">
+                                                <div class="code-wrapper">
+                                                    <pre><code class="language-bash">jq '{
+  organization: .company.name,
+  location: .company.headquarters.city,
+  employees: [
+    .company.departments[] as $dept |
+    .teams[] as $team |
+    .members[] |
+    {
+      employee_id: .id,
+      full_name: .name,
+      position: .role,
+      department: $dept.name,
+      team: $team.name,
+      compensation: .salary,
+      rating: .performance.rating
+    }
+  ]
+}' company.json</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s4-output">
+                                                <div class="console-output">{
+  "organization": "TechCorp Solutions",
+  "location": "San Francisco",
+  "employees": [
+    {
+      "employee_id": "e001",
+      "full_name": "Alice Johnson",
+      "position": "Senior Engineer",
+      "department": "Engineering",
+      "team": "Backend",
+      "compensation": 150000,
+      "rating": 4.5
+    },
+    // ... more employees
+  ]
+}</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s4-diagram">
+                                                <div class="ascii-art">
+Data Transformation
+═══════════════════════════════════════
+
+Original Structure          Target Structure
+────────────────────        ────────────────
+
+company                     organization (renamed)
+  └─ name                     └─ "TechCorp..."
+  └─ headquarters           location (flattened)
+       └─ city                └─ "San Francisco"
+  └─ departments            employees[] (flattened)
+       └─ [0] Engineering      └─ employee_id (from id)
+            └─ teams[]            └─ full_name (from name)
+                 └─ members[]     └─ position (from role)
+                      └─ id       └─ department (from parent)
+                      └─ name     └─ team (from parent)
+                      └─ role     └─ compensation (from salary)
+                      └─ salary   └─ rating (nested access)
+                      └─ performance
+                           └─ rating
+
+Nested, Hierarchical    →    Flat, Denormalized
+</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s4-plantuml">
+                                                <div class="plantuml-container">
+                                                    <pre><code class="language-plantuml">@startuml
+!theme plain
+start
+:Extract organization name;
+:Extract location;
+partition "Build Employees Array" {
+  :For each department;
+  :Store dept reference;
+  :For each team in dept;
+  :Store team reference;
+  :For each member in team;
+  :Transform to target format {
+    employee_id,
+    full_name,
+    position,
+    department (from dept),
+    team (from team),
+    compensation,
+    rating
+  };
+  :Add to employees array;
+}
+:Combine into target structure;
+:Output transformed JSON;
+stop
+@enduml</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Scenario 5: API Integration -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scenario5">
+                                        <i class="bi bi-5-circle me-2"></i> Scenario 5: Process API Response and Format Output
+                                    </button>
+                                </h2>
+                                <div id="scenario5" class="accordion-collapse collapse" data-bs-parent="#scenariosAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="nav nav-tabs mb-3">
+                                            <li class="nav-item">
+                                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#s5-desc">Description</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s5-code">Command</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s5-output">Output</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s5-diagram">ASCII Diagram</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s5-plantuml">PlantUML</button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="s5-desc">
+                                                <h6>Use Case</h6>
+                                                <p>Fetch company data via curl and generate a human-readable report showing skills inventory across the organization.</p>
+                                                <h6>Approach</h6>
+                                                <p>Pipe curl output to jq, extract all skills, count occurrences, and format as readable text.</p>
+                                            </div>
+                                            <div class="tab-pane fade" id="s5-code">
+                                                <div class="code-wrapper">
+                                                    <pre><code class="language-bash"># Simulating API call with local file
+cat company.json | jq -r '
+  [.company.departments[].teams[].members[].skills[]] |
+  group_by(.) |
+  map({skill: .[0], count: length}) |
+  sort_by(.count) |
+  reverse |
+  .[] |
+  "\(.skill): \(.count) employee(s)"
+'</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s5-output">
+                                                <div class="console-output">Python: 1 employee(s)
+Go: 1 employee(s)
+Docker: 1 employee(s)
+Java: 1 employee(s)
+Spring: 1 employee(s)
+Kubernetes: 1 employee(s)
+React: 1 employee(s)
+TypeScript: 1 employee(s)
+CSS: 1 employee(s)
+Negotiation: 1 employee(s)
+CRM: 1 employee(s)
+Analytics: 1 employee(s)
+Talent Sourcing: 1 employee(s)
+Interviewing: 1 employee(s)
+ATS: 1 employee(s)</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s5-diagram">
+                                                <div class="ascii-art">
+API Pipeline with jq
+═══════════════════════════════════════
+
+┌─────────────┐
+│  API Server │
+│  (or File)  │
+└──────┬──────┘
+       │ HTTP GET / cat
+       ▼
+┌─────────────────────┐
+│   JSON Response     │
+│   {company: {...}}  │
+└──────┬──────────────┘
+       │ pipe to jq
+       ▼
+┌─────────────────────────────────────┐
+│  jq Processing                      │
+│  1. Extract all skills arrays       │
+│  2. Flatten to single array         │
+│  3. Group by skill name             │
+│  4. Count occurrences               │
+│  5. Sort by count (desc)            │
+│  6. Format as text                  │
+└──────┬──────────────────────────────┘
+       │ -r (raw output)
+       ▼
+┌─────────────────────┐
+│  Plain Text Output  │
+│  Python: 1          │
+│  Go: 1              │
+│  Docker: 1          │
+│  ...                │
+└─────────────────────┘
+       │
+       ▼
+   Terminal/File
+</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s5-plantuml">
+                                                <div class="plantuml-container">
+                                                    <pre><code class="language-plantuml">@startuml
+!theme plain
+actor User
+participant "curl/cat" as Curl
+participant "jq" as JQ
+database "API/File" as API
+
+User -> Curl: Request data
+Curl -> API: GET /company
+API --> Curl: JSON response
+Curl -> JQ: Pipe JSON
+activate JQ
+JQ -> JQ: Extract skills arrays
+JQ -> JQ: Flatten array
+JQ -> JQ: Group by skill
+JQ -> JQ: Count each group
+JQ -> JQ: Sort by count
+JQ -> JQ: Format as text
+JQ --> User: Plain text output
+deactivate JQ
+@enduml</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Scenario 6: Complex Nested Query -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#scenario6">
+                                        <i class="bi bi-6-circle me-2"></i> Scenario 6: Multi-Level Filtering with Conditions
+                                    </button>
+                                </h2>
+                                <div id="scenario6" class="accordion-collapse collapse" data-bs-parent="#scenariosAccordion">
+                                    <div class="accordion-body">
+                                        <ul class="nav nav-tabs mb-3">
+                                            <li class="nav-item">
+                                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#s6-desc">Description</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s6-code">Command</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s6-output">Output</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s6-diagram">ASCII Diagram</button>
+                                            </li>
+                                            <li class="nav-item">
+                                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#s6-plantuml">PlantUML</button>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="s6-desc">
+                                                <h6>Use Case</h6>
+                                                <p>Find departments with budget > 2M that have at least one team with a member earning over 140K who improved their rating from 2023 to 2024.</p>
+                                                <h6>Approach</h6>
+                                                <p>Chain multiple filters with complex conditions across nested levels.</p>
+                                            </div>
+                                            <div class="tab-pane fade" id="s6-code">
+                                                <div class="code-wrapper">
+                                                    <pre><code class="language-bash">jq '.company.departments[] | 
+  select(.budget > 2000000) |
+  select(
+    [.teams[].members[]] |
+    any(
+      .salary > 140000 and
+      (.performance.reviews[0].score > .performance.reviews[1].score)
+    )
+  ) |
+  {
+    department: .name,
+    budget,
+    qualifying_employees: [
+      .teams[].members[] |
+      select(
+        .salary > 140000 and
+        (.performance.reviews[0].score > .performance.reviews[1].score)
+      ) |
+      {name, salary, improvement: (.performance.reviews[0].score - .performance.reviews[1].score)}
+    ]
+  }' company.json</code></pre>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s6-output">
+                                                <div class="console-output">{
+  "department": "Engineering",
+  "budget": 5000000,
+  "qualifying_employees": [
+    {
+      "name": "Alice Johnson",
+      "salary": 150000,
+      "improvement": 0.2
+    },
+    {
+      "name": "Carol Martinez",
+      "salary": 145000,
+      "improvement": 0.2
+    }
+  ]
+}</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s6-diagram">
+                                                <div class="ascii-art">
+Multi-Level Filtering
+═══════════════════════════════════════
+
+Departments
+    ├─ Engineering ($5M) ──┐
+    ├─ Sales ($3M) ────────┤ Filter: budget > $2M
+    └─ HR ($1.5M)         │
+                          ↓
+            ┌──────────────────────┐
+            │ Budget Qualified     │
+            │ - Engineering ($5M)  │
+            │ - Sales ($3M)        │
+            └──────────────────────┘
+                          │
+                          ├─ Engineering
+                          │    ├─ Alice ($150k, +0.2) ──┐
+                          │    ├─ Bob ($120k, +0.2)     │ Filter:
+                          │    └─ Carol ($145k, +0.2) ──┤ salary > $140k
+                          │                              │ AND improved
+                          └─ Sales                       │
+                               └─ Emma ($130k, +0.2)     │
+                                                         ↓
+                              ┌────────────────────────────┐
+                              │ Final Results              │
+                              │ Engineering:               │
+                              │   - Alice ($150k, +0.2) ✓  │
+                              │   - Carol ($145k, +0.2) ✓  │
+                              └────────────────────────────┘
+</div>
+                                            </div>
+                                            <div class="tab-pane fade" id="s6-plantuml">
+                                                <div class="plantuml-container">
+                                                    <pre><code class="language-plantuml">@startuml
+!theme plain
+start
+:For each department;
+if (Budget > $2M?) then (yes)
+  :Collect all team members;
+  if (Any member salary > $140k\nAND improved rating?) then (yes)
+    :Filter qualifying employees;
+    :Calculate improvement;
+    :Create result object;
+    :Include in output;
+  else (no)
+    :Skip department;
+  endif
+else (no)
+  :Skip department;
+endif
+stop
+@enduml</code></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tool Comparison Section -->
+                <div id="comparison" class="card mb-4">
+                    <div class="card-header bg-warning">
+                        <h3><i class="bi bi-bar-chart"></i> Tool Comparison - jq vs Alternatives</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">How jq compares with other JSON processing tools and alternatives.</p>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered comparison-table">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Feature</th>
+                                        <th>jq</th>
+                                        <th>jq (Go implementation)</th>
+                                        <th>fx</th>
+                                        <th>python -m json.tool</th>
+                                        <th>grep/sed/awk</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Language</strong></td>
+                                        <td>C</td>
+                                        <td>Go</td>
+                                        <td>JavaScript/Node.js</td>
+                                        <td>Python</td>
+                                        <td>C/Various</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Installation</strong></td>
+                                        <td><span class="badge bg-success">Easy</span></td>
+                                        <td><span class="badge bg-success">Easy</span></td>
+                                        <td><span class="badge bg-warning">Requires Node.js</span></td>
+                                        <td><span class="badge bg-success">Built-in</span></td>
+                                        <td><span class="badge bg-success">Built-in</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Performance</strong></td>
+                                        <td><span class="badge bg-success">Excellent</span></td>
+                                        <td><span class="badge bg-success">Excellent</span></td>
+                                        <td><span class="badge bg-warning">Good</span></td>
+                                        <td><span class="badge bg-warning">Moderate</span></td>
+                                        <td><span class="badge bg-danger">Poor for JSON</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Memory Efficiency</strong></td>
+                                        <td><span class="badge bg-success">High</span></td>
+                                        <td><span class="badge bg-success">High</span></td>
+                                        <td><span class="badge bg-warning">Moderate</span></td>
+                                        <td><span class="badge bg-warning">Moderate</span></td>
+                                        <td><span class="badge bg-success">High</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Streaming Support</strong></td>
+                                        <td><span class="badge bg-success">Yes</span></td>
+                                        <td><span class="badge bg-success">Yes</span></td>
+                                        <td><span class="badge bg-danger">No</span></td>
+                                        <td><span class="badge bg-danger">No</span></td>
+                                        <td><span class="badge bg-success">Yes</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Filter Syntax</strong></td>
+                                        <td>Domain-specific</td>
+                                        <td>Domain-specific</td>
+                                        <td>JavaScript</td>
+                                        <td>None (pretty-print only)</td>
+                                        <td>Regex/Text-based</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Learning Curve</strong></td>
+                                        <td><span class="badge bg-warning">Moderate</span></td>
+                                        <td><span class="badge bg-warning">Moderate</span></td>
+                                        <td><span class="badge bg-success">Easy</span></td>
+                                        <td><span class="badge bg-success">Easy</span></td>
+                                        <td><span class="badge bg-danger">Steep for JSON</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Complex Transformations</strong></td>
+                                        <td><span class="badge bg-success">Excellent</span></td>
+                                        <td><span class="badge bg-success">Excellent</span></td>
+                                        <td><span class="badge bg-success">Excellent</span></td>
+                                        <td><span class="badge bg-danger">Limited</span></td>
+                                        <td><span class="badge bg-danger">Very Limited</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Interactive Mode</strong></td>
+                                        <td><span class="badge bg-danger">No</span></td>
+                                        <td><span class="badge bg-danger">No</span></td>
+                                        <td><span class="badge bg-success">Yes</span></td>
+                                        <td><span class="badge bg-danger">No</span></td>
+                                        <td><span class="badge bg-danger">No</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Type Safety</strong></td>
+                                        <td><span class="badge bg-success">Strong</span></td>
+                                        <td><span class="badge bg-success">Strong</span></td>
+                                        <td><span class="badge bg-warning">JavaScript types</span></td>
+                                        <td><span class="badge bg-warning">Python types</span></td>
+                                        <td><span class="badge bg-danger">None</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Error Handling</strong></td>
+                                        <td><span class="badge bg-success">Comprehensive</span></td>
+                                        <td><span class="badge bg-success">Comprehensive</span></td>
+                                        <td><span class="badge bg-success">Good</span></td>
+                                        <td><span class="badge bg-warning">Basic</span></td>
+                                        <td><span class="badge bg-danger">Poor</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Community & Docs</strong></td>
+                                        <td><span class="badge bg-success">Excellent</span></td>
+                                        <td><span class="badge bg-warning">Growing</span></td>
+                                        <td><span class="badge bg-warning">Good</span></td>
+                                        <td><span class="badge bg-success">Excellent</span></td>
+                                        <td><span class="badge bg-success">Excellent</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Use Case</strong></td>
+                                        <td>General-purpose JSON</td>
+                                        <td>Go-friendly JSON</td>
+                                        <td>Interactive exploration</td>
+                                        <td>Simple pretty-printing</td>
+                                        <td>Text processing</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h5 class="mt-4">Other Notable Alternatives</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-header bg-info text-white">
+                                        <strong>jaq (Rust)</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Pros:</strong> Fast, memory-safe, jq-compatible syntax</p>
+                                        <p><strong>Cons:</strong> Newer, smaller ecosystem</p>
+                                        <p><strong>Best for:</strong> Rust projects, security-conscious environments</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-header bg-info text-white">
+                                        <strong>yq</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Pros:</strong> Supports YAML, TOML, XML in addition to JSON</p>
+                                        <p><strong>Cons:</strong> Slightly different syntax</p>
+                                        <p><strong>Best for:</strong> Multi-format configuration files</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-header bg-info text-white">
+                                        <strong>jsonnet</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Pros:</strong> Templating language, generates JSON</p>
+                                        <p><strong>Cons:</strong> Different paradigm (generation vs processing)</p>
+                                        <p><strong>Best for:</strong> Configuration generation</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100">
+                                    <div class="card-header bg-info text-white">
+                                        <strong>Miller (mlr)</strong>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Pros:</strong> Handles CSV, JSON, and other formats</p>
+                                        <p><strong>Cons:</strong> Different syntax, less JSON-focused</p>
+                                        <p><strong>Best for:</strong> Data format conversions</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-success mt-4">
+                            <i class="bi bi-trophy"></i> <strong>Winner:</strong> jq remains the de-facto standard for command-line JSON processing due to its maturity, performance, and comprehensive feature set.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pros and Cons Section -->
+                <div id="pros-cons" class="card mb-4">
+                    <div class="card-header" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white;">
+                        <h3><i class="bi bi-balance-scale"></i> Pros, Cons & Nuances</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card h-100 border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <h5><i class="bi bi-hand-thumbs-up"></i> Advantages (Pros)</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="pros-cons-list list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Powerful & Expressive:</strong> Complex transformations in concise syntax
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Fast Performance:</strong> Written in C, optimized for speed
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Streaming Support:</strong> Process large files without loading entirely into memory
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Type-Safe:</strong> Understands JSON types natively
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Cross-Platform:</strong> Available on all major operating systems
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Zero Dependencies:</strong> Single binary, no runtime required
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Composable Filters:</strong> Build complex operations from simple parts
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Unix Philosophy:</strong> Works well in pipelines with other tools
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Industry Standard:</strong> Widely adopted and well-documented
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Rich Function Library:</strong> 200+ built-in functions
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Regular Expression Support:</strong> Powerful pattern matching
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                <strong>Format Conversions:</strong> CSV, TSV, Base64, URI encoding built-in
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card h-100 border-danger">
+                                    <div class="card-header bg-danger text-white">
+                                        <h5><i class="bi bi-hand-thumbs-down"></i> Disadvantages (Cons)</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="pros-cons-list list-group list-group-flush">
+                                            <li class="list-group-item">
+                                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                <strong>Learning Curve:</strong> Syntax can be cryptic for beginners
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                <strong>Error Messages:</strong> Can be unclear or hard to debug
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                <strong>No Interactive Mode:</strong> Must use external tools like jq-web or fx
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                <strong>Complex Filters Hard to Read:</strong> Long one-liners become unreadable
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                <strong>JSON Only:</strong> Cannot process YAML, TOML, XML natively
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                <strong>No IDE Support:</strong> Limited syntax highlighting and autocompletion
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                <strong>Escaping Issues:</strong> Shell quoting can be tricky
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                <strong>Performance on Small Files:</strong> Overhead for trivial operations
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                <strong>Version Compatibility:</strong> Some features differ between versions
+                                            </li>
+                                            <li class="list-group-item">
+                                                <i class="bi bi-x-circle-fill text-danger me-2"></i>
+                                                <strong>Limited Debugging Tools:</strong> Hard to step through complex filters
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mt-4"><i class="bi bi-lightbulb"></i> Important Nuances & Gotchas</h5>
+                        <div class="accordion" id="nuancesAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#nuance1">
+                                        <i class="bi bi-1-circle me-2"></i> Generator Behavior
+                                    </button>
+                                </h2>
+                                <div id="nuance1" class="accordion-collapse collapse show" data-bs-parent="#nuancesAccordion">
+                                    <div class="accordion-body">
+                                        <p>jq filters can generate multiple outputs for a single input. This is powerful but can be surprising:</p>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">echo '[1,2,3]' | jq '.[]'
+# Outputs three separate values:
+# 1
+# 2
+# 3</code></pre>
+                                        </div>
+                                        <p>To keep them as an array, wrap in <code>[ ]</code>:</p>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">echo '[1,2,3]' | jq '[.[]]'
+# Outputs: [1,2,3]</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nuance2">
+                                        <i class="bi bi-2-circle me-2"></i> Optional vs Required Access
+                                    </button>
+                                </h2>
+                                <div id="nuance2" class="accordion-collapse collapse" data-bs-parent="#nuancesAccordion">
+                                    <div class="accordion-body">
+                                        <p>Using <code>?</code> makes field access optional and prevents errors:</p>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Without ?, errors if field missing
+jq '.missing_field' file.json  # Error!
+
+# With ?, returns null if missing
+jq '.missing_field?' file.json  # null</code></pre>
+                                        </div>
+                                        <p>This is crucial when processing heterogeneous JSON data.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nuance3">
+                                        <i class="bi bi-3-circle me-2"></i> Raw Output vs JSON Strings
+                                    </button>
+                                </h2>
+                                <div id="nuance3" class="accordion-collapse collapse" data-bs-parent="#nuancesAccordion">
+                                    <div class="accordion-body">
+                                        <p>By default, jq outputs JSON-formatted strings with quotes:</p>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash">jq '.name' file.json
+# Output: "Alice"
+
+jq -r '.name' file.json
+# Output: Alice</code></pre>
+                                        </div>
+                                        <p>Use <code>-r</code> when piping to other commands or writing to files.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nuance4">
+                                        <i class="bi bi-4-circle me-2"></i> Pipe vs Comma Operator
+                                    </button>
+                                </h2>
+                                <div id="nuance4" class="accordion-collapse collapse" data-bs-parent="#nuancesAccordion">
+                                    <div class="accordion-body">
+                                        <p>The pipe (<code>|</code>) chains filters sequentially, while comma (<code>,</code>) applies filters in parallel:</p>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Pipe: output of first goes to second
+jq '.users | .[0]' file.json
+
+# Comma: both applied to same input
+jq '.users, .admins' file.json</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nuance5">
+                                        <i class="bi bi-5-circle me-2"></i> Shell Quoting Challenges
+                                    </button>
+                                </h2>
+                                <div id="nuance5" class="accordion-collapse collapse" data-bs-parent="#nuancesAccordion">
+                                    <div class="accordion-body">
+                                        <p>Shell quoting can be tricky, especially with string interpolation:</p>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Single quotes protect from shell expansion
+jq '.users[] | select(.name == "Alice")' file.json
+
+# To use shell variables, use --arg
+NAME="Alice"
+jq --arg n "$NAME" '.users[] | select(.name == $n)' file.json</code></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nuance6">
+                                        <i class="bi bi-6-circle me-2"></i> Empty vs Null vs False
+                                    </button>
+                                </h2>
+                                <div id="nuance6" class="accordion-collapse collapse" data-bs-parent="#nuancesAccordion">
+                                    <div class="accordion-body">
+                                        <p>jq distinguishes between empty output, null, and false:</p>
+                                        <div class="code-wrapper">
+                                            <pre><code class="language-bash"># Empty - generates no output
+jq 'empty' file.json
+
+# Null - outputs the JSON null value
+jq 'null' file.json
+
+# False - outputs boolean false
+jq 'false' file.json</code></pre>
+                                        </div>
+                                        <p>This matters for conditionals and filters like <code>select</code>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mt-4"><i class="bi bi-bookmark"></i> Best Practices</h5>
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <h6 class="mb-1"><i class="bi bi-check2 text-success"></i> Start Simple, Build Up</h6>
+                                <p class="mb-1 small">Begin with simple filters and gradually add complexity. Test each step.</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h6 class="mb-1"><i class="bi bi-check2 text-success"></i> Use jqplay for Experimentation</h6>
+                                <p class="mb-1 small">The online jq playground is invaluable for testing and learning.</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h6 class="mb-1"><i class="bi bi-check2 text-success"></i> Store Complex Filters in Files</h6>
+                                <p class="mb-1 small">Use <code>-f filter.jq</code> for reusable and version-controlled filters.</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h6 class="mb-1"><i class="bi bi-check2 text-success"></i> Add Comments in Filter Files</h6>
+                                <p class="mb-1 small">jq supports comments with <code>#</code> in filter files.</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h6 class="mb-1"><i class="bi bi-check2 text-success"></i> Use --arg for Dynamic Values</h6>
+                                <p class="mb-1 small">Avoid shell interpolation; use jq's variable mechanism.</p>
+                            </div>
+                            <div class="list-group-item">
+                                <h6 class="mb-1"><i class="bi bi-check2 text-success"></i> Leverage -e for Exit Status</h6>
+                                <p class="mb-1 small">Use exit status in scripts to detect empty or error conditions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Version History -->
+                <div id="version-history" class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h4><i class="bi bi-clock-history"></i> Version History & Changelog</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Key milestones in jq's development history.</p>
+                        
+                        <div class="accordion" id="versionAccordion">
+                            <!-- Version 1.7.1 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#v171">
+                                        <span class="badge bg-success me-2">Current</span>
+                                        <strong>Version 1.7.1</strong>
+                                        <small class="ms-2 text-muted">December 2023</small>
+                                    </button>
+                                </h2>
+                                <div id="v171" class="accordion-collapse collapse show" data-bs-parent="#versionAccordion">
+                                    <div class="accordion-body">
+                                        <h6>New Features</h6>
+                                        <ul>
+                                            <li>Improved Unicode handling and normalization</li>
+                                            <li>Better error messages with context</li>
+                                            <li>New <code>splits</code> and <code>scan</code> functions</li>
+                                            <li>Enhanced date/time functions</li>
+                                        </ul>
+                                        <h6>Bug Fixes</h6>
+                                        <ul>
+                                            <li>Fixed memory leaks in certain recursive operations</li>
+                                            <li>Corrected behavior of <code>limit</code> with generators</li>
+                                            <li>Improved Windows compatibility</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Version 1.6 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#v16">
+                                        <strong>Version 1.6</strong>
+                                        <small class="ms-2 text-muted">November 2018</small>
+                                    </button>
+                                </h2>
+                                <div id="v16" class="accordion-collapse collapse" data-bs-parent="#versionAccordion">
+                                    <div class="accordion-body">
+                                        <h6>Major Features</h6>
+                                        <ul>
+                                            <li>SQL-style operators (<code>INDEX</code>, <code>IN</code>, <code>JOIN</code>)</li>
+                                            <li>New <code>builtins</code> function to list all built-in functions</li>
+                                            <li><code>$ENV</code> variable for environment variable access</li>
+                                            <li>Improved streaming parser</li>
+                                            <li><code>@base32</code> encoding support</li>
+                                        </ul>
+                                        <h6>Performance</h6>
+                                        <ul>
+                                            <li>Significant performance improvements for large datasets</li>
+                                            <li>Optimized memory usage</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Version 1.5 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#v15">
+                                        <strong>Version 1.5</strong>
+                                        <small class="ms-2 text-muted">August 2015</small>
+                                    </button>
+                                </h2>
+                                <div id="v15" class="accordion-collapse collapse" data-bs-parent="#versionAccordion">
+                                    <div class="accordion-body">
+                                        <h6>Highlights</h6>
+                                        <ul>
+                                            <li>Module system for reusable filters</li>
+                                            <li>Path expressions</li>
+                                            <li><code>getpath</code> and <code>setpath</code> functions</li>
+                                            <li>Better regex support with Oniguruma</li>
+                                            <li>Date manipulation functions</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Version 1.0 -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#v10">
+                                        <strong>Version 1.0</strong>
+                                        <small class="ms-2 text-muted">October 2013</small>
+                                    </button>
+                                </h2>
+                                <div id="v10" class="accordion-collapse collapse" data-bs-parent="#versionAccordion">
+                                    <div class="accordion-body">
+                                        <p>First stable release with core functionality:</p>
+                                        <ul>
+                                            <li>Basic filters and transformations</li>
+                                            <li>Streaming JSON parser</li>
+                                            <li>Comprehensive function library</li>
+                                            <li>Command-line interface</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Initial Release -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#v01">
+                                        <strong>Version 0.1</strong>
+                                        <small class="ms-2 text-muted">August 2012</small>
+                                    </button>
+                                </h2>
+                                <div id="v01" class="accordion-collapse collapse" data-bs-parent="#versionAccordion">
+                                    <div class="accordion-body">
+                                        <p>Initial public release by Stephen Dolan</p>
+                                        <ul>
+                                            <li>Proof of concept with basic JSON filtering</li>
+                                            <li>Core language design established</li>
+                                            <li>Basic command-line tool</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <span class="badge bg-secondary">Project Started: August 2012</span>
+                            <span class="badge bg-info">Current Stable: v1.7.1</span>
+                            <span class="badge bg-success">Active Development: Yes</span>
+                            <span class="badge bg-primary">GitHub Stars: 28k+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resources Section -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%); color: white;">
+                        <h4><i class="bi bi-link-45deg"></i> Additional Resources</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Official Resources</h5>
+                                <div class="list-group">
+                                    <a href="https://jqlang.github.io/jq/" target="_blank" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-globe"></i> Official Website
+                                    </a>
+                                    <a href="https://jqlang.github.io/jq/manual/" target="_blank" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-book"></i> Official Manual
+                                    </a>
+                                    <a href="https://github.com/jqlang/jq" target="_blank" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-github"></i> GitHub Repository
+                                    </a>
+                                    <a href="https://jqplay.org/" target="_blank" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-play-circle"></i> jq Playground
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Learning Resources</h5>
+                                <div class="list-group">
+                                    <a href="https://jqlang.github.io/jq/tutorial/" target="_blank" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-mortarboard"></i> Official Tutorial
+                                    </a>
+                                    <a href="https://stedolan.github.io/jq/tutorial/" target="_blank" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-journal-text"></i> Stephen Dolan's Tutorial
+                                    </a>
+                                    <a href="https://github.com/stedolan/jq/wiki/Cookbook" target="_blank" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-book-half"></i> jq Cookbook
+                                    </a>
+                                    <a href="https://www.youtube.com/results?search_query=jq+json+processor" target="_blank" class="list-group-item list-group-item-action">
+                                        <i class="bi bi-youtube"></i> Video Tutorials
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Resources Links -->
+                <div class="text-center my-4">
+                    <a href="https://github.com/jqlang/jq" class="btn btn-outline-primary me-2" target="_blank"><i class="bi bi-github"></i> jq on GitHub</a>
+                    <a href="https://jqplay.org/" class="btn btn-outline-success me-2" target="_blank"><i class="bi bi-play-circle"></i> jq Playground</a>
+                    <a href="#home" class="btn btn-outline-secondary"><i class="bi bi-arrow-up-circle"></i> Back to Top</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                <strong class="me-auto">Success</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                Code copied to clipboard!
+            </div>
+        </div>
+    </div>
+
+    <!-- Version Badge -->
+    <span class="badge bg-secondary version-badge" data-bs-toggle="tooltip" title="Tutorial Version">v1.0.0</span>
+
+    <!-- Footer Section -->
+    <footer class="mt-5 py-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-top: 5px solid #f8f9fa;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center mb-3 mb-md-0">
+                        <div class="me-4">
+                            <i class="bi bi-person-circle" style="font-size: 3rem; color: #ffffff;"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-2" style="color: #ffffff; font-weight: 600;">
+                                <i class="bi bi-pencil-square me-2"></i>Conceptually Authored By
+                            </h5>
+                            <p class="mb-1" style="color: #f8f9fa; font-size: 1.1rem; font-weight: 500;">
+                                <strong>Raghavan alias Saravanan Muthu</strong>
+                            </p>
+                            <p class="mb-0">
+                                <a href="https://github.com/itsraghz" target="_blank" rel="noopener noreferrer" 
+                                   class="text-white text-decoration-none d-inline-flex align-items-center" 
+                                   style="font-size: 0.95rem; transition: opacity 0.3s;"
+                                   onmouseover="this.style.opacity='0.8'" 
+                                   onmouseout="this.style.opacity='1'">
+                                    <i class="bi bi-github me-2" style="font-size: 1.2rem;"></i>
+                                    <span>@itsraghz</span>
+                                    <i class="bi bi-box-arrow-up-right ms-2" style="font-size: 0.8rem;"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex align-items-center justify-content-md-end">
+                        <div class="me-3">
+                            <i class="bi bi-cpu" style="font-size: 2.5rem; color: #ffd700;"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1" style="color: #ffffff; font-weight: 600;">
+                                <i class="bi bi-robot me-1"></i>AI Assisted
+                            </h6>
+                            <p class="mb-0" style="color: #f8f9fa; font-size: 0.95rem;">
+                                <strong>Warp AI Agent</strong>
+                            </p>
+                            <p class="mb-0" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.9;">
+                                Technical content enhanced by AI
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255, 255, 255, 0.3); margin: 1.5rem 0;">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0" style="color: #f8f9fa; font-size: 0.9rem;">
+                        <i class="bi bi-info-circle me-1"></i>
+                        This tutorial represents a collaborative effort combining human expertise with AI-powered assistance
+                    </p>
+                    <p class="mb-0 mt-2" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.8;">
+                        <i class="bi bi-calendar-event me-1"></i>
+                        Created January 21, 2026 | 
+                        <i class="bi bi-tag-fill mx-1"></i>
+                        Version 1.0.0 | 
+                        <i class="bi bi-code-slash mx-1"></i>
+                        Built with Bootstrap 5 & Modern Web Standards
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+    <script>
+        // Initialize tooltips
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        // Initialize popovers
+        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            htmlElement.setAttribute('data-bs-theme', newTheme);
+            
+            const icon = themeToggle.querySelector('i');
+            if (newTheme === 'dark') {
+                icon.classList.remove('bi-moon-stars');
+                icon.classList.add('bi-sun');
+            } else {
+                icon.classList.remove('bi-sun');
+                icon.classList.add('bi-moon-stars');
+            }
+        });
+
+        // Color Flavor Toggle
+        function setColorFlavor(flavor) {
+            htmlElement.setAttribute('data-color-flavor', flavor);
+        }
+
+        // Copy Code Function (for manual copy buttons)
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const code = codeElement.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const toast = new bootstrap.Toast(document.getElementById('successToast'));
+                toast.show();
+            });
+        }
+
+        // Auto-add copy buttons to all code blocks
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wrap all code blocks with copy button
+            document.querySelectorAll('pre:has(code)').forEach((pre) => {
+                // Skip if already wrapped
+                if (pre.parentElement.classList.contains('code-wrapper')) return;
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+                
+                const button = document.createElement('button');
+                button.className = 'btn btn-sm btn-secondary code-copy-btn';
+                button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                button.onclick = () => {
+                    const code = pre.querySelector('code').textContent;
+                    navigator.clipboard.writeText(code).then(() => {
+                        button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                        }, 2000);
+                    });
+                };
+                wrapper.insertBefore(button, pre);
+            });
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#' && document.querySelector(href)) {
+                    e.preventDefault();
+                    document.querySelector(href).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
