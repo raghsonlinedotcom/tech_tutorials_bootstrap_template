@@ -20,7 +20,7 @@
         }
         
         :root[data-bs-theme="dark"] {
-            --jumbotron-bg: linear-gradient(135deg, #1f4037 0%, #99f2c8 100%);
+            --jumbotron-bg: linear-gradient(135deg, #134e4a 0%, #065f46 100%);
         }
         
         :root[data-color-flavor="green"] .navbar,
@@ -173,7 +173,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><i class="bi bi-node-plus"></i> Express.js Tutorial</a>
+            <a class="navbar-brand" href="#"><i class="bi bi-node-plus"></i> Express.js - Node Web Framework</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -193,8 +193,8 @@
                             <li><a class="dropdown-item" href="#introduction">Introduction</a></li>
                             <li><a class="dropdown-item" href="#installation">Installation</a></li>
                             <li><a class="dropdown-item" href="#architecture">Architecture</a></li>
-                            <li><a class="dropdown-item" href="#basic-usage">Basic Usage</a></li>
-                            <li><a class="dropdown-item" href="#filters">Filters & Operations</a></li>
+                            <li><a class="dropdown-item" href="#basic-usage">First Server</a></li>
+                            <li><a class="dropdown-item" href="#filters">Middleware & Routing</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#scenarios">Use Case Scenarios</a></li>
                             <li><a class="dropdown-item" href="#comparison">Tool Comparison</a></li>
@@ -238,7 +238,7 @@
                     <i class="bi bi-4-circle"></i> Basic Usage
                 </a>
                 <a href="#filters" class="list-group-item list-group-item-action">
-                    <i class="bi bi-5-circle"></i> Filters & Operations
+                    <i class="bi bi-5-circle"></i> Middleware & Routing
                 </a>
                 <a href="#scenarios" class="list-group-item list-group-item-action">
                     <i class="bi bi-6-circle"></i> Use Case Scenarios
@@ -261,16 +261,16 @@
             <div class="col-lg-12">
                 <!-- Jumbotron / Hero Section -->
                 <div class="jumbotron-custom text-center" id="home">
-                    <h1 class="display-3"><i class="bi bi-node-plus"></i> Express.js - Build REST APIs with Node.js</h1>
-                    <p class="lead">A lightweight and flexible command-line Node.js web framework for building REST APIs and web applications</p>
+                    <h1 class="display-3"><i class="bi bi-node-plus"></i> Express.js - Node.js Web Framework</h1>
+                    <p class="lead">Fast, unopinionated, minimalist web framework for Node.js - Build REST APIs and web applications</p>
                     <hr class="my-4" style="border-color: rgba(255,255,255,0.3);">
-                    <p>Master building production-ready REST APIs with Express with jq's powerful filtering and transformation capabilities</p>
+                    <p>Master Express.js from basics to building production-ready APIs with middleware, routing, and best practices</p>
                     <a class="btn btn-light btn-lg" href="#introduction" role="button">Get Started <i class="bi bi-arrow-right"></i></a>
                 </div>
 
                 <!-- Alert Messages -->
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <i class="bi bi-info-circle"></i> <strong>Current Version:</strong> This tutorial covers jq version 1.7.1 (latest as of January 2026) with comprehensive examples and use cases.
+                    <i class="bi bi-info-circle"></i> <strong>Current Version:</strong> This tutorial covers Express.js version 4.19.x (latest as of February 2026) with comprehensive examples and use cases.
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
 
@@ -285,26 +285,26 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <div class="bg-primary text-white p-5 text-center" style="min-height: 300px;">
-                                <h3><i class="bi bi-filter-circle"></i> Powerful Filtering</h3>
-                                <p class="lead">Extract exactly what you need from complex JSON structures with intuitive filter syntax</p>
+                                <h3><i class="bi bi-server"></i> Built for APIs</h3>
+                                <p class="lead">Create RESTful APIs quickly with robust routing and HTTP utility methods</p>
                             </div>
                         </div>
                         <div class="carousel-item">
                             <div class="bg-success text-white p-5 text-center" style="min-height: 300px;">
-                                <h3><i class="bi bi-arrow-left-right"></i> Data Transformation</h3>
-                                <p class="lead">Transform, reshape, and reformat JSON data with powerful built-in functions</p>
+                                <h3><i class="bi bi-layers"></i> Middleware System</h3>
+                                <p class="lead">Powerful middleware architecture for request processing, authentication, logging, and more</p>
                             </div>
                         </div>
                         <div class="carousel-item">
                             <div class="bg-warning text-dark p-5 text-center" style="min-height: 300px;">
-                                <h3><i class="bi bi-terminal"></i> Command-Line Native</h3>
-                                <p class="lead">Seamlessly integrate with shell scripts, pipelines, and automation workflows</p>
+                                <h3><i class="bi bi-terminal"></i> Unopinionated & Flexible</h3>
+                                <p class="lead">Choose your own database, template engine, and architecture - Express does not force decisions</p>
                             </div>
                         </div>
                         <div class="carousel-item">
                             <div class="bg-danger text-white p-5 text-center" style="min-height: 300px;">
-                                <h3><i class="bi bi-lightning"></i> Lightweight & Fast</h3>
-                                <p class="lead">Process large JSON files efficiently with minimal memory footprint</p>
+                                <h3><i class="bi bi-lightning"></i> Performance Focused</h3>
+                                <p class="lead">Minimal overhead, high performance - perfect for microservices and scalable applications</p>
                             </div>
                         </div>
                     </div>
@@ -319,24 +319,24 @@
                 <!-- Introduction Section -->
                 <div id="introduction" class="card mb-4">
                     <div class="card-header bg-primary text-white">
-                        <h3><i class="bi bi-book"></i> Introduction - Why jq Was Invented</h3>
+                        <h3><i class="bi bi-book"></i> Introduction - Why Express.js Was Invented</h3>
                     </div>
                     <div class="card-body">
-                        <h5>The Problem jq Solves</h5>
-                        <p class="lead">Before jq, working with JSON data on the command line was painful and error-prone.</p>
+                        <h5>The Problem Express.js Solves</h5>
+                        <p class="lead">Before Express, building web servers in Node.js required lots of boilerplate code and manual handling of HTTP complexities.</p>
                         
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="card bg-light mb-3">
                                     <div class="card-body">
-                                        <h6 class="card-title text-danger"><i class="bi bi-x-circle"></i> Challenges Before jq</h6>
+                                        <h6 class="card-title text-danger"><i class="bi bi-x-circle"></i> Challenges Before Express.js</h6>
                                         <ul>
-                                            <li>No native JSON parsing in shell scripts</li>
-                                            <li>Complex regex patterns needed for extraction</li>
-                                            <li>Writing custom scripts for simple tasks</li>
-                                            <li>No standard tool for JSON manipulation</li>
-                                            <li>Brittle parsing prone to errors</li>
-                                            <li>Difficulty handling nested structures</li>
+                                            <li>Writing HTTP servers from scratch in Node.js was verbose</li>
+                                            <li>Manual routing logic was error-prone and repetitive</li>
+                                            <li>No standard way to handle middleware patterns</li>
+                                            <li>Limited built-in HTTP utilities in core Node.js</li>
+                                            <li>Request/response handling required manual parsing</li>
+                                            <li>No organized structure for scalable applications</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -344,14 +344,14 @@
                             <div class="col-md-6">
                                 <div class="card bg-light mb-3">
                                     <div class="card-body">
-                                        <h6 class="card-title text-success"><i class="bi bi-check-circle"></i> Solutions with jq</h6>
+                                        <h6 class="card-title text-success"><i class="bi bi-check-circle"></i> Solutions with Express.js</h6>
                                         <ul>
-                                            <li>Native JSON understanding</li>
-                                            <li>Declarative filter syntax</li>
-                                            <li>One-liner solutions for common tasks</li>
-                                            <li>Industry-standard tool</li>
-                                            <li>Type-safe operations</li>
-                                            <li>Deep nested data handling</li>
+                                            <li>Simple,intuitive API for HTTP servers</li>
+                                            <li>Powerful routing system</li>
+                                            <li>Middleware chain for request processing</li>
+                                            <li>Industry-standard web framework</li>
+                                            <li>Rich HTTP utility methods</li>
+                                            <li>Template engine integration</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -359,10 +359,10 @@
                         </div>
 
                         <h5 class="mt-4">Historical Context</h5>
-                        <p>jq was created by <strong>Stephen Dolan</strong> in 2012 as a response to the growing prevalence of JSON in web APIs, configuration files, and data interchange formats. As JSON became ubiquitous in software development, the need for a specialized command-line tool that could efficiently parse, filter, and transform JSON data became apparent.</p>
+                        <p>Express.js was created by <strong>TJ Holowaychuk</strong> in 2010 as a response to the growing prevalence of JSON in web APIs, configuration files, and data interchange formats. As Node.js gained popularity for server-side JavaScript, developers needed a lightweight framework that could simplify web application development while remaining unopinionated and flexible.</p>
                         
                         <div class="alert alert-info mt-3">
-                            <i class="bi bi-info-circle"></i> <strong>Design Philosophy:</strong> jq was designed to be like <code>sed</code> for JSON data - a simple, composable tool that does one thing exceptionally well: processing JSON from the command line.
+                            <i class="bi bi-info-circle"></i> <strong>Design Philosophy:</strong> Express was designed to be a minimal and flexible Node.js web application framework, providing a robust set of features for web and mobile applications without being prescriptive about architecture.
                         </div>
 
                         <h5 class="mt-4">Core Objectives</h5>
@@ -372,7 +372,7 @@
                                     <div class="card-body text-center">
                                         <i class="bi bi-bullseye display-4 text-primary"></i>
                                         <h6 class="mt-3">Simplicity</h6>
-                                        <p class="small">Easy to learn syntax that feels natural for command-line users</p>
+                                        <p class="small">Simple API that feels natural for JavaScript developers</p>
                                     </div>
                                 </div>
                             </div>
@@ -381,7 +381,7 @@
                                     <div class="card-body text-center">
                                         <i class="bi bi-gear display-4 text-success"></i>
                                         <h6 class="mt-3">Composability</h6>
-                                        <p class="small">Filters can be chained and combined to build complex operations</p>
+                                        <p class="small">Middleware can be composed and chained for complex request processing</p>
                                     </div>
                                 </div>
                             </div>
@@ -390,7 +390,7 @@
                                     <div class="card-body text-center">
                                         <i class="bi bi-lightning display-4 text-warning"></i>
                                         <h6 class="mt-3">Performance</h6>
-                                        <p class="small">Written in C for speed and minimal resource usage</p>
+                                        <p class="small">Built on Node.js for non-blocking I/O and high throughput</p>
                                     </div>
                                 </div>
                             </div>
@@ -404,7 +404,7 @@
                         <h3><i class="bi bi-download"></i> Installation</h3>
                     </div>
                     <div class="card-body">
-                        <p class="lead">jq is available on all major platforms and can be installed using package managers or from source.</p>
+                        <p class="lead">Express.js is available on all major platforms and can be installed using package managers or from source.</p>
 
                         <div class="accordion" id="installAccordion">
                             <!-- macOS Installation -->
@@ -421,7 +421,7 @@
                                             <button class="btn btn-sm btn-outline-secondary code-copy-btn" onclick="copyCode('macos-brew')">
                                                 <i class="bi bi-clipboard"></i> Copy
                                             </button>
-                                            <pre id="macos-brew"><code class="language-bash">brew install jq</code></pre>
+                                            <pre id="macos-brew"><code class="language-bash">npm install express</code></pre>
                                         </div>
 
                                         <h6 class="mt-3">Using MacPorts</h6>
@@ -431,9 +431,9 @@
 
                                         <h6 class="mt-3">Verification</h6>
                                         <div class="code-wrapper">
-                                            <pre><code class="language-bash">jq --version</code></pre>
+                                            <pre><code class="language-bash">npx express --version</code></pre>
                                         </div>
-                                        <div class="console-output">jq-1.7.1</div>
+                                        <div class="console-output">express@4.19.2</div>
                                     </div>
                                 </div>
                             </div>
@@ -450,19 +450,20 @@
                                         <h6>Ubuntu/Debian</h6>
                                         <div class="code-wrapper">
                                             <pre><code class="language-bash">sudo apt-get update
-sudo apt-get install jq</code></pre>
+# Install Node.js first
+npm install express</code></pre>
                                         </div>
 
                                         <h6 class="mt-3">Fedora/RHEL/CentOS</h6>
                                         <div class="code-wrapper">
-                                            <pre><code class="language-bash">sudo dnf install jq
+                                            <pre><code class="language-bash">npm install express
 # or
-sudo yum install jq</code></pre>
+npm install express</code></pre>
                                         </div>
 
                                         <h6 class="mt-3">Arch Linux</h6>
                                         <div class="code-wrapper">
-                                            <pre><code class="language-bash">sudo pacman -S jq</code></pre>
+                                            <pre><code class="language-bash">npm install express</code></pre>
                                         </div>
                                     </div>
                                 </div>
@@ -479,17 +480,18 @@ sudo yum install jq</code></pre>
                                     <div class="accordion-body">
                                         <h6>Using Chocolatey</h6>
                                         <div class="code-wrapper">
-                                            <pre><code class="language-powershell">choco install jq</code></pre>
+                                            <pre><code class="language-powershell"># Install Node.js first, then:
+npm install express</code></pre>
                                         </div>
 
                                         <h6 class="mt-3">Using Scoop</h6>
                                         <div class="code-wrapper">
-                                            <pre><code class="language-powershell">scoop install jq</code></pre>
+                                            <pre><code class="language-powershell">npm install express</code></pre>
                                         </div>
 
                                         <h6 class="mt-3">Manual Download</h6>
-                                        <p>Download the Windows executable from: <a href="https://github.com/jqlang/jq/releases" target="_blank">https://github.com/jqlang/jq/releases</a></p>
-                                        <p>Add the directory containing <code>jq.exe</code> to your PATH environment variable.</p>
+                                        <p>Download the Windows executable from: <a href="https://expressjs.com" target="_blank">https://expressjs.com</a></p>
+                                        <p>Add the directory containing <code>express</code> to your PATH environment variable.</p>
                                     </div>
                                 </div>
                             </div>
@@ -504,7 +506,7 @@ sudo yum install jq</code></pre>
                                 <div id="source-install" class="accordion-collapse collapse" data-bs-parent="#installAccordion">
                                     <div class="accordion-body">
                                         <div class="code-wrapper">
-                                            <pre><code class="language-bash">git clone https://github.com/jqlang/jq.git
+                                            <pre><code class="language-bash">npm install -g express-generator
 cd jq
 git submodule update --init
 autoreconf -fi
@@ -1136,7 +1138,7 @@ EOF</code></pre>
                 <!-- Filters and Operations Section -->
                 <div id="filters" class="card mb-4">
                     <div class="card-header bg-danger text-white">
-                        <h3><i class="bi bi-funnel"></i> Filters & Operations</h3>
+                        <h3><i class="bi bi-funnel"></i> Middleware & Routing</h3>
                     </div>
                     <div class="card-body">
                         <p class="lead">jq's power comes from its extensive set of filters and operations for manipulating JSON data.</p>
@@ -2060,7 +2062,7 @@ stop
                                             </div>
                                             <div class="tab-pane fade" id="s4-diagram">
                                                 <div class="ascii-art">
-Data Transformation
+Middleware System
 ═══════════════════════════════════════
 
 Original Structure          Target Structure
