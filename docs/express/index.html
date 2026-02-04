@@ -221,6 +221,7 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> This creates a basic Express server. <code>express()</code> initializes the app, <code>app.get('/', ...)</code> defines a route that responds to GET requests at the root path, and <code>app.listen()</code> starts the server on the specified port.</p>
 
                         <h5 class="mt-4">Run</h5>
                         <pre><code class="language-bash">node app.js
@@ -261,6 +262,7 @@ app.patch('/users/:id', (req, res) => {
 app.delete('/users/:id', (req, res) => {
   res.json({ message: `User ${req.params.id} deleted` });
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Express provides methods for all standard HTTP verbs. Each method corresponds to a different operation: GET retrieves data, POST creates new resources, PUT replaces entire resources, PATCH partially updates resources, and DELETE removes resources. The response uses <code>res.json()</code> to send JSON data back to the client.</p>
 
                         <h5 class="mt-4">Route Parameters</h5>
                         <pre><code class="language-javascript">// Single parameter
@@ -279,6 +281,7 @@ app.get('/users/:userId/posts/:postId', (req, res) => {
 app.get('/flights/:from-:to', (req, res) => {
   res.json({ from: req.params.from, to: req.params.to });
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Route parameters are named URL segments that capture values from the URL. They are defined with colons (<code>:paramName</code>) and accessed via <code>req.params</code>. Multiple parameters can be used in a single route, and patterns like <code>:from-:to</code> allow for flexible URL structures.</p>
 
                         <h5 class="mt-4">Query Parameters</h5>
                         <pre><code class="language-javascript">// URL: /search?q=express&page=1&limit=10
@@ -286,6 +289,7 @@ app.get('/search', (req, res) => {
   const { q, page = 1, limit = 10 } = req.query;
   res.json({ query: q, page, limit });
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Query parameters are optional key-value pairs appended to URLs after the <code>?</code> symbol (e.g., <code>/search?q=express&amp;page=1</code>). They are accessed through <code>req.query</code> and are ideal for filtering, pagination, and search functionality. Default values can be provided using destructuring.</p>
 
                         <h5 class="mt-4">Route Chaining</h5>
                         <pre><code class="language-javascript">app.route('/book')
@@ -298,6 +302,7 @@ app.get('/search', (req, res) => {
   .put((req, res) => {
     res.send('Update book');
   });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> <code>app.route()</code> provides a chainable route API that reduces redundancy when defining multiple HTTP methods for the same path. Instead of repeating <code>app.get('/book')</code>, <code>app.post('/book')</code>, etc., you define the path once and chain the methods, making code cleaner and more maintainable.</p>
                     </div>
                 </div>
 
@@ -322,6 +327,7 @@ app.use('/api', (req, res, next) => {
   console.log('API route accessed');
   next();
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Middleware functions are executed sequentially for each request. The <code>next()</code> function passes control to the next middleware in the chain. Application-level middleware bound to the app object with <code>app.use()</code> runs for every request (if no path specified) or for requests to specific paths.</p>
 
                         <h5 class="mt-4">Built-in Middleware</h5>
                         <pre><code class="language-javascript">// Parse JSON bodies
@@ -333,6 +339,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Express includes essential built-in middleware: <code>express.json()</code> parses incoming JSON payloads, <code>express.urlencoded()</code> parses URL-encoded form data (the <code>extended: true</code> option allows rich objects and arrays), and <code>express.static()</code> serves static files from a directory. These replace the need for body-parser in modern Express.</p>
 
                         <h5 class="mt-4">Third-Party Middleware</h5>
                         <pre><code class="language-javascript">const morgan = require('morgan');
@@ -351,6 +358,7 @@ app.use(helmet());
 
 // Compress responses
 app.use(compression());</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Third-party middleware extends Express functionality. <strong>morgan</strong> logs HTTP requests ('dev' format shows colored, concise output), <strong>cors</strong> enables Cross-Origin Resource Sharing for browser security, <strong>helmet</strong> sets security-related HTTP headers, and <strong>compression</strong> compresses response bodies using gzip/deflate to reduce payload size.</p>
 
                         <h5 class="mt-4">Custom Middleware</h5>
                         <pre><code class="language-javascript">// Authentication middleware
@@ -382,6 +390,7 @@ app.use(requestTime);
 app.get('/protected', requireAuth, (req, res) => {
   res.json({ message: 'Protected data', requestTime: req.requestTime });
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Custom middleware allows you to add application-specific logic. The <code>requireAuth</code> middleware checks for authentication tokens and either blocks unauthorized requests or calls <code>next()</code> to proceed. The <code>requestTime</code> middleware adds custom properties to the request object. Middleware can be applied globally with <code>app.use()</code> or to specific routes as function arguments.</p>
 
                         <h5 class="mt-4">Error-Handling Middleware</h5>
                         <pre><code class="language-javascript">// Must have 4 parameters!
@@ -394,6 +403,7 @@ app.use((err, req, res, next) => {
     }
   });
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Error-handling middleware must have 4 parameters: <code>(err, req, res, next)</code>. Express recognizes this signature and only calls it when an error occurs (via <code>next(err)</code> or thrown exceptions). This middleware should be defined last, after all routes and other middleware. The spread operator conditionally includes the stack trace only in development mode for security.</p>
                     </div>
                 </div>
 
@@ -434,6 +444,7 @@ app.use((err, req, res, next) => {
   
   res.json({ id, search, path, method });
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> The <code>req</code> object represents the HTTP request and provides access to all request data. Key properties include <code>req.params</code> for URL parameters, <code>req.query</code> for query strings, <code>req.body</code> for parsed request bodies (requires middleware), <code>req.headers</code> or <code>req.get()</code> for headers, and metadata like <code>req.path</code>, <code>req.method</code>, and <code>req.ip</code>.</p>
 
                         <h5 class="mt-4">Response Methods</h5>
                         <pre><code class="language-javascript">// Send different response types
@@ -470,6 +481,7 @@ app.get('/api/examples', (req, res) => {
   // End response
   res.end();
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> The <code>res</code> object provides methods to send responses: <code>res.json()</code> sends JSON (automatically sets Content-Type), <code>res.send()</code> sends various types (strings, buffers, objects), <code>res.status()</code> sets HTTP status codes, <code>res.redirect()</code> redirects to different URLs, <code>res.download()</code> and <code>res.sendFile()</code> send files, <code>res.render()</code> renders templates, and <code>res.set()</code> sets custom headers.</p>
 
                         <h5 class="mt-4">Status Codes</h5>
                         <pre><code class="language-javascript">res.sendStatus(200); // OK
@@ -480,6 +492,7 @@ res.sendStatus(401); // Unauthorized
 res.sendStatus(403); // Forbidden
 res.sendStatus(404); // Not Found
 res.sendStatus(500); // Internal Server Error</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> <code>res.sendStatus()</code> sets the status code and sends its string representation as the response body. Common codes: 2xx (success), 4xx (client errors like 404 Not Found, 401 Unauthorized), and 5xx (server errors like 500 Internal Server Error). For more control, use <code>res.status(code).json(data)</code> to send a status with custom response data.</p>
                     </div>
                 </div>
 
@@ -504,6 +517,7 @@ app.get('/async-error', async (req, res, next) => {
     next(error); // Pass to error handler
   }
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Express automatically catches synchronous errors thrown in route handlers, but asynchronous errors must be explicitly passed to error handlers using <code>next(error)</code>. For async/await functions, wrap code in try-catch blocks and call <code>next(error)</code> in the catch block to ensure errors are properly handled.</p>
 
                         <h5 class="mt-4">Custom Error Class</h5>
                         <pre><code class="language-javascript">class AppError extends Error {
@@ -523,6 +537,7 @@ app.get('/user/:id', async (req, res, next) => {
   }
   res.json(user);
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Creating a custom error class extends the built-in <code>Error</code> class with additional properties like <code>statusCode</code> and <code>isOperational</code>. This helps distinguish operational errors (expected, like "user not found") from programmer errors (bugs). <code>Error.captureStackTrace()</code> maintains a clean stack trace that excludes the error class constructor itself.</p>
 
                         <h5 class="mt-4">Global Error Handler</h5>
                         <pre><code class="language-javascript">// 404 handler
@@ -551,6 +566,7 @@ app.use((err, req, res, next) => {
     }
   });
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> The 404 handler middleware catches all requests that don't match any routes (place before the error handler). The global error handler catches all errors passed via <code>next(err)</code> or thrown exceptions. It logs errors, determines the status code, and sends a JSON response. Sensitive information like stack traces should only be included in development environments.</p>
 
                         <h5 class="mt-4">Async Error Wrapper</h5>
                         <pre><code class="language-javascript">// Utility to catch async errors
@@ -563,6 +579,7 @@ app.get('/users', asyncHandler(async (req, res) => {
   const users = await User.find();
   res.json(users); // No try-catch needed!
 }));</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> The <code>asyncHandler</code> utility wraps async route handlers and automatically catches rejected promises, passing them to <code>next()</code>. This eliminates repetitive try-catch blocks in every async route. <code>Promise.resolve()</code> ensures the function result is treated as a promise, and <code>.catch(next)</code> forwards any errors to the error handler.</p>
                     </div>
                 </div>
 
@@ -585,6 +602,7 @@ app.get('/', (req, res) => {
     users: ['Alice', 'Bob', 'Charlie']
   });
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> <code>app.set('view engine', 'ejs')</code> configures Express to use EJS templates. <code>app.set('views', './views')</code> specifies the directory containing templates. <code>res.render()</code> renders a template by name and passes data as the second argument, which becomes available as variables in the template.</p>
 
                         <h5 class="mt-4">EJS Template (views/index.ejs)</h5>
                         <pre><code class="language-html">&lt;!DOCTYPE html&gt;
@@ -601,6 +619,7 @@ app.get('/', (req, res) => {
   &lt;/ul&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> EJS (Embedded JavaScript) templates use <code>&lt;%= variable %&gt;</code> to output values (HTML-escaped) and <code>&lt;% code %&gt;</code> for control flow. The template has access to all variables passed via <code>res.render()</code>. EJS supports JavaScript syntax within templates, making it powerful for dynamic content generation.</p>
 
                         <h5 class="mt-4">Pug (Jade) Example</h5>
                         <pre><code class="language-bash">npm install pug</code></pre>
@@ -616,6 +635,7 @@ html
     ul
       each user in users
         li= user</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Pug (formerly Jade) uses indentation-based syntax without closing tags. <code>title= variable</code> outputs the value, and <code>each item in array</code> iterates over arrays. Pug is more concise than EJS but has a steeper learning curve. Choose based on team familiarity and preference.</p>
                     </div>
                 </div>
 
@@ -643,6 +663,7 @@ app.use(express.static('files'));
 // Absolute path (recommended)
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> <code>express.static()</code> serves files from a directory. Files are served relative to the static directory (e.g., <code>public/css/style.css</code> is accessed at <code>/css/style.css</code>). Virtual path prefixes like <code>app.use('/static', express.static('public'))</code> require the prefix in URLs. Multiple static directories can be mounted, with Express searching them in order. Using <code>path.join(__dirname, 'public')</code> ensures absolute paths work correctly.</p>
 
                         <h5 class="mt-4">Directory Structure</h5>
                         <pre><code>public/
@@ -690,6 +711,7 @@ router.post('/', (req, res) => {
 });
 
 module.exports = router;</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> <code>express.Router()</code> creates modular, mountable route handlers. Each router is a mini-application with its own middleware and routes. Middleware defined with <code>router.use()</code> only runs for routes within that router. Route paths are relative to the mount point (e.g., <code>router.get('/')</code> becomes <code>/users</code> when mounted with <code>app.use('/users', usersRouter)</code>).</p>
 
                         <p class="mt-4"><strong>app.js:</strong></p>
                         <pre><code class="language-javascript">const usersRouter = require('./routes/users');
@@ -710,6 +732,7 @@ router.param('userId', (req, res, next, userId) => {
 router.get('/:userId', (req, res) => {
   res.json({ userId: req.userId });
 });</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> <code>router.param()</code> adds middleware that runs whenever a specific parameter is present in a route. This is useful for parameter validation, loading resources from databases, or transforming parameter values. The middleware receives the parameter value as the fourth argument and can attach data to <code>req</code> for use in subsequent handlers.</p>
                     </div>
                 </div>
 
@@ -820,6 +843,7 @@ class Todo {
 }
 
 module.exports = Todo;</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> This simple Todo model uses in-memory storage (an array) and provides static methods for CRUD operations. <code>findAll()</code> returns all todos, <code>findById()</code> searches by ID, <code>create()</code> adds new todos with auto-incrementing IDs, <code>update()</code> modifies existing todos, and <code>delete()</code> removes them. In production, replace this with a database model (Sequelize, Mongoose, etc.).</p>
 
                         <p class="mt-4"><strong>controllers/todoController.js:</strong></p>
                         <pre><code class="language-javascript">const Todo = require('../models/Todo');
@@ -868,6 +892,7 @@ exports.deleteTodo = (req, res) => {
   
   res.json({ message: 'Todo deleted' });
 };</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Controllers contain the business logic for each route. They interact with models to perform operations and send responses. <code>getAllTodos()</code> retrieves all items, <code>getTodoById()</code> finds one item and returns 404 if not found, <code>createTodo()</code> validates input and creates new items (201 Created status), <code>updateTodo()</code> modifies items, and <code>deleteTodo()</code> removes items. Validation ensures data integrity before database operations.</p>
 
                         <p class="mt-4"><strong>routes/todos.js:</strong></p>
                         <pre><code class="language-javascript">const express = require('express');
@@ -881,6 +906,7 @@ router.put('/:id', todoController.updateTodo);
 router.delete('/:id', todoController.deleteTodo);
 
 module.exports = router;</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Route files define URL paths and HTTP methods, delegating business logic to controllers. This separation follows the MVC pattern: routes handle routing, controllers contain logic, and models manage data. Using <code>express.Router()</code> and controller methods keeps route definitions clean and readable. Each route corresponds to a RESTful operation (GET for retrieval, POST for creation, PUT for updates, DELETE for deletion).</p>
 
                         <p class="mt-4"><strong>middleware/errorHandler.js:</strong></p>
                         <pre><code class="language-javascript">module.exports = (err, req, res, next) => {
@@ -894,6 +920,7 @@ module.exports = router;</code></pre>
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 };</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> Centralizing error handling in a single middleware ensures consistent error responses across the application. It logs errors for debugging, extracts status codes and messages from error objects (with fallbacks), and conditionally includes stack traces in development. This middleware should be exported and registered last in <code>app.js</code> using <code>app.use(errorHandler)</code>.</p>
 
                         <p class="mt-4"><strong>.env:</strong></p>
                         <pre><code>PORT=3000
@@ -918,6 +945,7 @@ curl -X PUT http://localhost:3000/api/todos/1 \
 
 # Delete todo
 curl -X DELETE http://localhost:3000/api/todos/1</code></pre>
+                        <p class="mt-2"><strong>Explanation:</strong> These curl commands demonstrate testing each API endpoint. <code>-X</code> specifies the HTTP method, <code>-H</code> sets headers (Content-Type for JSON), and <code>-d</code> sends request body data. GET requests retrieve data, POST creates resources (returns 201), PUT updates entire resources, PATCH makes partial updates, and DELETE removes resources. Always test error cases like invalid IDs (404) and missing required fields (400).</p>
                     </div>
                 </div>
 
