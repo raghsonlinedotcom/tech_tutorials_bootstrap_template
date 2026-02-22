@@ -1,0 +1,3446 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light" data-color-flavor="blue">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REST Assured Tutorial - Complete API Testing Mastery</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --theme-primary: #0d6efd;
+            --theme-secondary: #6c757d;
+        }
+        
+        [data-bs-theme="light"][data-color-flavor="blue"] {
+            --theme-primary: #0d6efd;
+        }
+        
+        [data-bs-theme="light"][data-color-flavor="green"] {
+            --theme-primary: #198754;
+        }
+        
+        [data-bs-theme="light"][data-color-flavor="purple"] {
+            --theme-primary: #6f42c1;
+        }
+
+        :root[data-bs-theme="light"] {
+            --jumbotron-bg: linear-gradient(135deg, #28a745 0%, #155724 100%);
+        }
+        
+        :root[data-bs-theme="dark"] {
+            --jumbotron-bg: linear-gradient(135deg, #1a472a 0%, #2d8a4e 100%);
+        }
+
+        :root[data-color-flavor="blue"] .navbar,
+        :root[data-color-flavor="blue"] .btn-primary {
+            background: linear-gradient(135deg, #28a745 0%, #155724 100%);
+            border: none;
+        }
+        
+        :root[data-color-flavor="green"] .navbar,
+        :root[data-color-flavor="green"] .btn-primary {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border: none;
+        }
+        
+        :root[data-color-flavor="purple"] .navbar,
+        :root[data-color-flavor="purple"] .btn-primary {
+            background: linear-gradient(135deg, #a8c0ff 0%, #3f2b96 100%);
+            border: none;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .jumbotron-custom {
+            background: var(--jumbotron-bg);
+            color: white;
+            padding: 4rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .ascii-art {
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .plantuml-container {
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+        
+        .mermaid-container {
+            background-color: var(--bs-secondary-bg);
+            padding: 1rem;
+            border-radius: 0.375rem;
+        }
+        
+        pre[class*="language-"] {
+            border-radius: 0.375rem;
+        }
+        
+        .version-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+        }
+        
+        .card {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .console-output {
+            white-space: pre-line;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+            border-left: 4px solid #28a745;
+        }
+        
+        [data-bs-theme="dark"] .console-output {
+            background-color: #0d1117;
+            border-left-color: #58a6ff;
+        }
+        
+        .theme-controls {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .comparison-table {
+            font-size: 0.9rem;
+        }
+
+        /* Code copy button styles */
+        .code-wrapper {
+            position: relative;
+        }
+        
+        .code-copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        
+        .code-copy-btn:hover {
+            opacity: 1;
+        }
+
+        /* Enhanced search styles */
+        .search-results-panel {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1050;
+            min-width: 280px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: none;
+        }
+
+        [data-bs-theme="dark"] .search-results-panel {
+            background: #212529;
+            border: 1px solid #495057;
+        }
+
+        .search-highlight {
+            background-color: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+
+        [data-bs-theme="dark"] .search-highlight {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .search-highlight.current {
+            background-color: #ff5722;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Controls -->
+    <div class="theme-controls">
+        <div class="btn-group-vertical" role="group">
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="themeToggle" data-bs-toggle="tooltip" title="Toggle Dark/Light">
+                <i class="bi bi-moon-stars"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setColorFlavor('blue')" data-bs-toggle="tooltip" title="Blue Theme">
+                <i class="bi bi-circle-fill text-primary"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-success" onclick="setColorFlavor('green')" data-bs-toggle="tooltip" title="Green Theme">
+                <i class="bi bi-circle-fill text-success"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-purple" onclick="setColorFlavor('purple')" data-bs-toggle="tooltip" title="Purple Theme">
+                <i class="bi bi-circle-fill" style="color: #6f42c1;"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="bi bi-shield-check"></i> REST Assured Tutorial</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Sections
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#introduction">Introduction</a></li>
+                            <li><a class="dropdown-item" href="#architecture">Architecture</a></li>
+                            <li><a class="dropdown-item" href="#ecosystem">Ecosystem</a></li>
+                            <li><a class="dropdown-item" href="#advantages-disadvantages">Pros &amp; Cons</a></li>
+                            <li><a class="dropdown-item" href="#use-cases">Use Cases</a></li>
+                            <li><a class="dropdown-item" href="#comparisons">Comparisons</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#dsl-features">DSL &amp; Features</a></li>
+                            <li><a class="dropdown-item" href="#real-time-example">Real-Time Example</a></li>
+                            <li><a class="dropdown-item" href="#faqs">FAQs</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#version-history">Version History</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#resources">Resources</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Off Canvas Menu -->
+    <button class="btn btn-primary position-fixed" style="top: 80px; left: 20px; z-index: 999;" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas">
+        <i class="bi bi-list"></i> TOC
+    </button>
+
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="tocOffcanvas">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title"><i class="bi bi-shield-check"></i> Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="list-group">
+                <a href="#introduction" class="list-group-item list-group-item-action">
+                    <i class="bi bi-1-circle"></i> Introduction
+                </a>
+                <a href="#architecture" class="list-group-item list-group-item-action">
+                    <i class="bi bi-2-circle"></i> Architecture
+                </a>
+                <a href="#ecosystem" class="list-group-item list-group-item-action">
+                    <i class="bi bi-3-circle"></i> Ecosystem
+                </a>
+                <a href="#advantages-disadvantages" class="list-group-item list-group-item-action">
+                    <i class="bi bi-4-circle"></i> Advantages &amp; Disadvantages
+                </a>
+                <a href="#use-cases" class="list-group-item list-group-item-action">
+                    <i class="bi bi-5-circle"></i> Use Cases
+                </a>
+                <a href="#comparisons" class="list-group-item list-group-item-action">
+                    <i class="bi bi-6-circle"></i> Technology Comparisons
+                </a>
+                <a href="#dsl-features" class="list-group-item list-group-item-action">
+                    <i class="bi bi-7-circle"></i> DSL &amp; Features
+                </a>
+                <a href="#real-time-example" class="list-group-item list-group-item-action">
+                    <i class="bi bi-8-circle"></i> Real-Time Example
+                </a>
+                <a href="#faqs" class="list-group-item list-group-item-action">
+                    <i class="bi bi-9-circle"></i> FAQs
+                </a>
+                <a href="#version-history" class="list-group-item list-group-item-action list-group-item-info">
+                    <i class="bi bi-clock-history"></i> Version History
+                </a>
+                <a href="#resources" class="list-group-item list-group-item-action list-group-item-warning">
+                    <i class="bi bi-bookmarks"></i> Resources
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Jumbotron / Hero Section -->
+                <div class="jumbotron-custom text-center" id="home">
+                    <h1 class="display-3"><i class="bi bi-shield-check"></i> REST Assured Mastery</h1>
+                    <p class="lead">Comprehensive API Testing with Java's Most Powerful REST Testing DSL</p>
+                    <hr class="my-4" style="border-color: rgba(255,255,255,0.3);">
+                    <p>Master REST Assured 6.0.0 with Spring Boot, JUnit 5, Mockito, TestContainers &amp; Docker</p>
+                    <a class="btn btn-light btn-lg" href="#introduction" role="button">Get Started <i class="bi bi-arrow-right"></i></a>
+                </div>
+
+                <!-- Alert Messages -->
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle"></i> <strong>Complete Tutorial:</strong> This tutorial covers REST Assured fundamentals, architecture, ecosystem, BDD-style testing DSL, and a production-grade Product Inventory Management API with Spring Boot, H2, JUnit 5, Mockito, TestContainers, and Docker.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <!-- ==================== INTRODUCTION SECTION ==================== -->
+                <div class="card mb-4" id="introduction">
+                    <div class="card-header bg-success text-white">
+                        <h2><i class="bi bi-book"></i> Introduction to REST Assured</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">REST Assured is a Java-based DSL (Domain-Specific Language) for simplifying the testing of RESTful web services. It brings the simplicity of dynamic languages (Ruby, Groovy) into the Java domain, making HTTP request crafting and response validation expressive and readable.</p>
+                        
+                        <h4 class="mt-4"><i class="bi bi-lightbulb"></i> What is REST Assured?</h4>
+                        <p>REST Assured was created by <strong>Johan Haleby</strong> and first released in 2010. The latest major version, <strong>REST Assured 6.0.0</strong> (released December 2025), raises the baseline to Java 17+, upgrades to Groovy 5, and adds Spring 7 + Jackson 3 support.</p>
+                        <ul>
+                            <li><strong>BDD-Style Syntax:</strong> Uses a Given-When-Then pattern that reads like a specification</li>
+                            <li><strong>Fluent API:</strong> Chainable methods for request building and response validation</li>
+                            <li><strong>JSON/XML Support:</strong> Built-in JsonPath and XmlPath for response parsing</li>
+                            <li><strong>Authentication:</strong> Supports Basic, Digest, OAuth 1.0/2.0, CSRF tokens</li>
+                            <li><strong>Schema Validation:</strong> JSON Schema and XML Schema/DTD validation</li>
+                            <li><strong>Spring Integration:</strong> Native support for Spring MockMvc and WebTestClient</li>
+                        </ul>
+
+                        <div class="alert alert-info mt-3">
+                            <i class="bi bi-info-circle"></i> <strong>Key Insight:</strong> REST Assured follows the BDD (Behavior-Driven Development) pattern: <code>given()</code> sets up the request, <code>when()</code> performs the action, and <code>then()</code> validates the response.
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-code-square"></i> First Glimpse</h4>
+                        <pre><code class="language-java">import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+// BDD-style API test
+given()
+    .baseUri("http://localhost:8080")
+    .header("Content-Type", "application/json")
+    .body("{\"name\": \"Laptop\", \"price\": 999.99}")
+.when()
+    .post("/api/products")
+.then()
+    .statusCode(201)
+    .body("name", equalTo("Laptop"))
+    .body("price", equalTo(999.99f));</code></pre>
+
+                        <h4 class="mt-4"><i class="bi bi-graph-up"></i> Why Use REST Assured?</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="bi bi-speedometer2 text-success"></i> Readability</h5>
+                                        <p class="card-text">BDD-style Given-When-Then syntax makes tests self-documenting and easy for non-developers to understand.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-light mb-3">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><i class="bi bi-plugin text-primary"></i> Integration</h5>
+                                        <p class="card-text">Seamlessly integrates with JUnit 5, TestNG, Mockito, Spring Boot Test, TestContainers, and CI/CD pipelines.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-clock-history"></i> REST Assured Version History</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="table-success">
+                                    <tr>
+                                        <th>Version</th>
+                                        <th>Release Date</th>
+                                        <th>Key Changes</th>
+                                        <th>Min Java</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-success">6.0.0</span></td>
+                                        <td>Dec 2025</td>
+                                        <td>Java 17+ baseline, Groovy 5, Spring 7, Jackson 3</td>
+                                        <td>Java 17</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-primary">5.5.x</span></td>
+                                        <td>2025</td>
+                                        <td>Bug fixes, CSRF cookie handling, BOM improvements</td>
+                                        <td>Java 11</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-secondary">5.4.0</span></td>
+                                        <td>2024</td>
+                                        <td>Spring MockMvc enhancements, Kotlin DSL</td>
+                                        <td>Java 11</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-secondary">5.0.0</span></td>
+                                        <td>2023</td>
+                                        <td>Package rename from <code>com.jayway</code> to <code>io.restassured</code>, Java 11+</td>
+                                        <td>Java 11</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-secondary">4.x</span></td>
+                                        <td>2019-2022</td>
+                                        <td>JDK 8 support, improved JSON/XML parsing</td>
+                                        <td>Java 8</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-secondary">3.x</span></td>
+                                        <td>2016-2018</td>
+                                        <td>New package structure, Spring MockMvc module</td>
+                                        <td>Java 8</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== ARCHITECTURE SECTION ==================== -->
+                <div class="card mb-4" id="architecture">
+                    <div class="card-header bg-primary text-white">
+                        <h2><i class="bi bi-diagram-3"></i> REST Assured Architecture</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Understanding how REST Assured works under the hood helps you write better, more efficient API tests.</p>
+
+                        <h4 class="mt-4"><i class="bi bi-gear"></i> Internal Architecture &amp; Request Lifecycle</h4>
+                        
+                        <ul class="nav nav-tabs" id="architectureTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="ascii-architecture-tab" data-bs-toggle="tab" data-bs-target="#ascii-architecture" type="button" role="tab">
+                                    <i class="bi bi-text-left"></i> ASCII Diagram
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="plantuml-architecture-tab" data-bs-toggle="tab" data-bs-target="#plantuml-architecture" type="button" role="tab">
+                                    <i class="bi bi-diagram-2"></i> PlantUML
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="mermaid-architecture-tab" data-bs-toggle="tab" data-bs-target="#mermaid-architecture" type="button" role="tab">
+                                    <i class="bi bi-diagram-3"></i> Mermaid
+                                </button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content border border-top-0 p-3" id="architectureTabContent">
+                            <div class="tab-pane fade show active" id="ascii-architecture" role="tabpanel">
+                                <div class="ascii-art">
+┌──────────────────────────────────────────────────────────────────────┐
+│                  REST Assured Request Lifecycle                       │
+└──────────────────────────────────────────────────────────────────────┘
+
+    Test Code                    REST Assured Engine             Target API
+        │                              │                             │
+        │  given()                     │                             │
+        │  ┌──────────────────────┐    │                             │
+        │  │ Request Specification│    │                             │
+        │  │ • Base URI/Path      │    │                             │
+        │  │ • Headers            │    │                             │
+        │  │ • Query Params       │    │                             │
+        │  │ • Body (JSON/XML)    │    │                             │
+        │  │ • Auth Credentials   │    │                             │
+        │  │ • Cookies            │    │                             │
+        │  │ • Multipart Data     │    │                             │
+        │  └──────────┬───────────┘    │                             │
+        │             │                │                             │
+        │  when()     ▼                │                             │
+        │  ┌──────────────────────┐    │                             │
+        │  │  HTTP Method         │    │                             │
+        │  │  GET/POST/PUT/DELETE │────┤                             │
+        │  │  PATCH/HEAD/OPTIONS  │    │                             │
+        │  └──────────┬───────────┘    │                             │
+        │             │                │                             │
+        │             ▼                │                             │
+        │  ┌──────────────────────┐    │    ┌───────────────────┐    │
+        │  │ Request Filters      │    │    │  HTTP Client      │    │
+        │  │ • Logging Filter     │───>│───>│  (Apache HC 4.x)  │───>│
+        │  │ • Auth Filter        │    │    │  Sends actual     │    │
+        │  │ • Custom Filters     │    │    │  HTTP request     │    │
+        │  └──────────────────────┘    │    └───────┬───────────┘    │
+        │                              │            │                │
+        │                              │            │  HTTP Response │
+        │                              │    ┌───────▼───────────┐    │
+        │                              │    │ Response Object   │<───│
+        │  then()                      │    │ • Status Code     │    │
+        │  ┌──────────────────────┐    │    │ • Headers         │    │
+        │  │ Response Validation  │<───│<───│ • Body (String)   │    │
+        │  │ • Status Code Check  │    │    │ • Cookies         │    │
+        │  │ • Body Assertions    │    │    │ • Content-Type    │    │
+        │  │ • Header Checks      │    │    └───────────────────┘    │
+        │  │ • JsonPath Queries   │    │                             │
+        │  │ • Schema Validation  │    │                             │
+        │  │ • Hamcrest Matchers  │    │                             │
+        │  └──────────────────────┘    │                             │
+        │                              │                             │
+        ▼                              ▼                             ▼
+
+┌──────────────────────────────────────────────────────────────────────┐
+│  Key Components:                                                      │
+│  • RequestSpecification  - Builds the HTTP request                    │
+│  • ResponseSpecification - Defines expected response                  │
+│  • Filters               - Intercept/modify requests and responses    │
+│  • JsonPath / XmlPath    - Parse response bodies                      │
+│  • Hamcrest Matchers     - Assertion library for validations          │
+│  • Apache HttpClient     - Underlying HTTP transport layer            │
+└──────────────────────────────────────────────────────────────────────┘
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="plantuml-architecture" role="tabpanel">
+                                <div class="plantuml-container">
+                                    <pre><code class="language-plantuml">@startuml
+title REST Assured Request Lifecycle
+
+participant "Test Code" as test
+participant "RequestSpecification" as reqSpec
+participant "Filters" as filters
+participant "Apache HttpClient" as httpClient
+participant "Target API" as api
+participant "Response" as resp
+participant "Validation" as validate
+
+== given() - Request Setup ==
+test -> reqSpec: baseUri, headers, body,\nauth, params, cookies
+
+== when() - HTTP Action ==
+test -> reqSpec: get() / post() / put() / delete()
+reqSpec -> filters: Apply request filters\n(logging, auth, custom)
+filters -> httpClient: Build and send\nHTTP request
+httpClient -> api: HTTP Request\n(GET/POST/PUT/DELETE)
+
+== Response ==
+api --> httpClient: HTTP Response\n(status, headers, body)
+httpClient --> resp: Wrap in Response object
+
+== then() - Validation ==
+test -> resp: statusCode(), body(),\nheader(), contentType()
+resp -> validate: JsonPath / XmlPath parsing
+validate -> validate: Hamcrest Matcher assertions
+validate -> validate: JSON Schema validation
+validate --> test: Pass / Fail (AssertionError)
+
+@enduml</code></pre>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="bi bi-exclamation-triangle"></i> <strong>Render:</strong> Copy the PlantUML code to <a href="http://www.plantuml.com/plantuml/uml/" target="_blank">PlantUML Online Server</a>.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="mermaid-architecture" role="tabpanel">
+                                <div class="mermaid-container">
+                                    <pre><code class="language-mermaid">sequenceDiagram
+    participant TC as Test Code
+    participant RS as RequestSpecification
+    participant F as Filters
+    participant HC as Apache HttpClient
+    participant API as Target REST API
+    participant V as Validation Engine
+
+    Note over TC,API: given() - Request Setup
+    TC->>RS: baseUri, headers, body, auth
+    
+    Note over TC,API: when() - HTTP Action
+    TC->>RS: post("/api/products")
+    RS->>F: Apply logging, auth filters
+    F->>HC: Build HTTP request
+    HC->>API: HTTP POST /api/products
+    
+    Note over TC,API: Response
+    API-->>HC: 201 Created + JSON body
+    HC-->>RS: Wrap as Response object
+    
+    Note over TC,API: then() - Validation
+    TC->>V: statusCode(201)
+    TC->>V: body("name", equalTo("Laptop"))
+    V->>V: JsonPath extraction + Hamcrest match
+    V-->>TC: Test PASSED ✓</code></pre>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="bi bi-exclamation-triangle"></i> <strong>Render:</strong> Copy the Mermaid code to <a href="https://mermaid.live/" target="_blank">Mermaid Live Editor</a>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-layers"></i> Core Modules</h4>
+                        <div class="row mt-3">
+                            <div class="col-md-3">
+                                <div class="card h-100">
+                                    <div class="card-header bg-success text-white">
+                                        <i class="bi bi-box"></i> rest-assured
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="small">
+                                            <li>Core DSL module</li>
+                                            <li>Given-When-Then API</li>
+                                            <li>HTTP client wrapper</li>
+                                            <li>Filter chain</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card h-100">
+                                    <div class="card-header bg-primary text-white">
+                                        <i class="bi bi-braces"></i> json-path
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="small">
+                                            <li>GPath-based JSON parsing</li>
+                                            <li>Inline extraction</li>
+                                            <li>Type-safe getters</li>
+                                            <li>List/Map navigation</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card h-100">
+                                    <div class="card-header bg-info text-white">
+                                        <i class="bi bi-file-earmark-code"></i> xml-path
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="small">
+                                            <li>XPath-based XML parsing</li>
+                                            <li>XML namespace support</li>
+                                            <li>DTD/XSD validation</li>
+                                            <li>SOAP support</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card h-100">
+                                    <div class="card-header bg-warning text-dark">
+                                        <i class="bi bi-spring"></i> spring-mock-mvc
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="small">
+                                            <li>Spring MockMvc integration</li>
+                                            <li>WebTestClient support</li>
+                                            <li>No real HTTP server</li>
+                                            <li>Fast unit testing</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== ECOSYSTEM SECTION ==================== -->
+                <div class="card mb-4" id="ecosystem">
+                    <div class="card-header bg-info text-white">
+                        <h2><i class="bi bi-globe"></i> REST Assured Ecosystem</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">REST Assured integrates with a rich ecosystem of Java testing libraries and frameworks.</p>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h4><i class="bi bi-box-seam text-success"></i> Core Modules</h4>
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">rest-assured</h5>
+                                            <small class="badge bg-success">Core</small>
+                                        </div>
+                                        <p class="mb-1">Main DSL for REST API testing with fluent Given-When-Then syntax.</p>
+                                        <small class="text-muted">io.rest-assured:rest-assured:6.0.0</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">json-schema-validator</h5>
+                                            <small class="badge bg-primary">Validation</small>
+                                        </div>
+                                        <p class="mb-1">Validates JSON responses against JSON Schema definitions.</p>
+                                        <small class="text-muted">io.rest-assured:json-schema-validator:6.0.0</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">spring-mock-mvc</h5>
+                                            <small class="badge bg-warning text-dark">Spring</small>
+                                        </div>
+                                        <p class="mb-1">Use REST Assured DSL with Spring MockMvc (no HTTP server needed).</p>
+                                        <small class="text-muted">io.rest-assured:spring-mock-mvc:6.0.0</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">kotlin-extensions</h5>
+                                            <small class="badge bg-info">Kotlin</small>
+                                        </div>
+                                        <p class="mb-1">Kotlin extension functions for more idiomatic Kotlin API testing.</p>
+                                        <small class="text-muted">io.rest-assured:kotlin-extensions:6.0.0</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4><i class="bi bi-puzzle text-primary"></i> Companion Libraries</h4>
+                                <div class="list-group">
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">JUnit 5 (Jupiter)</h5>
+                                            <small class="badge bg-success">Testing</small>
+                                        </div>
+                                        <p class="mb-1">Test framework for structuring and running REST Assured tests.</p>
+                                        <small class="text-muted">org.junit.jupiter:junit-jupiter:5.11.x</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">Hamcrest</h5>
+                                            <small class="badge bg-primary">Matchers</small>
+                                        </div>
+                                        <p class="mb-1">Matcher library used for response body and header assertions.</p>
+                                        <small class="text-muted">org.hamcrest:hamcrest:2.2</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">Mockito</h5>
+                                            <small class="badge bg-warning text-dark">Mocking</small>
+                                        </div>
+                                        <p class="mb-1">Mock dependencies for unit-level controller/service testing.</p>
+                                        <small class="text-muted">org.mockito:mockito-core:5.x</small>
+                                    </div>
+                                    <div class="list-group-item">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">TestContainers</h5>
+                                            <small class="badge bg-info">Integration</small>
+                                        </div>
+                                        <p class="mb-1">Spin up Docker containers (databases, services) for integration tests.</p>
+                                        <small class="text-muted">org.testcontainers:testcontainers:2.0.3</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== ADVANTAGES & DISADVANTAGES ==================== -->
+                <div class="card mb-4" id="advantages-disadvantages">
+                    <div class="card-header bg-warning text-dark">
+                        <h2><i class="bi bi-balance-scale"></i> Advantages &amp; Disadvantages</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h4 class="text-success"><i class="bi bi-check-circle-fill"></i> Advantages</h4>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-book text-success"></i> Readable BDD Syntax</h5>
+                                        <p>Given-When-Then style makes tests self-documenting. Even non-developers can understand what the test validates.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-braces text-primary"></i> Powerful JSON/XML Parsing</h5>
+                                        <p>Built-in GPath-based JsonPath and XPath for navigating deeply nested responses without external libraries.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-shield-lock text-warning"></i> Authentication Support</h5>
+                                        <p>Out-of-the-box support for Basic, Digest, Form, OAuth 1.0, OAuth 2.0, and CSRF token handling.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-plug text-info"></i> Spring Integration</h5>
+                                        <p>Native modules for Spring MockMvc and WebTestClient allow testing without starting a real server.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-check2-all text-success"></i> Schema Validation</h5>
+                                        <p>Validate response structures against JSON Schema, XML Schema, or DTD definitions for contract testing.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="text-danger"><i class="bi bi-x-circle-fill"></i> Disadvantages</h4>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-cup-hot text-danger"></i> Java-Only</h5>
+                                        <p>Limited to the JVM ecosystem. Teams using Python, Go, or Node.js need alternative tools (requests, supertest).</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-speedometer text-warning"></i> Startup Overhead</h5>
+                                        <p>Integration tests with <code>@SpringBootTest</code> load the full application context, which can be slow for large apps.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-exclamation-triangle text-danger"></i> Groovy Dependency</h5>
+                                        <p>REST Assured depends on Groovy for its internal DSL, which adds JAR size and may conflict with other Groovy versions.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-arrow-repeat text-info"></i> No Built-in Retry</h5>
+                                        <p>Does not provide built-in request retry or polling mechanisms. Requires custom implementation or external libraries.</p>
+                                    </div>
+                                </div>
+                                <div class="card bg-light-subtle mb-3">
+                                    <div class="card-body">
+                                        <h5><i class="bi bi-graph-down text-secondary"></i> Limited Async Support</h5>
+                                        <p>Primarily synchronous. Testing async endpoints (WebSockets, SSE) requires additional tooling.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== USE CASES ==================== -->
+                <div class="card mb-4" id="use-cases">
+                    <div class="card-header bg-danger text-white">
+                        <h2><i class="bi bi-bullseye"></i> Practical Use Cases</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">REST Assured excels in scenarios requiring automated validation of REST APIs.</p>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <h5><i class="bi bi-check-circle"></i> Functional API Testing</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Validate:</strong> CRUD operations, business logic, error handling, pagination, and filtering.</p>
+                                        <p class="mb-0"><strong>Example:</strong> E-commerce product catalog API</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-primary">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5><i class="bi bi-file-earmark-check"></i> Contract Testing</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Validate:</strong> API response structures against JSON Schema to ensure backward compatibility.</p>
+                                        <p class="mb-0"><strong>Example:</strong> Microservice API contracts</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-warning">
+                                    <div class="card-header bg-warning text-dark">
+                                        <h5><i class="bi bi-shield-lock"></i> Security Testing</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Validate:</strong> Authentication flows, authorization rules, token handling, and CORS policies.</p>
+                                        <p class="mb-0"><strong>Example:</strong> OAuth2-protected banking API</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-info">
+                                    <div class="card-header bg-info text-white">
+                                        <h5><i class="bi bi-arrow-left-right"></i> Integration Testing</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Validate:</strong> End-to-end flows with real databases (via TestContainers) and downstream services.</p>
+                                        <p class="mb-0"><strong>Example:</strong> Order management with DB + messaging</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-secondary">
+                                    <div class="card-header bg-secondary text-white">
+                                        <h5><i class="bi bi-arrow-clockwise"></i> Regression Testing</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Validate:</strong> Automated suites in CI/CD to catch regressions on every commit.</p>
+                                        <p class="mb-0"><strong>Example:</strong> Jenkins/GitHub Actions pipeline</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="card h-100 border-danger">
+                                    <div class="card-header bg-danger text-white">
+                                        <h5><i class="bi bi-speedometer2"></i> Data-Driven Testing</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Validate:</strong> Same endpoint with multiple data sets using JUnit 5 <code>@ParameterizedTest</code>.</p>
+                                        <p class="mb-0"><strong>Example:</strong> Validation rules across edge cases</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== COMPARISONS ==================== -->
+                <div class="card mb-4" id="comparisons">
+                    <div class="card-header bg-dark text-white">
+                        <h2><i class="bi bi-arrow-left-right"></i> REST Assured vs. Competing Technologies</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Comparing REST Assured with alternative API testing approaches in Java.</p>
+
+                        <h4 class="mt-4"><i class="bi bi-1-circle"></i> REST Assured vs. Java HttpClient</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped comparison-table">
+                                <thead class="table-success">
+                                    <tr><th>Feature</th><th>REST Assured</th><th>Java HttpClient (JDK 11+)</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><strong>Syntax</strong></td><td>BDD Given-When-Then fluent DSL</td><td>Builder pattern, verbose</td></tr>
+                                    <tr><td><strong>JSON Parsing</strong></td><td>Built-in JsonPath + Hamcrest matchers</td><td>Manual (Jackson/Gson required)</td></tr>
+                                    <tr><td><strong>Assertions</strong></td><td>Inline body/header/status assertions</td><td>Manual with assertEquals</td></tr>
+                                    <tr><td><strong>Auth Support</strong></td><td>OAuth, Basic, Digest, CSRF built-in</td><td>Manual header construction</td></tr>
+                                    <tr><td><strong>Dependencies</strong></td><td>Groovy + Apache HttpClient</td><td>Zero (JDK built-in)</td></tr>
+                                    <tr><td><strong>Best For</strong></td><td>Readable, comprehensive API test suites</td><td>Simple HTTP calls, minimal dependencies</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-2-circle"></i> REST Assured vs. Spring MockMvc</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped comparison-table">
+                                <thead class="table-primary">
+                                    <tr><th>Feature</th><th>REST Assured</th><th>Spring MockMvc</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><strong>Server Required</strong></td><td>Yes (real HTTP, or use spring-mock-mvc module)</td><td>No (in-memory servlet)</td></tr>
+                                    <tr><td><strong>Speed</strong></td><td>Slower (network I/O)</td><td>Very fast (no network)</td></tr>
+                                    <tr><td><strong>Realism</strong></td><td>Tests actual HTTP behavior</td><td>Simulates servlet container</td></tr>
+                                    <tr><td><strong>Spring Dependency</strong></td><td>Optional</td><td>Required</td></tr>
+                                    <tr><td><strong>Syntax</strong></td><td>given().when().then()</td><td>mockMvc.perform().andExpect()</td></tr>
+                                    <tr><td><strong>Best For</strong></td><td>Full integration tests, non-Spring APIs</td><td>Fast Spring controller unit tests</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-3-circle"></i> REST Assured vs. Postman/Newman</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped comparison-table">
+                                <thead class="table-info">
+                                    <tr><th>Feature</th><th>REST Assured</th><th>Postman / Newman</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><strong>Language</strong></td><td>Java (code-based)</td><td>JavaScript (GUI + CLI)</td></tr>
+                                    <tr><td><strong>VCS Friendly</strong></td><td>Excellent (plain Java files)</td><td>Moderate (JSON collections)</td></tr>
+                                    <tr><td><strong>CI/CD Integration</strong></td><td>Native (Maven/Gradle)</td><td>Via Newman CLI</td></tr>
+                                    <tr><td><strong>Debugging</strong></td><td>IDE breakpoints, logging filters</td><td>Console, limited debugging</td></tr>
+                                    <tr><td><strong>Data-Driven</strong></td><td>JUnit 5 @ParameterizedTest</td><td>CSV/JSON data files</td></tr>
+                                    <tr><td><strong>Best For</strong></td><td>Java teams, CI/CD automation</td><td>Manual exploration, quick prototyping</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="alert alert-info mt-4">
+                            <h5><i class="bi bi-lightbulb"></i> Decision Guide</h5>
+                            <ul class="mb-0">
+                                <li><strong>Choose REST Assured:</strong> Java-based teams, CI/CD pipelines, complex BDD-style API test suites</li>
+                                <li><strong>Choose Java HttpClient:</strong> Simple HTTP calls, minimal dependencies, utility scripts</li>
+                                <li><strong>Choose Spring MockMvc:</strong> Fast Spring controller tests, no server startup needed</li>
+                                <li><strong>Choose Postman:</strong> Manual API exploration, quick prototyping, non-Java teams</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== DSL & FEATURES ==================== -->
+                <div class="card mb-4" id="dsl-features">
+                    <div class="card-header bg-secondary text-white">
+                        <h2><i class="bi bi-code-slash"></i> REST Assured DSL &amp; Features</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Complete reference for REST Assured's fluent BDD-style DSL.</p>
+
+                        <h4 class="mt-4"><i class="bi bi-gear"></i> given() - Request Configuration</h4>
+                        <pre><code class="language-java">import static io.restassured.RestAssured.*;
+
+// Headers and Content-Type
+given()
+    .header("Authorization", "Bearer eyJhbGci...")
+    .contentType("application/json")
+    .accept("application/json")
+
+// Query and Path Parameters
+    .queryParam("page", 1)
+    .queryParam("size", 10)
+    .pathParam("id", 42)
+
+// Request Body (JSON)
+    .body("""
+        {
+            "name": "Wireless Mouse",
+            "category": "Electronics",
+            "price": 29.99,
+            "stock": 150
+        }
+        """)
+
+// Authentication
+    .auth().basic("admin", "password")
+    // OR .auth().oauth2("access_token")
+    // OR .auth().preemptive().basic("user", "pass")
+
+// Logging
+    .log().all()  // Log entire request
+
+.when()
+    .post("/api/products")
+.then()
+    .log().ifError()  // Log only on failure
+    .statusCode(201);</code></pre>
+
+                        <h4 class="mt-4"><i class="bi bi-send"></i> when() - HTTP Methods</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <pre><code class="language-java">// GET with query parameters
+given()
+    .queryParam("category", "Electronics")
+.when()
+    .get("/api/products")
+.then()
+    .statusCode(200)
+    .body("size()", greaterThan(0));
+
+// POST with JSON body
+given()
+    .contentType("application/json")
+    .body(productJson)
+.when()
+    .post("/api/products")
+.then()
+    .statusCode(201);</code></pre>
+                            </div>
+                            <div class="col-md-6">
+                                <pre><code class="language-java">// PUT (full update)
+given()
+    .contentType("application/json")
+    .body(updatedProductJson)
+.when()
+    .put("/api/products/{id}", 42)
+.then()
+    .statusCode(200);
+
+// DELETE
+when()
+    .delete("/api/products/{id}", 42)
+.then()
+    .statusCode(204);
+
+// PATCH (partial update)
+given()
+    .contentType("application/json")
+    .body("{\"price\": 19.99}")
+.when()
+    .patch("/api/products/{id}", 42)
+.then()
+    .statusCode(200);</code></pre>
+                            </div>
+                        </div>
+
+                        <h4 class="mt-4"><i class="bi bi-check2-circle"></i> then() - Response Validation</h4>
+                        <pre><code class="language-java">// Status code and content type
+.then()
+    .statusCode(200)
+    .contentType("application/json")
+
+// Body assertions with Hamcrest matchers
+    .body("name", equalTo("Laptop"))
+    .body("price", greaterThan(500.0f))
+    .body("categories", hasSize(3))
+    .body("categories", hasItem("Electronics"))
+    .body("tags", containsInAnyOrder("sale", "new", "featured"))
+
+// Nested JSON navigation
+    .body("address.city", equalTo("Mumbai"))
+    .body("orders[0].total", equalTo(1499.99f))
+    .body("orders.findAll { it.total > 100 }.size()", greaterThan(0))
+
+// Header assertions
+    .header("X-Total-Count", "42")
+    .header("Cache-Control", containsString("no-cache"))
+
+// Response time
+    .time(lessThan(3000L))  // milliseconds
+
+// JSON Schema validation
+    .body(matchesJsonSchemaInClasspath("schemas/product-schema.json"));</code></pre>
+
+                        <h4 class="mt-4"><i class="bi bi-arrow-down-circle"></i> Extracting Response Data</h4>
+                        <pre><code class="language-java">// Extract single value
+String productName = given()
+    .when().get("/api/products/1")
+    .then().statusCode(200)
+    .extract().path("name");
+
+// Extract entire response
+Response response = given()
+    .when().get("/api/products")
+    .then().statusCode(200)
+    .extract().response();
+
+int statusCode = response.getStatusCode();
+String body = response.getBody().asString();
+String header = response.getHeader("Content-Type");
+
+// Extract as POJO (Java Object)
+Product product = given()
+    .when().get("/api/products/1")
+    .then().statusCode(200)
+    .extract().as(Product.class);
+
+// Extract list of objects
+List&lt;Product&gt; products = given()
+    .when().get("/api/products")
+    .then().statusCode(200)
+    .extract().jsonPath().getList(".", Product.class);</code></pre>
+
+                        <h4 class="mt-4"><i class="bi bi-funnel"></i> Filters &amp; Logging</h4>
+                        <pre><code class="language-java">// Global configuration (in @BeforeAll)
+RestAssured.baseURI = "http://localhost:8080";
+RestAssured.basePath = "/api";
+RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter());
+
+// Request specification reuse
+RequestSpecification requestSpec = new RequestSpecBuilder()
+    .setBaseUri("http://localhost:8080")
+    .setBasePath("/api")
+    .setContentType("application/json")
+    .addHeader("Authorization", "Bearer token123")
+    .build();
+
+// Response specification reuse
+ResponseSpecification responseSpec = new ResponseSpecBuilder()
+    .expectStatusCode(200)
+    .expectContentType("application/json")
+    .build();
+
+// Usage
+given()
+    .spec(requestSpec)
+.when()
+    .get("/products")
+.then()
+    .spec(responseSpec)
+    .body("size()", greaterThan(0));</code></pre>
+                    </div>
+                </div>
+
+                <!-- ==================== REAL-TIME EXAMPLE ==================== -->
+                <div class="card mb-4" id="real-time-example">
+                    <div class="card-header bg-success text-white">
+                        <h2><i class="bi bi-lightning-charge"></i> Real-Time Example: Product Inventory Management API</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">A complete Product Inventory Management REST API built with Spring Boot 3.4, H2, and comprehensively tested with REST Assured 6.0.0, JUnit 5, Mockito, TestContainers, and Docker.</p>
+
+                        <div class="alert alert-info">
+                            <h5><i class="bi bi-info-circle"></i> Technology Stack</h5>
+                            <ul class="mb-0">
+                                <li><strong>Java 17+</strong> - Language runtime</li>
+                                <li><strong>Spring Boot 3.4</strong> - Application framework with embedded Tomcat</li>
+                                <li><strong>Spring Data JPA</strong> - Database access with Hibernate</li>
+                                <li><strong>H2 Database</strong> - In-memory database for development/testing</li>
+                                <li><strong>REST Assured 6.0.0</strong> - API testing DSL</li>
+                                <li><strong>JUnit 5</strong> - Test framework</li>
+                                <li><strong>Mockito 5.x</strong> - Mocking framework for unit tests</li>
+                                <li><strong>TestContainers 2.0.3</strong> - Docker-based integration testing</li>
+                                <li><strong>Docker</strong> - Containerization for TestContainers and deployment</li>
+                            </ul>
+                        </div>
+
+                        <!-- Architecture Diagram -->
+                        <h4 class="mt-4"><i class="bi bi-diagram-3"></i> Application Architecture</h4>
+                        <ul class="nav nav-tabs" id="exampleArchTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="ascii-example-tab" data-bs-toggle="tab" data-bs-target="#ascii-example" type="button" role="tab">
+                                    <i class="bi bi-text-left"></i> ASCII Diagram
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="plantuml-example-tab" data-bs-toggle="tab" data-bs-target="#plantuml-example" type="button" role="tab">
+                                    <i class="bi bi-diagram-2"></i> PlantUML
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="mermaid-example-tab" data-bs-toggle="tab" data-bs-target="#mermaid-example" type="button" role="tab">
+                                    <i class="bi bi-diagram-3"></i> Mermaid
+                                </button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content border border-top-0 p-3" id="exampleArchTabContent">
+                            <div class="tab-pane fade show active" id="ascii-example" role="tabpanel">
+                                <div class="ascii-art">
+┌──────────────────────────────────────────────────────────────────────────────┐
+│            Product Inventory Management API - Test Architecture              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+   ┌───────────────────────────────────────────────────────────┐
+   │                    TEST LAYER                              │
+   │                                                            │
+   │  ┌──────────────┐  ┌──────────────┐  ┌────────────────┐  │
+   │  │  Unit Tests   │  │ Integration  │  │  Container     │  │
+   │  │  (Mockito)    │  │ Tests (H2)   │  │  Tests (TC)    │  │
+   │  │              │  │              │  │  TestContainers│  │
+   │  │ • Service    │  │ • REST       │  │  • PostgreSQL  │  │
+   │  │   mocking    │  │   Assured    │  │  • Full stack  │  │
+   │  │ • Controller │  │ • Full API   │  │  • Docker      │  │
+   │  │   isolation  │  │   validation │  │    based       │  │
+   │  └──────┬───────┘  └──────┬───────┘  └───────┬────────┘  │
+   └─────────┼─────────────────┼──────────────────┼────────────┘
+             │                 │                  │
+             ▼                 ▼                  ▼
+   ┌───────────────────────────────────────────────────────────┐
+   │                 SPRING BOOT APPLICATION                    │
+   │                                                            │
+   │  ┌──────────────────────────────────────────────────────┐ │
+   │  │  Controller Layer  (ProductController.java)          │ │
+   │  │  @RestController  @RequestMapping("/api/products")   │ │
+   │  │  GET / POST / PUT / DELETE / PATCH endpoints         │ │
+   │  └────────────────────────┬─────────────────────────────┘ │
+   │                           │                                │
+   │  ┌────────────────────────▼─────────────────────────────┐ │
+   │  │  Service Layer  (ProductService.java)                │ │
+   │  │  Business logic, validation, transformations         │ │
+   │  └────────────────────────┬─────────────────────────────┘ │
+   │                           │                                │
+   │  ┌────────────────────────▼─────────────────────────────┐ │
+   │  │  Repository Layer  (ProductRepository.java)          │ │
+   │  │  Spring Data JPA, custom queries                     │ │
+   │  └────────────────────────┬─────────────────────────────┘ │
+   └───────────────────────────┼────────────────────────────────┘
+                               │
+                               ▼
+   ┌───────────────────────────────────────────────────────────┐
+   │                      DATABASE                              │
+   │                                                            │
+   │    ┌──────────────┐          ┌────────────────────────┐   │
+   │    │  H2 In-Memory│          │  PostgreSQL (Docker)   │   │
+   │    │  (Dev/Test)  │          │  (TestContainers)      │   │
+   │    └──────────────┘          └────────────────────────┘   │
+   └───────────────────────────────────────────────────────────┘
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="plantuml-example" role="tabpanel">
+                                <div class="plantuml-container">
+                                    <pre><code class="language-plantuml">@startuml
+title Product Inventory API - Test Flow
+
+actor "Developer" as dev
+participant "REST Assured\nTest" as ra
+participant "Spring Boot\nApp" as app
+participant "ProductController" as ctrl
+participant "ProductService" as svc
+participant "ProductRepository" as repo
+database "H2 / PostgreSQL" as db
+
+== Integration Test Flow ==
+dev -> ra: Write test with\ngiven().when().then()
+ra -> app: HTTP POST /api/products\n(JSON body)
+app -> ctrl: @PostMapping
+ctrl -> svc: createProduct(dto)
+svc -> svc: Validate business rules
+svc -> repo: save(entity)
+repo -> db: INSERT INTO products
+db --> repo: Saved entity
+repo --> svc: Product entity
+svc --> ctrl: ProductResponse DTO
+ctrl --> app: ResponseEntity (201)
+app --> ra: HTTP 201 + JSON body
+ra -> ra: Assert statusCode(201)\nAssert body("name", ...)
+ra --> dev: Test PASSED ✓
+
+== Unit Test Flow (Mockito) ==
+dev -> ra: @WebMvcTest + @MockBean
+ra -> ctrl: MockMvc request
+ctrl -> svc: createProduct(dto)
+note right of svc: Mocked by Mockito\nwhen(...).thenReturn(...)
+svc --> ctrl: Mocked response
+ctrl --> ra: JSON response
+ra --> dev: Test PASSED ✓
+
+@enduml</code></pre>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="bi bi-exclamation-triangle"></i> <strong>Render:</strong> Copy to <a href="http://www.plantuml.com/plantuml/uml/" target="_blank">PlantUML Online Server</a>.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="mermaid-example" role="tabpanel">
+                                <div class="mermaid-container">
+                                    <pre><code class="language-mermaid">graph TD
+    A[REST Assured Test] -->|HTTP Request| B[Spring Boot App]
+    B --> C[ProductController]
+    C --> D[ProductService]
+    D --> E[ProductRepository]
+    E --> F{Database}
+    F -->|Dev/Test| G[H2 In-Memory]
+    F -->|Container Test| H[PostgreSQL via TestContainers]
+    
+    I[Unit Test - Mockito] -->|MockMvc| C
+    D -.->|Mocked| J[Mock ProductRepository]
+    
+    style A fill:#28a745,stroke:#155724,color:#fff
+    style B fill:#0d6efd,stroke:#084298,color:#fff
+    style G fill:#ffc107,stroke:#997404
+    style H fill:#0dcaf0,stroke:#055160</code></pre>
+                                    <div class="alert alert-warning mt-3">
+                                        <i class="bi bi-exclamation-triangle"></i> <strong>Render:</strong> Copy to <a href="https://mermaid.live/" target="_blank">Mermaid Live Editor</a>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Setup -->
+                        <h4 class="mt-4"><i class="bi bi-folder"></i> Project Structure</h4>
+                        <pre><code class="language-bash">product-inventory-api/
+├── pom.xml
+├── Dockerfile
+├── docker-compose.yml
+├── src/
+│   ├── main/
+│   │   ├── java/com/learning/inventory/
+│   │   │   ├── ProductInventoryApplication.java
+│   │   │   ├── controller/
+│   │   │   │   └── ProductController.java
+│   │   │   ├── service/
+│   │   │   │   └── ProductService.java
+│   │   │   ├── repository/
+│   │   │   │   └── ProductRepository.java
+│   │   │   ├── model/
+│   │   │   │   └── Product.java
+│   │   │   ├── dto/
+│   │   │   │   ├── ProductRequest.java
+│   │   │   │   └── ProductResponse.java
+│   │   │   └── exception/
+│   │   │       ├── GlobalExceptionHandler.java
+│   │   │       └── ProductNotFoundException.java
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       └── application-test.properties
+│   └── test/
+│       ├── java/com/learning/inventory/
+│       │   ├── controller/
+│       │   │   └── ProductControllerUnitTest.java
+│       │   ├── integration/
+│       │   │   └── ProductApiIntegrationTest.java
+│       │   └── container/
+│       │       └── ProductApiContainerTest.java
+│       └── resources/
+│           └── schemas/
+│               └── product-schema.json
+└── README.md</code></pre>
+
+                        <!-- pom.xml -->
+                        <h4 class="mt-4"><i class="bi bi-file-earmark-code"></i> pom.xml</h4>
+                        <pre><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;3.4.1&lt;/version&gt;
+        &lt;relativePath/&gt;
+    &lt;/parent&gt;
+
+    &lt;groupId&gt;com.learning&lt;/groupId&gt;
+    &lt;artifactId&gt;product-inventory-api&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;name&gt;Product Inventory Management API&lt;/name&gt;
+    &lt;description&gt;REST API with comprehensive REST Assured tests&lt;/description&gt;
+
+    &lt;properties&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;rest-assured.version&gt;6.0.0&lt;/rest-assured.version&gt;
+        &lt;testcontainers.version&gt;2.0.3&lt;/testcontainers.version&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- Spring Boot Starters --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- H2 Database (Dev/Test) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.h2database&lt;/groupId&gt;
+            &lt;artifactId&gt;h2&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- PostgreSQL (Production / TestContainers) --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- ===== TEST DEPENDENCIES ===== --&gt;
+
+        &lt;!-- Spring Boot Test --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- REST Assured --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.rest-assured&lt;/groupId&gt;
+            &lt;artifactId&gt;rest-assured&lt;/artifactId&gt;
+            &lt;version&gt;${rest-assured.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.rest-assured&lt;/groupId&gt;
+            &lt;artifactId&gt;json-schema-validator&lt;/artifactId&gt;
+            &lt;version&gt;${rest-assured.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- TestContainers --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.testcontainers&lt;/groupId&gt;
+            &lt;artifactId&gt;testcontainers&lt;/artifactId&gt;
+            &lt;version&gt;${testcontainers.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.testcontainers&lt;/groupId&gt;
+            &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+            &lt;version&gt;${testcontainers.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.testcontainers&lt;/groupId&gt;
+            &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+            &lt;version&gt;${testcontainers.version}&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+            &lt;/plugin&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+                &lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+                &lt;version&gt;3.2.5&lt;/version&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+
+                        <!-- Source Code Files -->
+                        <h4 class="mt-4"><i class="bi bi-file-earmark-code"></i> Source Code</h4>
+                        <div class="accordion" id="sourceCodeAccordion">
+                            <!-- Product.java -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#productEntity">
+                                        <i class="bi bi-file-earmark-code me-2"></i> <strong>Product.java</strong> - JPA Entity
+                                    </button>
+                                </h2>
+                                <div id="productEntity" class="accordion-collapse collapse show" data-bs-parent="#sourceCodeAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-java">package com.learning.inventory.model;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "products")
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "Product name is required")
+    @Size(min = 2, max = 100)
+    @Column(nullable = false)
+    private String name;
+
+    @Size(max = 500)
+    private String description;
+
+    @NotBlank(message = "Category is required")
+    private String category;
+
+    @NotNull(message = "Price is required")
+    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
+
+    @Min(value = 0, message = "Stock cannot be negative")
+    @Column(nullable = false)
+    private Integer stock = 0;
+
+    @Column(nullable = false)
+    private Boolean active = true;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    // Default constructor (required by JPA)
+    public Product() {}
+
+    // Parameterized constructor
+    public Product(String name, String description, String category,
+                   BigDecimal price, Integer stock) {
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.price = price;
+        this.stock = stock;
+    }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+    public BigDecimal getPrice() { return price; }
+    public void setPrice(BigDecimal price) { this.price = price; }
+    public Integer getStock() { return stock; }
+    public void setStock(Integer stock) { this.stock = stock; }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ProductRepository.java -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#productRepo">
+                                        <i class="bi bi-database me-2"></i> <strong>ProductRepository.java</strong> - Data Access
+                                    </button>
+                                </h2>
+                                <div id="productRepo" class="accordion-collapse collapse" data-bs-parent="#sourceCodeAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-java">package com.learning.inventory.repository;
+
+import com.learning.inventory.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import java.math.BigDecimal;
+import java.util.List;
+
+@Repository
+public interface ProductRepository extends JpaRepository&lt;Product, Long&gt; {
+
+    List&lt;Product&gt; findByCategory(String category);
+
+    List&lt;Product&gt; findByActiveTrue();
+
+    List&lt;Product&gt; findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice);
+
+    @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    List&lt;Product&gt; searchByName(@Param("keyword") String keyword);
+
+    @Query("SELECT p FROM Product p WHERE p.stock &lt; :threshold AND p.active = true")
+    List&lt;Product&gt; findLowStockProducts(@Param("threshold") int threshold);
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ProductService.java -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#productService">
+                                        <i class="bi bi-gear me-2"></i> <strong>ProductService.java</strong> - Business Logic
+                                    </button>
+                                </h2>
+                                <div id="productService" class="accordion-collapse collapse" data-bs-parent="#sourceCodeAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-java">package com.learning.inventory.service;
+
+import com.learning.inventory.exception.ProductNotFoundException;
+import com.learning.inventory.model.Product;
+import com.learning.inventory.repository.ProductRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.math.BigDecimal;
+import java.util.List;
+
+@Service
+@Transactional
+public class ProductService {
+
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public List&lt;Product&gt; getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public Product getProductById(Long id) {
+        return productRepository.findById(id)
+                .orElseThrow(() -&gt; new ProductNotFoundException(
+                    "Product not found with id: " + id));
+    }
+
+    public Product createProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    public Product updateProduct(Long id, Product updatedProduct) {
+        Product existing = getProductById(id);
+        existing.setName(updatedProduct.getName());
+        existing.setDescription(updatedProduct.getDescription());
+        existing.setCategory(updatedProduct.getCategory());
+        existing.setPrice(updatedProduct.getPrice());
+        existing.setStock(updatedProduct.getStock());
+        existing.setActive(updatedProduct.getActive());
+        return productRepository.save(existing);
+    }
+
+    public Product patchProduct(Long id, Product partialUpdate) {
+        Product existing = getProductById(id);
+        if (partialUpdate.getName() != null)
+            existing.setName(partialUpdate.getName());
+        if (partialUpdate.getPrice() != null)
+            existing.setPrice(partialUpdate.getPrice());
+        if (partialUpdate.getStock() != null)
+            existing.setStock(partialUpdate.getStock());
+        if (partialUpdate.getActive() != null)
+            existing.setActive(partialUpdate.getActive());
+        return productRepository.save(existing);
+    }
+
+    public void deleteProduct(Long id) {
+        Product product = getProductById(id);
+        productRepository.delete(product);
+    }
+
+    public List&lt;Product&gt; getProductsByCategory(String category) {
+        return productRepository.findByCategory(category);
+    }
+
+    public List&lt;Product&gt; searchProducts(String keyword) {
+        return productRepository.searchByName(keyword);
+    }
+
+    public List&lt;Product&gt; getLowStockProducts(int threshold) {
+        return productRepository.findLowStockProducts(threshold);
+    }
+
+    public List&lt;Product&gt; getProductsByPriceRange(BigDecimal min, BigDecimal max) {
+        return productRepository.findByPriceBetween(min, max);
+    }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ProductController.java -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#productController">
+                                        <i class="bi bi-hdd-rack me-2"></i> <strong>ProductController.java</strong> - REST Endpoints
+                                    </button>
+                                </h2>
+                                <div id="productController" class="accordion-collapse collapse" data-bs-parent="#sourceCodeAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-java">package com.learning.inventory.controller;
+
+import com.learning.inventory.model.Product;
+import com.learning.inventory.service.ProductService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.math.BigDecimal;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Product&gt;&gt; getAllProducts() {
+        return ResponseEntity.ok(productService.getAllProducts());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity&lt;Product&gt; getProductById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getProductById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;Product&gt; createProduct(
+            @Valid @RequestBody Product product) {
+        Product created = productService.createProduct(product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity&lt;Product&gt; updateProduct(
+            @PathVariable Long id,
+            @Valid @RequestBody Product product) {
+        return ResponseEntity.ok(productService.updateProduct(id, product));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity&lt;Product&gt; patchProduct(
+            @PathVariable Long id,
+            @RequestBody Product product) {
+        return ResponseEntity.ok(productService.patchProduct(id, product));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity&lt;Void&gt; deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity&lt;List&lt;Product&gt;&gt; getByCategory(
+            @PathVariable String category) {
+        return ResponseEntity.ok(
+            productService.getProductsByCategory(category));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity&lt;List&lt;Product&gt;&gt; searchProducts(
+            @RequestParam String keyword) {
+        return ResponseEntity.ok(
+            productService.searchProducts(keyword));
+    }
+
+    @GetMapping("/low-stock")
+    public ResponseEntity&lt;List&lt;Product&gt;&gt; getLowStockProducts(
+            @RequestParam(defaultValue = "10") int threshold) {
+        return ResponseEntity.ok(
+            productService.getLowStockProducts(threshold));
+    }
+
+    @GetMapping("/price-range")
+    public ResponseEntity&lt;List&lt;Product&gt;&gt; getByPriceRange(
+            @RequestParam BigDecimal min,
+            @RequestParam BigDecimal max) {
+        return ResponseEntity.ok(
+            productService.getProductsByPriceRange(min, max));
+    }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Exception Handler -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#exceptionHandler">
+                                        <i class="bi bi-exclamation-triangle me-2"></i> <strong>GlobalExceptionHandler.java</strong> - Error Handling
+                                    </button>
+                                </h2>
+                                <div id="exceptionHandler" class="accordion-collapse collapse" data-bs-parent="#sourceCodeAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-java">package com.learning.inventory.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleNotFound(
+            ProductNotFoundException ex) {
+        Map&lt;String, Object&gt; error = new LinkedHashMap&lt;&gt;();
+        error.put("timestamp", LocalDateTime.now().toString());
+        error.put("status", 404);
+        error.put("error", "Not Found");
+        error.put("message", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;Map&lt;String, Object&gt;&gt; handleValidation(
+            MethodArgumentNotValidException ex) {
+        Map&lt;String, Object&gt; error = new LinkedHashMap&lt;&gt;();
+        error.put("timestamp", LocalDateTime.now().toString());
+        error.put("status", 400);
+        error.put("error", "Validation Failed");
+
+        List&lt;String&gt; messages = ex.getBindingResult()
+            .getFieldErrors().stream()
+            .map(fe -&gt; fe.getField() + ": " + fe.getDefaultMessage())
+            .collect(Collectors.toList());
+        error.put("messages", messages);
+
+        return ResponseEntity.badRequest().body(error);
+    }
+}
+
+// ProductNotFoundException.java
+// package com.learning.inventory.exception;
+// public class ProductNotFoundException extends RuntimeException {
+//     public ProductNotFoundException(String message) {
+//         super(message);
+//     }
+// }</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- application.properties -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#appProps">
+                                        <i class="bi bi-gear me-2"></i> <strong>application.properties</strong> - Configuration
+                                    </button>
+                                </h2>
+                                <div id="appProps" class="accordion-collapse collapse" data-bs-parent="#sourceCodeAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-properties"># application.properties
+spring.application.name=product-inventory-api
+server.port=8080
+
+# H2 Database (Development)
+spring.datasource.url=jdbc:h2:mem:inventorydb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+
+# JPA / Hibernate
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# H2 Console (for debugging)
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console</code></pre>
+                                        <pre><code class="language-properties"># application-test.properties (used by integration tests)
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.show-sql=false</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== TEST FILES ===== -->
+                        <h4 class="mt-4"><i class="bi bi-shield-check"></i> Test Code</h4>
+                        <div class="accordion" id="testCodeAccordion">
+
+                            <!-- Unit Test with Mockito -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#unitTest">
+                                        <i class="bi bi-check-square me-2"></i> <strong>ProductControllerUnitTest.java</strong> - Mockito Unit Tests
+                                    </button>
+                                </h2>
+                                <div id="unitTest" class="accordion-collapse collapse show" data-bs-parent="#testCodeAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-java">package com.learning.inventory.controller;
+
+import com.learning.inventory.exception.ProductNotFoundException;
+import com.learning.inventory.model.Product;
+import com.learning.inventory.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.bean.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(ProductController.class)
+@DisplayName("Product Controller Unit Tests (Mockito)")
+class ProductControllerUnitTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private ProductService productService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    private Product sampleProduct;
+
+    @BeforeEach
+    void setUp() {
+        sampleProduct = new Product(
+            "Mechanical Keyboard", "RGB Backlit, Cherry MX",
+            "Electronics", new BigDecimal("149.99"), 50);
+        sampleProduct.setId(1L);
+    }
+
+    @Test
+    @DisplayName("GET /api/products - Should return all products")
+    void shouldReturnAllProducts() throws Exception {
+        List&lt;Product&gt; products = Arrays.asList(sampleProduct);
+        when(productService.getAllProducts()).thenReturn(products);
+
+        mockMvc.perform(get("/api/products")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.length()").value(1))
+            .andExpect(jsonPath("$[0].name").value("Mechanical Keyboard"))
+            .andExpect(jsonPath("$[0].price").value(149.99));
+
+        verify(productService, times(1)).getAllProducts();
+    }
+
+    @Test
+    @DisplayName("GET /api/products/{id} - Should return product by ID")
+    void shouldReturnProductById() throws Exception {
+        when(productService.getProductById(1L)).thenReturn(sampleProduct);
+
+        mockMvc.perform(get("/api/products/1")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name").value("Mechanical Keyboard"))
+            .andExpect(jsonPath("$.category").value("Electronics"));
+    }
+
+    @Test
+    @DisplayName("GET /api/products/{id} - Should return 404 for non-existent")
+    void shouldReturn404ForNonExistentProduct() throws Exception {
+        when(productService.getProductById(999L))
+            .thenThrow(new ProductNotFoundException(
+                "Product not found with id: 999"));
+
+        mockMvc.perform(get("/api/products/999")
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message")
+                .value("Product not found with id: 999"));
+    }
+
+    @Test
+    @DisplayName("POST /api/products - Should create a product")
+    void shouldCreateProduct() throws Exception {
+        when(productService.createProduct(any(Product.class)))
+            .thenReturn(sampleProduct);
+
+        mockMvc.perform(post("/api/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(sampleProduct)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.name").value("Mechanical Keyboard"))
+            .andExpect(jsonPath("$.id").value(1));
+    }
+
+    @Test
+    @DisplayName("POST /api/products - Should fail validation for blank name")
+    void shouldFailValidationForBlankName() throws Exception {
+        Product invalid = new Product("", null, "Electronics",
+                                      new BigDecimal("10.00"), 5);
+
+        mockMvc.perform(post("/api/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(invalid)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("DELETE /api/products/{id} - Should delete product")
+    void shouldDeleteProduct() throws Exception {
+        doNothing().when(productService).deleteProduct(1L);
+
+        mockMvc.perform(delete("/api/products/1"))
+            .andExpect(status().isNoContent());
+
+        verify(productService, times(1)).deleteProduct(1L);
+    }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Integration Test with REST Assured -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#integrationTest">
+                                        <i class="bi bi-shield-check me-2"></i> <strong>ProductApiIntegrationTest.java</strong> - REST Assured + H2
+                                    </button>
+                                </h2>
+                                <div id="integrationTest" class="accordion-collapse collapse" data-bs-parent="#testCodeAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-java">package com.learning.inventory.integration;
+
+import com.learning.inventory.model.Product;
+import com.learning.inventory.repository.ProductRepository;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
+import java.math.BigDecimal;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DisplayName("Product API Integration Tests (REST Assured + H2)")
+class ProductApiIntegrationTest {
+
+    @LocalServerPort
+    private int port;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @BeforeEach
+    void setUp() {
+        RestAssured.port = port;
+        RestAssured.basePath = "/api/products";
+        productRepository.deleteAll();
+    }
+
+    // ===== Helper method to seed data =====
+    private Product seedProduct(String name, String category,
+                                BigDecimal price, int stock) {
+        Product p = new Product(name, "Test description",
+                                category, price, stock);
+        return productRepository.save(p);
+    }
+
+    // ===== CREATE Tests =====
+    @Test
+    @Order(1)
+    @DisplayName("POST - Create a new product (201 Created)")
+    void shouldCreateProduct() {
+        String requestBody = """
+            {
+                "name": "Wireless Mouse",
+                "description": "Ergonomic Bluetooth mouse",
+                "category": "Electronics",
+                "price": 29.99,
+                "stock": 150
+            }
+            """;
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(requestBody)
+        .when()
+            .post()
+        .then()
+            .statusCode(201)
+            .contentType(ContentType.JSON)
+            .body("id", notNullValue())
+            .body("name", equalTo("Wireless Mouse"))
+            .body("category", equalTo("Electronics"))
+            .body("price", equalTo(29.99f))
+            .body("stock", equalTo(150))
+            .body("active", equalTo(true))
+            .body("createdAt", notNullValue());
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("POST - Validation error for missing name (400)")
+    void shouldRejectProductWithoutName() {
+        String requestBody = """
+            {
+                "description": "No name product",
+                "category": "Electronics",
+                "price": 10.00,
+                "stock": 5
+            }
+            """;
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(requestBody)
+        .when()
+            .post()
+        .then()
+            .statusCode(400)
+            .body("error", equalTo("Validation Failed"))
+            .body("messages", hasSize(greaterThanOrEqualTo(1)));
+    }
+
+    // ===== READ Tests =====
+    @Test
+    @Order(3)
+    @DisplayName("GET - Retrieve all products (200 OK)")
+    void shouldGetAllProducts() {
+        seedProduct("Laptop", "Electronics",
+                    new BigDecimal("999.99"), 25);
+        seedProduct("Desk Chair", "Furniture",
+                    new BigDecimal("299.50"), 40);
+
+        given()
+        .when()
+            .get()
+        .then()
+            .statusCode(200)
+            .contentType(ContentType.JSON)
+            .body("size()", equalTo(2))
+            .body("name", hasItems("Laptop", "Desk Chair"))
+            .body("category", hasItems("Electronics", "Furniture"));
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("GET - Retrieve product by ID (200 OK)")
+    void shouldGetProductById() {
+        Product saved = seedProduct("Monitor", "Electronics",
+                                    new BigDecimal("449.00"), 15);
+
+        given()
+        .when()
+            .get("/{id}", saved.getId())
+        .then()
+            .statusCode(200)
+            .body("id", equalTo(saved.getId().intValue()))
+            .body("name", equalTo("Monitor"))
+            .body("price", equalTo(449.00f));
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("GET - Return 404 for non-existent product")
+    void shouldReturn404ForMissingProduct() {
+        given()
+        .when()
+            .get("/{id}", 9999)
+        .then()
+            .statusCode(404)
+            .body("status", equalTo(404))
+            .body("message", containsString("not found"));
+    }
+
+    // ===== UPDATE Tests =====
+    @Test
+    @Order(6)
+    @DisplayName("PUT - Full update of product (200 OK)")
+    void shouldUpdateProduct() {
+        Product saved = seedProduct("Old Name", "Electronics",
+                                    new BigDecimal("100.00"), 10);
+
+        String updateBody = """
+            {
+                "name": "Updated Laptop Pro",
+                "description": "Latest model with M3 chip",
+                "category": "Electronics",
+                "price": 1499.99,
+                "stock": 30,
+                "active": true
+            }
+            """;
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(updateBody)
+        .when()
+            .put("/{id}", saved.getId())
+        .then()
+            .statusCode(200)
+            .body("name", equalTo("Updated Laptop Pro"))
+            .body("price", equalTo(1499.99f))
+            .body("stock", equalTo(30));
+    }
+
+    @Test
+    @Order(7)
+    @DisplayName("PATCH - Partial update of price (200 OK)")
+    void shouldPatchProductPrice() {
+        Product saved = seedProduct("Headphones", "Electronics",
+                                    new BigDecimal("79.99"), 100);
+
+        given()
+            .contentType(ContentType.JSON)
+            .body("{\"price\": 59.99}")
+        .when()
+            .patch("/{id}", saved.getId())
+        .then()
+            .statusCode(200)
+            .body("name", equalTo("Headphones"))
+            .body("price", equalTo(59.99f));
+    }
+
+    // ===== DELETE Tests =====
+    @Test
+    @Order(8)
+    @DisplayName("DELETE - Remove product (204 No Content)")
+    void shouldDeleteProduct() {
+        Product saved = seedProduct("To Delete", "Misc",
+                                    new BigDecimal("5.00"), 1);
+
+        when()
+            .delete("/{id}", saved.getId())
+        .then()
+            .statusCode(204);
+
+        // Verify it's gone
+        when()
+            .get("/{id}", saved.getId())
+        .then()
+            .statusCode(404);
+    }
+
+    // ===== SEARCH & FILTER Tests =====
+    @Test
+    @Order(9)
+    @DisplayName("GET - Search products by keyword")
+    void shouldSearchProductsByKeyword() {
+        seedProduct("Gaming Laptop", "Electronics",
+                    new BigDecimal("1299.00"), 10);
+        seedProduct("Gaming Mouse", "Electronics",
+                    new BigDecimal("49.99"), 200);
+        seedProduct("Office Chair", "Furniture",
+                    new BigDecimal("199.00"), 50);
+
+        given()
+            .queryParam("keyword", "Gaming")
+        .when()
+            .get("/search")
+        .then()
+            .statusCode(200)
+            .body("size()", equalTo(2))
+            .body("name", everyItem(containsStringIgnoringCase("Gaming")));
+    }
+
+    @Test
+    @Order(10)
+    @DisplayName("GET - Filter products by category")
+    void shouldFilterByCategory() {
+        seedProduct("Laptop", "Electronics",
+                    new BigDecimal("999.00"), 10);
+        seedProduct("Desk", "Furniture",
+                    new BigDecimal("350.00"), 8);
+
+        given()
+        .when()
+            .get("/category/{category}", "Electronics")
+        .then()
+            .statusCode(200)
+            .body("size()", equalTo(1))
+            .body("[0].category", equalTo("Electronics"));
+    }
+
+    @Test
+    @Order(11)
+    @DisplayName("GET - Find products in price range")
+    void shouldFindProductsByPriceRange() {
+        seedProduct("Budget Mouse", "Electronics",
+                    new BigDecimal("15.00"), 500);
+        seedProduct("Pro Keyboard", "Electronics",
+                    new BigDecimal("89.99"), 100);
+        seedProduct("Server Rack", "Electronics",
+                    new BigDecimal("2500.00"), 5);
+
+        given()
+            .queryParam("min", 10)
+            .queryParam("max", 100)
+        .when()
+            .get("/price-range")
+        .then()
+            .statusCode(200)
+            .body("size()", equalTo(2))
+            .body("price", everyItem(
+                allOf(greaterThanOrEqualTo(10.0f),
+                      lessThanOrEqualTo(100.0f))));
+    }
+
+    @Test
+    @Order(12)
+    @DisplayName("GET - Low stock products alert")
+    void shouldFindLowStockProducts() {
+        seedProduct("Rare Item", "Collectibles",
+                    new BigDecimal("999.00"), 2);
+        seedProduct("Common Item", "General",
+                    new BigDecimal("9.99"), 500);
+
+        given()
+            .queryParam("threshold", 10)
+        .when()
+            .get("/low-stock")
+        .then()
+            .statusCode(200)
+            .body("size()", equalTo(1))
+            .body("[0].name", equalTo("Rare Item"))
+            .body("[0].stock", lessThan(10));
+    }
+
+    // ===== RESPONSE EXTRACTION Tests =====
+    @Test
+    @Order(13)
+    @DisplayName("Extract response data for further assertions")
+    void shouldExtractResponseData() {
+        seedProduct("Extractable Product", "Electronics",
+                    new BigDecimal("42.00"), 100);
+
+        // Extract the product ID from list
+        Integer productId =
+            given()
+            .when()
+                .get()
+            .then()
+                .statusCode(200)
+                .extract()
+                .jsonPath()
+                .getInt("[0].id");
+
+        // Use extracted ID in subsequent request
+        given()
+        .when()
+            .get("/{id}", productId)
+        .then()
+            .statusCode(200)
+            .body("name", equalTo("Extractable Product"));
+    }
+
+    // ===== RESPONSE TIME Tests =====
+    @Test
+    @Order(14)
+    @DisplayName("Verify API response time is under 3 seconds")
+    void shouldRespondWithinTimeLimit() {
+        seedProduct("Fast Product", "Electronics",
+                    new BigDecimal("10.00"), 50);
+
+        given()
+        .when()
+            .get()
+        .then()
+            .statusCode(200)
+            .time(lessThan(3000L));
+    }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TestContainers Test -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#containerTest">
+                                        <i class="bi bi-box me-2"></i> <strong>ProductApiContainerTest.java</strong> - TestContainers + PostgreSQL
+                                    </button>
+                                </h2>
+                                <div id="containerTest" class="accordion-collapse collapse" data-bs-parent="#testCodeAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-java">package com.learning.inventory.container;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.*;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Testcontainers
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DisplayName("Product API Container Tests (TestContainers + PostgreSQL)")
+class ProductApiContainerTest {
+
+    @Container
+    static PostgreSQLContainer&lt;?&gt; postgres =
+        new PostgreSQLContainer&lt;&gt;("postgres:16-alpine")
+            .withDatabaseName("inventory_test")
+            .withUsername("testuser")
+            .withPassword("testpass");
+
+    @LocalServerPort
+    private int port;
+
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+        registry.add("spring.datasource.driver-class-name",
+                      () -&gt; "org.postgresql.Driver");
+        registry.add("spring.jpa.database-platform",
+                      () -&gt; "org.hibernate.dialect.PostgreSQLDialect");
+        registry.add("spring.jpa.hibernate.ddl-auto", () -&gt; "create-drop");
+    }
+
+    @BeforeEach
+    void setUp() {
+        RestAssured.port = port;
+        RestAssured.basePath = "/api/products";
+    }
+
+    @Test
+    @Order(1)
+    @DisplayName("PostgreSQL container is running")
+    void containerIsRunning() {
+        Assertions.assertTrue(postgres.isRunning(),
+            "PostgreSQL container should be running");
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("CRUD operations on real PostgreSQL via TestContainers")
+    void shouldPerformCrudOnPostgres() {
+        // CREATE
+        String body = """
+            {
+                "name": "Server Rack Unit",
+                "description": "42U rack for data center",
+                "category": "Infrastructure",
+                "price": 2499.99,
+                "stock": 5
+            }
+            """;
+
+        Integer createdId =
+            given()
+                .contentType(ContentType.JSON)
+                .body(body)
+            .when()
+                .post()
+            .then()
+                .statusCode(201)
+                .body("name", equalTo("Server Rack Unit"))
+                .extract()
+                .jsonPath().getInt("id");
+
+        // READ
+        given()
+        .when()
+            .get("/{id}", createdId)
+        .then()
+            .statusCode(200)
+            .body("name", equalTo("Server Rack Unit"))
+            .body("price", equalTo(2499.99f));
+
+        // UPDATE
+        String updateBody = """
+            {
+                "name": "Server Rack Unit Pro",
+                "description": "48U rack for enterprise DC",
+                "category": "Infrastructure",
+                "price": 3299.99,
+                "stock": 3,
+                "active": true
+            }
+            """;
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(updateBody)
+        .when()
+            .put("/{id}", createdId)
+        .then()
+            .statusCode(200)
+            .body("name", equalTo("Server Rack Unit Pro"))
+            .body("price", equalTo(3299.99f));
+
+        // DELETE
+        when()
+            .delete("/{id}", createdId)
+        .then()
+            .statusCode(204);
+
+        // VERIFY DELETED
+        when()
+            .get("/{id}", createdId)
+        .then()
+            .statusCode(404);
+    }
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Docker Files -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dockerFiles">
+                                        <i class="bi bi-box-seam me-2"></i> <strong>Dockerfile &amp; docker-compose.yml</strong>
+                                    </button>
+                                </h2>
+                                <div id="dockerFiles" class="accordion-collapse collapse" data-bs-parent="#testCodeAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Dockerfile</h5>
+                                        <pre><code class="language-dockerfile"># Multi-stage build
+FROM eclipse-temurin:17-jdk-alpine AS builder
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN apk add --no-cache maven &amp;&amp; mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]</code></pre>
+
+                                        <h5 class="mt-3">docker-compose.yml</h5>
+                                        <pre><code class="language-yaml">version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/inventory
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=secret
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: inventory
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d inventory"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- JSON Schema -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#jsonSchema">
+                                        <i class="bi bi-braces me-2"></i> <strong>product-schema.json</strong> - JSON Schema Validation
+                                    </button>
+                                </h2>
+                                <div id="jsonSchema" class="accordion-collapse collapse" data-bs-parent="#testCodeAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-json">{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product",
+  "type": "object",
+  "required": ["id", "name", "category", "price", "stock", "active"],
+  "properties": {
+    "id": { "type": "integer" },
+    "name": { "type": "string", "minLength": 2, "maxLength": 100 },
+    "description": { "type": ["string", "null"], "maxLength": 500 },
+    "category": { "type": "string" },
+    "price": { "type": "number", "exclusiveMinimum": 0 },
+    "stock": { "type": "integer", "minimum": 0 },
+    "active": { "type": "boolean" },
+    "createdAt": { "type": ["string", "null"] },
+    "updatedAt": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Console Output -->
+                        <h4 class="mt-4"><i class="bi bi-terminal"></i> Console Output</h4>
+
+                        <h5 class="mt-3">Running Unit Tests</h5>
+                        <div class="console-output">$ mvn test -Dtest=ProductControllerUnitTest
+
+[INFO] Scanning for projects...
+[INFO]
+[INFO] --------&lt; com.learning:product-inventory-api &gt;--------
+[INFO] Building Product Inventory Management API 1.0.0
+[INFO] --------------------------------[ jar ]-------------------------------
+[INFO]
+[INFO] --- maven-surefire-plugin:3.2.5:test ---
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.learning.inventory.controller.ProductControllerUnitTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot :: (v3.4.1)
+
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0,
+       Time elapsed: 2.847 s -- in
+       c.l.inventory.controller.ProductControllerUnitTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO] BUILD SUCCESS
+[INFO] -------------------------------------------------------
+[INFO] Total time:  8.234 s
+[INFO] Finished at: 2026-02-22T06:30:00Z
+[INFO] -------------------------------------------------------</div>
+
+                        <h5 class="mt-3">Running Integration Tests (REST Assured + H2)</h5>
+                        <div class="console-output">$ mvn test -Dtest=ProductApiIntegrationTest
+
+[INFO] Running c.l.inventory.integration.ProductApiIntegrationTest
+
+ :: Spring Boot :: (v3.4.1)
+
+INFO  --- Started ProductInventoryApplication in 3.126 seconds
+INFO  --- Tomcat started on port 52847 (random)
+INFO  --- H2 in-memory database initialized
+
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0,
+       Time elapsed: 6.531 s -- in
+       c.l.inventory.integration.ProductApiIntegrationTest
+
+Product Controller Unit Tests (Mockito)
+  ✓ GET /api/products - Should return all products          (0.245s)
+  ✓ GET /api/products/{id} - Should return product by ID    (0.089s)
+  ✓ GET /api/products/{id} - Should return 404              (0.067s)
+  ✓ POST /api/products - Should create a product            (0.112s)
+  ✓ POST /api/products - Should fail validation             (0.058s)
+  ✓ DELETE /api/products/{id} - Should delete product       (0.043s)
+
+Product API Integration Tests (REST Assured + H2)
+  ✓ POST - Create a new product (201 Created)               (0.387s)
+  ✓ POST - Validation error for missing name (400)          (0.065s)
+  ✓ GET - Retrieve all products (200 OK)                    (0.098s)
+  ✓ GET - Retrieve product by ID (200 OK)                   (0.072s)
+  ✓ GET - Return 404 for non-existent product               (0.054s)
+  ✓ PUT - Full update of product (200 OK)                   (0.115s)
+  ✓ PATCH - Partial update of price (200 OK)                (0.083s)
+  ✓ DELETE - Remove product (204 No Content)                (0.069s)
+  ✓ GET - Search products by keyword                        (0.142s)
+  ✓ GET - Filter products by category                       (0.087s)
+  ✓ GET - Find products in price range                      (0.094s)
+  ✓ GET - Low stock products alert                          (0.076s)
+  ✓ Extract response data for further assertions            (0.103s)
+  ✓ Verify API response time is under 3 seconds             (0.058s)
+
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO] BUILD SUCCESS
+[INFO] Total time:  14.892 s</div>
+
+                        <h5 class="mt-3">Running TestContainers Tests (PostgreSQL + Docker)</h5>
+                        <div class="console-output">$ mvn test -Dtest=ProductApiContainerTest
+
+[INFO] Running c.l.inventory.container.ProductApiContainerTest
+
+INFO  --- Pulling Docker image: postgres:16-alpine
+INFO  --- Container postgres:16-alpine started in 4.235s
+INFO  --- PostgreSQL URL: jdbc:postgresql://localhost:55432/inventory_test
+INFO  --- Started ProductInventoryApplication in 4.891 seconds
+
+Product API Container Tests (TestContainers + PostgreSQL)
+  ✓ PostgreSQL container is running                          (0.012s)
+  ✓ CRUD operations on real PostgreSQL via TestContainers    (0.897s)
+
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0,
+       Time elapsed: 12.347 s -- in
+       c.l.inventory.container.ProductApiContainerTest
+[INFO]
+[INFO] BUILD SUCCESS
+[INFO] Total time:  18.923 s</div>
+                    </div>
+                </div>
+
+                <!-- ==================== CODE EXPLANATIONS ==================== -->
+                <div class="card mb-4" id="code-explanations">
+                    <div class="card-header bg-info text-white">
+                        <h2><i class="bi bi-file-text"></i> Source Code Explanations</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="accordion" id="codeExplanationsAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#explainPom">
+                                        <i class="bi bi-file-earmark-code me-2"></i> <strong>pom.xml - Maven Configuration</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainPom" class="accordion-collapse collapse show" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Key Decisions</h5>
+                                        <ul>
+                                            <li><strong>spring-boot-starter-parent 3.4.1:</strong> Manages Spring Boot dependency versions, provides Maven plugin defaults, and sets Java 17 as baseline.</li>
+                                            <li><strong>REST Assured 6.0.0:</strong> The latest major version requiring Java 17+. Uses Groovy 5 internally and supports Spring 7 + Jackson 3.</li>
+                                            <li><strong>TestContainers 2.0.3:</strong> The <code>junit-jupiter</code> module enables <code>@Testcontainers</code> and <code>@Container</code> annotations. The <code>postgresql</code> module provides the PostgreSQL container.</li>
+                                            <li><strong>H2 + PostgreSQL:</strong> H2 for fast dev/test cycles; PostgreSQL for production-realistic container tests.</li>
+                                            <li><strong>maven-surefire-plugin 3.2.5:</strong> Ensures JUnit 5 tests are discovered and executed correctly.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainProduct">
+                                        <i class="bi bi-file-earmark-code me-2"></i> <strong>Product.java - Entity Design</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainProduct" class="accordion-collapse collapse" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Design Decisions</h5>
+                                        <ul>
+                                            <li><strong>Jakarta Validation:</strong> <code>@NotBlank</code>, <code>@DecimalMin</code>, <code>@Min</code> annotations enforce constraints at the API layer before data hits the database.</li>
+                                            <li><strong>BigDecimal for price:</strong> Avoids floating-point precision issues inherent in <code>float</code>/<code>double</code> for monetary values.</li>
+                                            <li><strong>@PrePersist/@PreUpdate:</strong> JPA lifecycle callbacks automatically set <code>createdAt</code>/<code>updatedAt</code> timestamps.</li>
+                                            <li><strong>Active flag:</strong> Enables soft-delete patterns rather than physical deletion.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#explainTests">
+                                        <i class="bi bi-shield-check me-2"></i> <strong>Test Strategy - Three Layers</strong>
+                                    </button>
+                                </h2>
+                                <div id="explainTests" class="accordion-collapse collapse" data-bs-parent="#codeExplanationsAccordion">
+                                    <div class="accordion-body">
+                                        <h5>Testing Pyramid</h5>
+                                        <div class="ascii-art">
+                    ┌─────────────────────┐
+                    │  Container Tests    │  Slow, realistic
+                    │  (TestContainers)   │  Real PostgreSQL
+                    ├─────────────────────┤
+                    │  Integration Tests  │  Medium speed
+                    │  (REST Assured+H2)  │  Full API validation
+                    ├─────────────────────┤
+                    │    Unit Tests       │  Fast, isolated
+                    │  (Mockito+MockMvc)  │  Controller logic
+                    └─────────────────────┘
+                        </div>
+                                        <ul class="mt-3">
+                                            <li><strong>Unit Tests (Mockito):</strong> Use <code>@WebMvcTest</code> + <code>@MockBean</code> to test controller logic in isolation. Service layer is mocked. No database, no network. Fastest.</li>
+                                            <li><strong>Integration Tests (REST Assured + H2):</strong> Use <code>@SpringBootTest(RANDOM_PORT)</code> to start the full application. REST Assured sends real HTTP requests. H2 in-memory database provides fast data layer.</li>
+                                            <li><strong>Container Tests (TestContainers):</strong> Use <code>@Testcontainers</code> to spin up a real PostgreSQL Docker container. Tests run against production-equivalent database. Slowest but most realistic.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== FAQs ==================== -->
+                <div class="card mb-4" id="faqs">
+                    <div class="card-header bg-warning text-dark">
+                        <h2><i class="bi bi-question-circle"></i> Frequently Asked Questions</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="accordion" id="faqAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                        <strong>Q1: What is the difference between REST Assured and Spring MockMvc?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>REST Assured</strong> sends real HTTP requests over the network to a running server, testing the full stack including serialization, filters, and error handling. <strong>MockMvc</strong> simulates the servlet container in-memory without network I/O, making it faster but less realistic.</p>
+                                        <p>You can also use REST Assured's <code>spring-mock-mvc</code> module to get the BDD syntax with MockMvc's speed.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                        <strong>Q2: Why does REST Assured 6.0.0 require Java 17?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>REST Assured 6.0.0 raised the Java baseline to 17+ because:</p>
+                                        <ul>
+                                            <li>It upgrades to <strong>Groovy 5</strong>, which requires Java 17</li>
+                                            <li>It adds <strong>Spring 7</strong> support, which also requires Java 17+</li>
+                                            <li>Java 17 is the current LTS version with widespread adoption</li>
+                                        </ul>
+                                        <p>If you need Java 11 support, use REST Assured 5.5.x.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                        <strong>Q3: How do I run TestContainers tests without Docker Desktop?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>TestContainers requires a Docker-compatible runtime. Alternatives include:</p>
+                                        <ul>
+                                            <li><strong>Colima</strong> (macOS) - Free, open-source Docker runtime</li>
+                                            <li><strong>Podman</strong> (Linux/macOS) - Docker-compatible container engine</li>
+                                            <li><strong>Rancher Desktop</strong> - Cross-platform Docker alternative</li>
+                                            <li><strong>Testcontainers Cloud</strong> - Run containers in the cloud (no local Docker)</li>
+                                        </ul>
+                                        <p>Set the <code>DOCKER_HOST</code> environment variable if using a non-default Docker socket.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                        <strong>Q4: Can I use REST Assured with Gradle instead of Maven?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <p>Yes. Add the dependency to your <code>build.gradle</code>:</p>
+                                        <pre><code class="language-groovy">testImplementation 'io.rest-assured:rest-assured:6.0.0'
+testImplementation 'io.rest-assured:json-schema-validator:6.0.0'</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                        <strong>Q5: How do I handle OAuth2 tokens in REST Assured?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-java">// Option 1: Direct OAuth2 token
+given()
+    .auth().oauth2("your-access-token")
+.when()
+    .get("/api/protected-resource");
+
+// Option 2: Obtain token first, then use it
+String token =
+    given()
+        .contentType("application/x-www-form-urlencoded")
+        .formParam("grant_type", "client_credentials")
+        .formParam("client_id", "my-client")
+        .formParam("client_secret", "my-secret")
+    .when()
+        .post("/oauth/token")
+    .then()
+        .extract().path("access_token");
+
+given()
+    .auth().oauth2(token)
+.when()
+    .get("/api/products")
+.then()
+    .statusCode(200);</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                                        <strong>Q6: How do I upload files with REST Assured?</strong>
+                                    </button>
+                                </h2>
+                                <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        <pre><code class="language-java">given()
+    .multiPart("file", new File("test-image.png"), "image/png")
+    .multiPart("description", "Product image")
+.when()
+    .post("/api/products/1/upload")
+.then()
+    .statusCode(200)
+    .body("fileName", equalTo("test-image.png"));</code></pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== VERSION HISTORY ==================== -->
+                <div class="card mb-4" id="version-history">
+                    <div class="card-header bg-info text-white">
+                        <h2><i class="bi bi-clock-history"></i> Version History &amp; Changelog</h2>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Track the historical journey and progress of this REST Assured tutorial.</p>
+
+                        <div class="accordion" id="versionHistoryAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#version100">
+                                        <div class="d-flex align-items-center w-100">
+                                            <span class="badge bg-success me-2">Current</span>
+                                            <strong>Version 1.0.0 - Initial Release</strong>
+                                            <span class="ms-auto text-muted small">February 22, 2026</span>
+                                        </div>
+                                    </button>
+                                </h2>
+                                <div id="version100" class="accordion-collapse collapse show" data-bs-parent="#versionHistoryAccordion">
+                                    <div class="accordion-body">
+                                        <h5><i class="bi bi-stars"></i> Overview</h5>
+                                        <p>First complete release of the comprehensive REST Assured tutorial covering API testing fundamentals through production-grade implementation with Spring Boot, JUnit 5, Mockito, TestContainers, and Docker.</p>
+
+                                        <h5 class="mt-3"><i class="bi bi-list-check"></i> Features Included</h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h6><i class="bi bi-book text-primary"></i> Educational Content</h6>
+                                                <ul>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Complete REST Assured introduction and version history</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Architecture diagrams (ASCII + PlantUML + Mermaid)</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Comprehensive ecosystem overview</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Advantages vs disadvantages analysis</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> 6 practical use cases</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> 3 technology comparison tables</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Full DSL reference with examples</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h6><i class="bi bi-code-square text-success"></i> Code &amp; Testing</h6>
+                                                <ul>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Product Inventory Management API (Spring Boot 3.4)</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> JPA Entity, Repository, Service, Controller</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Unit tests with Mockito + MockMvc</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Integration tests with REST Assured + H2</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Container tests with TestContainers + PostgreSQL</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> Docker + docker-compose setup</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> JSON Schema validation</li>
+                                                    <li><i class="bi bi-check-circle-fill text-success"></i> 6 FAQs with code examples</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <h5 class="mt-4"><i class="bi bi-stack"></i> Technical Stack</h5>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Java:</strong> 17+</li>
+                                                    <li><strong>Spring Boot:</strong> 3.4.1</li>
+                                                    <li><strong>REST Assured:</strong> 6.0.0</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>JUnit:</strong> 5.11.x</li>
+                                                    <li><strong>Mockito:</strong> 5.x</li>
+                                                    <li><strong>TestContainers:</strong> 2.0.3</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <ul class="list-unstyled">
+                                                    <li><strong>H2 Database:</strong> Latest</li>
+                                                    <li><strong>PostgreSQL:</strong> 16 (Docker)</li>
+                                                    <li><strong>Bootstrap:</strong> 5.3.2</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#futureVersions">
+                                        <i class="bi bi-plus-circle me-2"></i> <strong>Future Versions</strong>
+                                    </button>
+                                </h2>
+                                <div id="futureVersions" class="accordion-collapse collapse" data-bs-parent="#versionHistoryAccordion">
+                                    <div class="accordion-body">
+                                        <h5><i class="bi bi-map"></i> Roadmap</h5>
+                                        <div class="list-group">
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6><i class="bi bi-speedometer2 text-primary"></i> Version 1.1.0</h6>
+                                                    <small class="text-muted">Q2 2026</small>
+                                                </div>
+                                                <p class="mb-1"><strong>Focus:</strong> Security &amp; Authentication</p>
+                                                <ul class="small">
+                                                    <li>Spring Security integration with JWT</li>
+                                                    <li>OAuth2 protected endpoint tests</li>
+                                                    <li>Role-based access control testing</li>
+                                                </ul>
+                                            </div>
+                                            <div class="list-group-item">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6><i class="bi bi-graph-up-arrow text-success"></i> Version 1.2.0</h6>
+                                                    <small class="text-muted">Q3 2026</small>
+                                                </div>
+                                                <p class="mb-1"><strong>Focus:</strong> Advanced Patterns</p>
+                                                <ul class="small">
+                                                    <li>Data-driven tests with @ParameterizedTest</li>
+                                                    <li>Custom filters and interceptors</li>
+                                                    <li>Performance testing with response time assertions</li>
+                                                    <li>CI/CD pipeline examples (GitHub Actions)</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-center">
+                            <span class="badge bg-secondary me-2">Status: Active Development</span>
+                            <span class="badge bg-info me-2">Current: v1.0.0</span>
+                            <span class="badge bg-success">Last Updated: February 22, 2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== RESOURCES ==================== -->
+                <div class="card mb-4" id="resources">
+                    <div class="card-header bg-info text-white">
+                        <h2><i class="bi bi-bookmarks"></i> Resources &amp; References</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4><i class="bi bi-book"></i> Official Documentation</h4>
+                                <ul class="list-group mb-4">
+                                    <li class="list-group-item">
+                                        <a href="https://rest-assured.io/" target="_blank">
+                                            <i class="bi bi-link-45deg"></i> REST Assured Official Website
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="https://github.com/rest-assured/rest-assured/wiki/Usage" target="_blank">
+                                            <i class="bi bi-link-45deg"></i> REST Assured Usage Guide (Wiki)
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="https://javadoc.io/doc/io.rest-assured/rest-assured/latest/index.html" target="_blank">
+                                            <i class="bi bi-link-45deg"></i> REST Assured 6.0.0 Javadoc
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="https://java.testcontainers.org/" target="_blank">
+                                            <i class="bi bi-link-45deg"></i> TestContainers for Java
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <h4><i class="bi bi-github"></i> Source Code</h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <a href="https://github.com/rest-assured/rest-assured" target="_blank">
+                                            <i class="bi bi-github"></i> REST Assured on GitHub
+                                        </a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="https://github.com/testcontainers/testcontainers-java" target="_blank">
+                                            <i class="bi bi-github"></i> TestContainers Java on GitHub
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h4><i class="bi bi-tools"></i> Related Tools</h4>
+                                <ul class="list-group mb-4">
+                                    <li class="list-group-item">
+                                        <strong>Hamcrest:</strong> <a href="http://hamcrest.org/JavaHamcrest/" target="_blank">Matcher library for assertions</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>JUnit 5:</strong> <a href="https://junit.org/junit5/" target="_blank">Modern Java testing framework</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Mockito:</strong> <a href="https://site.mockito.org/" target="_blank">Mocking framework for Java</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Spring Boot:</strong> <a href="https://spring.io/projects/spring-boot" target="_blank">Application framework</a>
+                                    </li>
+                                </ul>
+
+                                <div class="alert alert-success mt-4">
+                                    <h5><i class="bi bi-star"></i> Recommended Learning Path</h5>
+                                    <ol class="mb-0">
+                                        <li>Understand REST API fundamentals (HTTP methods, status codes)</li>
+                                        <li>Learn REST Assured BDD syntax (given-when-then)</li>
+                                        <li>Practice with simple GET/POST tests</li>
+                                        <li>Add JSON Schema validation and Hamcrest matchers</li>
+                                        <li>Integrate with Spring Boot Test and Mockito</li>
+                                        <li>Add TestContainers for production-realistic testing</li>
+                                        <li>Set up CI/CD pipeline with automated API tests</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Results Panel -->
+    <div class="search-results-panel" id="searchResultsPanel">
+        <div class="card mb-0">
+            <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-search"></i> Search Results</span>
+                <button class="btn btn-sm btn-close btn-close-white" id="closeSearchPanel"></button>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <strong id="searchResultCount">0 matches</strong>
+                        <div class="small text-muted" id="searchTerm"></div>
+                    </div>
+                </div>
+                <div class="btn-group w-100" role="group">
+                    <button class="btn btn-outline-primary" id="prevMatch">
+                        <i class="bi bi-chevron-up"></i> Previous
+                    </button>
+                    <button class="btn btn-outline-primary" id="nextMatch">
+                        <i class="bi bi-chevron-down"></i> Next
+                    </button>
+                </div>
+                <div class="mt-2 text-center">
+                    <small class="text-muted">Match <span id="currentMatchNum">0</span> of <span id="totalMatches">0</span></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Version Badge -->
+    <span class="badge bg-secondary version-badge" data-bs-toggle="tooltip" title="Tutorial Version">v1.0.0</span>
+
+    <!-- Footer Section -->
+    <footer class="mt-5 py-4" style="background: linear-gradient(135deg, #28a745 0%, #155724 100%); border-top: 5px solid #f8f9fa;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-flex align-items-center mb-3 mb-md-0">
+                        <div class="me-4">
+                            <i class="bi bi-person-circle" style="font-size: 3rem; color: #ffffff;"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-2" style="color: #ffffff; font-weight: 600;">
+                                <i class="bi bi-pencil-square me-2"></i>Conceptually Authored By
+                            </h5>
+                            <p class="mb-1" style="color: #f8f9fa; font-size: 1.1rem; font-weight: 500;">
+                                <strong>Raghavan alias Saravanan Muthu</strong>
+                            </p>
+                            <p class="mb-0">
+                                <a href="https://github.com/itsraghz" target="_blank" rel="noopener noreferrer" 
+                                   class="text-white text-decoration-none d-inline-flex align-items-center" 
+                                   style="font-size: 0.95rem; transition: opacity 0.3s;"
+                                   onmouseover="this.style.opacity='0.8'" 
+                                   onmouseout="this.style.opacity='1'">
+                                    <i class="bi bi-github me-2" style="font-size: 1.2rem;"></i>
+                                    <span>@itsraghz</span>
+                                    <i class="bi bi-box-arrow-up-right ms-2" style="font-size: 0.8rem;"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex align-items-center justify-content-md-end">
+                        <div class="me-3">
+                            <i class="bi bi-cpu" style="font-size: 2.5rem; color: #ffd700;"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1" style="color: #ffffff; font-weight: 600;">
+                                <i class="bi bi-robot me-1"></i>AI Assisted
+                            </h6>
+                            <p class="mb-0" style="color: #f8f9fa; font-size: 0.95rem;">
+                                <strong>Warp AI Agent</strong>
+                            </p>
+                            <p class="mb-0" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.9;">
+                                Technical content enhanced by AI
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255, 255, 255, 0.3); margin: 1.5rem 0;">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0" style="color: #f8f9fa; font-size: 0.9rem;">
+                        <i class="bi bi-info-circle me-1"></i>
+                        This tutorial represents a collaborative effort combining human expertise with AI-powered assistance
+                    </p>
+                    <p class="mb-0 mt-2" style="color: #e9ecef; font-size: 0.85rem; opacity: 0.8;">
+                        <i class="bi bi-calendar-event me-1"></i>
+                        Created February 2026 | 
+                        <i class="bi bi-tag-fill mx-1"></i>
+                        Version 1.0.0 | 
+                        <i class="bi bi-code-slash mx-1"></i>
+                        Built with Bootstrap 5 &amp; Modern Web Standards
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Prism.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-properties.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-docker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-groovy.min.js"></script>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-bs-theme', newTheme);
+            
+            const icon = themeToggle.querySelector('i');
+            icon.className = newTheme === 'light' ? 'bi bi-moon-stars' : 'bi bi-sun';
+        });
+
+        // Color Flavor
+        function setColorFlavor(flavor) {
+            html.setAttribute('data-color-flavor', flavor);
+        }
+
+        // Initialize tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Code copy functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('pre:has(code)').forEach((pre) => {
+                if (pre.parentElement.classList.contains('code-wrapper')) return;
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-wrapper';
+                pre.parentNode.insertBefore(wrapper, pre);
+                wrapper.appendChild(pre);
+                
+                const button = document.createElement('button');
+                button.className = 'btn btn-sm btn-secondary code-copy-btn';
+                button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                button.onclick = () => {
+                    const code = pre.querySelector('code').textContent;
+                    navigator.clipboard.writeText(code).then(() => {
+                        button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                        }, 2000);
+                    });
+                };
+                wrapper.insertBefore(button, pre);
+            });
+        });
+
+        // Search functionality
+        document.querySelector('form[role="search"]').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const searchTerm = e.target.querySelector('input[type="search"]').value;
+            
+            if (!searchTerm) return;
+            
+            document.querySelectorAll('.search-highlight').forEach(el => {
+                el.outerHTML = el.innerHTML;
+            });
+            
+            const cards = document.querySelectorAll('.card-body');
+            let firstMatch = null;
+            let totalMatches = 0;
+            
+            cards.forEach(card => {
+                const walker = document.createTreeWalker(
+                    card, NodeFilter.SHOW_TEXT, null
+                );
+                
+                const textNodes = [];
+                while (walker.nextNode()) {
+                    if (walker.currentNode.parentElement.tagName !== 'SCRIPT' && 
+                        walker.currentNode.parentElement.tagName !== 'STYLE' &&
+                        !walker.currentNode.parentElement.closest('code') &&
+                        !walker.currentNode.parentElement.closest('pre')) {
+                        textNodes.push(walker.currentNode);
+                    }
+                }
+                
+                textNodes.forEach(node => {
+                    const text = node.textContent;
+                    if (text.toLowerCase().includes(searchTerm.toLowerCase())) {
+                        const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                        const matches = text.match(regex);
+                        if (matches) totalMatches += matches.length;
+                        const span = document.createElement('span');
+                        span.innerHTML = text.replace(regex, '<mark class="search-highlight">$1</mark>');
+                        node.replaceWith(span);
+                        if (!firstMatch) firstMatch = span.querySelector('.search-highlight');
+                    }
+                });
+            });
+            
+            const panel = document.getElementById('searchResultsPanel');
+            if (totalMatches > 0) {
+                panel.style.display = 'block';
+                document.getElementById('searchResultCount').textContent = `${totalMatches} ${totalMatches === 1 ? 'match' : 'matches'}`;
+                document.getElementById('searchTerm').textContent = `for "${searchTerm}"`;
+                document.getElementById('totalMatches').textContent = totalMatches;
+                document.getElementById('currentMatchNum').textContent = '1';
+                firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                panel.style.display = 'block';
+                document.getElementById('searchResultCount').textContent = 'No matches';
+                document.getElementById('searchTerm').textContent = `for "${searchTerm}"`;
+                document.getElementById('totalMatches').textContent = '0';
+                document.getElementById('currentMatchNum').textContent = '0';
+            }
+        });
+        
+        document.getElementById('closeSearchPanel').addEventListener('click', () => {
+            document.getElementById('searchResultsPanel').style.display = 'none';
+            document.querySelectorAll('.search-highlight').forEach(el => {
+                el.outerHTML = el.innerHTML;
+            });
+        });
+        
+        let currentSearchTerm = '';
+        document.getElementById('prevMatch').addEventListener('click', () => {
+            if (currentSearchTerm) window.find(currentSearchTerm, false, true, false, false, true, false);
+        });
+        document.getElementById('nextMatch').addEventListener('click', () => {
+            if (currentSearchTerm) window.find(currentSearchTerm, false, false, false, false, true, false);
+        });
+    </script>
+</body>
+</html>
