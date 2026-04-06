@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>jq Playground — Interactive Tutorial</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --jq-accent: #f0c040;
+  --jq-accent2: #38bdf8;
+  --jq-green: #4ade80;
+  --jq-red: #f87171;
+  --jq-bg: #0d1117;
+  --jq-surface: #161b22;
+  --jq-surface2: #1e2530;
+  --jq-border: #30363d;
+  --jq-muted: #8b949e;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Syne', sans-serif;
+}
+html, body { background: var(--jq-bg); color: #e6edf3; font-family: var(--sans); }
+pre, code, .mono { font-family: var(--mono); }
+
+/* ── NAVBAR ── */
+.navbar { background: var(--jq-surface) !important; border-bottom: 1px solid var(--jq-border); }
+.navbar-brand { font-family: var(--sans); font-weight: 800; font-size: 1.2rem; color: var(--jq-accent) !important; letter-spacing: .02em; }
+.nav-link { color: var(--jq-muted) !important; font-size: .85rem; }
+.nav-link:hover { color: var(--jq-accent) !important; }
+
+/* ── HERO ── */
+.hero { background: var(--jq-surface); border-bottom: 1px solid var(--jq-border); padding: 2.5rem 0 2rem; }
+.hero-ascii { font-family: var(--mono); font-size: .58rem; line-height: 1.2; color: var(--jq-accent); white-space: pre; margin-bottom: 1rem; }
+.hero-title { font-family: var(--sans); font-weight: 800; font-size: 2rem; color: #e6edf3; margin-bottom: .5rem; }
+.hero-title span { color: var(--jq-accent); }
+.hero-sub { color: var(--jq-muted); font-size: .9rem; font-family: var(--mono); }
+.badge-pill { background: var(--jq-surface2); border: 1px solid var(--jq-border); color: var(--jq-muted); font-size: .72rem; font-family: var(--mono); padding: .3rem .7rem; border-radius: 20px; display: inline-block; margin: .2rem; }
+.badge-pill span { color: var(--jq-accent2); }
+
+/* ── CARDS ── */
+.panel { background: var(--jq-surface); border: 1px solid var(--jq-border); border-radius: 8px; overflow: hidden; }
+.panel-head { background: var(--jq-surface2); border-bottom: 1px solid var(--jq-border); padding: .5rem 1rem; display: flex; align-items: center; justify-content: space-between; }
+.panel-title { font-family: var(--mono); font-size: .75rem; color: var(--jq-muted); }
+.panel-body { padding: 1rem; }
+
+/* ── JSON SYNTAX ── */
+.json-view { font-family: var(--mono); font-size: .78rem; line-height: 1.75; overflow: auto; max-height: 340px; background: var(--jq-bg); padding: 1rem; border-radius: 0; }
+.jk { color: #79c0ff; }   /* key */
+.js { color: #a5d6ff; }   /* string value */
+.jn { color: #ffa657; }   /* number */
+.jb { color: #d2a8ff; }   /* bool */
+.jl { color: #f87171; }   /* null */
+
+/* ── FILTER BUTTONS ── */
+.filter-btn {
+  background: var(--jq-surface2);
+  border: 1px solid var(--jq-border);
+  border-radius: 6px;
+  padding: .55rem .85rem;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .15s, background .15s;
+  width: 100%;
+}
+.filter-btn:hover { border-color: var(--jq-accent2); background: #1a2332; }
+.filter-btn.active { border-color: var(--jq-accent); background: #1e1c10; }
+.filter-btn .fc { font-family: var(--mono); font-size: .75rem; color: var(--jq-accent); font-weight: 600; display: block; margin-bottom: 2px; }
+.filter-btn .fd { font-size: .7rem; color: var(--jq-muted); font-family: var(--sans); }
+
+/* ── FILTER INPUT ── */
+.filter-input-wrap { display: flex; gap: .5rem; }
+#filter-expr {
+  flex: 1;
+  background: var(--jq-bg);
+  border: 1px solid var(--jq-border);
+  border-radius: 6px;
+  color: var(--jq-accent);
+  font-family: var(--mono);
+  font-size: .9rem;
+  padding: .55rem 1rem;
+  outline: none;
+  transition: border-color .15s;
+}
+#filter-expr:focus { border-color: var(--jq-accent); box-shadow: 0 0 0 3px rgba(240,192,64,.12); }
+.run-btn {
+  background: var(--jq-accent);
+  border: none;
+  border-radius: 6px;
+  color: #0d1117;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: .85rem;
+  padding: .55rem 1.4rem;
+  cursor: pointer;
+  transition: opacity .15s;
+  white-space: nowrap;
+}
+.run-btn:hover { opacity: .85; }
+
+/* ── EXPLAIN BOX ── */
+.explain-box {
+  background: #111a0e;
+  border: 1px solid #2d4a1e;
+  border-radius: 6px;
+  padding: .65rem 1rem;
+  font-size: .8rem;
+  color: #8fce6f;
+  font-family: var(--mono);
+  display: none;
+}
+.explain-box.show { display: block; }
+.explain-label { font-size: .65rem; text-transform: uppercase; letter-spacing: .08em; color: var(--jq-green); font-weight: 600; font-family: var(--sans); margin-bottom: .25rem; }
+
+/* ── OUTPUT ── */
+.output-area {
+  font-family: var(--mono);
+  font-size: .78rem;
+  line-height: 1.8;
+  min-height: 80px;
+  padding: 1rem;
+  background: var(--jq-bg);
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow: auto;
+  max-height: 360px;
+}
+.output-area.ok .jk { color: #79c0ff; }
+.output-area.err { color: var(--jq-red); }
+.output-count { font-size: .7rem; font-family: var(--mono); }
+.output-count.ok { color: var(--jq-green); }
+.output-count.err { color: var(--jq-red); }
+
+/* ── REFERENCE TABLE ── */
+.ref-table { font-size: .78rem; }
+.ref-table th { color: var(--jq-accent); font-family: var(--mono); font-size: .72rem; background: var(--jq-surface2); border-color: var(--jq-border); }
+.ref-table td { border-color: var(--jq-border); vertical-align: middle; }
+.ref-table td:first-child { font-family: var(--mono); color: var(--jq-accent2); }
+.ref-table td:nth-child(2) { color: var(--jq-muted); }
+.ref-table tr:hover td { background: var(--jq-surface2); }
+.try-btn {
+  font-size: .68rem;
+  font-family: var(--mono);
+  background: transparent;
+  border: 1px solid var(--jq-border);
+  color: var(--jq-muted);
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.try-btn:hover { border-color: var(--jq-accent); color: var(--jq-accent); }
+
+/* ── SECTION HEADINGS ── */
+.section-label {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--jq-muted);
+  font-family: var(--sans);
+  font-weight: 700;
+  margin-bottom: .75rem;
+}
+.section-heading {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #e6edf3;
+  font-family: var(--sans);
+  margin-bottom: .25rem;
+}
+.divider { border-color: var(--jq-border); margin: 2.5rem 0; }
+
+/* ── CATEGORY TABS ── */
+.cat-tabs { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+.cat-tab {
+  font-size: .72rem;
+  font-family: var(--mono);
+  background: var(--jq-surface2);
+  border: 1px solid var(--jq-border);
+  color: var(--jq-muted);
+  border-radius: 4px;
+  padding: .25rem .7rem;
+  cursor: pointer;
+  transition: all .15s;
+}
+.cat-tab:hover, .cat-tab.active { border-color: var(--jq-accent2); color: var(--jq-accent2); background: #0e1e2e; }
+
+/* ── FOOTER ── */
+footer { border-top: 1px solid var(--jq-border); padding: 1.5rem 0; color: var(--jq-muted); font-size: .78rem; text-align: center; }
+footer span { color: var(--jq-accent); }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--jq-surface); }
+::-webkit-scrollbar-thumb { background: var(--jq-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--jq-muted); }
+
+/* ── PULSE DOT ── */
+.live-dot { width: 8px; height: 8px; background: var(--jq-green); border-radius: 50%; display: inline-block; animation: pulse 1.8s ease-in-out infinite; margin-right: 6px; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* ── COPY BTN ── */
+.copy-btn { background: transparent; border: 1px solid var(--jq-border); color: var(--jq-muted); border-radius: 4px; padding: 2px 10px; font-size: .7rem; cursor: pointer; font-family: var(--sans); transition: all .15s; }
+.copy-btn:hover { border-color: var(--jq-accent2); color: var(--jq-accent2); }
+
+/* ── FADE IN ── */
+.fade-in { animation: fadeUp .4s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container-xl">
+    <span class="navbar-brand"><i class="bi bi-braces me-1"></i>jq Playground</span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navC">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navC">
+      <ul class="navbar-nav ms-auto gap-2">
+        <li class="nav-item"><a class="nav-link" href="./index.html"><i class="bi bi-terminal me-1"></i>JQ Tutorial</a></li>
+        <li class="nav-item"><a class="nav-link" href="#playground"><i class="bi bi-terminal me-1"></i>Playground</a></li>
+        <li class="nav-item"><a class="nav-link" href="#dataset"><i class="bi bi-database me-1"></i>Dataset</a></li>
+        <li class="nav-item"><a class="nav-link" href="#filters"><i class="bi bi-funnel me-1"></i>Filters</a></li>
+        <li class="nav-item"><a class="nav-link" href="#reference"><i class="bi bi-book me-1"></i>Reference</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container-xl">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="hero-ascii">
+   ██╗ ██████╗     ██████╗ ██╗      █████╗ ██╗   ██╗ ██████╗ ██████╗  ██████╗ ██╗   ██╗███╗   ██╗██████╗ 
+   ██║██╔═══██╗    ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝ ██╔══██╗██╔═══██╗██║   ██║████╗  ██║██╔══██╗
+   ██║██║   ██║    ██████╔╝██║     ███████║ ╚████╔╝ ██║  ███╗██████╔╝██║   ██║██║   ██║██╔██╗ ██║██║  ██║
+██  ██║██║▄▄ ██║    ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██║   ██║██╔══██╗██║   ██║██║   ██║██║╚██╗██║██║  ██║
+╚█████╔╝╚██████╔╝    ██║     ███████╗██║  ██║   ██║   ╚██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║ ╚████║██████╔╝
+ ╚════╝  ╚══▀▀═╝     ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═════╝ </div>
+        <div class="hero-title">Slice JSON like a <span>pro</span></div>
+        <p class="hero-sub">30 live filters · real ecommerce dataset · zero setup</p>
+        <div class="mt-3">
+          <span class="badge-pill"><span>.</span> identity</span>
+          <span class="badge-pill"><span>[]</span> iterate</span>
+          <span class="badge-pill"><span>|</span> pipe</span>
+          <span class="badge-pill"><span>select()</span> filter</span>
+          <span class="badge-pill"><span>map()</span> transform</span>
+          <span class="badge-pill"><span>group_by()</span> aggregate</span>
+          <span class="badge-pill"><span>to_entries</span> introspect</span>
+        </div>
+      </div>
+      <div class="col-lg-4 d-none d-lg-block text-end">
+        <div style="font-family:var(--mono);font-size:.78rem;line-height:2;color:var(--jq-muted)">
+          <div><span style="color:var(--jq-accent)">$</span> cat store.json | jq <span style="color:var(--jq-accent2)">'.'</span></div>
+          <div><span style="color:var(--jq-accent)">$</span> jq <span style="color:var(--jq-accent2)">'.products[] | .name'</span></div>
+          <div><span style="color:var(--jq-accent)">$</span> jq <span style="color:var(--jq-accent2)">'[.products[] | select(.in_stock)]'</span></div>
+          <div style="color:#2d4a1e">───────────────────────────</div>
+          <div style="color:var(--jq-green)">✓ 30 filters ready to run</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="container-xl py-4">
+
+  <!-- PLAYGROUND -->
+  <section id="playground" class="mb-5">
+    <div class="row g-4">
+
+      <!-- LEFT: Filter input + output -->
+      <div class="col-lg-7">
+        <div class="section-label"><i class="bi bi-terminal me-1"></i>Live Playground</div>
+        <div class="panel mb-3">
+          <div class="panel-head">
+            <span class="panel-title"><span class="live-dot"></span>jq filter</span>
+            <span style="font-size:.7rem;color:var(--jq-muted);font-family:var(--mono)">Enter to run</span>
+          </div>
+          <div class="panel-body">
+            <div class="filter-input-wrap mb-2">
+              <input id="filter-expr" type="text" value="." placeholder="type a jq filter..." spellcheck="false"/>
+              <button class="run-btn" onclick="runFilter()"><i class="bi bi-play-fill me-1"></i>Run</button>
+            </div>
+            <div class="explain-box" id="explain-box">
+              <div class="explain-label"><i class="bi bi-lightbulb-fill me-1"></i>How it works</div>
+              <div id="explain-text"></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title"><i class="bi bi-arrow-right-circle me-1"></i>Output</span>
+            <div class="d-flex align-items-center gap-2">
+              <span class="output-count" id="output-count"></span>
+              <button class="copy-btn" onclick="copyOutput()"><i class="bi bi-clipboard me-1"></i>Copy</button>
+            </div>
+          </div>
+          <div class="output-area ok" id="output">( choose a filter or type your own above )</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Filters grid -->
+      <div class="col-lg-5" id="filters">
+        <div class="section-label"><i class="bi bi-collection me-1"></i>Filter Library</div>
+        <div class="cat-tabs" id="cat-tabs"></div>
+        <div id="filter-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;max-height:560px;overflow-y:auto;padding-right:2px"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- DATASET -->
+  <section id="dataset" class="mb-5">
+    <div class="row g-4">
+      <div class="col-12">
+        <div class="section-label"><i class="bi bi-database me-1"></i>Dataset</div>
+        <div class="section-heading">store.json — the input</div>
+        <p style="color:var(--jq-muted);font-size:.85rem;font-family:var(--mono)">A nested ecommerce JSON covering objects, arrays, booleans, numbers, nulls, and deep nesting — all the flavors jq can handle.</p>
+      </div>
+      <div class="col-md-4">
+        <div class="panel h-100">
+          <div class="panel-head"><span class="panel-title"><i class="bi bi-diagram-3 me-1"></i>Structure</span></div>
+          <div class="panel-body" style="font-family:var(--mono);font-size:.75rem;line-height:2;color:var(--jq-muted)">
+            <div style="color:#e6edf3">store.json</div>
+            <div>├── <span style="color:var(--jq-accent2)">store</span> <span style="color:#444">{object}</span></div>
+            <div>│   ├── name, city, established</div>
+            <div>│   ├── <span style="color:var(--jq-accent2)">contact</span> → email, phone</div>
+            <div>│   │   └── <span style="color:var(--jq-accent2)">social</span> → twitter, instagram</div>
+            <div>│   └── <span style="color:var(--jq-accent2)">warehouse</span> → location, sqft</div>
+            <div>├── <span style="color:var(--jq-accent)">products</span> <span style="color:#444">[5 items]</span></div>
+            <div>│   ├── id, name, brand, category</div>
+            <div>│   ├── price, discount_pct, in_stock</div>
+            <div>│   ├── rating, reviews</div>
+            <div>│   ├── <span style="color:var(--jq-accent2)">specs</span> → varies per product</div>
+            <div>│   └── <span style="color:var(--jq-accent2)">tags</span> [array of strings]</div>
+            <div>└── <span style="color:var(--jq-green)">orders</span> <span style="color:#444">[3 items]</span></div>
+            <div>    ├── order_id, customer, date, status</div>
+            <div>    ├── total</div>
+            <div>    └── <span style="color:var(--jq-accent2)">items</span> → [{product_id, qty, unit_price}]</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="panel">
+          <div class="panel-head">
+            <span class="panel-title"><i class="bi bi-code-slash me-1"></i>store.json</span>
+            <button class="copy-btn" onclick="copyJson()"><i class="bi bi-clipboard me-1"></i>Copy JSON</button>
+          </div>
+          <div class="json-view" id="raw-json"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- REFERENCE -->
+  <section id="reference" class="mb-5">
+    <div class="section-label"><i class="bi bi-book me-1"></i>Quick Reference</div>
+    <div class="section-heading">Essential jq cheatsheet</div>
+    <p style="color:var(--jq-muted);font-size:.85rem;margin-bottom:1.5rem">Click <strong style="color:var(--jq-accent)">Try →</strong> on any row to load it into the playground.</p>
+    <div class="table-responsive">
+      <table class="table table-dark table-bordered ref-table" id="ref-table"></table>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container-xl">
+    Built with <span>♥</span> using Bootstrap 5 · jq engine runs entirely in the browser · <span>store.json</span> dataset
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// ── DATA ──────────────────────────────────────────────────
+const DATA = {
+  store: {
+    name: "TechMart India", city: "Bengaluru", established: 2018,
+    active: true, rating: 4.7,
+    tags: ["electronics","gadgets","peripherals"],
+    contact: {
+      email: "hello@techmart.in", phone: "+91-80-4567-8901",
+      social: { twitter: "@techmart_in", instagram: "@techmart.in" }
+    },
+    warehouse: { location: "Whitefield", sqft: 12000, climate_controlled: true }
+  },
+  products: [
+    { id:"P001", name:"Mechanical Keyboard", brand:"Keychron", category:"peripherals",
+      price:8999, discount_pct:10, in_stock:true, rating:4.8, reviews:312,
+      specs:{ switches:"Brown", backlit:true, wireless:false, weight_g:950 },
+      tags:["keyboard","typing","office"] },
+    { id:"P002", name:"4K Monitor", brand:"LG", category:"displays",
+      price:34999, discount_pct:15, in_stock:true, rating:4.6, reviews:187,
+      specs:{ inches:27, resolution:"3840x2160", hdr:true, refresh_hz:60 },
+      tags:["monitor","4k","display"] },
+    { id:"P003", name:"USB-C Hub 7-in-1", brand:"Anker", category:"accessories",
+      price:2499, discount_pct:5, in_stock:false, rating:4.3, reviews:521,
+      specs:{ ports:7, power_delivery_w:100, hdmi:true },
+      tags:["hub","usb-c","dongle"] },
+    { id:"P004", name:"Noise Cancelling Headphones", brand:"Sony", category:"audio",
+      price:24999, discount_pct:20, in_stock:true, rating:4.9, reviews:892,
+      specs:{ anc:true, battery_hrs:30, wireless:true, foldable:true },
+      tags:["headphones","anc","audio"] },
+    { id:"P005", name:"Webcam 1080p", brand:"Logitech", category:"peripherals",
+      price:5999, discount_pct:0, in_stock:true, rating:4.5, reviews:234,
+      specs:{ resolution:"1920x1080", fps:30, autofocus:true },
+      tags:["webcam","wfh","video"] }
+  ],
+  orders: [
+    { order_id:"ORD-9001", customer:"Raghavan M", date:"2024-11-03",
+      status:"delivered", total:43998,
+      items:[{product_id:"P001",qty:1,unit_price:8999},{product_id:"P002",qty:1,unit_price:34999}] },
+    { order_id:"ORD-9002", customer:"Priya S", date:"2024-11-10",
+      status:"shipped", total:24999,
+      items:[{product_id:"P004",qty:1,unit_price:24999}] },
+    { order_id:"ORD-9003", customer:"Arjun K", date:"2024-11-12",
+      status:"pending", total:7498,
+      items:[{product_id:"P003",qty:1,unit_price:2499},{product_id:"P005",qty:1,unit_price:5999}] }
+  ]
+};
+
+// ── FILTERS ───────────────────────────────────────────────
+const FILTERS = [
+  { cat:"Basics", label:".", desc:"Identity — pretty print", explain:"The simplest filter. Passes input through unchanged — perfect for pretty-printing." },
+  { cat:"Basics", label:".store.name", desc:"Dot notation access", explain:"Navigate object keys with dots. Drills: root → store → name." },
+  { cat:"Basics", label:".store.contact.social", desc:"Deep nested access", explain:"Chain dots as deep as needed to reach any nested value." },
+  { cat:"Basics", label:"keys", desc:"List top-level keys", explain:"keys returns a sorted array of an object's keys. keys_unsorted preserves insertion order." },
+  { cat:"Basics", label:"paths", desc:"All leaf paths", explain:"paths outputs every path to a leaf value — great for exploring unknown JSON shapes." },
+  { cat:"Arrays", label:".products[]", desc:"Iterate all items", explain:".products[] explodes the array into a stream of individual objects, one per output line." },
+  { cat:"Arrays", label:".products[0]", desc:"First element (index)", explain:"Zero-based indexing. .products[0] = first, .products[-1] = last." },
+  { cat:"Arrays", label:".products[1:3]", desc:"Slice (index 1 & 2)", explain:"[start:end] slices — end index is exclusive. Like Python list slicing." },
+  { cat:"Arrays", label:"[.products[] | .price] | add", desc:"Sum all prices", explain:"Collect values into an array with [], then add sums numeric arrays." },
+  { cat:"Arrays", label:"[.products[] | .price] | length", desc:"Count products", explain:"length on an array returns element count. On a string = char count." },
+  { cat:"Arrays", label:"[.products[] | .price] | min", desc:"Minimum price", explain:"min and max work on flat numeric arrays. Use min_by() for object arrays." },
+  { cat:"Pipe", label:".products[] | .name", desc:"Pipe: stream names", explain:"| chains filters. .products[] streams items, then .name extracts each name." },
+  { cat:"Pipe", label:"[.products[] | .name]", desc:"Collect into array", explain:"Wrap piped stream in [] to collect results back into a single JSON array." },
+  { cat:"Pipe", label:".products[] | {name, price}", desc:"Object construction", explain:"{name, price} is shorthand for {name: .name, price: .price}." },
+  { cat:"Select", label:".products[] | select(.in_stock)", desc:"Filter in-stock only", explain:"select(expr) is jq's WHERE clause — keeps only items where the condition is truthy." },
+  { cat:"Select", label:".products[] | select(.price > 10000) | .name", desc:"Numeric comparison", explain:"Combine select() with comparison operators: >, <, >=, <=, ==, !=" },
+  { cat:"Select", label:'.products[] | select(.category == "audio") | {name,rating}', desc:"String equality match", explain:"String equality inside select(). Double-quotes required around string values." },
+  { cat:"Select", label:".products[] | select(.specs.wireless == true) | .name", desc:"Nested key condition", explain:"Access deeply nested fields inside select() using dot notation: .specs.wireless" },
+  { cat:"Sort & Group", label:".products | sort_by(.price) | [.[].name]", desc:"Sort by price asc", explain:"sort_by(.field) sorts ascending. Append | reverse for descending order." },
+  { cat:"Sort & Group", label:".products | max_by(.rating) | {name,rating}", desc:"Top-rated product", explain:"max_by(.field) finds the element with the highest value for that field." },
+  { cat:"Sort & Group", label:".products | group_by(.category) | map({category: .[0].category, count: length})", desc:"Group & count by category", explain:"group_by(.field) splits into groups. map() transforms each group into a summary." },
+  { cat:"Sort & Group", label:"[.products[] | .tags[]] | unique", desc:"All unique tags", explain:"Chain [] to flatten nested arrays, then unique removes duplicates." },
+  { cat:"Transform", label:'.products[] | .name + " — ₹" + (.price | tostring)', desc:"String concatenation", explain:"+ concatenates. tostring converts numbers to strings for safe concatenation." },
+  { cat:"Transform", label:".products[] | {name, discounted: (.price * (1 - .discount_pct/100) | floor)}", desc:"Arithmetic — discounted price", explain:"Math expressions work inline. floor/ceil/round are built-in math functions." },
+  { cat:"Transform", label:".orders[] | {order: .order_id, items: (.items | length)}", desc:"Subexpression with ()", explain:"Parentheses group sub-expressions. (.items | length) computes inline within {}." },
+  { cat:"Introspect", label:".store | to_entries", desc:"Object → key-value pairs", explain:"to_entries converts {k:v} to [{key:k,value:v}]. Useful for iterating object fields." },
+  { cat:"Introspect", label:'.store | to_entries | map(select(.value | type == "string"))', desc:"Filter by value type", explain:"type returns the type name as a string: object, array, string, number, boolean, null." },
+  { cat:"Introspect", label:".orders[] | select(.status == \"delivered\") | .total", desc:"Filter orders by status", explain:"select() works on any field — string enums, booleans, nested comparisons." },
+  { cat:"Introspect", label:".orders[] | {order: .order_id, customer, items: [.items[].product_id]}", desc:"Reshape orders", explain:"Combine object construction + nested array iteration to reshape complex structures." },
+  { cat:"Introspect", label:".products[] | {name, price} | @json", desc:"@json format string", explain:"@json, @csv, @tsv, @html, @uri, @base64 are format strings for output encoding." },
+];
+
+const CATS = [...new Set(FILTERS.map(f=>f.cat))];
+
+// ── REFERENCE TABLE ───────────────────────────────────────
+const REF = [
+  ['.field', 'Access object key', '.store.name'],
+  ['.[]', 'Iterate array/object', '.products[]'],
+  ['.[n]', 'Index into array', '.products[0]'],
+  ['.[n:m]', 'Slice array', '.products[1:3]'],
+  ['|', 'Pipe output to next filter', '.products[] | .name'],
+  ['[]', 'Collect stream into array', '[.products[] | .name]'],
+  ['{}', 'Construct object', '.products[] | {name, price}'],
+  ['select(expr)', 'Keep items matching condition', '.products[] | select(.in_stock)'],
+  ['map(f)', 'Apply filter to every element', '.products | map(.name)'],
+  ['sort_by(f)', 'Sort array by field', '.products | sort_by(.price)'],
+  ['group_by(f)', 'Group array by field value', '.products | group_by(.category)'],
+  ['max_by(f) / min_by(f)', 'Find max/min by field', '.products | max_by(.rating)'],
+  ['add', 'Sum or concatenate array', '[.products[].price] | add'],
+  ['length', 'Count items / chars', '.products | length'],
+  ['unique', 'Deduplicate array', '[.products[].category] | unique'],
+  ['keys', 'List object keys (sorted)', 'keys'],
+  ['to_entries', 'Object → [{key,value}]', '.store | to_entries'],
+  ['from_entries', '[{key,value}] → Object', 'from_entries'],
+  ['type', 'Get value type as string', '.store.active | type'],
+  ['tostring', 'Coerce to string', '.products[0].price | tostring'],
+  ['tonumber', 'Coerce to number', '"42" | tonumber'],
+  ['floor / ceil / round', 'Math rounding', '4.7 | floor'],
+  ['paths', 'All leaf paths in document', 'paths'],
+  ['@json / @csv / @tsv', 'Output format strings', '.products[0] | @json'],
+  ['not', 'Boolean negation', '.products[] | select(.in_stock | not)'],
+  ['empty', 'Produce no output', 'if .in_stock then . else empty end'],
+  ['has("key")', 'Check key exists', '.products[] | select(has("specs"))'],
+  ['in(obj)', 'Check if key in object', '"name" | in(.products[0])'],
+  ['recurse', 'Walk all values recursively', 'recurse | numbers'],
+  ['env', 'Access environment vars', 'env.HOME'],
+];
+
+// ── SYNTAX HIGHLIGHT ─────────────────────────────────────
+function hl(json) {
+  return JSON.stringify(json, null, 2)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g, m => {
+      if(/^"/.test(m)) return /:$/.test(m) ? `<span class="jk">${m}</span>` : `<span class="js">${m}</span>`;
+      if(/true|false/.test(m)) return `<span class="jb">${m}</span>`;
+      if(/null/.test(m)) return `<span class="jl">${m}</span>`;
+      return `<span class="jn">${m}</span>`;
+    });
+}
+
+// ── RENDER RAW JSON ───────────────────────────────────────
+document.getElementById('raw-json').innerHTML = hl(DATA);
+
+// ── RENDER FILTER GRID ────────────────────────────────────
+let activeCat = 'All';
+let activeBtn = null;
+
+function renderGrid() {
+  const grid = document.getElementById('filter-grid');
+  grid.innerHTML = '';
+  FILTERS
+    .filter(f => activeCat === 'All' || f.cat === activeCat)
+    .forEach((f, i) => {
+      const d = document.createElement('div');
+      d.className = 'filter-btn';
+      d.dataset.idx = i;
+      d.innerHTML = `<span class="fc">${escHtml(f.label)}</span><span class="fd">${escHtml(f.desc)}</span>`;
+      d.onclick = () => loadFilter(f, d);
+      grid.appendChild(d);
+    });
+}
+
+// ── RENDER CATEGORY TABS ──────────────────────────────────
+const tabsEl = document.getElementById('cat-tabs');
+['All', ...CATS].forEach(cat => {
+  const b = document.createElement('button');
+  b.className = 'cat-tab' + (cat==='All'?' active':'');
+  b.textContent = cat;
+  b.onclick = () => {
+    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+    b.classList.add('active');
+    activeCat = cat;
+    renderGrid();
+  };
+  tabsEl.appendChild(b);
+});
+renderGrid();
+
+// ── RENDER REF TABLE ─────────────────────────────────────
+(function(){
+  const t = document.getElementById('ref-table');
+  t.innerHTML = `<thead><tr><th style="width:25%">Filter</th><th style="width:40%">What it does</th><th style="width:25%">Example</th><th style="width:10%"></th></tr></thead>`;
+  const tb = document.createElement('tbody');
+  REF.forEach(([filter, desc, ex]) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${escHtml(filter)}</td><td style="color:var(--jq-muted)">${escHtml(desc)}</td><td>${escHtml(ex)}</td><td><button class="try-btn" onclick="tryFilter(this,'${escJs(ex)}')">Try →</button></td>`;
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+})();
+
+function tryFilter(btn, expr) {
+  document.getElementById('filter-expr').value = expr;
+  document.getElementById('explain-box').classList.remove('show');
+  if(activeBtn){ activeBtn.classList.remove('active'); activeBtn=null; }
+  runFilter();
+  document.getElementById('playground').scrollIntoView({behavior:'smooth'});
+}
+
+// ── LOAD FILTER ───────────────────────────────────────────
+function loadFilter(f, btn) {
+  document.getElementById('filter-expr').value = f.label;
+  if(activeBtn) activeBtn.classList.remove('active');
+  activeBtn = btn;
+  btn.classList.add('active');
+  document.getElementById('explain-text').textContent = f.explain;
+  document.getElementById('explain-box').classList.add('show');
+  runFilter();
+}
+
+// ── RUN FILTER ────────────────────────────────────────────
+document.getElementById('filter-expr').addEventListener('keydown', e => { if(e.key==='Enter') runFilter(); });
+
+function runFilter() {
+  const expr = document.getElementById('filter-expr').value.trim();
+  const outEl = document.getElementById('output');
+  const countEl = document.getElementById('output-count');
+  try {
+    const results = jq(DATA, expr);
+    outEl.className = 'output-area ok';
+    outEl.innerHTML = results.length === 1 ? hl(results[0]) : results.map(r=>hl(r)).join('\n');
+    countEl.className = 'output-count ok';
+    countEl.textContent = results.length + ' result' + (results.length!==1?'s':'');
+    outEl.classList.add('fade-in');
+    setTimeout(()=>outEl.classList.remove('fade-in'), 500);
+  } catch(e) {
+    outEl.className = 'output-area err';
+    outEl.textContent = 'Error: ' + e.message;
+    countEl.className = 'output-count err';
+    countEl.textContent = 'error';
+  }
+}
+
+// ── COPY HELPERS ──────────────────────────────────────────
+function copyOutput() {
+  navigator.clipboard.writeText(document.getElementById('output').innerText);
+}
+function copyJson() {
+  navigator.clipboard.writeText(JSON.stringify(DATA, null, 2));
+}
+
+// ── JQ ENGINE ────────────────────────────────────────────
+function jq(data, expr) {
+  expr = expr.trim();
+  if(expr === '.') return [data];
+  if(expr === 'keys') { if(typeof data==='object'&&!Array.isArray(data)&&data!==null) return [Object.keys(data).sort()]; return [null]; }
+  if(expr === 'paths') { const ps=[]; gatherPaths(data,[],ps); return ps; }
+
+  const pipeIdx = findTopPipe(expr);
+  if(pipeIdx !== -1) {
+    const left = expr.slice(0,pipeIdx).trim();
+    const right = expr.slice(pipeIdx+1).trim();
+    const mid = jq(data, left);
+    const out = [];
+    mid.forEach(m => jq(m, right).forEach(r => out.push(r)));
+    return out;
+  }
+
+  if(expr.startsWith('[') && expr.endsWith(']')) return [jq(data, expr.slice(1,-1).trim())];
+  if(expr.startsWith('{') && expr.endsWith('}')) return [buildObj(data, expr)];
+
+  const BUILTINS = {
+    add: d => { if(!Array.isArray(d)) return [null]; if(!d.length) return [null];
+      if(typeof d[0]==='number') return [d.reduce((a,b)=>a+b,0)];
+      if(typeof d[0]==='string') return [d.join('')];
+      if(Array.isArray(d[0])) return [d.flat()]; return [null]; },
+    length: d => { if(d===null) return [0]; if(Array.isArray(d)||typeof d==='string') return [d.length]; if(typeof d==='object') return [Object.keys(d).length]; return [0]; },
+    min: d => [Array.isArray(d)?Math.min(...d):null],
+    max: d => [Array.isArray(d)?Math.max(...d):null],
+    unique: d => { if(!Array.isArray(d)) return [d]; const seen=new Set(); return [[...d].filter(x=>{const k=JSON.stringify(x);return seen.has(k)?false:(seen.add(k),true)})]; },
+    reverse: d => [Array.isArray(d)?[...d].reverse():d],
+    to_entries: d => { if(typeof d==='object'&&!Array.isArray(d)&&d!==null) return [Object.entries(d).map(([k,v])=>({key:k,value:v}))]; return [d]; },
+    from_entries: d => { if(Array.isArray(d)) return [Object.fromEntries(d.map(e=>[e.key,e.value]))]; return [d]; },
+    type: d => [Array.isArray(d)?'array':d===null?'null':typeof d],
+    tostring: d => [typeof d==='string'?d:JSON.stringify(d)],
+    tonumber: d => [Number(d)],
+    floor: d => [Math.floor(d)],
+    ceil: d => [Math.ceil(d)],
+    round: d => [Math.round(d)],
+    not: d => [!d],
+    empty: () => [],
+    '@json': d => [JSON.stringify(d)],
+    '@base64': d => [btoa(JSON.stringify(d))],
+    values: d => { if(typeof d==='object'&&!Array.isArray(d)&&d!==null) return [Object.values(d)]; return [d]; },
+    keys_unsorted: d => { if(typeof d==='object'&&!Array.isArray(d)&&d!==null) return [Object.keys(d)]; return [null]; },
+    ascii_downcase: d => [typeof d==='string'?d.toLowerCase():d],
+    ascii_upcase: d => [typeof d==='string'?d.toUpperCase():d],
+    'null': () => [null],
+    'true': () => [true],
+    'false': () => [false],
+  };
+  if(BUILTINS[expr]) return BUILTINS[expr](data);
+
+  const maxByM = expr.match(/^max_by\((.+)\)$/);
+  if(maxByM && Array.isArray(data)) { const f=maxByM[1]; return [data.reduce((b,item)=>{const v=jq(item,f)[0],bv=jq(b,f)[0];return v>bv?item:b;},data[0])]; }
+  const minByM = expr.match(/^min_by\((.+)\)$/);
+  if(minByM && Array.isArray(data)) { const f=minByM[1]; return [data.reduce((b,item)=>{const v=jq(item,f)[0],bv=jq(b,f)[0];return v<bv?item:b;},data[0])]; }
+  const sortByM = expr.match(/^sort_by\((.+)\)$/);
+  if(sortByM && Array.isArray(data)) { const f=sortByM[1]; return [[...data].sort((a,b)=>{const av=jq(a,f)[0],bv=jq(b,f)[0];return av<bv?-1:av>bv?1:0;})]; }
+  const groupByM = expr.match(/^group_by\((.+)\)$/);
+  if(groupByM && Array.isArray(data)) { const f=groupByM[1]; const g={}; data.forEach(item=>{const k=JSON.stringify(jq(item,f)[0]);(g[k]=g[k]||[]).push(item);}); return [Object.values(g)]; }
+  const mapM = expr.match(/^map\((.+)\)$/);
+  if(mapM && Array.isArray(data)) { return [data.map(item=>jq(item,mapM[1])[0])]; }
+  const mapValM = expr.match(/^map_values\((.+)\)$/);
+  if(mapValM) { if(Array.isArray(data)) return [data.map(item=>jq(item,mapValM[1])[0])]; if(typeof data==='object'&&data!==null){const r={};Object.entries(data).forEach(([k,v])=>{r[k]=jq(v,mapValM[1])[0];});return[r];} return [data]; }
+  const selectM = expr.match(/^select\((.+)\)$/);
+  if(selectM) { try{return evalCond(data,selectM[1])?[data]:[];}catch(e){return[];} }
+  const hasM = expr.match(/^has\("(.+)"\)$/);
+  if(hasM) { return [typeof data==='object'&&data!==null?hasM[1] in data:false]; }
+  const limitM = expr.match(/^limit\((\d+),(.+)\)$/);
+  if(limitM) { return jq(data,limitM[2].trim()).slice(0,+limitM[1]); }
+  const firstM = expr.match(/^first\((.+)\)$/);
+  if(firstM) { const r=jq(data,firstM[1].trim());return r.length?[r[0]]:[]; }
+  const lastM = expr.match(/^last\((.+)\)$/);
+  if(lastM) { const r=jq(data,lastM[1].trim());return r.length?[r[r.length-1]]:[]; }
+
+  // Arithmetic / string concat
+  if(/[+\-*\/]/.test(expr) && !expr.startsWith('.') && !expr.startsWith('"') && !expr.startsWith('[') && !expr.startsWith('{')) {
+    try { return [evalArith(data, expr)]; } catch(e) {}
+  }
+
+  // array[]
+  if(expr.endsWith('[]')) {
+    const base = expr.slice(0,-2);
+    const bv = base===''?data:jq(data,base)[0];
+    if(Array.isArray(bv)) return bv;
+    if(typeof bv==='object'&&bv!==null) return Object.values(bv);
+    return [];
+  }
+
+  // slice
+  const slM = expr.match(/^(.+)\[(\d+):(\d+)\]$/);
+  if(slM) { const arr=jq(data,slM[1])[0]; return [arr.slice(+slM[2],+slM[3])]; }
+  // index
+  const idM = expr.match(/^(.+)\[(-?\d+)\]$/);
+  if(idM) { const arr=jq(data,idM[1])[0],i=+idM[2]; return [i<0?arr[arr.length+i]:arr[i]]; }
+
+  // dot path with arithmetic
+  if(expr.includes('+') || expr.includes('*') || expr.includes(' - ') || expr.includes('/')) {
+    try { return [evalArith(data, expr)]; } catch(e) {}
+  }
+
+  // plain dot path
+  if(expr.startsWith('.')) {
+    const parts = expr.slice(1).split('.');
+    let cur = data;
+    for(const p of parts) {
+      if(p==='') continue;
+      if(cur===null||cur===undefined) return [null];
+      cur = cur[p];
+    }
+    return [cur===undefined?null:cur];
+  }
+
+  if(/^".*"$/.test(expr)) return [expr.slice(1,-1)];
+  if(/^-?\d+(\.\d+)?$/.test(expr)) return [parseFloat(expr)];
+  if(expr==='true') return [true];
+  if(expr==='false') return [false];
+  if(expr==='null') return [null];
+
+  throw new Error(`Unknown filter: ${expr}`);
+}
+
+function findTopPipe(expr) {
+  let depth = 0;
+  for(let i=0;i<expr.length;i++) {
+    const c=expr[i];
+    if('([{'.includes(c)) depth++;
+    else if(')]}'.includes(c)) depth--;
+    else if(c==='|' && depth===0) return i;
+  }
+  return -1;
+}
+
+function buildObj(data, expr) {
+  const inner = expr.slice(1,-1).trim();
+  const fields = splitTopComma(inner);
+  const obj = {};
+  fields.forEach(f => {
+    f = f.trim();
+    const ci = f.indexOf(':');
+    if(ci===-1) { const key=f.replace(/^\.*/, ''); obj[key]=jq(data, '.'+key)[0]; }
+    else {
+      const key = f.slice(0,ci).trim().replace(/^"|"$/g,'');
+      obj[key] = jq(data, f.slice(ci+1).trim())[0];
+    }
+  });
+  return obj;
+}
+
+function splitTopComma(s) {
+  const parts=[];let depth=0;let cur='';
+  for(const c of s){
+    if('([{'.includes(c))depth++;else if(')]}'.includes(c))depth--;
+    if(c===','&&depth===0){parts.push(cur);cur='';}else cur+=c;
+  }
+  if(cur.trim()) parts.push(cur);
+  return parts;
+}
+
+function evalCond(data, cond) {
+  cond = cond.trim();
+  if(cond==='true') return true;
+  if(cond==='false') return false;
+  // type check: (.field | type == "x")
+  const typeM = cond.match(/^\((.+)\s*\|\s*type\s*==\s*"(\w+)"\)$/);
+  if(typeM) { const v=jq(data,typeM[1].trim())[0]; const t=typeM[2]; return (Array.isArray(v)?'array':v===null?'null':typeof v)===t; }
+  // boolean not: (field | not)
+  const notM = cond.match(/^\((.+)\s*\|\s*not\)$/);
+  if(notM) { return !jq(data, notM[1].trim())[0]; }
+  // comparison
+  const cmpM = cond.match(/^(.+?)\s*(==|!=|>=|<=|>|<)\s*(.+)$/);
+  if(cmpM) {
+    let lv=jq(data,cmpM[1].trim())[0];
+    let rv=cmpM[3].trim();
+    if(/^".*"$/.test(rv)) rv=rv.slice(1,-1);
+    else if(rv==='true') rv=true; else if(rv==='false') rv=false;
+    else if(/^-?\d+(\.\d+)?$/.test(rv)) rv=parseFloat(rv);
+    const op=cmpM[2];
+    if(op==='==') return lv==rv; if(op==='!=') return lv!=rv;
+    if(op==='>') return lv>rv; if(op==='<') return lv<rv;
+    if(op==='>=') return lv>=rv; if(op==='<=') return lv<=rv;
+  }
+  // plain path (truthy check)
+  if(cond.startsWith('.')) return !!jq(data,cond)[0];
+  return !!jq(data,cond)[0];
+}
+
+function evalArith(data, expr) {
+  const resolve = s => {
+    s=s.trim();
+    if(/^".*"$/.test(s)) return s.slice(1,-1);
+    if(/^-?\d+(\.\d+)?$/.test(s)) return parseFloat(s);
+    if(s.startsWith('(')&&s.endsWith(')')) return jq(data, s.slice(1,-1).trim())[0];
+    return jq(data, s)[0];
+  };
+  // find top-level operator (right to left for left-assoc)
+  let depth=0;
+  for(let i=expr.length-1;i>=0;i--){
+    const c=expr[i];
+    if(')]}'.includes(c))depth++;else if('([{'.includes(c))depth--;
+    if(depth===0){
+      if(c==='+') return combine(resolve(expr.slice(0,i)), resolve(expr.slice(i+1)), '+');
+      if(c==='-'&&i>0) return combine(resolve(expr.slice(0,i)), resolve(expr.slice(i+1)), '-');
+      if(c==='*') return combine(resolve(expr.slice(0,i)), resolve(expr.slice(i+1)), '*');
+      if(c==='/') return combine(resolve(expr.slice(0,i)), resolve(expr.slice(i+1)), '/');
+    }
+  }
+  return resolve(expr);
+}
+function combine(a,b,op){
+  if(op==='+'){if(typeof a==='string'||typeof b==='string') return String(a)+String(b); return a+b;}
+  if(op==='-') return a-b; if(op==='*') return a*b; if(op==='/') return a/b;
+}
+
+function gatherPaths(obj, path, result) {
+  if(typeof obj!=='object'||obj===null){result.push(path);return;}
+  const keys=Array.isArray(obj)?obj.map((_,i)=>i):Object.keys(obj);
+  keys.forEach(k=>gatherPaths(obj[k],[...path,k],result));
+}
+
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function escJs(s){return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+
+// run identity on load
+runFilter();
+</script>
+</body>
+</html>
