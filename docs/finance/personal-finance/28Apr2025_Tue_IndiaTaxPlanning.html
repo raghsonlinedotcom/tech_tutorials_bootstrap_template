@@ -276,66 +276,15 @@ body {
   font-size: 0.72rem;
   color: var(--green-light);
   overflow-x: auto;
-  line-height: 1.5;
-}
-.ascii-box pre {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: inherit;
-  color: var(--green-light);
-  background: transparent;
-  margin: 0;
-  padding: 0;
-  border: none;
   white-space: pre;
   line-height: 1.5;
 }
-/* Color spans injected by JS — zero layout impact */
-.ac-saffron { color: var(--saffron); }
-.ac-gold    { color: var(--gold); }
-.ac-cyan    { color: var(--accent-cyan); }
-.ac-red     { color: #ff6666; }
-.ac-purple  { color: var(--accent-purple); }
-.ac-white   { color: #e8eaf6; }
-.ac-green   { color: var(--green-light); }
-.ac-dim     { color: var(--text-secondary); }
-
-/* ===== SECTION NAVIGATION ===== */
-.section-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px dashed var(--card-border);
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.section-nav a {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.78rem;
-  text-decoration: none;
-  padding: 0.35rem 0.9rem;
-  border-radius: 20px;
-  border: 1px solid var(--card-border);
-  color: var(--text-secondary);
-  transition: all 0.25s;
-  white-space: nowrap;
-}
-.section-nav a:hover {
-  border-color: var(--saffron);
-  color: var(--saffron);
-  background: rgba(255,102,0,0.07);
-}
-.section-nav .nav-top {
-  border-color: var(--saffron);
-  color: var(--saffron);
-  font-weight: 700;
-}
-.section-nav .nav-top:hover {
-  background: rgba(255,102,0,0.15);
-}
-.section-nav .nav-prev { border-left: 2px solid var(--accent-cyan); }
-.section-nav .nav-next { border-right: 2px solid var(--green-light); }
+.ascii-box .saffron { color: var(--saffron); }
+.ascii-box .gold { color: var(--gold); }
+.ascii-box .cyan { color: var(--accent-cyan); }
+.ascii-box .red { color: #ff6666; }
+.ascii-box .purple { color: var(--accent-purple); }
+.ascii-box .white { color: #fff; }
 
 /* ===== MERMAID ===== */
 .mermaid-wrapper {
@@ -583,7 +532,7 @@ input[type=range]::-webkit-slider-thumb {
 <body>
 
 <!-- ===== HERO ===== -->
-<div class="hero-section" id="top">
+<div class="hero-section">
   <div class="container text-center position-relative">
     <div class="ascii-hero mb-2">
  ██████╗ ███████╗    ██╗  ██╗ ██████╗ ██████╗  ███████╗    ████████╗ █████╗ ██╗  ██╗
@@ -659,12 +608,6 @@ input[type=range]::-webkit-slider-thumb {
         <div style="font-size:0.8rem;color:var(--text-secondary)">On total tax + surcharge</div>
       </div>
     </div>
-  </div>
-
-  <div class="section-nav">
-    <span></span>
-    <a href="#top" class="nav-top">&#8679; Back to Top</a>
-    <a href="#slabs" class="nav-next">📊 Slabs &#8594;</a>
   </div>
 </div>
 
@@ -754,69 +697,60 @@ input[type=range]::-webkit-slider-thumb {
     </table>
     <div class="mt-2" style="font-size:0.82rem;color:var(--text-secondary)">💡 + 4% Health & Education Cess on (Tax + Surcharge). Marginal relief applicable near surcharge thresholds.</div>
   </div>
-
-  <div class="section-nav">
-    <a href="#quick-stats" class="nav-prev">&#8592; ⚡ At a Glance</a>
-    <a href="#top" class="nav-top">&#8679; Back to Top</a>
-    <a href="#taxflow" class="nav-next">⚖️ Regimes &#8594;</a>
-  </div>
 </div>
 
 <!-- ===== ASCII TAX FLOW ===== -->
-<div class="section-block" id="taxflow">
+<div class="section-block">
   <div class="section-title"><span class="section-icon">🔄</span>HOW YOUR TAX IS COMPUTED</div>
-  <div class="ascii-box"><pre class="asc" id="asc_taxflow">[[white|  GROSS SALARY / TOTAL INCOME                                   ]]
-[[saffron|         │                                                             ]]
-[[saffron|         ▼                                                             ]]
-[[cyan|  ┌─────────────────────────────────────────────────────────────┐]]
-[[cyan|  │]] [[gold|STEP 1:]] Subtract Exemptions (HRA, LTA, Leave Encashment)  [[cyan|│]]
-[[cyan|  │]]         [Only in OLD REGIME — Not allowed in NEW REGIME]   [[cyan|│]]
-[[cyan|  └─────────────────────────────────────────────────────────────┘]]
-[[saffron|         │                                                             ]]
-[[saffron|         ▼                                                             ]]
-[[cyan|  ┌─────────────────────────────────────────────────────────────┐]]
-[[cyan|  │]] [[gold|STEP 2:]] Standard Deduction                                [[cyan|│]]
-[[cyan|  │]]         OLD REGIME: Rs.50,000  |  NEW REGIME: Rs.75,000    [[cyan|│]]
-[[cyan|  └─────────────────────────────────────────────────────────────┘]]
-[[saffron|         │                                                             ]]
-[[saffron|         ▼                                                             ]]
-[[cyan|  ┌─────────────────────────────────────────────────────────────┐]]
-[[cyan|  │]] [[gold|STEP 3:]] Chapter VI-A Deductions                           [[cyan|│]]
-[[cyan|  │]]         [80C max Rs.1.5L + 80D + 80CCD(1B) + 24(b) etc.]  [[cyan|│]]
-[[cyan|  │]]         X NOT ALLOWED in New Regime (except 80CCD emp)    [[cyan|│]]
-[[cyan|  └─────────────────────────────────────────────────────────────┘]]
-[[saffron|         │                                                             ]]
-[[saffron|         ▼                                                             ]]
-[[white|      NET TAXABLE INCOME                                          ]]
-[[saffron|         │                                                             ]]
-[[saffron|         ▼                                                             ]]
-[[cyan|  ┌─────────────────────────────────────────────────────────────┐]]
-[[cyan|  │]] [[gold|STEP 4:]] Apply Slab Rates → Compute Raw Tax                [[cyan|│]]
-[[cyan|  └─────────────────────────────────────────────────────────────┘]]
-[[saffron|         │                                                             ]]
-[[saffron|         ▼                                                             ]]
-[[cyan|  ┌─────────────────────────────────────────────────────────────┐]]
-[[cyan|  │]] [[gold|STEP 5:]] Sec 87A Rebate                                    [[cyan|│]]
-[[cyan|  │]]         OLD: Rs.12,500 if income <= Rs.5L                  [[cyan|│]]
-[[cyan|  │]]         NEW: Rs.60,000 if income <= Rs.12L                 [[cyan|│]]
-[[cyan|  └─────────────────────────────────────────────────────────────┘]]
-[[saffron|         │                                                             ]]
-[[saffron|         ▼                                                             ]]
-[[cyan|  ┌─────────────────────────────────────────────────────────────┐]]
-[[cyan|  │]] [[gold|STEP 6:]] Add Surcharge (if income > Rs.50L)                [[cyan|│]]
-[[cyan|  └─────────────────────────────────────────────────────────────┘]]
-[[saffron|         │                                                             ]]
-[[saffron|         ▼                                                             ]]
-[[cyan|  ┌─────────────────────────────────────────────────────────────┐]]
-[[cyan|  │]] [[gold|STEP 7:]] Add 4% Health & Education Cess                    [[cyan|│]]
-[[cyan|  └─────────────────────────────────────────────────────────────┘]]
-[[saffron|         │                                                             ]]
-[[saffron|         ▼                                                             ]]
-[[white|  GROSS TAX PAYABLE — Minus TDS/TCS/Advance Tax = NET TAX DUE  ]]</pre></div>
-  <div class="section-nav">
-    <a href="#slabs" class="nav-prev">← 📊 Slabs</a>
-    <a href="#top" class="nav-top">⬆ Back to Top</a>
-    <a href="#regimes" class="nav-next">⚖️ Regimes →</a>
+  <div class="ascii-box">
+<span class="white">  GROSS SALARY / TOTAL INCOME</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 1:</span> Subtract Exemptions (HRA, LTA, Leave Encashment)       <span class="cyan">│</span>
+  <span class="cyan">│</span>          [Only in OLD REGIME — Not allowed in NEW REGIME]       <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 2:</span> Standard Deduction                                     <span class="cyan">│</span>
+  <span class="cyan">│</span>          OLD REGIME: ₹50,000  │  NEW REGIME: ₹75,000           <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 3:</span> Chapter VI-A Deductions                               <span class="cyan">│</span>
+  <span class="cyan">│</span>          [80C max ₹1.5L + 80D + 80CCD(1B) + 24(b) etc.]       <span class="cyan">│</span>
+  <span class="cyan">│</span>          ❌ NOT ALLOWED in New Regime (except 80CCD emp)       <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="white">    NET TAXABLE INCOME</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 4:</span> Apply Slab Rates → Compute Raw Tax                    <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 5:</span> Sec 87A Rebate                                         <span class="cyan">│</span>
+  <span class="cyan">│</span>          OLD: ₹12,500 if income ≤ ₹5L                           <span class="cyan">│</span>
+  <span class="cyan">│</span>          NEW: ₹60,000 if income ≤ ₹12L                          <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 6:</span> Add Surcharge (if income &gt; ₹50L)                      <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 7:</span> Add 4% Health &amp; Education Cess                        <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="white">  GROSS TAX PAYABLE — Minus TDS/TCS/Advance Tax = NET TAX DUE</span>
   </div>
 </div>
 
@@ -877,12 +811,6 @@ input[type=range]::-webkit-slider-thumb {
       <tr><td style="color:var(--gold)">Old Regime Saves</td><td colspan="2" style="color:var(--gold);font-weight:700">₹20,670 MORE saved with Old Regime (if you make these investments)</td></tr>
     </tbody>
   </table>
-
-  <div class="section-nav">
-    <a href="#taxflow" class="nav-prev">&#8592; 🔄 Tax Flow</a>
-    <a href="#top" class="nav-top">&#8679; Back to Top</a>
-    <a href="#fbp" class="nav-next">🏢 FBP &#8594;</a>
-  </div>
 </div>
 
 <!-- ===== FBP ===== -->
@@ -964,12 +892,6 @@ input[type=range]::-webkit-slider-thumb {
       </div>
     </div>
   </div>
-
-  <div class="section-nav">
-    <a href="#regimes" class="nav-prev">&#8592; ⚖️ Regimes</a>
-    <a href="#top" class="nav-top">&#8679; Back to Top</a>
-    <a href="#investments" class="nav-next">💰 Investments &#8594;</a>
-  </div>
 </div>
 
 <!-- ===== INVESTMENT OPTIONS ===== -->
@@ -1005,13 +927,14 @@ input[type=range]::-webkit-slider-thumb {
               </div>
             </div>
             <div class="col-12">
-              <div class="ascii-box" style="font-size:0.68rem"><pre class="asc">[[gold|EXAMPLE: Basic Salary = Rs.50,000/month                                   ]]
-[[white|Employee PF  = 12% x Rs.50,000 = Rs.6,000/month  -> Rs.72,000/year (80C) ]]
-[[green|Employer PF  = 12% x Rs.50,000 = Rs.6,000/month  -> FREE! (EPS+PF split) ]]
-[[cyan|Annual Corpus Growth @ 8.25%:                                              ]]
-  Year 1:  Rs.1,44,000 contributed  ->  Corpus Rs.1,55,940
-  Year 5:  Total corpus approx      ->  Rs.8,60,000 (emp+employer)
-  Year 20: Total corpus approx      ->  Rs.72,00,000+ (compounded)</pre></div>
+              <div class="ascii-box" style="font-size:0.68rem">
+<span class="gold">EXAMPLE: Basic Salary = ₹50,000/month</span>
+<span class="white">Employee PF  = 12% × ₹50,000 = ₹6,000/month  → ₹72,000/year (goes to 80C)</span>
+<span class="green">Employer PF  = 12% × ₹50,000 = ₹6,000/month  → FREE! (₹3,67/mo to EPS + rest to PF)</span>
+<span class="cyan">Annual Corpus Growth @ 8.25%:</span>
+  Year 1:  ₹1,44,000 contributed → ₹1,55,940
+  Year 5:  Total corpus ≈ ₹8,60,000 (employee + employer, compounded)
+  Year 20: Total corpus ≈ ₹72,00,000+ (at 8.25% compounding)</div>
             </div>
           </div>
         </div>
@@ -1074,12 +997,13 @@ input[type=range]::-webkit-slider-thumb {
               </div>
             </div>
             <div class="col-12">
-              <div class="ascii-box" style="font-size:0.68rem"><pre class="asc">[[gold|PPF POWER: Rs.1,50,000/year for 15 years @ 7.1%           ]]
-  Year 5:   Corpus approx  ->  Rs. 8,80,000
-  Year 10:  Corpus approx  ->  Rs.21,00,000
-  Year 15:  Corpus approx  ->  Rs.40,68,000  [[green|<- ENTIRELY TAX-FREE!]]
-  Year 20:  Corpus approx  ->  Rs.66,58,000  (5 yr extension)
-  Year 25:  Corpus approx  ->  Rs.1,03,08,000 (10 yr extension)</pre></div>
+              <div class="ascii-box" style="font-size:0.68rem">
+<span class="gold">PPF POWER: ₹1,50,000/year for 15 years @ 7.1%</span>
+  Year 5:   Corpus ≈ ₹8,80,000
+  Year 10:  Corpus ≈ ₹21,00,000
+  Year 15:  Corpus ≈ ₹40,68,000  ← <span class="green">ENTIRELY TAX-FREE!</span>
+  Year 20:  Corpus ≈ ₹66,58,000  (extended for 5 more years)
+  Year 25:  Corpus ≈ ₹1,03,08,000 (10 years extension)</div>
             </div>
           </div>
         </div>
@@ -1117,12 +1041,13 @@ input[type=range]::-webkit-slider-thumb {
               </div>
             </div>
             <div class="col-12">
-              <div class="ascii-box" style="font-size:0.68rem"><pre class="asc">[[gold|NPS TAX SAVING POWER (Old Regime, Rs.15L salary, 30% bracket):]]
-  80C contribution (Rs.1.5L)        Tax saved  =  Rs.46,800
-  80CCD(1B) extra (Rs.50,000)       Tax saved  =  Rs.15,600  [[green|<- BONUS!]]
-  Employer NPS 10% of Basic         Tax saved  =  Rs.18,720  [[cyan|<- New Regime OK!]]
-  ─────────────────────────────────────────────────────────────────
-  TOTAL NPS TAX BENEFIT          ->  [[saffron|Rs.81,120 per year!]]</pre></div>
+              <div class="ascii-box" style="font-size:0.68rem">
+<span class="gold">NPS TAX SAVING POWER (Old Regime, ₹15L salary, 30% bracket):</span>
+  80C contribution (₹1.5L)     → Tax saved = ₹46,800
+  80CCD(1B) extra (₹50,000)   → Tax saved = ₹15,600 <span class="green">← BONUS SAVING!</span>
+  Employer NPS 10% of Basic    → Tax saved = ₹18,720 <span class="cyan">← Works in New Regime too!</span>
+  ─────────────────────────────────────────────────────
+  TOTAL NPS TAX BENEFIT        → <span class="saffron">₹81,120 per year!</span></div>
             </div>
           </div>
         </div>
@@ -1256,12 +1181,6 @@ input[type=range]::-webkit-slider-thumb {
     </div>
 
   </div><!-- end accordion -->
-
-  <div class="section-nav">
-    <a href="#fbp" class="nav-prev">&#8592; 🏢 FBP</a>
-    <a href="#top" class="nav-top">&#8679; Back to Top</a>
-    <a href="#80c" class="nav-next">📋 Sections &#8594;</a>
-  </div>
 </div>
 
 <!-- ===== SECTION 80C, 80D, etc. ===== -->
@@ -1372,61 +1291,51 @@ input[type=range]::-webkit-slider-thumb {
       </div>
     </div>
   </div>
-
-  <div class="section-nav">
-    <a href="#investments" class="nav-prev">&#8592; 💰 Investments</a>
-    <a href="#top" class="nav-top">&#8679; Back to Top</a>
-    <a href="#worksheet" class="nav-next">🎯 Worksheet &#8594;</a>
-  </div>
 </div>
 
 <!-- ===== MAX TAX SAVING SUMMARY ===== -->
-<div class="section-block" id="worksheet">
+<div class="section-block">
   <div class="section-title"><span class="section-icon">🎯</span>MAXIMUM TAX SAVING WORKSHEET (OLD REGIME)</div>
-  <div class="ascii-box"><pre class="asc">[[gold|═══════════════════════════════════════════════════════════════════════════]]
-[[white|   ANNUAL MAXIMUM DEDUCTION PLANNING SHEET — OLD REGIME                 ]]
-[[gold|═══════════════════════════════════════════════════════════════════════════]]
+  <div class="ascii-box">
+<span class="gold">═══════════════════════════════════════════════════════════════════════════════</span>
+<span class="white">   ANNUAL MAXIMUM DEDUCTION PLANNING SHEET — OLD REGIME</span>
+<span class="gold">═══════════════════════════════════════════════════════════════════════════════</span>
 
-[[cyan|SECTION 80C (CAP: Rs.1,50,000)                                           ]]
-  EPF (auto-deducted, 12% of Basic)          Rs. 72,000  [Basic=Rs.50K/mo]
-  VPF (additional voluntary contribution)    Rs. 28,000
-  ELSS SIP                                   Rs. 50,000
-  ─────────────────────────────────────────────────────────────────────────
-  80C Total -> Max                           [[saffron|Rs.1,50,000]]
+<span class="cyan">SECTION 80C (CAP: ₹1,50,000)</span>
+  EPF (auto-deducted, 12% of Basic)             ₹72,000  [Basic=₹50K/mo]
+  VPF (additional voluntary contribution)        ₹28,000
+  ELSS SIP                                       ₹50,000
+  ──────────────────────────────────────────────────────────
+  80C Total → Max                               <span class="saffron">₹1,50,000</span>
 
-[[cyan|NPS ADDITIONAL (80CCD 1B) — BONUS OVER 80C                              ]]
-  NPS over and above 80C                     [[green|Rs.  50,000   <- BONUS!]]
+<span class="cyan">NPS ADDITIONAL (80CCD 1B)</span>
+  NPS over and above 80C                         <span class="green">₹50,000</span>   ← BONUS!
 
-[[cyan|NPS EMPLOYER (80CCD 2) — works in NEW REGIME TOO!                       ]]
-  Employer NPS = 10% of Basic = 10% x Rs.6L [[green|Rs.  60,000   <- BONUS!]]
+<span class="cyan">NPS EMPLOYER (80CCD 2) — works in NEW REGIME TOO!</span>
+  Employer NPS = 10% of Basic = 10% × ₹6L        <span class="green">₹60,000</span>   ← BONUS!
 
-[[cyan|SECTION 80D — HEALTH INSURANCE                                           ]]
-  Self + Spouse + Kids (family floater)      Rs. 25,000
-  Parents (senior citizens 60+)              Rs. 50,000
-  ─────────────────────────────────────────────────────────────────────────
-  80D Total                                  [[purple|Rs.  75,000]]
+<span class="cyan">SECTION 80D — HEALTH INSURANCE</span>
+  Self + Spouse + Kids (family floater)          ₹25,000
+  Parents (senior citizens 60+)                  ₹50,000
+  ──────────────────────────────────────────────────────────
+  80D Total                                     <span class="purple">₹75,000</span>
 
-[[cyan|SECTION 24(B) — HOME LOAN INTEREST                                       ]]
-  Home loan interest (self-occupied)         [[cyan|Rs.2,00,000]]
+<span class="cyan">SECTION 24(B) — HOME LOAN INTEREST</span>
+  Home loan interest (self-occupied)            <span class="cyan">₹2,00,000</span>
 
-[[cyan|STANDARD DEDUCTION                                                        ]]
-  Salaried / Pensioners                      [[gold|Rs.  50,000]]
+<span class="cyan">STANDARD DEDUCTION</span>
+  Salaried / Pensioners                          <span class="gold">₹50,000</span>
 
-[[cyan|HRA EXEMPTION (paying rent Rs.20K/month, Bangalore metro)               ]]
-  Approx exemption                           [[gold|Rs.1,80,000]]
+<span class="cyan">HRA EXEMPTION (if paying rent in Bangalore metro)</span>
+  Approx exemption on ₹20K/month rent           <span class="gold">₹1,80,000</span>
 
-[[gold|═══════════════════════════════════════════════════════════════════════════]]
-[[white|  TOTAL DEDUCTIONS                             ]][[saffron|Rs.7,65,000]]
-[[white|  On Rs.15L salary -> Taxable = 15L - 7.65L = ]][[green|Rs.7,35,000]]
-[[white|  Tax @ Old Regime (after 87A) approx         ]][[green|Rs.  57,200]] [[gold|(incl. cess)]]
-[[white|  vs New Regime Tax approx                    ]][[saffron|Rs.1,42,350]]
-[[white|  YOU SAVE                                     ]][[green|Rs.85,150 more with OLD REGIME!]]
-[[gold|═══════════════════════════════════════════════════════════════════════════]]</pre></div>
-  <div class="section-nav">
-    <a href="#80c" class="nav-prev">← 📋 Sections</a>
-    <a href="#top" class="nav-top">⬆ Back to Top</a>
-    <a href="#penalties" class="nav-next">⚠️ Penalties →</a>
-  </div>
+<span class="gold">════════════════════════════════════════════════════════════</span>
+<span class="white">  TOTAL DEDUCTIONS                              </span><span class="saffron">₹7,65,000</span>
+<span class="white">  On ₹15L salary → Taxable = ₹15L - ₹7.65L = </span><span class="green">₹7,35,000</span>
+<span class="white">  Tax @ Old Regime (after 87A) ≈               </span><span class="green">₹57,200</span> <span class="gold">(incl. cess)</span>
+<span class="white">  vs New Regime Tax ≈                          </span><span class="saffron">₹1,42,350</span>
+<span class="white">  YOU SAVE                                      </span><span class="green">₹85,150 more with OLD REGIME!</span>
+<span class="gold">════════════════════════════════════════════════════════════</span>  </div>
 </div>
 
 <!-- ===== SELF TAX / ADVANCE TAX ===== -->
@@ -1535,12 +1444,6 @@ input[type=range]::-webkit-slider-thumb {
       <div class="timeline-item"><div style="color:var(--green-light);font-weight:700">July 31 — ITR Filing Due Date</div><div style="font-size:0.85rem;color:var(--text-secondary)">File ITR by this date. Pay Self-Assessment Tax. Missing this = 234A interest + 234F penalty!</div></div>
     </div>
   </div>
-
-  <div class="section-nav">
-    <a href="#worksheet" class="nav-prev">&#8592; 🎯 Worksheet</a>
-    <a href="#top" class="nav-top">&#8679; Back to Top</a>
-    <a href="#simulator" class="nav-next">🧮 Simulator &#8594;</a>
-  </div>
 </div>
 
 <!-- ===== TAX SIMULATOR ===== -->
@@ -1617,12 +1520,6 @@ input[type=range]::-webkit-slider-thumb {
         <canvas id="taxChart" style="display:none;max-height:220px"></canvas>
       </div>
     </div>
-  </div>
-
-  <div class="section-nav">
-    <a href="#penalties" class="nav-prev">&#8592; ⚠️ Penalties</a>
-    <a href="#top" class="nav-top">&#8679; Back to Top</a>
-    <a href="#personas" class="nav-next">👤 Personas &#8594;</a>
   </div>
 </div>
 
@@ -1702,16 +1599,10 @@ input[type=range]::-webkit-slider-thumb {
     </div>
 
   </div>
-
-  <div class="section-nav">
-    <a href="#simulator" class="nav-prev">&#8592; 🧮 Simulator</a>
-    <a href="#top" class="nav-top">&#8679; Back to Top</a>
-    <a href="#flowchart" class="nav-next">🗺️ Flowchart &#8594;</a>
-  </div>
 </div>
 
 <!-- ===== MERMAID DIAGRAM ===== -->
-<div class="section-block" id="flowchart">
+<div class="section-block">
   <div class="section-title"><span class="section-icon">🗺️</span>REGIME DECISION FLOWCHART</div>
   <div class="mermaid-wrapper">
     <pre class="mermaid">
@@ -1739,56 +1630,43 @@ flowchart TD
     style M fill:#f4c430,color:#000,stroke:#f4c430
     </pre>
   </div>
-  <div class="section-nav">
-    <a href="#personas" class="nav-prev">&#8592; 👤 Personas</a>
-    <a href="#top" class="nav-top">&#8679; Back to Top</a>
-    <a href="#spectrum" class="nav-next">📐 Spectrum &#8594;</a>
-  </div>
 </div>
-<div class="section-block" id="spectrum">
+
+<!-- ===== INVESTMENT SPECTRUM ===== -->
+<div class="section-block">
   <div class="section-title"><span class="section-icon">📐</span>RISK-RETURN SPECTRUM OF TAX-SAVING INSTRUMENTS</div>
-  <div class="ascii-box"><pre class="asc">[[white|RISK                                                                  ]]
-[[red| HIGH  |  ELSS (12-15% avg)        <- Best wealth creator in 80C    ]]
-[[red|       |                                                              ]]
-[[gold| MED   |  NPS  (10-12% avg)        <- Great for long-term pension   ]]
-[[gold|       |  ULIP (8-12%)             <- Insurance + Investment         ]]
-[[gold|       |                                                              ]]
-[[cyan| LOW   |  SSY  (8.2%)              <- Best fixed rate in India!      ]]
-[[cyan|       |  EPF/VPF (8.25%)          <- Employer match + guarantee     ]]
-[[cyan|       |  PPF  (7.1%)              <- Sovereign, EEE, 15yr lock      ]]
-[[cyan|       |  Tax Saver FD (7-7.5%)    <- Bank FD, 5yr lock              ]]
-[[green|       |  NSC  (7.7%)              <- Post office, 5yr               ]]
-[[green| ZERO  |  Life Insurance Premium   <- Pure risk cover (term plan)    ]]
-[[saffron|       +─────────────────────────────────────────────────────────── ]]
-[[saffron|                                                             RETURN  ]]
-[[gold|                   LOW ────────────────────────────── HIGH             ]]
+  <div class="ascii-box">
+<span class="white">RISK</span>
+  <span class="red">HIGH │  ELSS (12-15% avg)     ← Best wealth creator in 80C</span>
+       <span class="red">│</span>
+  <span class="gold">MED  │  NPS (10-12% avg)      ← Great for long-term pension</span>
+       <span class="gold">│  ULIP (8-12%)          ← Insurance + Investment</span>
+       <span class="gold">│</span>
+  <span class="cyan">LOW  │  SSY (8.2%)            ← Best fixed rate!</span>
+       <span class="cyan">│  EPF/VPF (8.25%)       ← Employer match + guarantee</span>
+       <span class="cyan">│  PPF (7.1%)            ← Sovereign, EEE, 15yr</span>
+       <span class="cyan">│  Tax Saver FD (7-7.5%) ← Bank FD, 5yr lock</span>
+       <span class="green">│  NSC (7.7%)            ← Post office, 5yr</span>
+ <span class="slab-nil">ZERO │  Life Insurance Premium ← Pure risk cover (term)</span>
+       <span class="saffron">└─────────────────────────────────────────────────────────</span>
+                                                            <span class="white">RETURN</span>
+                           <span class="gold">LOW ──────────────────────── HIGH</span>
 
-[[white|LIQUIDITY SPECTRUM:                                                   ]]
-[[green|  ELSS]] (3yr lock)  [[cyan|PPF]] (partial from yr7)  [[purple|NPS]] (till 60)  [[red|EPF]] (retirement)
-[[green|  <---- More Liquid                                       Less Liquid ---->]]
+<span class="white">LIQUIDITY:</span>
+  <span class="green">ELSS</span> (3yr)  <span class="cyan">PPF</span> (7yr partial)  <span class="purple">NPS</span> (till 60)  <span class="red">EPF</span> (till retirement)
+  <span class="green">◄──── More Liquid                                    Less Liquid ────►</span>
 
-[[gold|TAX TREATMENT:                                                        ]]
-[[green|  EEE : PPF, EPF, SSY, ELSS* — all 3 stages tax-free                ]]
-[[cyan|  EET : NPS — 40% lump-sum exempt; 60% annuity is taxable income     ]]
-[[saffron|  EEX : NSC, Tax Saver FD — maturity interest is taxable             ]]
-  (* ELSS LTCG above Rs.1.25L per year is taxed at 12.5%)</pre></div>
-  <div class="section-nav">
-    <a href="#personas" class="nav-prev">← 👤 Personas</a>
-    <a href="#top" class="nav-top">⬆ Back to Top</a>
-    <a href="#chart" class="nav-next">📈 Tax Chart →</a>
-  </div>
+<span class="gold">TAX STATUS:</span>
+  <span class="green">EEE: PPF, EPF, SSY, ELSS (LTCG > ₹1.25L taxed)</span>
+  <span class="cyan">EET: NPS (40% lump-sum exempt, 60% annuity taxed)</span>
+  <span class="saffron">EEX: NSC, Tax Saver FD (maturity taxable)</span>  </div>
 </div>
 
 <!-- ===== CHART ===== -->
-<div class="section-block" id="chart">
+<div class="section-block">
   <div class="section-title"><span class="section-icon">📈</span>TAX OUTGO BY INCOME (NEW vs OLD REGIME)</div>
   <div class="tax-card" style="padding:1.5rem">
     <canvas id="regimeChart" style="max-height:350px"></canvas>
-  </div>
-  <div class="section-nav">
-    <a href="#spectrum" class="nav-prev">← 📐 Spectrum</a>
-    <a href="#top" class="nav-top">⬆ Back to Top</a>
-    <a href="#quick-stats" class="nav-next">⚡ At a Glance →</a>
   </div>
 </div>
 
@@ -2030,53 +1908,11 @@ function calculateTax() {
   });
 })();
 
-// ===== ASCII COLORIZER =====
-// Replaces [[colorname|text]] markers inside .asc pre blocks
-// Color map keys must match ac-* CSS classes
-const colorMap = {
-  saffron: 'ac-saffron', gold: 'ac-gold', cyan: 'ac-cyan',
-  red: 'ac-red', purple: 'ac-purple', white: 'ac-white',
-  green: 'ac-green', dim: 'ac-dim'
-};
-document.querySelectorAll('pre.asc').forEach(pre => {
-  // Get raw text (already in pre, so HTML-encoded)
-  let html = pre.innerHTML;
-  // Replace [[color|...]] with <span class="ac-color">...</span>
-  html = html.replace(/\[\[(\w+)\|([\s\S]*?)\]\]/g, (match, color, text) => {
-    const cls = colorMap[color] || 'ac-white';
-    return `<span class="${cls}">${text}</span>`;
-  });
-  pre.innerHTML = html;
-});
-
-// ===== ACTIVE NAV HIGHLIGHTING =====
-const sectionIds = ['quick-stats','slabs','taxflow','regimes','fbp','investments','80c','worksheet','penalties','simulator','personas','flowchart','spectrum','chart'];
-const navLinks = document.querySelectorAll('.navbar-custom .nav-link');
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const id = entry.target.id;
-      navLinks.forEach(a => {
-        const href = a.getAttribute('href');
-        a.classList.toggle('active', href === '#' + id);
-      });
-    }
-  });
-}, { threshold: 0.15 });
-
-sectionIds.forEach(id => {
-  const el = document.getElementById(id);
-  if (el) observer.observe(el);
-});
-
 // Smooth scroll for nav links
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();
-    const target = a.getAttribute('href');
-    if (target === '#') return;
-    const el = document.querySelector(target);
+    const el = document.querySelector(a.getAttribute('href'));
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
