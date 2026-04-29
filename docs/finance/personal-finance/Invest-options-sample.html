@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chennai ₹20L Portfolio Guide — Beginner's Blueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+<style>
+/* ══════════════════════════════════════════
+   TOKENS & THEME
+══════════════════════════════════════════ */
+:root {
+  --ink:     #0f1117;
+  --ink2:    #1a1f2e;
+  --ink3:    #242b3d;
+  --card:    #1e2538;
+  --border:  #2d3650;
+  --txt:     #d8ddf0;
+  --txt2:    #8892b0;
+  --saffron: #f97316;
+  --amber:   #f59e0b;
+  --teal:    #06b6d4;
+  --emerald: #10b981;
+  --rose:    #f43f5e;
+  --violet:  #8b5cf6;
+  --sky:     #38bdf8;
+  --gold:    #fbbf24;
+  --r: 1rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--txt);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ink2); }
+::-webkit-scrollbar-thumb { background: var(--saffron); border-radius: 3px; }
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+.hero {
+  background: var(--ink2);
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 0 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 10% 50%, rgba(249,115,22,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 90% 30%, rgba(6,182,212,.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.hero-ascii {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.42rem;
+  line-height: 1.15;
+  color: var(--saffron);
+  white-space: pre;
+  text-shadow: 0 0 18px rgba(249,115,22,.55);
+  animation: pulse 4s ease-in-out infinite;
+  letter-spacing: 0;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; text-shadow: 0 0 18px rgba(249,115,22,.55); }
+  50% { opacity: .85; text-shadow: 0 0 36px rgba(249,115,22,.9); }
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  background: rgba(249,115,22,.12);
+  border: 1px solid rgba(249,115,22,.35);
+  color: var(--saffron);
+  font-family: 'DM Mono', monospace;
+  font-size: .72rem; font-weight: 500;
+  padding: .28rem .85rem;
+  border-radius: 50px;
+  letter-spacing: .08em;
+}
+.hero-badge.teal { background: rgba(6,182,212,.1); border-color: rgba(6,182,212,.35); color: var(--teal); }
+.hero-badge.green { background: rgba(16,185,129,.1); border-color: rgba(16,185,129,.35); color: var(--emerald); }
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: #fff;
+}
+.hero-title span { color: var(--saffron); }
+
+.hero-sub { color: var(--txt2); font-size: 1rem; max-width: 560px; }
+
+/* ══════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════ */
+.topnav {
+  position: sticky; top: 0; z-index: 999;
+  background: rgba(15,17,23,.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: .5rem 0;
+}
+.topnav-inner {
+  display: flex; flex-wrap: wrap; gap: .25rem;
+  align-items: center;
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 1rem;
+}
+.topnav-brand {
+  font-family: 'DM Mono', monospace;
+  font-size: .8rem; font-weight: 500;
+  color: var(--saffron);
+  margin-right: .75rem;
+  white-space: nowrap;
+}
+.topnav a {
+  font-size: .75rem; font-weight: 500;
+  color: var(--txt2);
+  text-decoration: none;
+  padding: .3rem .7rem;
+  border-radius: 6px;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.topnav a:hover, .topnav a.active {
+  color: var(--saffron);
+  background: rgba(249,115,22,.1);
+}
+
+/* ══════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════ */
+.page { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+
+.sec {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.sec-head {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.35rem; font-weight: 800;
+  letter-spacing: -.01em;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: .6rem;
+}
+.sec-head::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* ══════════════════════════════════════════
+   STAT TILES
+══════════════════════════════════════════ */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: .75rem;
+  margin-bottom: 1.5rem;
+}
+.stat-tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+}
+.stat-tile:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
+.stat-tile::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.st-saffron::before { background: linear-gradient(90deg, var(--saffron), var(--amber)); }
+.st-teal::before   { background: linear-gradient(90deg, var(--teal), var(--sky)); }
+.st-green::before  { background: linear-gradient(90deg, var(--emerald), #34d399); }
+.st-violet::before { background: linear-gradient(90deg, var(--violet), #a78bfa); }
+.st-rose::before   { background: linear-gradient(90deg, var(--rose), #fb7185); }
+.st-gold::before   { background: linear-gradient(90deg, var(--gold), var(--amber)); }
+
+.stat-lbl  { font-size: .7rem; text-transform: uppercase; letter-spacing: .12em; color: var(--txt2); margin-bottom: .2rem; }
+.stat-val  { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: #fff; line-height: 1.1; }
+.stat-note { font-size: .72rem; color: var(--txt2); margin-top: .2rem; }
+
+/* ══════════════════════════════════════════
+   CARDS
+══════════════════════════════════════════ */
+.card-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.4rem;
+  height: 100%;
+  color: var(--txt);
+}
+.card-box * { color: var(--txt); }
+.card-box h6 {
+  font-family: 'Syne', sans-serif;
+  font-size: .8rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .1em;
+  margin-bottom: .8rem;
+}
+
+/* ══════════════════════════════════════════
+   TABLES
+══════════════════════════════════════════ */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+}
+.data-table thead th {
+  background: rgba(249,115,22,.1);
+  color: var(--amber);
+  font-family: 'DM Mono', monospace;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  padding: .65rem 1rem;
+  border-bottom: 1px solid rgba(249,115,22,.3);
+  text-align: left;
+}
+.data-table tbody td {
+  padding: .65rem 1rem;
+  border-bottom: 1px solid rgba(45,54,80,.6);
+  color: var(--txt);
+  vertical-align: middle;
+}
+.data-table tbody tr:hover td { background: rgba(255,255,255,.03); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+
+/* ══════════════════════════════════════════
+   PRE / ASCII
+══════════════════════════════════════════ */
+.mono-block {
+  background: #07090f;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+  font-family: 'DM Mono', monospace;
+  font-size: .72rem;
+  line-height: 1.65;
+  color: var(--emerald);
+  overflow-x: auto;
+}
+.mono-block pre {
+  margin: 0; background: transparent; border: none;
+  font-family: inherit; font-size: inherit;
+  color: inherit; white-space: pre;
+}
+/* color tokens */
+.mc-or { color: var(--saffron); }
+.mc-am { color: var(--amber); }
+.mc-te { color: var(--teal); }
+.mc-em { color: var(--emerald); }
+.mc-wh { color: #e2e8f0; }
+.mc-dm { color: var(--txt2); }
+.mc-ro { color: var(--rose); }
+.mc-vi { color: var(--violet); }
+.mc-go { color: var(--gold); }
+
+/* ══════════════════════════════════════════
+   BUDGET ROW
+══════════════════════════════════════════ */
+.bud-row {
+  display: flex; align-items: center;
+  padding: .7rem 1rem;
+  border-bottom: 1px solid rgba(45,54,80,.5);
+  gap: .75rem;
+  font-size: .9rem;
+  color: var(--txt);
+}
+.bud-row:last-child { border-bottom: none; }
+.bud-icon { font-size: 1.3rem; flex-shrink: 0; width: 2rem; text-align: center; }
+.bud-label { flex: 1; }
+.bud-amount { font-family: 'DM Mono', monospace; font-size: .88rem; color: var(--amber); flex-shrink: 0; }
+.bud-bar-wrap { width: 80px; flex-shrink: 0; }
+.bud-bar { height: 5px; border-radius: 3px; background: rgba(45,54,80,.8); overflow: hidden; }
+.bud-fill { height: 100%; border-radius: 3px; }
+
+/* ══════════════════════════════════════════
+   INVEST CARD
+══════════════════════════════════════════ */
+.inv-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform .25s, box-shadow .25s;
+  height: 100%;
+}
+.inv-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.4); }
+.inv-card-top {
+  padding: 1.1rem 1.3rem .9rem;
+  border-bottom: 1px solid var(--border);
+}
+.inv-card-top .inv-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem; font-weight: 700;
+  color: #fff;
+}
+.inv-card-top .inv-sub { font-size: .78rem; color: var(--txt2); }
+.inv-card-body { padding: 1rem 1.3rem; font-size: .88rem; color: var(--txt); }
+.inv-card-body strong { color: var(--amber); }
+
+.inv-meta {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+  margin-top: .6rem;
+}
+.inv-chip {
+  font-family: 'DM Mono', monospace;
+  font-size: .65rem; font-weight: 500;
+  padding: .2rem .6rem;
+  border-radius: 4px;
+  letter-spacing: .04em;
+}
+.ic-green  { background: rgba(16,185,129,.15); color: var(--emerald); border: 1px solid rgba(16,185,129,.3); }
+.ic-teal   { background: rgba(6,182,212,.12); color: var(--teal);    border: 1px solid rgba(6,182,212,.3); }
+.ic-amber  { background: rgba(245,158,11,.12); color: var(--amber);  border: 1px solid rgba(245,158,11,.3); }
+.ic-rose   { background: rgba(244,63,94,.12);  color: var(--rose);   border: 1px solid rgba(244,63,94,.3); }
+.ic-violet { background: rgba(139,92,246,.12); color: var(--violet); border: 1px solid rgba(139,92,246,.3); }
+.ic-saffron{ background: rgba(249,115,22,.12); color: var(--saffron);border: 1px solid rgba(249,115,22,.3); }
+
+.pro-list, .con-list { list-style: none; padding: 0; margin: .5rem 0 0; }
+.pro-list li { font-size: .83rem; color: var(--txt); padding: .2rem 0; }
+.pro-list li::before { content: '✅ '; }
+.con-list li { font-size: .83rem; color: var(--txt); padding: .2rem 0; }
+.con-list li::before { content: '⚡ '; }
+
+/* ══════════════════════════════════════════
+   RISK METER
+══════════════════════════════════════════ */
+.risk-dots { display: flex; gap: 3px; margin-top: .35rem; }
+.rdot { width: 10px; height: 10px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); }
+.rdot.on-low    { background: var(--emerald); }
+.rdot.on-med    { background: var(--amber); }
+.rdot.on-high   { background: var(--rose); }
+.rdot.off       { background: var(--border); }
+
+/* ══════════════════════════════════════════
+   SECTION NAV
+══════════════════════════════════════════ */
+.snav {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 2rem; padding-top: 1rem;
+  border-top: 1px dashed var(--border);
+  flex-wrap: wrap; gap: .5rem;
+}
+.snav a {
+  font-family: 'DM Mono', monospace;
+  font-size: .72rem; text-decoration: none;
+  padding: .32rem .85rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--txt2);
+  transition: all .22s;
+  white-space: nowrap;
+}
+.snav a:hover { border-color: var(--saffron); color: var(--saffron); background: rgba(249,115,22,.08); }
+.snav .snav-top { border-color: var(--saffron); color: var(--saffron); font-weight: 600; }
+.snav .snav-prev { border-left: 2px solid var(--teal); }
+.snav .snav-next { border-right: 2px solid var(--emerald); }
+
+/* ══════════════════════════════════════════
+   TIMELINE
+══════════════════════════════════════════ */
+.tl { position: relative; padding-left: 1.8rem; }
+.tl::before {
+  content: '';
+  position: absolute; left: .45rem; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(180deg, var(--saffron), var(--teal));
+}
+.tl-item {
+  position: relative;
+  margin-bottom: 1.2rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .9rem 1.1rem;
+  color: var(--txt);
+}
+.tl-item::before {
+  content: '';
+  position: absolute; left: -1.55rem; top: 1rem;
+  width: 11px; height: 11px;
+  background: var(--saffron); border-radius: 50%;
+  box-shadow: 0 0 8px rgba(249,115,22,.6);
+}
+.tl-title { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--amber); font-size: .95rem; }
+.tl-body  { font-size: .85rem; color: var(--txt); margin-top: .25rem; }
+
+/* ══════════════════════════════════════════
+   ALLOCATION RING LABELS
+══════════════════════════════════════════ */
+.alloc-legend { display: flex; flex-direction: column; gap: .5rem; }
+.al-row { display: flex; align-items: center; gap: .6rem; font-size: .85rem; color: var(--txt); }
+.al-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+.al-pct { font-family: 'DM Mono', monospace; font-size: .8rem; color: var(--amber); margin-left: auto; }
+
+/* ══════════════════════════════════════════
+   MERMAID
+══════════════════════════════════════════ */
+.mmd-wrap {
+  background: #07090f;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+/* ══════════════════════════════════════════
+   ACCORDION
+══════════════════════════════════════════ */
+.faq-item {
+  background: var(--card);
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  margin-bottom: .5rem;
+  overflow: hidden;
+}
+.faq-btn {
+  background: var(--card) !important;
+  color: var(--txt) !important;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600; font-size: .9rem;
+  padding: .9rem 1.1rem;
+}
+.faq-btn:not(.collapsed) {
+  background: rgba(249,115,22,.1) !important;
+  color: var(--saffron) !important;
+  box-shadow: none !important;
+}
+.faq-btn::after { filter: invert(1) sepia(1) saturate(3) hue-rotate(335deg); }
+.faq-body {
+  background: rgba(7,9,15,.6) !important;
+  color: var(--txt) !important;
+  font-size: .88rem;
+  border-top: 1px solid var(--border);
+  padding: 1rem 1.2rem;
+}
+.faq-body * { color: var(--txt); }
+
+/* ══════════════════════════════════════════
+   HIGHLIGHT BOX
+══════════════════════════════════════════ */
+.hbox {
+  border-radius: 10px;
+  padding: .9rem 1.1rem;
+  font-size: .85rem;
+  margin-top: .75rem;
+  color: var(--txt);
+}
+.hbox-amber { background: rgba(245,158,11,.1); border-left: 3px solid var(--amber); }
+.hbox-teal  { background: rgba(6,182,212,.1);  border-left: 3px solid var(--teal); }
+.hbox-green { background: rgba(16,185,129,.1); border-left: 3px solid var(--emerald); }
+.hbox-rose  { background: rgba(244,63,94,.1);  border-left: 3px solid var(--rose); }
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+  background: var(--ink2);
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  text-align: center;
+  font-size: .8rem;
+  color: var(--txt2);
+}
+footer strong { color: var(--saffron); }
+
+/* Responsive */
+@media (max-width: 576px) {
+  .hero-ascii { font-size: .22rem; }
+  .hero-title { font-size: 1.3rem; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+
+</head>
+<body id="top">
+
+<!-- ═══════ HERO ═══════ -->
+
+<div class="hero">
+  <div class="page">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-5 text-center text-lg-start">
+        <pre class="hero-ascii">
+ ██╗███╗  ██╗██╗   ██╗███████╗███████╗████████╗
+ ██║████╗ ██║██║   ██║██╔════╝██╔════╝╚══██╔══╝
+ ██║██╔██╗██║╚██╗ ██╔╝█████╗  ███████╗   ██║
+ ██║██║╚████║ ╚████╔╝ ██╔══╝  ╚════██║   ██║
+ ██║██║ ╚███║  ╚██╔╝  ███████╗███████║   ██║
+ ╚═╝╚═╝  ╚══╝   ╚═╝   ╚══════╝╚══════╝   ╚═╝
+ ██████╗  ██████╗ ██████╗ ████████╗ █████╗
+ ██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝██╔══██╗
+ ██████╔╝██║   ██║██████╔╝   ██║   ███████║
+ ██╔═══╝ ██║   ██║██╔══██╗   ██║   ██╔══██║
+ ██║     ╚██████╔╝██║  ██║   ██║   ██║  ██║
+ ╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝</pre>
+      </div>
+      <div class="col-lg-7">
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="hero-badge">🇮🇳 FY 2025-26</span>
+          <span class="hero-badge teal">🌊 Chennai Metro</span>
+          <span class="hero-badge green">₹20 LPA Profile</span>
+        </div>
+        <h1 class="hero-title mb-3">
+          Your <span>Wealth Blueprint</span><br>
+          Beginner → Long-Term
+        </h1>
+        <p class="hero-sub mb-3">
+          A practical, numbers-first investment guide for a ₹20 lakh per annum employee
+          living in Chennai — covering income breakdown, expense reality, and a balanced
+          portfolio that grows steadily for 10, 20, and 30 years.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="hero-badge" style="font-size:.68rem">💡 Beginner Friendly</span>
+          <span class="hero-badge teal" style="font-size:.68rem">📊 Real Numbers</span>
+          <span class="hero-badge green" style="font-size:.68rem">🎯 Goal-Based Planning</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ NAV ═══════ -->
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <span class="topnav-brand">₹ PORTFOLIO</span>
+    <a href="#income">💰 Income</a>
+    <a href="#budget">🏙️ Budget</a>
+    <a href="#foundation">🏗️ Foundation</a>
+    <a href="#instruments">📈 Instruments</a>
+    <a href="#allocation">🥧 Allocation</a>
+    <a href="#projections">🔭 Projections</a>
+    <a href="#milestones">🎯 Milestones</a>
+    <a href="#mistakes">⚠️ Mistakes</a>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════
+   SECTION 1 — INCOME REALITY
+═══════════════════════════════════════ -->
+
+<section class="sec" id="income">
+  <h2 class="sec-head">💰 Your ₹20 LPA — What You Actually Take Home</h2>
+
+  <div class="stat-grid">
+    <div class="stat-tile st-saffron">
+      <div class="stat-lbl">Gross CTC</div>
+      <div class="stat-val">₹20L</div>
+      <div class="stat-note">Per annum</div>
+    </div>
+    <div class="stat-tile st-teal">
+      <div class="stat-lbl">Monthly Gross</div>
+      <div class="stat-val">₹1.67L</div>
+      <div class="stat-note">Before deductions</div>
+    </div>
+    <div class="stat-tile st-rose">
+      <div class="stat-lbl">Tax (New Regime)</div>
+      <div class="stat-val">₹1.82L</div>
+      <div class="stat-note">~₹15,100/month</div>
+    </div>
+    <div class="stat-tile st-violet">
+      <div class="stat-lbl">EPF Deduction</div>
+      <div class="stat-val">₹72K</div>
+      <div class="stat-note">12% of Basic ~₹50K → ₹6K/mo</div>
+    </div>
+    <div class="stat-tile st-green">
+      <div class="stat-lbl">Net Take-Home</div>
+      <div class="stat-val">₹1.33L</div>
+      <div class="stat-note">~₹1,33,000/month</div>
+    </div>
+    <div class="stat-tile st-gold">
+      <div class="stat-lbl">Investible Surplus</div>
+      <div class="stat-val">₹40K+</div>
+      <div class="stat-note">After Chennai expenses</div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-7">
+      <div class="mono-block">
+        <pre class="asc" id="income_breakdown">[[mc-am|═══════════════════════════════════════════════════════════════]]
+[[mc-wh|   INCOME BREAKDOWN — ₹20 LPA EMPLOYEE, CHENNAI (FY 2025-26)  ]]
+[[mc-am|═══════════════════════════════════════════════════════════════]]
+
+[[mc-te|ASSUMED SALARY STRUCTURE (typical IT/corporate)               ]]
+Basic Salary (40-50% of CTC)       =  Rs. 8,00,000/yr  (Rs.66,667/mo)
+HRA (50% of Basic, Metro)          =  Rs. 4,00,000/yr  (Rs.33,333/mo)
+Special Allowance                  =  Rs. 5,00,000/yr  (Rs.41,667/mo)
+Performance Bonus / Variable       =  Rs. 2,00,000/yr  (Rs.16,667/mo)
+Other Allowances (LTA, Food etc.)  =  Rs. 1,00,000/yr  (Rs. 8,333/mo)
+───────────────────────────────────────────────────────────────────
+Gross CTC                          =  [[mc-wh|Rs.20,00,000/yr  (Rs.1,66,667/mo)]]
+
+[[mc-te|TAX COMPUTATION — OLD REGIME (with max deductions)           ]]
+(-) Standard Deduction             =  Rs.  50,000
+(-) HRA Exempt (rent Rs.24K/mo)    =  Rs. 1,80,000
+(-) 80C (EPF+ELSS+LIC)            =  Rs. 1,50,000
+(-) 80D (family+parents insurance) =  Rs.  75,000
+(-) 80CCD(1B) NPS extra            =  Rs.  50,000
+(-) Home loan interest 24(b)       =  Rs. 2,00,000  [if applicable]
+───────────────────────────────────────────────────────────────────
+Net Taxable (with home loan)       =  [[mc-em|Rs.13,95,000]]
+Tax on Rs.13.95L + 4% Cess         =  [[mc-ro|Rs. 1,64,892  (Rs.13,741/mo)]]
+
+[[mc-te|TAX COMPUTATION — NEW REGIME (no deductions)                 ]]
+(-) Standard Deduction only        =  Rs.  75,000
+Net Taxable                        =  Rs.19,25,000
+Tax + 4% Cess                      =  [[mc-ro|Rs. 2,37,822  (Rs.19,819/mo)]]
+
+[[mc-am|  MONTHLY TAKE-HOME SUMMARY                                  ]]
+Old Regime (max deductions)        =  [[mc-em|Rs.1,36,926/month]]
+New Regime                         =  [[mc-wh|Rs.1,30,848/month]]
+[[mc-am|Old Regime saves Rs.72,930 more in tax per year!            ]]</pre>
+</div>
+</div>
+<div class="col-md-5">
+<div class="card-box">
+<h6 style="color:var(--amber)">📊 Old vs New Regime — ₹20L</h6>
+<canvas id="regimeBar" style="max-height:220px"></canvas>
+<div class="hbox hbox-amber mt-3">
+<strong style="color:var(--amber)">💡 Verdict:</strong> At ₹20L with HRA + home loan + investments, Old Regime saves ~₹73K/year. That’s the equivalent of a 3.6% raise!
+</div>
+</div>
+</div>
+
+  </div>
+
+  <div class="snav">
+    <span></span>
+    <a href="#top" class="snav-top">⬆ Top</a>
+    <a href="#budget" class="snav-next">🏙️ Budget →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+   SECTION 2 — CHENNAI BUDGET REALITY
+═══════════════════════════════════════ -->
+
+<section class="sec" id="budget">
+  <h2 class="sec-head">🏙️ Chennai Expense Reality — Where Does ₹1.33L Go?</h2>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-5">
+      <div class="card-box" style="padding:0">
+        <div style="padding:1rem 1.3rem .5rem;border-bottom:1px solid var(--border)">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:.9rem">Monthly Budget — Family of 3, Chennai 2025</div>
+          <div style="font-size:.75rem;color:var(--txt2)">2 BHK, Velachery/OMR area. Net take-home: ₹1,33,000</div>
+        </div>
+        <div class="bud-row">
+          <span class="bud-icon">🏠</span>
+          <span class="bud-label">Rent (2BHK, mid-zone)</span>
+          <span class="bud-amount">₹22,000</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:50%;background:var(--rose)"></div></div></div>
+        </div>
+        <div class="bud-row">
+          <span class="bud-icon">🍱</span>
+          <span class="bud-label">Groceries + Cook</span>
+          <span class="bud-amount">₹8,000</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:22%;background:var(--amber)"></div></div></div>
+        </div>
+        <div class="bud-row">
+          <span class="bud-icon">🍽️</span>
+          <span class="bud-label">Dining Out / Swiggy</span>
+          <span class="bud-amount">₹5,000</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:14%;background:var(--amber)"></div></div></div>
+        </div>
+        <div class="bud-row">
+          <span class="bud-icon">🚗</span>
+          <span class="bud-label">Transport (fuel/metro/cab)</span>
+          <span class="bud-amount">₹5,000</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:14%;background:var(--teal)"></div></div></div>
+        </div>
+        <div class="bud-row">
+          <span class="bud-icon">💡</span>
+          <span class="bud-label">Utilities (Elec/Water/Gas/Net)</span>
+          <span class="bud-amount">₹3,500</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:10%;background:var(--teal)"></div></div></div>
+        </div>
+        <div class="bud-row">
+          <span class="bud-icon">🎓</span>
+          <span class="bud-label">Child Education / School</span>
+          <span class="bud-amount">₹8,000</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:22%;background:var(--violet)"></div></div></div>
+        </div>
+        <div class="bud-row">
+          <span class="bud-icon">🛒</span>
+          <span class="bud-label">Clothing / Shopping</span>
+          <span class="bud-amount">₹3,000</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:9%;background:var(--violet)"></div></div></div>
+        </div>
+        <div class="bud-row">
+          <span class="bud-icon">🎬</span>
+          <span class="bud-label">Entertainment / OTT</span>
+          <span class="bud-amount">₹3,000</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:9%;background:var(--emerald)"></div></div></div>
+        </div>
+        <div class="bud-row">
+          <span class="bud-icon">🏥</span>
+          <span class="bud-label">Health Insurance Premium</span>
+          <span class="bud-amount">₹3,500</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:10%;background:var(--emerald)"></div></div></div>
+        </div>
+        <div class="bud-row">
+          <span class="bud-icon">🔖</span>
+          <span class="bud-label">Misc / Buffer</span>
+          <span class="bud-amount">₹5,000</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:14%;background:var(--txt2)"></div></div></div>
+        </div>
+        <div class="bud-row" style="background:rgba(16,185,129,.08);border-radius:0 0 10px 10px">
+          <span class="bud-icon">💰</span>
+          <span class="bud-label" style="font-weight:700;color:#fff">Monthly Investible Surplus</span>
+          <span class="bud-amount" style="color:var(--emerald);font-weight:700">₹41,000</span>
+          <div class="bud-bar-wrap"><div class="bud-bar"><div class="bud-fill" style="width:100%;background:var(--emerald)"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <div class="card-box mb-3">
+        <h6 style="color:var(--amber)">🥧 Expense Distribution</h6>
+        <canvas id="expenseDonut" style="max-height:260px"></canvas>
+      </div>
+      <div class="row g-2">
+        <div class="col-6">
+          <div class="stat-tile st-green" style="border-radius:10px">
+            <div class="stat-lbl">Savings Rate</div>
+            <div class="stat-val" style="font-size:1.8rem">30.8%</div>
+            <div class="stat-note">₹41K of ₹1.33L take-home</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="stat-tile st-teal" style="border-radius:10px">
+            <div class="stat-lbl">EPF Already Saved</div>
+            <div class="stat-val" style="font-size:1.8rem">₹6K</div>
+            <div class="stat-note">Deducted at source/month</div>
+          </div>
+        </div>
+      </div>
+      <div class="hbox hbox-amber mt-2">
+        <strong style="color:var(--amber)">🌊 Chennai Advantage:</strong> Compared to Bengaluru or Mumbai, Chennai rents are 20-35% lower for equivalent neighbourhoods. A 2BHK on OMR costs ₹18-25K vs ₹30-45K in Whitefield, Bangalore. This extra buffer is your wealth engine!
+      </div>
+    </div>
+  </div>
+
+  <div class="snav">
+    <a href="#income" class="snav-prev">← 💰 Income</a>
+    <a href="#top" class="snav-top">⬆ Top</a>
+    <a href="#foundation" class="snav-next">🏗️ Foundation →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+   SECTION 3 — FINANCIAL FOUNDATION
+═══════════════════════════════════════ -->
+
+<section class="sec" id="foundation">
+  <h2 class="sec-head">🏗️ Build the Foundation First — Before Investing</h2>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="inv-card">
+        <div class="inv-card-top" style="border-top:3px solid var(--rose)">
+          <div class="inv-name">🛡️ Term Life Insurance</div>
+          <div class="inv-sub">Non-negotiable priority #1</div>
+          <div class="inv-meta">
+            <span class="inv-chip ic-rose">MUST HAVE</span>
+            <span class="inv-chip ic-amber">AGE 25-35: ~₹8-14K/yr</span>
+          </div>
+        </div>
+        <div class="inv-card-body">
+          <strong>Cover needed:</strong> 15-20× annual income = <strong>₹3 Crore minimum</strong> term plan.<br><br>
+          At ₹20L income, your family needs ₹3Cr cover. A 30-year-old can get this for ₹10-14K/year. Cheapest protection you'll ever buy.
+          <ul class="pro-list mt-2">
+            <li>Premium deductible under 80C</li>
+            <li>Death claim 100% tax-free (10(10D))</li>
+            <li>Cheaper at younger age — buy NOW</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="inv-card">
+        <div class="inv-card-top" style="border-top:3px solid var(--emerald)">
+          <div class="inv-name">🏥 Health Insurance</div>
+          <div class="inv-sub">Non-negotiable priority #2</div>
+          <div class="inv-meta">
+            <span class="inv-chip ic-green">FAMILY FLOATER</span>
+            <span class="inv-chip ic-amber">₹3-5K/month</span>
+          </div>
+        </div>
+        <div class="inv-card-body">
+          <strong>Cover needed:</strong> Minimum ₹10-15 lakh family floater + ₹25L super top-up.<br><br>
+          Chennai has excellent hospitals (Apollo, Fortis, MIOT). A single hospitalisation can wipe out ₹3-5L easily. Company cover is usually insufficient.
+          <ul class="pro-list mt-2">
+            <li>₹25K deduction u/s 80D (self+family)</li>
+            <li>₹50K more for senior citizen parents</li>
+            <li>Buy independently — don't rely on employer</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="inv-card">
+        <div class="inv-card-top" style="border-top:3px solid var(--amber)">
+          <div class="inv-name">🆘 Emergency Fund</div>
+          <div class="inv-sub">Non-negotiable priority #3</div>
+          <div class="inv-meta">
+            <span class="inv-chip ic-amber">6 MONTHS EXPENSES</span>
+            <span class="inv-chip ic-teal">~₹5.5L</span>
+          </div>
+        </div>
+        <div class="inv-card-body">
+          <strong>Target:</strong> 6× monthly expenses = 6 × ₹92,000 = <strong>~₹5.5 lakhs</strong>.<br><br>
+          Keep in liquid instruments only. This is NOT an investment. It's a financial seatbelt.
+          <ul class="pro-list mt-2">
+            <li>Liquid MF (same-day withdrawal)</li>
+            <li>Sweep FD (2-3 months' worth)</li>
+            <li>Savings account balance (1 month)</li>
+          </ul>
+          <div class="hbox hbox-teal" style="margin-top:.6rem;font-size:.8rem">
+            Build this over 6-9 months. ₹10K/month into a liquid fund.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mono-block">
+    <pre class="asc" id="foundation_flow">[[mc-am|FINANCIAL FOUNDATION SEQUENCE — DO IN THIS ORDER               ]]
+[[mc-am|━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━]]
+
+Month 1-2   [[mc-ro|[🛡️ INSURANCE]]] Buy Term Plan Rs.3Cr + Family Floater Rs.15L
+Cost: ~Rs.2,500/month combined. DO NOT delay this.
+
+Month 1-9   [[mc-am|[🆘 EMERGENCY]]] Build Rs.5.5L emergency fund
+Rs.10,000/month into Parag Parikh Liquid Fund or SBI Liquid Fund
+Milestone: Rs.5.5L liquid fund balance -> move to wealth building
+
+Month 3+    [[mc-te|[🏦 EPF]]]      Already running automatically via payroll
+Rs.6,000/employee + Rs.6,000/employer = Rs.12,000/month compounding
+Rate: 8.25% p.a. — your guaranteed debt anchor
+
+Month 6+    [[mc-em|[📈 INVEST]]]   Start SIP investments with remaining surplus
+Don’t start equity SIPs before emergency fund is 50% funded.
+
+[[mc-am|RULE: PROTECT first → BUFFER next → GROW last               ]]</pre>
+
+  </div>
+
+  <div class="snav">
+    <a href="#budget" class="snav-prev">← 🏙️ Budget</a>
+    <a href="#top" class="snav-top">⬆ Top</a>
+    <a href="#instruments" class="snav-next">📈 Instruments →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+   SECTION 4 — INVESTMENT INSTRUMENTS
+═══════════════════════════════════════ -->
+
+<section class="sec" id="instruments">
+  <h2 class="sec-head">📈 Investment Instruments — Complete Guide for Beginners</h2>
+
+  <div class="row g-3 mb-4">
+
+```
+<!-- EPF -->
+<div class="col-md-6 col-lg-4">
+  <div class="inv-card">
+    <div class="inv-card-top" style="border-top:3px solid var(--teal)">
+      <div class="inv-name">🏦 EPF — Auto Runs!</div>
+      <div class="inv-sub">Employee Provident Fund</div>
+      <div class="inv-meta">
+        <span class="inv-chip ic-green">8.25% GUARANTEED</span>
+        <span class="inv-chip ic-teal">EEE</span>
+        <span class="inv-chip ic-amber">Sec 80C</span>
+      </div>
+      <div class="mt-2" style="font-size:.75rem;color:var(--txt2)">Risk:</div>
+      <div class="risk-dots">
+        <div class="rdot on-low"></div><div class="rdot off"></div><div class="rdot off"></div><div class="rdot off"></div><div class="rdot off"></div>
+      </div>
+    </div>
+    <div class="inv-card-body">
+      <strong>Monthly:</strong> ₹6,000 (auto-deducted) + ₹6,000 employer match<br>
+      <strong>Annual:</strong> ₹1,44,000 total into EPF<br>
+      <strong>20-yr corpus</strong> @ 8.25%: ~<strong style="color:var(--emerald)">₹80 Lakhs</strong>
+      <ul class="pro-list">
+        <li>Zero effort — fully automated</li>
+        <li>Employer's ₹6K is FREE money</li>
+        <li>Completely tax-free on exit after 5 yrs</li>
+      </ul>
+      <ul class="con-list">
+        <li>Illiquid till age 58</li>
+        <li>Can't increase beyond basic salary %</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ELSS -->
+<div class="col-md-6 col-lg-4">
+  <div class="inv-card">
+    <div class="inv-card-top" style="border-top:3px solid var(--saffron)">
+      <div class="inv-name">📈 ELSS Mutual Funds</div>
+      <div class="inv-sub">Equity Linked Savings Scheme</div>
+      <div class="inv-meta">
+        <span class="inv-chip ic-saffron">12-15% HISTORICAL</span>
+        <span class="inv-chip ic-amber">Sec 80C</span>
+        <span class="inv-chip ic-rose">3-YR LOCK</span>
+      </div>
+      <div class="mt-2" style="font-size:.75rem;color:var(--txt2)">Risk:</div>
+      <div class="risk-dots">
+        <div class="rdot on-high"></div><div class="rdot on-high"></div><div class="rdot on-high"></div><div class="rdot off"></div><div class="rdot off"></div>
+      </div>
+    </div>
+    <div class="inv-card-body">
+      <strong>Recommended SIP:</strong> ₹5,000–₹8,000/month<br>
+      <strong>20-yr corpus</strong> @ 12%: ~<strong style="color:var(--emerald)">₹1.98 Crore</strong><br>
+      <strong>Suggested funds:</strong> Mirae Asset ELSS, Axis LT Equity, Parag Parikh
+      <ul class="pro-list">
+        <li>Shortest lock-in in 80C (3 years only)</li>
+        <li>Best wealth creator among tax-savers</li>
+        <li>SIP as low as ₹500/month</li>
+      </ul>
+      <ul class="con-list">
+        <li>Market risk — can fall 20-40% in a year</li>
+        <li>LTCG above ₹1.25L taxed @ 12.5%</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- NPS -->
+<div class="col-md-6 col-lg-4">
+  <div class="inv-card">
+    <div class="inv-card-top" style="border-top:3px solid var(--violet)">
+      <div class="inv-name">🎯 NPS — Triple Deduction</div>
+      <div class="inv-sub">National Pension System</div>
+      <div class="inv-meta">
+        <span class="inv-chip ic-violet">10-12% EXPECTED</span>
+        <span class="inv-chip ic-amber">80C + 80CCD(1B)</span>
+        <span class="inv-chip ic-teal">New Regime OK!</span>
+      </div>
+      <div class="mt-2" style="font-size:.75rem;color:var(--txt2)">Risk:</div>
+      <div class="risk-dots">
+        <div class="rdot on-med"></div><div class="rdot on-med"></div><div class="rdot off"></div><div class="rdot off"></div><div class="rdot off"></div>
+      </div>
+    </div>
+    <div class="inv-card-body">
+      <strong>Extra ₹50K under 80CCD(1B)</strong> saves ₹15,600 in tax (30% bracket)<br>
+      <strong>Employer NPS</strong> (80CCD-2) works even in New Regime<br>
+      <strong>20-yr @ 11%:</strong> ~<strong style="color:var(--emerald)">₹50 Lakhs</strong> (₹5K/month)
+      <ul class="pro-list">
+        <li>Only instrument with 3 tax-saving layers</li>
+        <li>Low cost (expense ratio ~0.01%!)</li>
+        <li>100% equity option now available (MSF)</li>
+      </ul>
+      <ul class="con-list">
+        <li>Locked till age 60</li>
+        <li>20% corpus must buy annuity (taxable)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PPF -->
+<div class="col-md-6 col-lg-4">
+  <div class="inv-card">
+    <div class="inv-card-top" style="border-top:3px solid var(--emerald)">
+      <div class="inv-name">🏛️ PPF — Safe Anchor</div>
+      <div class="inv-sub">Public Provident Fund</div>
+      <div class="inv-meta">
+        <span class="inv-chip ic-green">7.1% SOVEREIGN</span>
+        <span class="inv-chip ic-teal">EEE</span>
+        <span class="inv-chip ic-amber">Sec 80C</span>
+      </div>
+      <div class="mt-2" style="font-size:.75rem;color:var(--txt2)">Risk:</div>
+      <div class="risk-dots">
+        <div class="rdot on-low"></div><div class="rdot off"></div><div class="rdot off"></div><div class="rdot off"></div><div class="rdot off"></div>
+      </div>
+    </div>
+    <div class="inv-card-body">
+      <strong>Invest:</strong> ₹12,500/month (max ₹1.5L/yr)<br>
+      <strong>15-yr corpus</strong> @ 7.1%: ~<strong style="color:var(--emerald)">₹41 Lakhs</strong> (tax-free!)<br>
+      <strong>Best for:</strong> Debt anchor in your portfolio
+      <ul class="pro-list">
+        <li>Government guarantee — zero default risk</li>
+        <li>Triple EEE — completely tax-free at all stages</li>
+        <li>Partial withdrawal from Year 7</li>
+      </ul>
+      <ul class="con-list">
+        <li>15-year lock-in (extendable)</li>
+        <li>Rate may fall over time as India matures</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Index Funds -->
+<div class="col-md-6 col-lg-4">
+  <div class="inv-card">
+    <div class="inv-card-top" style="border-top:3px solid var(--sky)">
+      <div class="inv-name">📊 Index Funds / ETFs</div>
+      <div class="inv-sub">Passive Nifty50 / Nifty Next50</div>
+      <div class="inv-meta">
+        <span class="inv-chip ic-teal">11-13% LONG-TERM</span>
+        <span class="inv-chip ic-green">NO LOCK-IN</span>
+        <span class="inv-chip ic-amber">LTCG 12.5%</span>
+      </div>
+      <div class="mt-2" style="font-size:.75rem;color:var(--txt2)">Risk:</div>
+      <div class="risk-dots">
+        <div class="rdot on-high"></div><div class="rdot on-high"></div><div class="rdot on-high"></div><div class="rdot off"></div><div class="rdot off"></div>
+      </div>
+    </div>
+    <div class="inv-card-body">
+      <strong>Recommended:</strong> UTI Nifty 50, Nippon India Nifty BeES<br>
+      <strong>₹10K/month SIP × 20 yrs @ 12%:</strong> ~<strong style="color:var(--emerald)">₹99 Lakhs</strong><br>
+      <strong>Expense ratio:</strong> 0.05-0.20% (very low!)
+      <ul class="pro-list">
+        <li>No fund manager risk — just buy the market</li>
+        <li>Most liquid equity option (sell anytime)</li>
+        <li>Proven 11-13% CAGR over 20+ years</li>
+      </ul>
+      <ul class="con-list">
+        <li>Returns exactly match market — no alpha</li>
+        <li>Needs discipline to stay invested in crash</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Gold -->
+<div class="col-md-6 col-lg-4">
+  <div class="inv-card">
+    <div class="inv-card-top" style="border-top:3px solid var(--gold)">
+      <div class="inv-name">🪙 Digital Gold / SGB</div>
+      <div class="inv-sub">Sovereign Gold Bonds</div>
+      <div class="inv-meta">
+        <span class="inv-chip ic-amber">8-10% TOTAL RETURN</span>
+        <span class="inv-chip ic-green">TAX-FREE ON EXIT</span>
+        <span class="inv-chip ic-teal">5-10% ALLOCATION</span>
+      </div>
+      <div class="mt-2" style="font-size:.75rem;color:var(--txt2)">Risk:</div>
+      <div class="risk-dots">
+        <div class="rdot on-med"></div><div class="rdot on-med"></div><div class="rdot off"></div><div class="rdot off"></div><div class="rdot off"></div>
+      </div>
+    </div>
+    <div class="inv-card-body">
+      <strong>SGB:</strong> 2.5% annual interest + gold price appreciation<br>
+      <strong>Maturity (8 yrs):</strong> Capital gains 100% tax-free<br>
+      <strong>Allocation:</strong> 5-10% of portfolio for inflation hedge
+      <ul class="pro-list">
+        <li>SGB earns 2.5% interest + gold price gain</li>
+        <li>Zero storage cost — digital</li>
+        <li>Excellent portfolio diversifier</li>
+      </ul>
+      <ul class="con-list">
+        <li>8-year lock-in for SGB (5yr early exit)</li>
+        <li>SGB new tranches paused — buy on exchange</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Liquid MF -->
+<div class="col-md-6 col-lg-4">
+  <div class="inv-card">
+    <div class="inv-card-top" style="border-top:3px solid var(--teal)">
+      <div class="inv-name">💧 Liquid / Ultra-Short MF</div>
+      <div class="inv-sub">Emergency Fund + Short Goals</div>
+      <div class="inv-meta">
+        <span class="inv-chip ic-teal">6.5-7.5% RETURN</span>
+        <span class="inv-chip ic-green">SAME-DAY EXIT</span>
+        <span class="inv-chip ic-rose">TAXABLE</span>
+      </div>
+      <div class="mt-2" style="font-size:.75rem;color:var(--txt2)">Risk:</div>
+      <div class="risk-dots">
+        <div class="rdot on-low"></div><div class="rdot off"></div><div class="rdot off"></div><div class="rdot off"></div><div class="rdot off"></div>
+      </div>
+    </div>
+    <div class="inv-card-body">
+      <strong>Use for:</strong> Emergency fund, vacation fund, car down payment<br>
+      <strong>Recommended:</strong> Parag Parikh Liquid, HDFC Liquid, SBI Liquid<br>
+      <strong>Better than savings account</strong> (savings: 3.5%, liquid: 6.5-7.5%)
+      <ul class="pro-list">
+        <li>Instant redemption (up to ₹50K/day)</li>
+        <li>Beat savings account by 3-4%</li>
+        <li>No exit load after 7 days</li>
+      </ul>
+      <ul class="con-list">
+        <li>Gains taxed at income slab rate</li>
+        <li>Not for long-term wealth creation</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Health/Med -->
+<div class="col-md-6 col-lg-4">
+  <div class="inv-card">
+    <div class="inv-card-top" style="border-top:3px solid var(--rose)">
+      <div class="inv-name">🏥 Health Insurance</div>
+      <div class="inv-sub">Family Floater + Super Top-Up</div>
+      <div class="inv-meta">
+        <span class="inv-chip ic-rose">80D DEDUCTION</span>
+        <span class="inv-chip ic-amber">₹25K-₹1L SAVED</span>
+      </div>
+      <div class="mt-2" style="font-size:.75rem;color:var(--txt2)">Risk Protection:</div>
+      <div class="risk-dots">
+        <div class="rdot on-low" style="background:var(--emerald)"></div><div class="rdot on-low" style="background:var(--emerald)"></div><div class="rdot on-low" style="background:var(--emerald)"></div><div class="rdot on-low" style="background:var(--emerald)"></div><div class="rdot on-low" style="background:var(--emerald)"></div>
+      </div>
+    </div>
+    <div class="inv-card-body">
+      <strong>Recommended combo:</strong> ₹15L base floater + ₹50L super top-up<br>
+      <strong>Annual cost:</strong> ~₹35,000-45,000 combined<br>
+      <strong>80D benefit:</strong> Self+family ₹25K + parents 60+ ₹50K = ₹75K deduction
+      <ul class="pro-list">
+        <li>Apollo, MIOT etc in Chennai — cashless covered</li>
+        <li>Super top-up covers catastrophic illness</li>
+        <li>80D saves ₹23,400 in tax (30% bracket)</li>
+      </ul>
+      <ul class="con-list">
+        <li>Pre-existing conditions have 2-4 yr waiting</li>
+        <li>Premium rises with age — buy young</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Hybrid Fund -->
+<div class="col-md-6 col-lg-4">
+  <div class="inv-card">
+    <div class="inv-card-top" style="border-top:3px solid var(--amber)">
+      <div class="inv-name">⚖️ Balanced Advantage Fund</div>
+      <div class="inv-sub">Dynamic Equity-Debt Hybrid</div>
+      <div class="inv-meta">
+        <span class="inv-chip ic-amber">10-12% EXPECTED</span>
+        <span class="inv-chip ic-teal">AUTO-REBALANCES</span>
+        <span class="inv-chip ic-green">BEGINNER FRIENDLY</span>
+      </div>
+      <div class="mt-2" style="font-size:.75rem;color:var(--txt2)">Risk:</div>
+      <div class="risk-dots">
+        <div class="rdot on-med"></div><div class="rdot on-med"></div><div class="rdot off"></div><div class="rdot off"></div><div class="rdot off"></div>
+      </div>
+    </div>
+    <div class="inv-card-body">
+      <strong>For:</strong> Medium-term goals (5-10 years), lower volatility than pure equity<br>
+      <strong>Recommended:</strong> HDFC Balanced Advantage, ICICI Pru Balanced Advantage<br>
+      <strong>Auto-rebalances</strong> equity vs debt based on market levels
+      <ul class="pro-list">
+        <li>Less volatility than pure equity funds</li>
+        <li>No manual rebalancing needed</li>
+        <li>Good for first-time equity investors</li>
+      </ul>
+      <ul class="con-list">
+        <li>Lower returns than pure equity in bull runs</li>
+        <li>Taxed as equity (if equity &gt;65%)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+```
+
+  </div><!-- end row -->
+
+  <div class="snav">
+    <a href="#foundation" class="snav-prev">← 🏗️ Foundation</a>
+    <a href="#top" class="snav-top">⬆ Top</a>
+    <a href="#allocation" class="snav-next">🥧 Allocation →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+   SECTION 5 — RECOMMENDED ALLOCATION
+═══════════════════════════════════════ -->
+
+<section class="sec" id="allocation">
+  <h2 class="sec-head">🥧 Your ₹41,000/Month Portfolio Blueprint</h2>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-5">
+      <div class="card-box">
+        <h6 style="color:var(--amber)">Monthly SIP Allocation</h6>
+        <canvas id="allocDonut" style="max-height:280px;margin-bottom:1rem"></canvas>
+        <div class="alloc-legend" id="alloc-legend"></div>
+      </div>
+    </div>
+    <div class="col-md-7">
+      <div class="card-box" style="padding:0">
+        <div style="padding:1rem 1.3rem .5rem;border-bottom:1px solid var(--border)">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff">Monthly ₹41,000 — Deployment Plan</div>
+          <div style="font-size:.75rem;color:var(--txt2)">Assumes emergency fund already built. EPF ₹6K runs separately.</div>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Instrument</th><th>Amount</th><th>%</th><th>Goal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>📈 ELSS SIP (Mirae / Parag Parikh)</td>
+              <td style="color:var(--saffron);font-family:'DM Mono',monospace">₹8,000</td>
+              <td style="color:var(--amber)">19.5%</td>
+              <td style="color:var(--txt2)">80C + Wealth</td>
+            </tr>
+            <tr>
+              <td>📊 Nifty 50 Index Fund SIP</td>
+              <td style="color:var(--saffron);font-family:'DM Mono',monospace">₹8,000</td>
+              <td style="color:var(--amber)">19.5%</td>
+              <td style="color:var(--txt2)">Long-term wealth</td>
+            </tr>
+            <tr>
+              <td>📊 Nifty Next 50 / Midcap Index</td>
+              <td style="color:var(--saffron);font-family:'DM Mono',monospace">₹5,000</td>
+              <td style="color:var(--amber)">12.2%</td>
+              <td style="color:var(--txt2)">Growth booster</td>
+            </tr>
+            <tr>
+              <td>🏛️ PPF (SBI/Post Office)</td>
+              <td style="color:var(--saffron);font-family:'DM Mono',monospace">₹5,000</td>
+              <td style="color:var(--amber)">12.2%</td>
+              <td style="color:var(--txt2)">Safe debt anchor</td>
+            </tr>
+            <tr>
+              <td>🎯 NPS Tier-I (80CCD 1B)</td>
+              <td style="color:var(--saffron);font-family:'DM Mono',monospace">₹4,200</td>
+              <td style="color:var(--amber)">10.2%</td>
+              <td style="color:var(--txt2)">Extra tax saving</td>
+            </tr>
+            <tr>
+              <td>⚖️ Balanced Advantage Fund</td>
+              <td style="color:var(--saffron);font-family:'DM Mono',monospace">₹5,000</td>
+              <td style="color:var(--amber)">12.2%</td>
+              <td style="color:var(--txt2)">Mid-term goals</td>
+            </tr>
+            <tr>
+              <td>🪙 SGB / Digital Gold</td>
+              <td style="color:var(--saffron);font-family:'DM Mono',monospace">₹3,000</td>
+              <td style="color:var(--amber)">7.3%</td>
+              <td style="color:var(--txt2)">Inflation hedge</td>
+            </tr>
+            <tr>
+              <td>💧 Liquid Fund (top-up emergency)</td>
+              <td style="color:var(--saffron);font-family:'DM Mono',monospace">₹2,800</td>
+              <td style="color:var(--amber)">6.8%</td>
+              <td style="color:var(--txt2)">Short-term goals</td>
+            </tr>
+            <tr style="background:rgba(16,185,129,.06)">
+              <td style="color:#fff;font-weight:700">🏦 EPF (auto-deducted, not counted)</td>
+              <td style="color:var(--emerald);font-family:'DM Mono',monospace;font-weight:700">₹6,000</td>
+              <td style="color:var(--emerald)">Bonus!</td>
+              <td style="color:var(--txt2)">Retirement debt</td>
+            </tr>
+            <tr style="background:rgba(249,115,22,.08);border-top:1px solid var(--saffron)">
+              <td style="color:#fff;font-weight:700">TOTAL MONTHLY INVESTMENT</td>
+              <td style="color:var(--saffron);font-family:'DM Mono',monospace;font-weight:700;font-size:1.1rem">₹47,000</td>
+              <td style="color:var(--amber);font-weight:700">35%</td>
+              <td style="color:var(--emerald)">of gross income</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Asset Allocation -->
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="mono-block">
+        <pre class="asc" id="asset_alloc">[[mc-am|ASSET CLASS MIX (including EPF in total)                    ]]
+[[mc-am|━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━]]
+
+EQUITY (65%)
+[[mc-or|████████████████████████████████████]]
+ELSS + Nifty50 + N.Next50 + BAF equity portion
+Monthly: Rs.26,000 | Goal: Wealth creation 10yr+
+
+DEBT (25%)
+[[mc-te|████████████████]]
+EPF + PPF + NPS debt portion + Liquid Fund
+Monthly: Rs.17,800 | Goal: Safety + Tax-saving
+
+GOLD (5%)
+[[mc-go|████]]
+SGB / Digital Gold
+Monthly: Rs.3,000 | Goal: Inflation hedge
+
+LIQUID (5%)
+[[mc-em|████]]
+Emergency top-up + short goals
+Monthly: Rs.2,800 | Goal: Liquidity
+
+[[mc-am|━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━]]
+[[mc-wh|RULE OF THUMB: (100 - Age) % in equity                      ]]
+[[mc-wh|  Age 28 → 72% equity | Age 35 → 65% | Age 45 → 55%        ]]</pre>
+</div>
+</div>
+<div class="col-md-6">
+<div class="card-box">
+<h6 style="color:var(--amber)">📊 Tax Savings Summary — Old Regime</h6>
+<table class="data-table">
+<thead><tr><th>Source</th><th>Deduction</th><th>Tax Saved*</th></tr></thead>
+<tbody>
+<tr><td>EPF (employee)</td><td style="color:var(--amber)">₹72,000</td><td style="color:var(--emerald)">₹22,464</td></tr>
+<tr><td>ELSS SIP</td><td style="color:var(--amber)">₹78,000</td><td style="color:var(--emerald)">—</td></tr>
+<tr><td>80C Total</td><td style="color:var(--saffron)">₹1,50,000</td><td style="color:var(--emerald)">₹46,800</td></tr>
+<tr><td>80D (Health Insurance)</td><td style="color:var(--amber)">₹75,000</td><td style="color:var(--emerald)">₹23,400</td></tr>
+<tr><td>NPS 80CCD(1B)</td><td style="color:var(--amber)">₹50,000</td><td style="color:var(--emerald)">₹15,600</td></tr>
+<tr><td>HRA Exemption</td><td style="color:var(--amber)">₹1,80,000</td><td style="color:var(--emerald)">₹56,160</td></tr>
+<tr><td>Std Deduction</td><td style="color:var(--amber)">₹50,000</td><td style="color:var(--emerald)">₹15,600</td></tr>
+<tr style="background:rgba(249,115,22,.08)"><td style="color:#fff;font-weight:700">TOTAL SAVINGS</td><td style="color:var(--saffron);font-weight:700">₹5,05,000</td><td style="color:var(--emerald);font-weight:700">₹1,57,560</td></tr>
+</tbody>
+</table>
+<div class="hbox hbox-green mt-2" style="font-size:.8rem">
+*At 30% + 4% cess. Total tax saved = <strong style="color:var(--emerald)">₹1,57,560/year</strong> = ₹13,130/month in your pocket!
+</div>
+</div>
+</div>
+
+  </div>
+
+  <div class="snav">
+    <a href="#instruments" class="snav-prev">← 📈 Instruments</a>
+    <a href="#top" class="snav-top">⬆ Top</a>
+    <a href="#projections" class="snav-next">🔭 Projections →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+   SECTION 6 — CORPUS PROJECTIONS
+═══════════════════════════════════════ -->
+
+<section class="sec" id="projections">
+  <h2 class="sec-head">🔭 Corpus Projections — Where Will You Be in 10, 20, 30 Years?</h2>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-7">
+      <div class="card-box">
+        <h6 style="color:var(--amber)">📈 Portfolio Corpus Growth — ₹47K/Month Invested</h6>
+        <canvas id="corpusChart" style="max-height:320px"></canvas>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="card-box mb-3">
+        <h6 style="color:var(--amber)">🎯 Instrument-wise Corpus at Year 20</h6>
+        <canvas id="corpus20Bar" style="max-height:200px"></canvas>
+      </div>
+      <div class="stat-tile st-green" style="margin-top:.5rem">
+        <div class="stat-lbl">30-Year Total Corpus (blended 10.5%)</div>
+        <div class="stat-val">₹12.4 Cr</div>
+        <div class="stat-note">From ₹47K/month invested since age 28</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mono-block">
+    <pre class="asc" id="corpus_table">[[mc-am|CORPUS PROJECTION TABLE — Monthly SIP Rs.47,000 (₹41K invested + Rs.6K EPF)]]
+[[mc-am|━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━]]
+[[mc-te|                 Conservative (8%)    Moderate (10.5%)   Aggressive (13%)    ]]
+  Year  5    Rs.34.4 Lakhs         Rs.37.2 Lakhs         Rs.40.3 Lakhs
+  Year 10    Rs.86.5 Lakhs         Rs.1.01 Crore         Rs.1.19 Crore
+  Year 15    Rs.1.63 Crore         Rs.2.12 Crore         Rs.2.77 Crore
+  Year 20    Rs.2.79 Crore         Rs.4.02 Crore         Rs.5.88 Crore
+  Year 25    Rs.4.41 Crore         Rs.7.26 Crore         Rs.11.8 Crore
+  Year 30    Rs.6.73 Crore         Rs.12.4 Crore         Rs.22.8 Crore
+[[mc-am|━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━]]
+
+[[mc-te|INSTRUMENT-WISE CORPUS AT YEAR 20 (from age 28 to 48)                          ]]
+EPF (Rs.12K/mo, 8.25%)             ->  [[mc-em|Rs.  87,00,000]] (₹87 Lakhs)
+ELSS (Rs.8K/mo, 12%)               ->  [[mc-or|Rs.  79,70,000]] (₹79.7 Lakhs)
+Nifty50 Index (Rs.8K/mo, 11%)      ->  [[mc-or|Rs.  68,30,000]] (₹68.3 Lakhs)
+Nifty Next50 (Rs.5K/mo, 13%)       ->  [[mc-or|Rs.  55,00,000]] (₹55 Lakhs)
+PPF (Rs.5K/mo, 7.1%)               ->  [[mc-te|Rs.  25,90,000]] (₹25.9 Lakhs)
+NPS (Rs.4.2K/mo, 11%)              ->  [[mc-vi|Rs.  36,00,000]] (₹36 Lakhs)
+BAF (Rs.5K/mo, 10%)                ->  [[mc-am|Rs.  38,40,000]] (₹38.4 Lakhs)
+Gold SGB (Rs.3K/mo, 9%)            ->  [[mc-go|Rs.  20,00,000]] (₹20 Lakhs)
+─────────────────────────────────────────────────────────────────────────────────
+[[mc-wh|TOTAL APPROX AT AGE 48                                                      ]]
+Invested Rs.47K/mo × 12 × 20       =   Rs.  1,12,80,000 (Rs.1.13 Crore invested)
+Corpus at 10.5% blended            ->  [[mc-em|Rs.  4,10,00,000]] (₹4.1 Crore!)
+Wealth multiplier                  ->  [[mc-or|3.6x your total investment           ]]</pre>
+
+  </div>
+
+  <div class="snav">
+    <a href="#allocation" class="snav-prev">← 🥧 Allocation</a>
+    <a href="#top" class="snav-top">⬆ Top</a>
+    <a href="#milestones" class="snav-next">🎯 Milestones →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+   SECTION 7 — FINANCIAL MILESTONES
+═══════════════════════════════════════ -->
+
+<section class="sec" id="milestones">
+  <h2 class="sec-head">🎯 Financial Milestones — A 30-Year Roadmap</h2>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-title">Year 0-1 — Build the Base</div>
+          <div class="tl-body">
+            ✅ Buy ₹3Cr term plan + ₹15L family floater<br>
+            ✅ Open PPF account (SBI / Post Office)<br>
+            ✅ Start building ₹5.5L emergency fund<br>
+            ✅ Activate NPS Tier-I account
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-title">Year 1-2 — Start SIPs</div>
+          <div class="tl-body">
+            ✅ Start ELSS SIP ₹8,000/month<br>
+            ✅ Start Nifty50 Index SIP ₹8,000/month<br>
+            ✅ PPF ₹5,000/month contribution<br>
+            ✅ NPS ₹4,200/month for extra 80CCD(1B) benefit
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-title">Year 3-5 — Hit ₹20 Lakh Corpus</div>
+          <div class="tl-body">
+            🎯 Total investible corpus crosses ₹20 Lakhs<br>
+            📈 Increase SIPs by 10% every year with salary hikes<br>
+            🔍 First portfolio review — rebalance if equity > 70%<br>
+            💳 Target: Zero consumer debt (credit cards, personal loans)
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-title">Year 5-8 — Home Loan Decision</div>
+          <div class="tl-body">
+            🏠 Evaluate home purchase — EMI should be ≤ 35% of take-home<br>
+            💡 Home loan adds ₹2L deduction under Sec 24(b) — boosts Old Regime further<br>
+            📊 By year 7: PPF partial withdrawal available if needed<br>
+            🎯 Target: ₹50-60L corpus
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="tl">
+        <div class="tl-item">
+          <div class="tl-title">Year 8-12 — Wealth Acceleration</div>
+          <div class="tl-body">
+            💰 Compounding kicks in hard — corpus grows ₹3-5L/year just on returns<br>
+            📈 Review and step up SIPs to ₹80K-₹1L/month (salary will grow)<br>
+            🎓 Start child education corpus if applicable (₹1Cr+ needed in 12-15 yrs)<br>
+            🏆 Target: ₹1 Crore corpus by Year 10
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-title">Year 12-18 — Consolidation Phase</div>
+          <div class="tl-body">
+            🔄 Gradually shift equity to debt as you approach age 45+<br>
+            🏛️ PPF maturity at Year 15 → re-invest or extend for 5 more years<br>
+            📊 ELSS SIPs can continue but shift new money to plain index funds<br>
+            🎯 Target: ₹2.5-3 Crore corpus
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-title">Year 20-25 — Pre-Retirement Prep</div>
+          <div class="tl-body">
+            📉 Reduce equity allocation to 45-50%<br>
+            🎯 NPS matures at 60 → 60% lump sum (tax-free) + annuity<br>
+            💡 LTCG harvesting: withdraw and reinvest ₹1.25L/year to stay tax-free<br>
+            🏆 Target: ₹5-7 Crore corpus
+          </div>
+        </div>
+        <div class="tl-item" style="border-color:var(--emerald)">
+          <div class="tl-title" style="color:var(--emerald)">Year 30 — Financial Freedom! 🎉</div>
+          <div class="tl-body">
+            🏆 Corpus: ₹12-15 Crore at moderate return assumptions<br>
+            💵 Monthly income @ 4% SWR = ₹4-5 Lakh/month (today's money ~₹2L)<br>
+            🎯 Retire at 58-60, money outlasts you by 20-25 years<br>
+            🌟 Chennai real estate + gold as legacy assets
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="snav">
+    <a href="#projections" class="snav-prev">← 🔭 Projections</a>
+    <a href="#top" class="snav-top">⬆ Top</a>
+    <a href="#mistakes" class="snav-next">⚠️ Mistakes →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+   SECTION 8 — COMMON MISTAKES
+═══════════════════════════════════════ -->
+
+<section class="sec" id="mistakes">
+  <h2 class="sec-head">⚠️ 10 Mistakes That Kill Beginners' Portfolios</h2>
+
+  <div class="accordion" id="mistakesAccordion">
+
+```
+<div class="accordion-item faq-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button faq-btn" data-bs-toggle="collapse" data-bs-target="#m1">
+      ❌ Mistake #1: Buying Endowment/Money-Back LIC Plans for "Investment"
+    </button>
+  </h2>
+  <div id="m1" class="accordion-collapse collapse show" data-bs-parent="#mistakesAccordion">
+    <div class="faq-body">
+      Traditional LIC endowment policies return only 4-5% IRR — less than inflation! You pay premiums for 20-25 years and get back barely more than you put in. This is insurance misused as investment. <strong style="color:var(--amber)">Fix:</strong> Buy a pure ₹3Cr term plan at ₹10-14K/year and invest the saved premium in ELSS or index funds. The difference in corpus over 20 years is <strong style="color:var(--emerald)">₹1+ Crore.</strong>
+    </div>
+  </div>
+</div>
+
+<div class="accordion-item faq-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button faq-btn collapsed" data-bs-toggle="collapse" data-bs-target="#m2">
+      ❌ Mistake #2: No Emergency Fund Before Investing in Equity
+    </button>
+  </h2>
+  <div id="m2" class="accordion-collapse collapse" data-bs-parent="#mistakesAccordion">
+    <div class="faq-body">
+      If a medical emergency hits and you have no liquid buffer, you'll be forced to redeem equity SIPs at exactly the wrong time — likely during a market fall. A ₹5.5L liquid fund acts as a shock absorber. <strong style="color:var(--amber)">Rule:</strong> Emergency fund first, then SIPs.
+    </div>
+  </div>
+</div>
+
+<div class="accordion-item faq-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button faq-btn collapsed" data-bs-toggle="collapse" data-bs-target="#m3">
+      ❌ Mistake #3: Stopping SIPs During Market Crashes
+    </button>
+  </h2>
+  <div id="m3" class="accordion-collapse collapse" data-bs-parent="#mistakesAccordion">
+    <div class="faq-body">
+      Market falls 20-30% and investors panic and stop SIPs. This is the worst thing you can do — you're stopping purchases when everything is on sale! In 2008, 2020 (COVID), and 2022 corrections, investors who stayed invested saw 2-3× returns in the next 3 years. <strong style="color:var(--amber)">Rule:</strong> SIP is auto-pilot — never touch it during a crash. If anything, increase it.
+    </div>
+  </div>
+</div>
+
+<div class="accordion-item faq-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button faq-btn collapsed" data-bs-toggle="collapse" data-bs-target="#m4">
+      ❌ Mistake #4: Too Many Mutual Funds (Diworsification)
+    </button>
+  </h2>
+  <div id="m4" class="accordion-collapse collapse" data-bs-parent="#mistakesAccordion">
+    <div class="faq-body">
+      Having 12 different mutual funds does NOT reduce risk — most large-cap funds hold the same Nifty 50 stocks. With ₹41K/month, you need maximum 4-5 funds. <strong style="color:var(--amber)">Ideal portfolio:</strong> 1 ELSS + 1 Nifty50 Index + 1 Nifty Next50 + 1 BAF + 1 Liquid. Clean and simple beats complex every time.
+    </div>
+  </div>
+</div>
+
+<div class="accordion-item faq-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button faq-btn collapsed" data-bs-toggle="collapse" data-bs-target="#m5">
+      ❌ Mistake #5: Ignoring NPS 80CCD(1B) — Free ₹15,600/year Tax Saving
+    </button>
+  </h2>
+  <div id="m5" class="accordion-collapse collapse" data-bs-parent="#mistakesAccordion">
+    <div class="faq-body">
+      Most people stop at 80C's ₹1.5L limit and ignore the additional ₹50,000 deduction under 80CCD(1B). At 30% slab, this saves ₹15,600 extra per year. Over 20 years, that's ₹3.12L in tax savings alone — and the NPS corpus itself could be ₹36L+ at maturity. It's genuinely free money being left on the table.
+    </div>
+  </div>
+</div>
+
+<div class="accordion-item faq-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button faq-btn collapsed" data-bs-toggle="collapse" data-bs-target="#m6">
+      ❌ Mistake #6: Withdrawing EPF on Job Change
+    </button>
+  </h2>
+  <div id="m6" class="accordion-collapse collapse" data-bs-parent="#mistakesAccordion">
+    <div class="faq-body">
+      EPF withdrawal on job change is one of the most damaging financial habits in India. <strong style="color:var(--amber)">Example:</strong> ₹2L withdrawn at age 27 instead of kept invested = ₹2L × 8.25% × 31 years = <strong style="color:var(--rose)">₹22 Lakhs lost!</strong> Always transfer your EPF using UAN — never withdraw unless genuine emergency.
+    </div>
+  </div>
+</div>
+
+<div class="accordion-item faq-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button faq-btn collapsed" data-bs-toggle="collapse" data-bs-target="#m7">
+      ❌ Mistake #7: Chasing Last Year's Top-Performing Funds
+    </button>
+  </h2>
+  <div id="m7" class="accordion-collapse collapse" data-bs-parent="#mistakesAccordion">
+    <div class="faq-body">
+      A fund that returned 45% last year will likely underperform the next 3 years. Fund performance is cyclical. Small-cap funds top the charts in bull runs and crash hardest in bear markets. <strong style="color:var(--amber)">Fix:</strong> Pick funds based on 5-7 year rolling returns, low expense ratio (&lt;1%), AUM stability, and fund house track record. Stick with them for 10+ years.
+    </div>
+  </div>
+</div>
+
+<div class="accordion-item faq-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button faq-btn collapsed" data-bs-toggle="collapse" data-bs-target="#m8">
+      ❌ Mistake #8: Not Increasing SIP Amount Annually
+    </button>
+  </h2>
+  <div id="m8" class="accordion-collapse collapse" data-bs-parent="#mistakesAccordion">
+    <div class="faq-body">
+      If your salary grows 10% annually but your SIP stays flat, your investment-to-income ratio shrinks. The power of Step-Up SIP: ₹20K/month at 10% step-up for 20 years builds <strong style="color:var(--emerald)">₹3.8 Crore</strong> vs flat ₹20K building only ₹2 Crore. Enable "Step-Up SIP" on your MF platform — auto-increase by 10% every year.
+    </div>
+  </div>
+</div>
+
+<div class="accordion-item faq-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button faq-btn collapsed" data-bs-toggle="collapse" data-bs-target="#m9">
+      ❌ Mistake #9: Over-relying on Fixed Deposits for Long-Term Goals
+    </button>
+  </h2>
+  <div id="m9" class="accordion-collapse collapse" data-bs-parent="#mistakesAccordion">
+    <div class="faq-body">
+      FD at 7% with 30% tax = 4.9% effective return. India's inflation is 5-6%. You're barely maintaining purchasing power! FD is for short-term goals and emergency funds ONLY. For any goal &gt;5 years, equity index funds will comfortably beat FD by 4-6% per year, which on a ₹1Cr corpus is ₹4-6L extra every year.
+    </div>
+  </div>
+</div>
+
+<div class="accordion-item faq-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button faq-btn collapsed" data-bs-toggle="collapse" data-bs-target="#m10">
+      ❌ Mistake #10: Delaying — "I'll Start Investing Next Year"
+    </button>
+  </h2>
+  <div id="m10" class="accordion-collapse collapse" data-bs-parent="#mistakesAccordion">
+    <div class="faq-body">
+      The single most expensive mistake. Starting at 25 vs 35 — same ₹10K/month for 30 years: <br>
+      <strong style="color:var(--emerald)">Age 25 start:</strong> ₹3.5 Crore at 60 (35 years × 12%)<br>
+      <strong style="color:var(--rose)">Age 35 start:</strong> ₹1.0 Crore at 60 (25 years × 12%)<br>
+      <strong style="color:var(--amber)">10 years of delay = ₹2.5 Crore penalty.</strong> No salary hike, no promotion, no bonus will ever recover that gap. Start today, even with ₹500.
+    </div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <div class="snav">
+    <a href="#milestones" class="snav-prev">← 🎯 Milestones</a>
+    <a href="#top" class="snav-top">⬆ Top</a>
+    <a href="#income" class="snav-next">💰 Income →</a>
+  </div>
+</section>
+
+</div><!-- end page -->
+
+<!-- ═══════ FOOTER ═══════ -->
+
+<footer>
+  <div class="page">
+    <div style="font-family:'Syne',sans-serif;font-weight:700;color:var(--saffron);font-size:1rem;margin-bottom:.4rem">
+      🇮🇳 Chennai Wealth Blueprint — ₹20 LPA Portfolio Guide
+    </div>
+    <div>
+      ⚠️ <strong>Disclaimer:</strong> For educational purposes only. Not SEBI-registered financial advice. Consult a qualified financial advisor before investing.<br>
+      Data sources: AMFI India, EPFO, PFRDA, Numbeo Chennai 2025, HDFC Life, NoBroker Chennai 2025.<br><br>
+      Built with Bootstrap 5 + Chart.js + Mermaid.js · FY 2025-26
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ═══════ MERMAID ═══════ */
+mermaid.initialize({
+  startOnLoad: true, theme: 'dark',
+  themeVariables: {
+    primaryColor: '#f97316', primaryTextColor: '#d8ddf0',
+    primaryBorderColor: '#2d3650', lineColor: '#f97316',
+    secondaryColor: '#1e2538', tertiaryColor: '#1a1f2e',
+    background: '#0f1117', mainBkg: '#1e2538',
+    nodeBorder: '#2d3650', clusterBkg: '#1a1f2e',
+    titleColor: '#fbbf24',
+  }
+});
+
+/* ═══════ ASCII COLORIZER ═══════ */
+const colorMap = {
+  'mc-or': '#f97316','mc-am': '#f59e0b','mc-te': '#06b6d4',
+  'mc-em': '#10b981','mc-wh': '#e2e8f0','mc-dm': '#8892b0',
+  'mc-ro': '#f43f5e','mc-vi': '#8b5cf6','mc-go': '#fbbf24'
+};
+document.querySelectorAll('pre.asc').forEach(pre => {
+  let html = pre.innerHTML;
+  html = html.replace(/\[\[(\w+-\w+)\|([\s\S]*?)\]\]/g, (_, cls, txt) => {
+    const col = colorMap[cls] || '#e2e8f0';
+    return `<span style="color:${col}">${txt}</span>`;
+  });
+  pre.innerHTML = html;
+});
+
+/* ═══════ CHART HELPERS ═══════ */
+const gridColor = 'rgba(45,54,80,0.6)';
+const tickColor = '#8892b0';
+const tooltipCb = (v) => '₹' + Math.round(v).toLocaleString('en-IN');
+
+/* 1. REGIME BAR */
+new Chart(document.getElementById('regimeBar'), {
+  type: 'bar',
+  data: {
+    labels: ['Old Regime\n(max deductions)', 'New Regime\n(no deductions)'],
+    datasets: [{
+      label: 'Annual Tax (₹)',
+      data: [164892, 237822],
+      backgroundColor: ['rgba(6,182,212,.7)', 'rgba(244,63,94,.7)'],
+      borderColor: ['#06b6d4','#f43f5e'], borderWidth: 2, borderRadius: 8
+    }]
+  },
+  options: {
+    responsive: true, indexAxis: 'y',
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '₹' + c.raw.toLocaleString('en-IN') } } },
+    scales: {
+      x: { ticks: { color: tickColor, callback: v => '₹' + (v/1000) + 'K' }, grid: { color: gridColor } },
+      y: { ticks: { color: tickColor } , grid: { display: false } }
+    }
+  }
+});
+
+/* 2. EXPENSE DONUT */
+new Chart(document.getElementById('expenseDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Rent','Groceries','Dining','Transport','Utilities','Education','Shopping','Entertainment','Health Ins.','Misc','Surplus'],
+    datasets: [{
+      data: [22000,8000,5000,5000,3500,8000,3000,3000,3500,5000,41000],
+      backgroundColor: ['#f43f5e','#f59e0b','#fbbf24','#06b6d4','#38bdf8','#8b5cf6','#a78bfa','#10b981','#34d399','#8892b0','#22c55e'],
+      borderColor: '#0f1117', borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, cutout: '62%',
+    plugins: {
+      legend: { position: 'right', labels: { color: '#8892b0', font: { size: 10 }, boxWidth: 12, padding: 6 } },
+      tooltip: { callbacks: { label: c => c.label + ': ₹' + c.raw.toLocaleString('en-IN') } }
+    }
+  }
+});
+
+/* 3. ALLOCATION DONUT */
+const allocData = [
+  { label: 'ELSS SIP',        amt: 8000,  color: '#f97316' },
+  { label: 'Nifty50 Index',   amt: 8000,  color: '#38bdf8' },
+  { label: 'Nifty Next50',    amt: 5000,  color: '#06b6d4' },
+  { label: 'PPF',             amt: 5000,  color: '#10b981' },
+  { label: 'NPS 80CCD(1B)',   amt: 4200,  color: '#8b5cf6' },
+  { label: 'Balanced Advtg',  amt: 5000,  color: '#f59e0b' },
+  { label: 'Gold / SGB',      amt: 3000,  color: '#fbbf24' },
+  { label: 'Liquid Fund',     amt: 2800,  color: '#8892b0' },
+];
+new Chart(document.getElementById('allocDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: allocData.map(d => d.label),
+    datasets: [{ data: allocData.map(d => d.amt), backgroundColor: allocData.map(d => d.color), borderColor: '#0f1117', borderWidth: 2 }]
+  },
+  options: {
+    responsive: true, cutout: '58%',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => c.label + ': ₹' + c.raw.toLocaleString('en-IN') } }
+    }
+  }
+});
+const legend = document.getElementById('alloc-legend');
+allocData.forEach(d => {
+  const total = allocData.reduce((a,b)=>a+b.amt,0);
+  legend.innerHTML += `<div class="al-row"><div class="al-dot" style="background:${d.color}"></div><span>${d.label}</span><span class="al-pct">₹${d.amt.toLocaleString('en-IN')} (${Math.round(d.amt/total*100)}%)</span></div>`;
+});
+
+/* 4. CORPUS GROWTH LINE */
+function sipCorpus(monthly, years, rate) {
+  const r = rate / 12 / 100;
+  const n = years * 12;
+  return monthly * ((Math.pow(1+r, n)-1)/r) * (1+r);
+}
+const yrs = [1,2,3,4,5,7,10,12,15,17,20,22,25,27,30];
+new Chart(document.getElementById('corpusChart'), {
+  type: 'line',
+  data: {
+    labels: yrs.map(y=>'Yr '+y),
+    datasets: [
+      { label: 'Conservative 8%',  data: yrs.map(y=>sipCorpus(47000,y,8)),   borderColor:'#8892b0', backgroundColor:'rgba(136,146,176,.08)', fill:true, tension:.4, borderWidth:2, pointRadius:3 },
+      { label: 'Moderate 10.5%',   data: yrs.map(y=>sipCorpus(47000,y,10.5)),borderColor:'#06b6d4', backgroundColor:'rgba(6,182,212,.1)',     fill:true, tension:.4, borderWidth:2, pointRadius:3 },
+      { label: 'Aggressive 13%',   data: yrs.map(y=>sipCorpus(47000,y,13)),  borderColor:'#f97316', backgroundColor:'rgba(249,115,22,.1)',    fill:true, tension:.4, borderWidth:2.5, pointRadius:3 },
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { labels: { color: '#8892b0', font:{size:11}, padding:16 } },
+      tooltip: { callbacks: { label: c => c.dataset.label + ': ₹' + (c.raw/10000000).toFixed(2) + ' Cr' } }
+    },
+    scales: {
+      x: { ticks: { color: tickColor, font:{size:10} }, grid: { color: gridColor } },
+      y: { ticks: { color: tickColor, callback: v => '₹'+(v/10000000).toFixed(1)+'Cr' }, grid: { color: gridColor } }
+    }
+  }
+});
+
+/* 5. CORPUS AT 20 YEARS BAR */
+new Chart(document.getElementById('corpus20Bar'), {
+  type: 'bar',
+  data: {
+    labels: ['EPF','ELSS','Nifty50','N.Next50','NPS','BAF','PPF','Gold'],
+    datasets: [{
+      data: [8700000,7970000,6830000,5500000,3600000,3840000,2590000,2000000],
+      backgroundColor: ['#06b6d4','#f97316','#38bdf8','#06b6d4','#8b5cf6','#f59e0b','#10b981','#fbbf24'],
+      borderRadius: 6, borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, indexAxis:'y',
+    plugins: {
+      legend:{display:false},
+      tooltip:{ callbacks:{ label: c => '₹'+(c.raw/100000).toFixed(1)+' L' } }
+    },
+    scales: {
+      x: { ticks:{color:tickColor, callback:v=>'₹'+(v/100000).toFixed(0)+'L'}, grid:{color:gridColor} },
+      y: { ticks:{color:tickColor,font:{size:10}}, grid:{display:false} }
+    }
+  }
+});
+
+/* ═══════ ACTIVE NAV ═══════ */
+const sections = ['income','budget','foundation','instruments','allocation','projections','milestones','mistakes'];
+const navAs = document.querySelectorAll('.topnav a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navAs.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+e.target.id));
+    }
+  });
+}, { threshold: 0.15 });
+sections.forEach(id => { const el=document.getElementById(id); if(el) obs.observe(el); });
+
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = a.getAttribute('href');
+    if (t==='#') return;
+    const el = document.querySelector(t);
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+});
+</script>
+
+</body>
+</html>
