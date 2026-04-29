@@ -1,1048 +1,1921 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technical Tutorial Template</title>
-    
-    <!-- Bootstrap 5.3 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
-    <!-- Prism.js for syntax highlighting -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-    
-    <style>
-        :root {
-            --theme-primary: #0d6efd;
-            --theme-secondary: #6c757d;
-        }
-        
-        [data-bs-theme="light"][data-color-flavor="blue"] {
-            --theme-primary: #0d6efd;
-        }
-        
-        [data-bs-theme="light"][data-color-flavor="green"] {
-            --theme-primary: #198754;
-        }
-        
-        [data-bs-theme="light"][data-color-flavor="purple"] {
-            --theme-primary: #6f42c1;
-        }
-        
-        .navbar {
-            background-color: var(--theme-primary) !important;
-        }
-        
-        .btn-primary {
-            background-color: var(--theme-primary);
-            border-color: var(--theme-primary);
-        }
-        
-        .ascii-art {
-            font-family: 'Courier New', monospace;
-            white-space: pre;
-            background-color: var(--bs-secondary-bg);
-            padding: 1rem;
-            border-radius: 0.375rem;
-            overflow-x: auto;
-        }
-        
-        .plantuml-container {
-            background-color: var(--bs-secondary-bg);
-            padding: 1rem;
-            border-radius: 0.375rem;
-        }
-        
-        pre[class*="language-"] {
-            border-radius: 0.375rem;
-        }
-        
-        .jumbotron-custom {
-            background: linear-gradient(135deg, var(--theme-primary) 0%, var(--bs-secondary-color) 100%);
-            color: white;
-            padding: 4rem 2rem;
-            margin-bottom: 2rem;
-            border-radius: 0.5rem;
-        }
-        
-        .version-badge {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        
-        .console-output {
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            padding: 1rem;
-            border-radius: 0.375rem;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
-        }
-        
-        .theme-controls {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            z-index: 1000;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🇮🇳 India Tax & Investment Guide FY 2025-26</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<style>
+:root {
+  --saffron: #FF6600;
+  --saffron-light: #FF8C42;
+  --green-india: #138808;
+  --green-light: #22c55e;
+  --navy: #0a0f1e;
+  --navy2: #0d1529;
+  --navy3: #111d3a;
+  --card-bg: #131f3e;
+  --card-border: #1e3060;
+  --gold: #f4c430;
+  --gold-light: #ffd700;
+  --text-primary: #e8eaf6;
+  --text-secondary: #9aa0b8;
+  --accent-cyan: #00d4ff;
+  --accent-purple: #a855f7;
+  --rupee: #FF6600;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--navy);
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy2); }
+::-webkit-scrollbar-thumb { background: var(--saffron); border-radius: 3px; }
+
+/* ===== HERO ===== */
+.hero-section {
+  background: linear-gradient(135deg, #0a0f1e 0%, #0d1a3a 40%, #0f1f0a 100%);
+  border-bottom: 3px solid var(--saffron);
+  padding: 2rem 0 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(255,102,0,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 70% 50%, rgba(19,136,8,0.08) 0%, transparent 60%);
+}
+.ascii-hero {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.48rem;
+  line-height: 1.1;
+  color: var(--saffron);
+  text-shadow: 0 0 20px rgba(255,102,0,0.5);
+  white-space: pre;
+  letter-spacing: 0.02em;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%,100% { text-shadow: 0 0 20px rgba(255,102,0,0.5); }
+  50% { text-shadow: 0 0 40px rgba(255,102,0,0.9), 0 0 60px rgba(255,102,0,0.4); }
+}
+.hero-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--saffron) 0%, var(--gold) 50%, var(--green-india) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+}
+.hero-subtitle {
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.fy-badge {
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  color: var(--navy);
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  padding: 0.3rem 1rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+}
+
+/* ===== NAV ===== */
+.navbar-custom {
+  background: rgba(10,15,30,0.97);
+  border-bottom: 2px solid var(--saffron);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+.navbar-custom .nav-link {
+  color: var(--text-secondary) !important;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 0.6rem 0.9rem !important;
+  transition: all 0.3s;
+  border-radius: 4px;
+  margin: 0 2px;
+}
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+  color: var(--saffron) !important;
+  background: rgba(255,102,0,0.1);
+}
+.navbar-brand-text {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--saffron) !important;
+}
+
+/* ===== SECTIONS ===== */
+.section-block {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--card-border);
+}
+.section-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--saffron);
+  letter-spacing: 2px;
+  position: relative;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 60px; height: 3px;
+  background: linear-gradient(90deg, var(--saffron), var(--gold));
+  border-radius: 2px;
+}
+.section-title .section-icon {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+/* ===== CARDS ===== */
+.tax-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  height: 100%;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.tax-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--saffron), var(--gold));
+}
+.tax-card:hover {
+  border-color: var(--saffron);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(255,102,0,0.15);
+}
+.tax-card.green-top::before { background: linear-gradient(90deg, var(--green-india), var(--green-light)); }
+.tax-card.cyan-top::before { background: linear-gradient(90deg, var(--accent-cyan), #0066ff); }
+.tax-card.purple-top::before { background: linear-gradient(90deg, var(--accent-purple), #ec4899); }
+.tax-card.gold-top::before { background: linear-gradient(90deg, var(--gold), var(--saffron-light)); }
+
+.card-value {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--saffron);
+}
+.card-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* ===== TABLES ===== */
+.tax-table {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+}
+.tax-table thead th {
+  background: linear-gradient(135deg, rgba(255,102,0,0.2), rgba(255,102,0,0.1));
+  color: var(--gold);
+  font-family: 'Orbitron', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0.9rem 1rem;
+  border-bottom: 2px solid var(--saffron);
+  border-right: 1px solid var(--card-border);
+}
+.tax-table tbody td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(30,48,96,0.5);
+  border-right: 1px solid rgba(30,48,96,0.3);
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+.tax-table tbody tr:hover { background: rgba(255,102,0,0.05); }
+.tax-table tbody tr:last-child td { border-bottom: none; }
+.slab-nil { color: var(--green-light); font-weight: 700; }
+.slab-low { color: var(--accent-cyan); font-weight: 700; }
+.slab-med { color: var(--gold); font-weight: 700; }
+.slab-high { color: var(--saffron); font-weight: 700; }
+.slab-max { color: #ff4444; font-weight: 700; }
+
+/* ===== BADGES ===== */
+.badge-custom {
+  font-size: 0.7rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 50px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.badge-saffron { background: rgba(255,102,0,0.2); color: var(--saffron); border: 1px solid var(--saffron); }
+.badge-green { background: rgba(19,136,8,0.2); color: var(--green-light); border: 1px solid var(--green-light); }
+.badge-gold { background: rgba(244,196,48,0.2); color: var(--gold); border: 1px solid var(--gold); }
+.badge-cyan { background: rgba(0,212,255,0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+.badge-red { background: rgba(255,68,68,0.2); color: #ff6666; border: 1px solid #ff4444; }
+.badge-purple { background: rgba(168,85,247,0.2); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
+
+/* ===== PRO/CON ===== */
+.pro-con-box {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+}
+.pro-item { color: var(--green-light); font-size: 0.9rem; margin-bottom: 0.3rem; }
+.con-item { color: #ff6666; font-size: 0.9rem; margin-bottom: 0.3rem; }
+.pro-item::before { content: "✅ "; }
+.con-item::before { content: "⚠️ "; }
+
+/* ===== ASCII DIAGRAMS ===== */
+.ascii-box {
+  background: #050a14;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--green-light);
+  overflow-x: auto;
+  white-space: pre;
+  line-height: 1.5;
+}
+.ascii-box .saffron { color: var(--saffron); }
+.ascii-box .gold { color: var(--gold); }
+.ascii-box .cyan { color: var(--accent-cyan); }
+.ascii-box .red { color: #ff6666; }
+.ascii-box .purple { color: var(--accent-purple); }
+.ascii-box .white { color: #fff; }
+
+/* ===== MERMAID ===== */
+.mermaid-wrapper {
+  background: #050a14;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+.mermaid { text-align: center; }
+
+/* ===== SIMULATOR ===== */
+.simulator-card {
+  background: linear-gradient(135deg, #0d1529, #111d3a);
+  border: 2px solid var(--saffron);
+  border-radius: 16px;
+  padding: 2rem;
+}
+.sim-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.sim-input {
+  background: rgba(10,15,30,0.9);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.3s;
+}
+.sim-input:focus {
+  outline: none;
+  border-color: var(--saffron);
+  box-shadow: 0 0 0 3px rgba(255,102,0,0.15);
+}
+.sim-result {
+  background: rgba(10,15,30,0.9);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+}
+.sim-result-value {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.btn-calculate {
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  border: none;
+  color: var(--navy);
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  padding: 0.7rem 2rem;
+  border-radius: 8px;
+  transition: all 0.3s;
+  width: 100%;
+  cursor: pointer;
+}
+.btn-calculate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255,102,0,0.4);
+}
+
+/* ===== TIMELINE ===== */
+.timeline { position: relative; padding-left: 2rem; }
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--saffron), var(--green-india));
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+}
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.75rem; top: 1rem;
+  width: 12px; height: 12px;
+  background: var(--saffron);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255,102,0,0.6);
+}
+
+/* ===== PENALTY BOX ===== */
+.penalty-card {
+  background: linear-gradient(135deg, rgba(255,68,68,0.1), rgba(255,102,0,0.05));
+  border: 1px solid rgba(255,68,68,0.3);
+  border-radius: 10px;
+  padding: 1.2rem;
+}
+.penalty-title {
+  font-family: 'Orbitron', monospace;
+  color: #ff6666;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ===== INVESTMENT ROW ===== */
+.invest-row {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(30,48,96,0.4);
+  transition: background 0.2s;
+}
+.invest-row:hover { background: rgba(255,102,0,0.04); }
+.invest-row:last-child { border-bottom: none; }
+.invest-icon { font-size: 1.4rem; width: 2.5rem; flex-shrink: 0; }
+.invest-name { font-weight: 700; font-size: 1rem; }
+.invest-section { font-size: 0.75rem; color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; }
+.invest-limit { font-family: 'Orbitron', monospace; font-size: 0.85rem; color: var(--gold); flex-shrink: 0; }
+
+/* ===== PERSONA CARDS ===== */
+.persona-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+}
+.persona-card:hover { border-color: var(--saffron); box-shadow: 0 8px 30px rgba(255,102,0,0.12); }
+.persona-avatar {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+.persona-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+.persona-income {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  color: var(--saffron);
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--navy2);
+  border-top: 2px solid var(--saffron);
+  padding: 2rem 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ===== ACCORDION CUSTOM ===== */
+.accordion-custom .accordion-item {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px !important;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+.accordion-custom .accordion-button {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+.accordion-custom .accordion-button:not(.collapsed) {
+  background: rgba(255,102,0,0.1);
+  color: var(--saffron);
+  box-shadow: none;
+}
+.accordion-custom .accordion-button::after {
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(335deg);
+}
+.accordion-custom .accordion-body {
+  background: rgba(5,10,20,0.5);
+  border-top: 1px solid var(--card-border);
+}
+
+/* ===== RANGE SLIDER ===== */
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,102,0,0.2);
+  outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--saffron);
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(255,102,0,0.6);
+}
+
+/* ===== COMPARISON METER ===== */
+.meter-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: rgba(255,102,0,0.15);
+  overflow: hidden;
+}
+.meter-fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.8s ease;
+}
+
+/* ===== FLOW CHART ===== */
+.flow-box {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+}
+.flow-arrow { text-align: center; color: var(--saffron); font-size: 1.2rem; line-height: 1.2; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:768px) {
+  .ascii-hero { font-size: 0.28rem; }
+  .hero-title { font-size: 1.1rem; }
+  .section-title { font-size: 1.1rem; }
+}
+</style>
 </head>
 <body>
-    <!-- Theme Controls -->
-    <div class="theme-controls">
-        <div class="btn-group-vertical" role="group">
-            <button type="button" class="btn btn-sm btn-outline-secondary" id="themeToggle" data-bs-toggle="tooltip" title="Toggle Dark/Light">
-                <i class="bi bi-moon-stars"></i>
-            </button>
-            <button type="button" class="btn btn-sm btn-outline-primary" onclick="setColorFlavor('blue')" data-bs-toggle="tooltip" title="Blue Theme">
-                <i class="bi bi-circle-fill text-primary"></i>
-            </button>
-            <button type="button" class="btn btn-sm btn-outline-success" onclick="setColorFlavor('green')" data-bs-toggle="tooltip" title="Green Theme">
-                <i class="bi bi-circle-fill text-success"></i>
-            </button>
-            <button type="button" class="btn btn-sm btn-outline-purple" onclick="setColorFlavor('purple')" data-bs-toggle="tooltip" title="Purple Theme">
-                <i class="bi bi-circle-fill" style="color: #6f42c1;"></i>
-            </button>
-        </div>
+
+<!-- ===== HERO ===== -->
+<div class="hero-section">
+  <div class="container text-center position-relative">
+    <div class="ascii-hero mb-2">
+ ██████╗ ███████╗    ██╗  ██╗ ██████╗ ██████╗  ███████╗    ████████╗ █████╗ ██╗  ██╗
+ ██╔══██╗██╔════╝    ██║  ██║██╔═══██╗██╔══██╗ ██╔════╝    ╚══██╔══╝██╔══██╗╚██╗██╔╝
+ ██████╔╝███████╗    ███████║██║   ██║██║  ██║ ███████╗       ██║   ███████║ ╚███╔╝ 
+ ██╔══██╗╚════██║    ██╔══██║██║   ██║██║  ██║ ╚════██║       ██║   ██╔══██║ ██╔██╗ 
+ ██║  ██║███████║    ██║  ██║╚██████╔╝██████╔╝ ███████║       ██║   ██║  ██║██╔╝ ██╗
+ ╚═╝  ╚═╝╚══════╝    ╚═╝  ╚═╝ ╚═════╝ ╚═════╝  ╚══════╝       ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝
+     ██╗███╗  ██╗██╗   ██╗███████╗███████╗████████╗███╗  ███╗███████╗███╗  ██╗████████╗
+     ██║████╗ ██║██║   ██║██╔════╝██╔════╝╚══██╔══╝████╗████║██╔════╝████╗ ██║╚══██╔══╝
+     ██║██╔██╗██║╚██╗ ██╔╝█████╗  ███████╗   ██║   ██╔████╔██║█████╗  ██╔██╗██║   ██║   
+     ██║██║╚████║ ╚████╔╝ ██╔══╝  ╚════██║   ██║   ██║╚██╔╝██║██╔══╝  ██║╚████║   ██║   
+     ██║██║ ╚███║  ╚██╔╝  ███████╗███████║   ██║   ██║ ╚═╝ ██║███████╗██║ ╚███║   ██║   
+     ╚═╝╚═╝  ╚══╝   ╚═╝   ╚══════╝╚══════╝   ╚═╝   ╚═╝     ╚═╝╚══════╝╚═╝  ╚══╝   ╚═╝</div>
+    <div class="hero-title mb-2">🇮🇳 INDIA TAX & WEALTH PLAYBOOK</div>
+    <div class="hero-subtitle mb-3">Personal Finance Planning for Every Career Stage</div>
+    <div class="d-flex justify-content-center gap-2 flex-wrap">
+      <span class="fy-badge">FY 2025-26</span>
+      <span class="fy-badge" style="background:linear-gradient(135deg,#138808,#22c55e)">AY 2026-27</span>
+      <span class="fy-badge" style="background:linear-gradient(135deg,#0066ff,#00d4ff)">BEGINNERS → EXPERTS</span>
     </div>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#"><i class="bi bi-book"></i> Tech Tutorial</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="../">Tutorials Index</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#home">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Sections
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#introduction">Introduction</a></li>
-                            <li><a class="dropdown-item" href="#concepts">Core Concepts</a></li>
-                            <li><a class="dropdown-item" href="#examples">Code Examples</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#advanced">Advanced Topics</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#resources">Resources</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#version-history"><i class="bi bi-clock-history"></i> Version History</a>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
-                    <button class="btn btn-outline-light" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Off Canvas Menu -->
-    <button class="btn btn-primary position-fixed" style="top: 80px; left: 20px; z-index: 999;" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas">
-        <i class="bi bi-list"></i> TOC
-    </button>
-
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="tocOffcanvas">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title">Table of Contents</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <div class="offcanvas-body">
-            <div class="list-group">
-                <a href="#introduction" class="list-group-item list-group-item-action">
-                    <i class="bi bi-1-circle"></i> Introduction
-                </a>
-                <a href="#concepts" class="list-group-item list-group-item-action">
-                    <i class="bi bi-2-circle"></i> Core Concepts
-                </a>
-                <a href="#architecture" class="list-group-item list-group-item-action">
-                    <i class="bi bi-3-circle"></i> Architecture
-                </a>
-                <a href="#examples" class="list-group-item list-group-item-action">
-                    <i class="bi bi-4-circle"></i> Code Examples
-                </a>
-                <a href="#best-practices" class="list-group-item list-group-item-action">
-                    <i class="bi bi-5-circle"></i> Best Practices
-                </a>
-                <a href="#version-history" class="list-group-item list-group-item-action list-group-item-info">
-                    <i class="bi bi-clock-history"></i> Version History
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <!-- Jumbotron / Hero Section -->
-                <div class="jumbotron-custom text-center">
-                    <h1 class="display-3"><i class="bi bi-stars"></i> Welcome to Your Technical Tutorial</h1>
-                    <p class="lead">A comprehensive guide with interactive examples and detailed explanations</p>
-                    <hr class="my-4" style="border-color: rgba(255,255,255,0.3);">
-                    <p>Learn step-by-step with code examples, diagrams, and best practices</p>
-                    <a class="btn btn-light btn-lg" href="#introduction" role="button">Get Started <i class="bi bi-arrow-right"></i></a>
-                </div>
-
-                <!-- Alert Messages -->
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-                    <i class="bi bi-info-circle"></i> <strong>Info:</strong> This template includes all Bootstrap components for creating professional technical tutorials.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-
-                <!-- Carousel for Visual Content -->
-                <div id="tutorialCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#tutorialCarousel" data-bs-slide-to="0" class="active"></button>
-                        <button type="button" data-bs-target="#tutorialCarousel" data-bs-slide-to="1"></button>
-                        <button type="button" data-bs-target="#tutorialCarousel" data-bs-slide-to="2"></button>
-                    </div>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <div class="bg-secondary text-white p-5 text-center" style="min-height: 300px;">
-                                <h3>Key Feature 1</h3>
-                                <p>Visual representation of important concepts</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="bg-primary text-white p-5 text-center" style="min-height: 300px;">
-                                <h3>Key Feature 2</h3>
-                                <p>Interactive examples and demonstrations</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item">
-                            <div class="bg-success text-white p-5 text-center" style="min-height: 300px;">
-                                <h3>Key Feature 3</h3>
-                                <p>Comprehensive documentation and resources</p>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#tutorialCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#tutorialCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
-                </div>
-
-                <!-- Tab Group for Different Content Types -->
-                <ul class="nav nav-tabs mb-3" id="contentTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button">
-                            <i class="bi bi-journal-text"></i> Overview
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="diagrams-tab" data-bs-toggle="tab" data-bs-target="#diagrams" type="button">
-                            <i class="bi bi-diagram-3"></i> Diagrams
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="code-tab" data-bs-toggle="tab" data-bs-target="#code" type="button">
-                            <i class="bi bi-code-slash"></i> Code
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="output-tab" data-bs-toggle="tab" data-bs-target="#output" type="button">
-                            <i class="bi bi-terminal"></i> Output
-                        </button>
-                    </li>
-                </ul>
-
-                <div class="tab-content mb-4" id="contentTabsContent">
-                    <!-- Overview Tab -->
-                    <div class="tab-pane fade show active" id="overview" role="tabpanel">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4><i class="bi bi-info-circle"></i> Section Overview</h4>
-                            </div>
-                            <div class="card-body">
-                                <p class="lead">This section provides a comprehensive overview of the topic.</p>
-                                <p>Use this tab to present textual content, introductions, and explanations. The card layout provides a clean, organized way to present information with proper hierarchy.</p>
-                                
-                                <h5>Key Points:</h5>
-                                <ul class="list-group list-group-flush mb-3">
-                                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Clear and concise explanations</li>
-                                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Step-by-step guidance</li>
-                                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Real-world examples</li>
-                                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Best practices and tips</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Diagrams Tab -->
-                    <div class="tab-pane fade" id="diagrams" role="tabpanel">
-                        <div class="card mb-3">
-                            <div class="card-header">
-                                <h5><i class="bi bi-diagram-2"></i> ASCII Diagrams</h5>
-                            </div>
-                            <div class="card-body">
-                                <p>ASCII diagrams are perfect for representing simple structures and flows:</p>
-                                <div class="ascii-art">
-┌─────────────────────────────────────────┐
-│           Application Layer             │
-│  ┌──────────┐  ┌──────────┐            │
-│  │ Service  │  │ Service  │            │
-│  │    A     │  │    B     │            │
-│  └────┬─────┘  └─────┬────┘            │
-└───────┼──────────────┼─────────────────┘
-        │              │
-        ▼              ▼
-┌─────────────────────────────────────────┐
-│          Business Logic Layer           │
-│  ┌──────────────────────────────┐      │
-│  │     Processing Engine         │      │
-│  └──────────────┬────────────────┘      │
-└─────────────────┼───────────────────────┘
-                  │
-                  ▼
-┌─────────────────────────────────────────┐
-│            Data Layer                   │
-│  ┌──────────┐  ┌──────────┐            │
-│  │ Database │  │  Cache   │            │
-│  └──────────┘  └──────────┘            │
-└─────────────────────────────────────────┘
+  </div>
 </div>
-                                <p class="mt-3"><strong>Usage:</strong> ASCII diagrams work well for system architecture, data flows, and hierarchical structures. They're accessible and render consistently across all platforms.</p>
-                            </div>
-                        </div>
 
-                        <div class="card">
-                            <div class="card-header">
-                                <h5><i class="bi bi-diagram-3"></i> PlantUML Diagrams</h5>
-                            </div>
-                            <div class="card-body">
-                                <p>For more complex diagrams, use PlantUML syntax with rendering services:</p>
-                                <div class="plantuml-container">
-                                    <pre><code class="language-plantuml">@startuml
-actor User
-participant "Web App" as Web
-participant "API Server" as API
-database "Database" as DB
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar-custom py-1">
+  <div class="container">
+    <div class="d-flex flex-wrap gap-1 justify-content-center">
+      <span class="navbar-brand-text me-2 align-self-center">₹ TAX GUIDE</span>
+      <a href="#slabs" class="nav-link">📊 Slabs</a>
+      <a href="#regimes" class="nav-link">⚖️ Regimes</a>
+      <a href="#investments" class="nav-link">💰 Investments</a>
+      <a href="#80c" class="nav-link">📋 Sections</a>
+      <a href="#fbp" class="nav-link">🏢 FBP</a>
+      <a href="#penalties" class="nav-link">⚠️ Penalties</a>
+      <a href="#simulator" class="nav-link">🧮 Simulator</a>
+      <a href="#personas" class="nav-link">👤 Personas</a>
+    </div>
+  </div>
+</nav>
 
-User -> Web: Request Page
-Web -> API: GET /api/data
-API -> DB: Query
-DB --> API: Results
-API --> Web: JSON Response
-Web --> User: Render Page
-@enduml</code></pre>
-                                </div>
-                                <p class="mt-3"><strong>Usage:</strong> PlantUML is excellent for sequence diagrams, class diagrams, and component diagrams. You can render them using the PlantUML server: <code>http://www.plantuml.com/plantuml/</code></p>
-                                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="popover" 
-                                        data-bs-title="Rendering PlantUML" 
-                                        data-bs-content="Use online PlantUML servers or local rendering tools to convert the syntax into visual diagrams.">
-                                    <i class="bi bi-question-circle"></i> How to render?
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+<div class="container">
 
-                    <!-- Code Tab -->
-                    <div class="tab-pane fade" id="code" role="tabpanel">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <h5><i class="bi bi-code-square"></i> Code Examples</h5>
-                                <button class="btn btn-sm btn-outline-secondary" onclick="copyCode('codeExample1')" data-bs-toggle="tooltip" title="Copy code">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <p>Syntax-highlighted code examples with copy functionality:</p>
-                                <pre id="codeExample1"><code class="language-java">public class SpringBootApplication {
-    
-    @Autowired
-    private UserRepository userRepository;
-    
-    public static void main(String[] args) {
-        SpringApplication.run(SpringBootApplication.class, args);
-    }
-    
-    @GetMapping("/users")
-    public List&lt;User&gt; getAllUsers() {
-        return userRepository.findAll();
-    }
-    
-    @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
-    }
-}</code></pre>
-                                <div class="alert alert-warning mt-3" role="alert">
-                                    <i class="bi bi-exclamation-triangle"></i> <strong>Note:</strong> Make sure to handle exceptions properly in production code.
-                                </div>
-                            </div>
-                        </div>
+<!-- ===== QUICK STATS ===== -->
+<div class="section-block" id="quick-stats">
+  <div class="section-title"><span class="section-icon">⚡</span>FY 2025-26 AT A GLANCE</div>
+  <div class="row g-3">
+    <div class="col-6 col-md-3">
+      <div class="tax-card">
+        <div class="card-label">New Regime Nil Tax</div>
+        <div class="card-value">₹12L</div>
+        <div style="font-size:0.8rem;color:var(--text-secondary)">+ ₹75K std. deduction = ₹12.75L</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="tax-card green-top">
+        <div class="card-label">Sec 87A Rebate</div>
+        <div class="card-value">₹60K</div>
+        <div style="font-size:0.8rem;color:var(--text-secondary)">New Regime (up to ₹12L income)</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="tax-card cyan-top">
+        <div class="card-label">Old Regime 80C</div>
+        <div class="card-value">₹1.5L</div>
+        <div style="font-size:0.8rem;color:var(--text-secondary)">Max deduction limit</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="tax-card gold-top">
+        <div class="card-label">Health & Ed Cess</div>
+        <div class="card-value">4%</div>
+        <div style="font-size:0.8rem;color:var(--text-secondary)">On total tax + surcharge</div>
+      </div>
+    </div>
+  </div>
+</div>
 
-                        <div class="card mt-3">
-                            <div class="card-header">
-                                <h5><i class="bi bi-file-earmark-code"></i> Configuration Files</h5>
-                            </div>
-                            <div class="card-body">
-                                <pre><code class="language-properties"># application.properties
-spring.datasource.url=jdbc:h2:mem:testdb
-spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=
+<!-- ===== INCOME TAX SLABS ===== -->
+<div class="section-block" id="slabs">
+  <div class="section-title"><span class="section-icon">📊</span>INCOME TAX SLABS</div>
 
-spring.jpa.show-sql=true
-spring.jpa.hibernate.ddl-auto=create-drop
-spring.h2.console.enabled=true</code></pre>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Output Tab -->
-                    <div class="tab-pane fade" id="output" role="tabpanel">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5><i class="bi bi-terminal-fill"></i> Console Output</h5>
-                            </div>
-                            <div class="card-body">
-                                <p>Display command-line output and execution results:</p>
-                                <div class="console-output">$ mvn clean install
-[INFO] Scanning for projects...
-[INFO] 
-[INFO] ----------------< com.learning:springdatajpa >-----------------
-[INFO] Building Spring Data JPA Learning 1.0.0
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO] 
-[INFO] --- maven-clean-plugin:3.2.0:clean (default-clean) @ springdatajpa ---
-[INFO] Deleting target
-[INFO] 
-[INFO] --- maven-compiler-plugin:3.11.0:compile (default-compile) @ springdatajpa ---
-[INFO] Changes detected - recompiling the module!
-[INFO] Compiling 15 source files to target/classes
-[INFO] 
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  3.847 s
-[INFO] Finished at: 2026-01-16T07:45:32Z
-[INFO] ------------------------------------------------------------------------</div>
-                                <button type="button" class="btn btn-success mt-3" id="toastTrigger">
-                                    <i class="bi bi-play-circle"></i> Show Success Toast
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Accordion for Detailed Topics -->
-                <div class="accordion mb-4" id="topicsAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#topic1">
-                                <i class="bi bi-1-circle-fill me-2"></i> Topic 1: Introduction
-                            </button>
-                        </h2>
-                        <div id="topic1" class="accordion-collapse collapse show" data-bs-parent="#topicsAccordion">
-                            <div class="accordion-body">
-                                <h5>Purpose</h5>
-                                <p>Use accordions to organize multiple topics in a collapsible format, saving space while maintaining accessibility to all content.</p>
-                                <p><strong>Best for:</strong> FAQ sections, step-by-step tutorials, or topic-based content where users may want to focus on specific sections.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#topic2">
-                                <i class="bi bi-2-circle-fill me-2"></i> Topic 2: Core Concepts
-                            </button>
-                        </h2>
-                        <div id="topic2" class="accordion-collapse collapse" data-bs-parent="#topicsAccordion">
-                            <div class="accordion-body">
-                                <h5>Core Concept Explanation</h5>
-                                <p>Each accordion item can contain rich content including text, images, code, and nested components.</p>
-                                
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="card bg-light">
-                                            <div class="card-body">
-                                                <h6 class="card-title">Sub-concept A</h6>
-                                                <p class="card-text">Detailed explanation with examples.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card bg-light">
-                                            <div class="card-body">
-                                                <h6 class="card-title">Sub-concept B</h6>
-                                                <p class="card-text">Additional details and context.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#topic3">
-                                <i class="bi bi-3-circle-fill me-2"></i> Topic 3: Advanced Features
-                            </button>
-                        </h2>
-                        <div id="topic3" class="accordion-collapse collapse" data-bs-parent="#topicsAccordion">
-                            <div class="accordion-body">
-                                <h5>Advanced Implementation</h5>
-                                <div class="alert alert-success" role="alert">
-                                    <i class="bi bi-lightbulb"></i> <strong>Tip:</strong> Combine multiple Bootstrap components for rich, interactive tutorials.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card Layout for Features/Sections -->
-                <div class="row mb-4">
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-header bg-primary text-white">
-                                <i class="bi bi-book"></i> Documentation
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Comprehensive Docs</h5>
-                                <p class="card-text">Cards are perfect for presenting features, modules, or sections with consistent styling.</p>
-                                <a href="#" class="btn btn-outline-primary">Read More</a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                Updated: Jan 2026
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-header bg-success text-white">
-                                <i class="bi bi-code-slash"></i> Examples
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Code Samples</h5>
-                                <p class="card-text">Use cards to showcase different code examples or implementation approaches.</p>
-                                <a href="#" class="btn btn-outline-success">View Examples</a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                15+ examples
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <div class="card h-100">
-                            <div class="card-header bg-warning">
-                                <i class="bi bi-tools"></i> Tools
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Development Tools</h5>
-                                <p class="card-text">Highlight tools, utilities, or resources that complement your tutorial.</p>
-                                <a href="#" class="btn btn-outline-warning">Explore Tools</a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                Free & Open Source
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Form Elements for Interactive Content -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h4><i class="bi bi-ui-checks"></i> Interactive Form Elements</h4>
-                    </div>
-                    <div class="card-body">
-                        <p>Use forms to create interactive examples or configuration builders:</p>
-                        
-                        <form>
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="exampleInput" class="form-label">Text Input</label>
-                                    <input type="text" class="form-control" id="exampleInput" placeholder="Enter value...">
-                                    <div class="form-text">Use for user input or parameter configuration.</div>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="exampleSelect" class="form-label">Select Option</label>
-                                    <select class="form-select" id="exampleSelect">
-                                        <option selected>Choose an option...</option>
-                                        <option value="1">Option 1</option>
-                                        <option value="2">Option 2</option>
-                                        <option value="3">Option 3</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="exampleTextarea" class="form-label">Textarea</label>
-                                <textarea class="form-control" id="exampleTextarea" rows="3" placeholder="Paste code or configuration..."></textarea>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="check1" checked>
-                                    <label class="form-check-label" for="check1">
-                                        Enable feature 1
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="check2">
-                                    <label class="form-check-label" for="check2">
-                                        Enable feature 2
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="radioOptions" id="radio1" value="option1" checked>
-                                    <label class="form-check-label" for="radio1">Option A</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="radioOptions" id="radio2" value="option2">
-                                    <label class="form-check-label" for="radio2">Option B</label>
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="rangeInput" class="form-label">Range Input</label>
-                                <input type="range" class="form-range" id="rangeInput" min="0" max="100" value="50">
-                            </div>
-                            
-                            <button type="button" class="btn btn-primary">
-                                <i class="bi bi-check-circle"></i> Apply
-                            </button>
-                            <button type="reset" class="btn btn-secondary">
-                                <i class="bi bi-arrow-counterclockwise"></i> Reset
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Button Showcase -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h4><i class="bi bi-mouse"></i> Button Styles and Actions</h4>
-                    </div>
-                    <div class="card-body">
-                        <h5>Standard Buttons</h5>
-                        <p>Use buttons for CTAs, actions, and navigation:</p>
-                        <button type="button" class="btn btn-primary">Primary</button>
-                        <button type="button" class="btn btn-secondary">Secondary</button>
-                        <button type="button" class="btn btn-success">Success</button>
-                        <button type="button" class="btn btn-danger">Danger</button>
-                        <button type="button" class="btn btn-warning">Warning</button>
-                        <button type="button" class="btn btn-info">Info</button>
-                        <button type="button" class="btn btn-light">Light</button>
-                        <button type="button" class="btn btn-dark">Dark</button>
-                        
-                        <hr>
-                        
-                        <h5>Outline Buttons</h5>
-                        <button type="button" class="btn btn-outline-primary">Primary</button>
-                        <button type="button" class="btn btn-outline-secondary">Secondary</button>
-                        <button type="button" class="btn btn-outline-success">Success</button>
-                        
-                        <hr>
-                        
-                        <h5>Button Sizes & Groups</h5>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-outline-primary">
-                                <i class="bi bi-chevron-left"></i> Previous
-                            </button>
-                            <button type="button" class="btn btn-outline-primary">
-                                <i class="bi bi-house"></i> Home
-                            </button>
-                            <button type="button" class="btn btn-outline-primary">
-                                Next <i class="bi bi-chevron-right"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- List Groups -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h4><i class="bi bi-list-ul"></i> List Groups for Organized Content</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5>Steps/Checklist</h5>
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item list-group-item-action active">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1"><i class="bi bi-1-circle"></i> Setup Environment</h6>
-                                            <small class="text-white">Required</small>
-                                        </div>
-                                        <p class="mb-1">Install necessary tools and dependencies.</p>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-action">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1"><i class="bi bi-2-circle"></i> Configure Project</h6>
-                                            <small>5 mins</small>
-                                        </div>
-                                        <p class="mb-1">Set up configuration files and properties.</p>
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-action">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1"><i class="bi bi-3-circle"></i> Run Application</h6>
-                                            <small>2 mins</small>
-                                        </div>
-                                        <p class="mb-1">Execute and verify the application.</p>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <h5>Resources/Links</h5>
-                                <div class="list-group">
-                                    <a href="#" class="list-group-item list-group-item-action list-group-item-primary">
-                                        <i class="bi bi-github"></i> GitHub Repository
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-action list-group-item-success">
-                                        <i class="bi bi-file-earmark-text"></i> Official Documentation
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-action list-group-item-warning">
-                                        <i class="bi bi-stack-overflow"></i> Stack Overflow Questions
-                                    </a>
-                                    <a href="#" class="list-group-item list-group-item-action list-group-item-info">
-                                        <i class="bi bi-youtube"></i> Video Tutorials
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Alert Messages -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h4><i class="bi bi-exclamation-triangle"></i> Alert Messages for Important Info</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="alert alert-primary" role="alert">
-                            <i class="bi bi-info-circle-fill"></i> <strong>Info:</strong> General information or tips.
-                        </div>
-                        <div class="alert alert-success" role="alert">
-                            <i class="bi bi-check-circle-fill"></i> <strong>Success:</strong> Operation completed successfully!
-                        </div>
-                        <div class="alert alert-warning" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill"></i> <strong>Warning:</strong> Pay attention to this important note.
-                        </div>
-                        <div class="alert alert-danger" role="alert">
-                            <i class="bi bi-x-circle-fill"></i> <strong>Error:</strong> Critical issue that needs resolution.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Version History -->
-                <div id="version-history" class="card mb-4">
-                    <div class="card-header bg-info text-white">
-                        <h4><i class="bi bi-clock-history"></i> Version History & Changelog</h4>
-                    </div>
-                    <div class="card-body">
-                        <p class="lead">Track the historical journey and progress of this template.</p>
-                        
-                        <div class="accordion" id="versionHistoryAccordion">
-                            <!-- Version 1.0.0 -->
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#version100">
-                                        <span class="badge bg-success me-2">Current</span>
-                                        <strong>Version 1.0.0 - Initial Release</strong>
-                                        <small class="ms-2 text-muted">January 16, 2026</small>
-                                    </button>
-                                </h2>
-                                <div id="version100" class="accordion-collapse collapse show" data-bs-parent="#versionHistoryAccordion">
-                                    <div class="accordion-body">
-                                        <h5>Overview</h5>
-                                        <p>First complete release of the comprehensive Bootstrap technical tutorial template with all major components and features.</p>
-                                        
-                                        <h5>Features Implemented</h5>
-                                        
-                                        <h6 class="text-primary mt-3"><i class="bi bi-layout-text-sidebar"></i> Navigation & Layout</h6>
-                                        <ul class="list-unstyled">
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Sticky navigation bar with brand, links, dropdown, and search</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Off-canvas sidebar for table of contents</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Responsive mobile-first design</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Fixed position theme controls</li>
-                                        </ul>
-                                        
-                                        <h6 class="text-primary mt-3"><i class="bi bi-palette"></i> Theme System</h6>
-                                        <ul class="list-unstyled">
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Dark/Light theme toggle with smooth transitions</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Three color flavors (Blue, Green, Purple) for light mode</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> CSS custom properties for easy theming</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Bootstrap 5.3 native dark mode support</li>
-                                        </ul>
-                                        
-                                        <h6 class="text-primary mt-3"><i class="bi bi-layers"></i> Content Components</h6>
-                                        <ul class="list-unstyled">
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Jumbotron/Hero section with gradient backgrounds</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Carousel for visual content showcase</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Tab groups (Overview, Diagrams, Code, Output)</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Accordion for collapsible topics</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Card layouts (3-column grid)</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> List groups (steps/checklist, resources)</li>
-                                        </ul>
-                                        
-                                        <h6 class="text-primary mt-3"><i class="bi bi-code-square"></i> Code & Technical Features</h6>
-                                        <ul class="list-unstyled">
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Prism.js syntax highlighting (200+ languages)</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Copy-to-clipboard functionality for code blocks</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Console output display with dark terminal theme</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> ASCII diagram support with monospace styling</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> PlantUML syntax examples</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Configuration file examples</li>
-                                        </ul>
-                                        
-                                        <h6 class="text-primary mt-3"><i class="bi bi-ui-checks"></i> Interactive Elements</h6>
-                                        <ul class="list-unstyled">
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Form elements (text, select, textarea, checkbox, radio, range)</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Button showcase (all Bootstrap variants)</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Alert messages (info, success, warning, danger)</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Toast notifications</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Tooltips with hover support</li>
-                                            <li><i class="bi bi-check-circle-fill text-success"></i> Popovers with click interaction</li>
-                                        </ul>
-                                        
-                                        <h5 class="mt-4">Technical Stack</h5>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <ul>
-                                                    <li><strong>Bootstrap:</strong> 5.3.2</li>
-                                                    <li><strong>Bootstrap Icons:</strong> 1.11.3</li>
-                                                    <li><strong>Prism.js:</strong> 1.29.0</li>
-                                                    <li><strong>JavaScript:</strong> Vanilla (no dependencies)</li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <ul>
-                                                    <li><strong>File Size:</strong> ~40KB uncompressed</li>
-                                                    <li><strong>Components:</strong> 14 major</li>
-                                                    <li><strong>Lines of Code:</strong> ~900</li>
-                                                    <li><strong>CDN Resources:</strong> 4</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        
-                                        <h5 class="mt-4">Known Limitations</h5>
-                                        <div class="alert alert-warning">
-                                            <ul class="mb-0">
-                                                <li><strong>Color Flavors:</strong> Only work in light mode (design choice)</li>
-                                                <li><strong>PlantUML:</strong> Requires external rendering (not auto-generated)</li>
-                                                <li><strong>Code Copy:</strong> Requires HTTPS or localhost for clipboard API</li>
-                                                <li><strong>Theme Persistence:</strong> Session-only (no localStorage implementation)</li>
-                                            </ul>
-                                        </div>
-                                        
-                                        <h5 class="mt-4">Future Enhancement Ideas</h5>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <ul>
-                                                    <li>LocalStorage theme preference persistence</li>
-                                                    <li>More color flavor options</li>
-                                                    <li>Dark mode color flavors</li>
-                                                    <li>Print stylesheet optimization</li>
-                                                    <li>Search functionality implementation</li>
-                                                    <li>Progress indicator for long tutorials</li>
-                                                </ul>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <ul>
-                                                    <li>Multi-language code tabs</li>
-                                                    <li>Automatic PlantUML rendering</li>
-                                                    <li>Breadcrumb navigation</li>
-                                                    <li>Back-to-top button</li>
-                                                    <li>Reading time estimates</li>
-                                                    <li>Export to PDF functionality</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Future Versions Placeholder -->
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#futureVersions">
-                                        <i class="bi bi-plus-circle me-2"></i> Future Versions
-                                    </button>
-                                </h2>
-                                <div id="futureVersions" class="accordion-collapse collapse" data-bs-parent="#versionHistoryAccordion">
-                                    <div class="accordion-body">
-                                        <h5>Semantic Versioning</h5>
-                                        <p>This template follows Semantic Versioning (SemVer): <strong>MAJOR.MINOR.PATCH</strong></p>
-                                        
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="card bg-light">
-                                                    <div class="card-body">
-                                                        <h6 class="card-title text-danger"><i class="bi bi-exclamation-octagon"></i> MAJOR (X.0.0)</h6>
-                                                        <p class="card-text small">Breaking changes, major redesign</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="card bg-light">
-                                                    <div class="card-body">
-                                                        <h6 class="card-title text-primary"><i class="bi bi-plus-square"></i> MINOR (0.X.0)</h6>
-                                                        <p class="card-text small">New features, backward compatible</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="card bg-light">
-                                                    <div class="card-body">
-                                                        <h6 class="card-title text-success"><i class="bi bi-wrench"></i> PATCH (0.0.X)</h6>
-                                                        <p class="card-text small">Bug fixes, minor improvements</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <h5 class="mt-4">Roadmap</h5>
-                                        <div class="list-group">
-                                            <div class="list-group-item">
-                                                <h6 class="mb-1"><i class="bi bi-speedometer2"></i> Short Term (v1.x)</h6>
-                                                <p class="mb-1 small">Gather user feedback, fix discovered bugs, minor enhancements</p>
-                                            </div>
-                                            <div class="list-group-item">
-                                                <h6 class="mb-1"><i class="bi bi-graph-up-arrow"></i> Medium Term (v2.x)</h6>
-                                                <p class="mb-1 small">Bootstrap 6 migration (when available), enhanced theme system, more interactive components</p>
-                                            </div>
-                                            <div class="list-group-item">
-                                                <h6 class="mb-1"><i class="bi bi-rocket-takeoff"></i> Long Term (v3.x)</h6>
-                                                <p class="mb-1 small">Framework-agnostic version, component library separation, template generator tool</p>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="alert alert-info mt-4">
-                                            <i class="bi bi-info-circle"></i> <strong>Note:</strong> New versions will be added to this section as they are released. Check back for updates!
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-4">
-                            <span class="badge bg-secondary">Status: Active Development</span>
-                            <span class="badge bg-info">Current: v1.0.0</span>
-                            <span class="badge bg-success">Last Updated: January 16, 2026</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer -->
-                <footer class="mt-5 mb-3 text-center text-muted">
-                    <hr>
-                    <p><i class="bi bi-c-circle"></i> 2026 Technical Tutorial Template | Built with Bootstrap 5</p>
-                    <p>
-                        <a href="#" class="text-decoration-none me-3"><i class="bi bi-github"></i> GitHub</a>
-                        <a href="#" class="text-decoration-none me-3"><i class="bi bi-twitter"></i> Twitter</a>
-                        <a href="#" class="text-decoration-none"><i class="bi bi-envelope"></i> Contact</a>
-                    </p>
-                </footer>
-            </div>
+  <div class="row g-4">
+    <!-- NEW REGIME -->
+    <div class="col-lg-6">
+      <div class="tax-card mb-3" style="padding:1rem;">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <strong style="font-size:1.1rem;color:var(--gold)">🆕 NEW TAX REGIME</strong>
+          <span class="badge-custom badge-green">DEFAULT REGIME</span>
         </div>
+        <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem">Lower rates, minimal deductions, higher rebate. Effective from FY 2023-24 onwards.</div>
+        <table class="tax-table w-100">
+          <thead>
+            <tr>
+              <th>Income Slab</th>
+              <th>Tax Rate</th>
+              <th>Tax on Slab</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>₹0 – ₹4,00,000</td><td class="slab-nil">NIL</td><td class="slab-nil">₹0</td></tr>
+            <tr><td>₹4,00,001 – ₹8,00,000</td><td class="slab-low">5%</td><td class="slab-low">₹20,000</td></tr>
+            <tr><td>₹8,00,001 – ₹12,00,000</td><td class="slab-low">10%</td><td class="slab-low">₹40,000</td></tr>
+            <tr><td>₹12,00,001 – ₹16,00,000</td><td class="slab-med">15%</td><td class="slab-med">₹60,000</td></tr>
+            <tr><td>₹16,00,001 – ₹20,00,000</td><td class="slab-med">20%</td><td class="slab-med">₹80,000</td></tr>
+            <tr><td>₹20,00,001 – ₹24,00,000</td><td class="slab-high">25%</td><td class="slab-high">₹1,00,000</td></tr>
+            <tr><td>Above ₹24,00,000</td><td class="slab-max">30%</td><td class="slab-max">30% of excess</td></tr>
+          </tbody>
+        </table>
+        <div class="mt-2 p-2" style="background:rgba(34,197,94,0.1);border-radius:6px;font-size:0.82rem;">
+          ✅ <strong>Section 87A:</strong> Income ≤ ₹12L → 100% rebate (max ₹60,000) — Zero tax!<br>
+          ✅ <strong>Std Deduction:</strong> ₹75,000 for salaried/pensioners → effective nil tax up to ₹12.75L
+        </div>
+      </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                <strong class="me-auto">Success</strong>
-                <small>Just now</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-            </div>
-            <div class="toast-body">
-                Your action was completed successfully!
-            </div>
+    <!-- OLD REGIME -->
+    <div class="col-lg-6">
+      <div class="tax-card mb-3" style="padding:1rem;">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <strong style="font-size:1.1rem;color:var(--accent-cyan)">📜 OLD TAX REGIME</strong>
+          <span class="badge-custom badge-cyan">OPT-IN ONLY</span>
         </div>
+        <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem">Higher rates but rich with deductions — great if you invest significantly.</div>
+        <table class="tax-table w-100">
+          <thead>
+            <tr>
+              <th>Slab</th>
+              <th>&lt;60 yrs</th>
+              <th>60-80 yrs</th>
+              <th>&gt;80 yrs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Up to ₹2.5L</td><td class="slab-nil">NIL</td><td class="slab-nil">NIL</td><td class="slab-nil">NIL</td></tr>
+            <tr><td>₹2.5L–₹3L</td><td class="slab-low">5%</td><td class="slab-nil">NIL</td><td class="slab-nil">NIL</td></tr>
+            <tr><td>₹3L–₹5L</td><td class="slab-low">5%</td><td class="slab-low">5%</td><td class="slab-nil">NIL</td></tr>
+            <tr><td>₹5L–₹10L</td><td class="slab-med">20%</td><td class="slab-med">20%</td><td class="slab-med">20%</td></tr>
+            <tr><td>Above ₹10L</td><td class="slab-max">30%</td><td class="slab-max">30%</td><td class="slab-max">30%</td></tr>
+          </tbody>
+        </table>
+        <div class="mt-2 p-2" style="background:rgba(0,212,255,0.08);border-radius:6px;font-size:0.82rem;">
+          ✅ <strong>Section 87A:</strong> Income ≤ ₹5L → 100% rebate (max ₹12,500)<br>
+          ✅ <strong>Std Deduction:</strong> ₹50,000 for salaried | Rich deductions via 80C, 80D, HRA, LTA
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SURCHARGE TABLE -->
+  <div class="mt-3">
+    <h6 style="color:var(--gold);font-family:'Orbitron',monospace;font-size:0.85rem;letter-spacing:1px">⬆️ SURCHARGE ON INCOME TAX</h6>
+    <table class="tax-table w-100">
+      <thead><tr><th>Total Income</th><th>Surcharge Rate</th><th>Old Regime</th><th>New Regime</th></tr></thead>
+      <tbody>
+        <tr><td>Up to ₹50 lakh</td><td class="slab-nil">NIL</td><td class="slab-nil">NIL</td><td class="slab-nil">NIL</td></tr>
+        <tr><td>₹50L – ₹1 Crore</td><td class="slab-low">10%</td><td class="slab-low">10%</td><td class="slab-low">10%</td></tr>
+        <tr><td>₹1Cr – ₹2Cr</td><td class="slab-med">15%</td><td class="slab-med">15%</td><td class="slab-med">15%</td></tr>
+        <tr><td>₹2Cr – ₹5Cr</td><td class="slab-high">25%</td><td class="slab-high">25%</td><td class="slab-high">25%</td></tr>
+        <tr><td>Above ₹5 Crore</td><td class="slab-max">37% / 25%</td><td class="slab-max">37%</td><td class="slab-high">25% (capped)</td></tr>
+      </tbody>
+    </table>
+    <div class="mt-2" style="font-size:0.82rem;color:var(--text-secondary)">💡 + 4% Health & Education Cess on (Tax + Surcharge). Marginal relief applicable near surcharge thresholds.</div>
+  </div>
+</div>
+
+<!-- ===== ASCII TAX FLOW ===== -->
+<div class="section-block">
+  <div class="section-title"><span class="section-icon">🔄</span>HOW YOUR TAX IS COMPUTED</div>
+  <div class="ascii-box">
+<span class="white">  GROSS SALARY / TOTAL INCOME</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 1:</span> Subtract Exemptions (HRA, LTA, Leave Encashment)       <span class="cyan">│</span>
+  <span class="cyan">│</span>          [Only in OLD REGIME — Not allowed in NEW REGIME]       <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 2:</span> Standard Deduction                                     <span class="cyan">│</span>
+  <span class="cyan">│</span>          OLD REGIME: ₹50,000  │  NEW REGIME: ₹75,000           <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 3:</span> Chapter VI-A Deductions                               <span class="cyan">│</span>
+  <span class="cyan">│</span>          [80C max ₹1.5L + 80D + 80CCD(1B) + 24(b) etc.]       <span class="cyan">│</span>
+  <span class="cyan">│</span>          ❌ NOT ALLOWED in New Regime (except 80CCD emp)       <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="white">    NET TAXABLE INCOME</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 4:</span> Apply Slab Rates → Compute Raw Tax                    <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 5:</span> Sec 87A Rebate                                         <span class="cyan">│</span>
+  <span class="cyan">│</span>          OLD: ₹12,500 if income ≤ ₹5L                           <span class="cyan">│</span>
+  <span class="cyan">│</span>          NEW: ₹60,000 if income ≤ ₹12L                          <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 6:</span> Add Surcharge (if income &gt; ₹50L)                      <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="cyan">┌─────────────────────────────────────────────────────────────┐</span>
+  <span class="cyan">│</span>  <span class="gold">STEP 7:</span> Add 4% Health &amp; Education Cess                        <span class="cyan">│</span>
+  <span class="cyan">└─────────────────────────────────────────────────────────────┘</span>
+         <span class="saffron">│</span>
+         <span class="saffron">▼</span>
+  <span class="white">  GROSS TAX PAYABLE — Minus TDS/TCS/Advance Tax = NET TAX DUE</span>
+  </div>
+</div>
+
+<!-- ===== REGIME COMPARISON ===== -->
+<div class="section-block" id="regimes">
+  <div class="section-title"><span class="section-icon">⚖️</span>OLD vs NEW — WHICH IS BETTER?</div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="tax-card" style="border-color:var(--accent-cyan)">
+        <div style="color:var(--accent-cyan);font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:1rem">📜 OLD REGIME — CHOOSE IF YOU HAVE:</div>
+        <div class="pro-item">Large 80C investments (ELSS, PPF, EPF etc.)</div>
+        <div class="pro-item">Home loan interest deduction (u/s 24b) — ₹2L</div>
+        <div class="pro-item">HRA exemption (rent paid)</div>
+        <div class="pro-item">Health insurance premiums (family + parents)</div>
+        <div class="pro-item">NPS additional contribution ₹50K (80CCD 1B)</div>
+        <div class="con-item">Complex filing, more paperwork</div>
+        <div class="con-item">Must actively invest to realize savings</div>
+        <div class="mt-3 p-2" style="background:rgba(0,212,255,0.08);border-radius:6px;font-size:0.82rem;">
+          💡 <strong>Breakeven Rule:</strong> Old regime wins if your deductions > ~₹3.75L (for ~₹15L salary)
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="tax-card" style="border-color:var(--green-light)">
+        <div style="color:var(--green-light);font-family:'Orbitron',monospace;font-size:0.9rem;margin-bottom:1rem">🆕 NEW REGIME — CHOOSE IF YOU HAVE:</div>
+        <div class="pro-item">Fewer investments or just starting out</div>
+        <div class="pro-item">No home loan, no HRA (company quarter/WFH)</div>
+        <div class="pro-item">Income ≤ ₹12.75L → ZERO TAX!</div>
+        <div class="pro-item">Simpler filing, no paperwork</div>
+        <div class="pro-item">Higher take-home cash flexibility</div>
+        <div class="con-item">No 80C, no HRA, no home loan deduction</div>
+        <div class="con-item">Less incentive to invest for tax savings</div>
+        <div class="mt-3 p-2" style="background:rgba(34,197,94,0.08);border-radius:6px;font-size:0.82rem;">
+          💡 <strong>Default regime</strong> since FY 2023-24. Can switch every year (salaried employees).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXAMPLE COMPARISON TABLE -->
+  <h6 style="color:var(--gold);font-family:'Orbitron',monospace;font-size:0.85rem;letter-spacing:1px">📌 EXAMPLE: ₹15 LAKH SALARY — OLD vs NEW COMPARISON</h6>
+  <table class="tax-table w-100">
+    <thead>
+      <tr><th>Component</th><th>Old Regime</th><th>New Regime</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Gross Salary</td><td>₹15,00,000</td><td>₹15,00,000</td></tr>
+      <tr><td>Standard Deduction</td><td>- ₹50,000</td><td>- ₹75,000</td></tr>
+      <tr><td>HRA Exemption</td><td>- ₹1,80,000</td><td>❌ NIL</td></tr>
+      <tr><td>80C (ELSS/PPF/EPF)</td><td>- ₹1,50,000</td><td>❌ NIL</td></tr>
+      <tr><td>80D (Health Insurance)</td><td>- ₹50,000</td><td>❌ NIL</td></tr>
+      <tr><td>80CCD(1B) — NPS</td><td>- ₹50,000</td><td>❌ NIL</td></tr>
+      <tr><td><strong>Taxable Income</strong></td><td><strong>₹10,20,000</strong></td><td><strong>₹14,25,000</strong></td></tr>
+      <tr><td>Tax on Slabs</td><td>₹1,17,000</td><td>₹1,36,875</td></tr>
+      <tr><td>+ 4% Cess</td><td>₹4,680</td><td>₹5,475</td></tr>
+      <tr><td style="color:var(--saffron);font-weight:700"><strong>TOTAL TAX</strong></td><td style="color:var(--green-light);font-weight:700"><strong>₹1,21,680</strong></td><td style="color:var(--saffron);font-weight:700"><strong>₹1,42,350</strong></td></tr>
+      <tr><td style="color:var(--gold)">Old Regime Saves</td><td colspan="2" style="color:var(--gold);font-weight:700">₹20,670 MORE saved with Old Regime (if you make these investments)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== FBP ===== -->
+<div class="section-block" id="fbp">
+  <div class="section-title"><span class="section-icon">🏢</span>FLEXIBLE BENEFIT PLAN (FBP)</div>
+  <div class="row g-3">
+    <div class="col-lg-8">
+      <div class="tax-card" style="padding:1rem">
+        <div style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:1rem">FBP lets salaried employees restructure their CTC to maximize tax-free allowances. These are <strong>ONLY valid in Old Regime</strong>.</div>
+        <table class="tax-table w-100">
+          <thead><tr><th>FBP Component</th><th>Max Exempt Amount</th><th>Section</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>🏠 <strong>HRA (House Rent Allowance)</strong></td>
+              <td class="slab-low">Min of: 50%/40% of Basic, Actual HRA, Rent - 10% of Basic</td>
+              <td><span class="badge-custom badge-cyan">Sec 10(13A)</span></td>
+              <td>Metro = 50%, Non-Metro = 40%</td>
+            </tr>
+            <tr>
+              <td>✈️ <strong>LTA (Leave Travel Allowance)</strong></td>
+              <td class="slab-low">Actual travel cost (domestic)</td>
+              <td><span class="badge-custom badge-cyan">Sec 10(5)</span></td>
+              <td>2 journeys in 4-yr block</td>
+            </tr>
+            <tr>
+              <td>🍽️ <strong>Meal Vouchers</strong></td>
+              <td class="slab-low">₹50/meal × working days</td>
+              <td><span class="badge-custom badge-cyan">Sec 17(2)</span></td>
+              <td>~₹26,400/yr tax-free</td>
+            </tr>
+            <tr>
+              <td>📱 <strong>Phone & Internet Reimbursement</strong></td>
+              <td class="slab-low">Actual bills (company policy)</td>
+              <td><span class="badge-custom badge-cyan">Rule 3(7)</span></td>
+              <td>Receipts required</td>
+            </tr>
+            <tr>
+              <td>📚 <strong>Books & Periodicals</strong></td>
+              <td class="slab-low">Actual (up to company limit)</td>
+              <td><span class="badge-custom badge-cyan">Rule 3(7)(ix)</span></td>
+              <td>Professional books only</td>
+            </tr>
+            <tr>
+              <td>🚗 <strong>Car Maintenance / Fuel</strong></td>
+              <td class="slab-low">₹1,800/mo (up to 1600cc)</td>
+              <td><span class="badge-custom badge-cyan">Rule 3(2)</span></td>
+              <td>Company-owned car benefit</td>
+            </tr>
+            <tr>
+              <td>👶 <strong>Children Education Allowance</strong></td>
+              <td class="slab-low">₹100/child/month (max 2)</td>
+              <td><span class="badge-custom badge-cyan">Sec 10(14)</span></td>
+              <td>Max ₹2,400/year</td>
+            </tr>
+            <tr>
+              <td>🎓 <strong>Uniform Allowance</strong></td>
+              <td class="slab-low">Actual cost</td>
+              <td><span class="badge-custom badge-cyan">Sec 10(14)</span></td>
+              <td>Prescribed uniform only</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="tax-card gold-top">
+        <div style="color:var(--gold);font-weight:700;margin-bottom:0.8rem">💡 FBP STRATEGY TIPS</div>
+        <div class="pro-item">Maximize HRA if paying rent — biggest tax saver</div>
+        <div class="pro-item">Use LTA in block years (2023-26 block)</div>
+        <div class="pro-item">Opt for meal cards — easy ₹20K+ savings</div>
+        <div class="pro-item">Claim phone/internet reimbursements</div>
+        <div class="con-item">FBP benefits vanish if you pick New Regime</div>
+        <div class="con-item">Must submit bills/proofs on time</div>
+        <div class="mt-3" style="background:rgba(244,196,48,0.08);border-radius:6px;padding:0.8rem;font-size:0.82rem;">
+          <strong style="color:var(--gold)">Example:</strong> If Basic = ₹6L, you pay ₹20K/month rent in Bangalore (Metro):<br>
+          HRA Exempt = Min of (₹3L, HRA received, ₹2.4L-₹60K)<br>
+          <span style="color:var(--green-light)">≈ ₹1,80,000 tax-free per year!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== INVESTMENT OPTIONS ===== -->
+<div class="section-block" id="investments">
+  <div class="section-title"><span class="section-icon">💰</span>SAVINGS & INVESTMENT OPTIONS</div>
+
+  <div class="accordion accordion-custom" id="investAccordion">
+
+    <!-- EPF / PF -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#inv1">
+          🏦 EPF / PF — Employee Provident Fund &nbsp;<span class="badge-custom badge-green ms-2">Sec 80C</span>
+        </button>
+      </h2>
+      <div id="inv1" class="accordion-collapse collapse show" data-bs-parent="#investAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div style="font-size:0.9rem">
+                <strong style="color:var(--gold)">How it works:</strong> 12% of Basic+DA deducted from salary. Employer contributes equal amount. Currently earns <span style="color:var(--green-light)"><strong>8.25% p.a.</strong></span> (FY 2024-25).
+                <br><br>Employee contribution qualifies under 80C (up to ₹1.5L total). Withdrawals tax-free after 5 continuous years.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="pro-con-box">
+                <div class="pro-item">Guaranteed 8.25% — beats FDs!</div>
+                <div class="pro-item">EEE: Exempt-Exempt-Exempt</div>
+                <div class="pro-item">Employer match is FREE money</div>
+                <div class="pro-item">Disciplined forced savings</div>
+                <div class="con-item">Locked till age 58 (with exceptions)</div>
+                <div class="con-item">Low liquidity</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="ascii-box" style="font-size:0.68rem">
+<span class="gold">EXAMPLE: Basic Salary = ₹50,000/month</span>
+<span class="white">Employee PF  = 12% × ₹50,000 = ₹6,000/month  → ₹72,000/year (goes to 80C)</span>
+<span class="green">Employer PF  = 12% × ₹50,000 = ₹6,000/month  → FREE! (₹3,67/mo to EPS + rest to PF)</span>
+<span class="cyan">Annual Corpus Growth @ 8.25%:</span>
+  Year 1:  ₹1,44,000 contributed → ₹1,55,940
+  Year 5:  Total corpus ≈ ₹8,60,000 (employee + employer, compounded)
+  Year 20: Total corpus ≈ ₹72,00,000+ (at 8.25% compounding)</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Version Badge -->
-    <span class="badge bg-secondary version-badge" data-bs-toggle="tooltip" title="Template Version">v1.0.0</span>
+    <!-- VPF -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inv2">
+          💪 VPF — Voluntary Provident Fund &nbsp;<span class="badge-custom badge-green ms-2">Sec 80C</span>
+        </button>
+      </h2>
+      <div id="inv2" class="accordion-collapse collapse" data-bs-parent="#investAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div style="font-size:0.9rem">
+                <strong style="color:var(--gold)">How it works:</strong> Voluntary contribution OVER & ABOVE mandatory 12% — up to 100% of Basic+DA. Same 8.25% interest as EPF. Best guaranteed return instrument in India.
+                <br><br>⚠️ Interest &gt; ₹2.5L/year (employee contribution) is taxable from FY 2021-22.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="pro-con-box">
+                <div class="pro-item">Same 8.25% — best guaranteed rate</div>
+                <div class="pro-item">Counts under 80C (up to ₹1.5L)</div>
+                <div class="pro-item">No market risk — government backed</div>
+                <div class="con-item">Interest taxable if contribution &gt; ₹2.5L/yr</div>
+                <div class="con-item">Illiquid — withdrawal rules apply</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Prism.js for syntax highlighting -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <!-- PPF -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inv3">
+          🏛️ PPF — Public Provident Fund &nbsp;<span class="badge-custom badge-green ms-2">Sec 80C | EEE</span>
+        </button>
+      </h2>
+      <div id="inv3" class="accordion-collapse collapse" data-bs-parent="#investAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div style="font-size:0.9rem">
+                <strong style="color:var(--gold)">How it works:</strong> Government scheme, 15-year lock-in (extendable in 5-yr blocks). Current interest: <strong style="color:var(--green-light)">7.1% p.a.</strong> compounded annually. Max ₹1.5L/year. EEE — completely tax-free.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="pro-con-box">
+                <div class="pro-item">EEE: Sovereign guarantee, zero risk</div>
+                <div class="pro-item">Interest & maturity completely tax-free</div>
+                <div class="pro-item">Partial withdrawal from Year 7</div>
+                <div class="pro-item">Loan against PPF (Year 3-6)</div>
+                <div class="con-item">15-year lock-in (illiquid)</div>
+                <div class="con-item">Max ₹1.5L/year limit</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="ascii-box" style="font-size:0.68rem">
+<span class="gold">PPF POWER: ₹1,50,000/year for 15 years @ 7.1%</span>
+  Year 5:   Corpus ≈ ₹8,80,000
+  Year 10:  Corpus ≈ ₹21,00,000
+  Year 15:  Corpus ≈ ₹40,68,000  ← <span class="green">ENTIRELY TAX-FREE!</span>
+  Year 20:  Corpus ≈ ₹66,58,000  (extended for 5 more years)
+  Year 25:  Corpus ≈ ₹1,03,08,000 (10 years extension)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        // Initialize tooltips
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    <!-- NPS -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inv4">
+          🎯 NPS — National Pension System &nbsp;<span class="badge-custom badge-saffron ms-2">80C + 80CCD(1B) + 80CCD(2)</span>
+        </button>
+      </h2>
+      <div id="inv4" class="accordion-collapse collapse" data-bs-parent="#investAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div style="font-size:0.9rem">
+                <strong style="color:var(--gold)">Three deduction layers!</strong><br>
+                • <strong>80CCD(1):</strong> Employee contribution → within 80C ₹1.5L limit<br>
+                • <strong>80CCD(1B):</strong> Extra ₹50,000 OVER & ABOVE 80C limit<br>
+                • <strong>80CCD(2):</strong> Employer's NPS contribution (up to 10% of Basic) — allowed even in New Regime!<br><br>
+                Market-linked returns (8-12% historically). At 60: 40% corpus as lump-sum tax-free; 60% must buy annuity.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="pro-con-box">
+                <div class="pro-item">Extra ₹50K deduction beyond 80C ceiling</div>
+                <div class="pro-item">80CCD(2) works in NEW REGIME too!</div>
+                <div class="pro-item">Market-linked — potential 10-12% returns</div>
+                <div class="pro-item">Low-cost fund management</div>
+                <div class="con-item">Locked till 60 (some partial withdrawal allowed)</div>
+                <div class="con-item">60% corpus must buy annuity (taxable income)</div>
+                <div class="con-item">EET — Exit partially taxed</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="ascii-box" style="font-size:0.68rem">
+<span class="gold">NPS TAX SAVING POWER (Old Regime, ₹15L salary, 30% bracket):</span>
+  80C contribution (₹1.5L)     → Tax saved = ₹46,800
+  80CCD(1B) extra (₹50,000)   → Tax saved = ₹15,600 <span class="green">← BONUS SAVING!</span>
+  Employer NPS 10% of Basic    → Tax saved = ₹18,720 <span class="cyan">← Works in New Regime too!</span>
+  ─────────────────────────────────────────────────────
+  TOTAL NPS TAX BENEFIT        → <span class="saffron">₹81,120 per year!</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        // Initialize popovers
-        const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-        const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    <!-- APY -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inv5">
+          👴 APY — Atal Pension Yojana &nbsp;<span class="badge-custom badge-cyan ms-2">Sec 80CCD</span>
+        </button>
+      </h2>
+      <div id="inv5" class="accordion-collapse collapse" data-bs-parent="#investAccordion">
+        <div class="accordion-body">
+          <div style="font-size:0.9rem">
+            <strong style="color:var(--gold)">Target:</strong> Guaranteed pension of ₹1,000–₹5,000/month at age 60. For Indian citizens aged 18-40. Contribution varies based on age and pension amount chosen. Government co-contributes 50% (max ₹1,000/year) for eligible individuals. Qualifies under 80CCD (within 80C limit).<br><br>
+            <strong style="color:var(--saffron)">Best for:</strong> Junior employees starting career, gig workers, unorganized sector workers who lack EPF.
+          </div>
+          <div class="row g-2 mt-2">
+            <div class="col"><div class="pro-con-box"><div class="pro-item">Guaranteed pension — inflation adjusted</div><div class="pro-item">Government backed</div><div class="con-item">Low pension ceiling (max ₹5K/month)</div><div class="con-item">Not suitable as primary retirement plan</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const htmlElement = document.documentElement;
-        
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = htmlElement.getAttribute('data-bs-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            htmlElement.setAttribute('data-bs-theme', newTheme);
-            
-            const icon = themeToggle.querySelector('i');
-            if (newTheme === 'dark') {
-                icon.classList.remove('bi-moon-stars');
-                icon.classList.add('bi-sun');
-            } else {
-                icon.classList.remove('bi-sun');
-                icon.classList.add('bi-moon-stars');
-            }
-        });
+    <!-- SSY -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inv6">
+          👧 SSY — Sukanya Samriddhi Yojana &nbsp;<span class="badge-custom badge-green ms-2">Sec 80C | EEE</span>
+        </button>
+      </h2>
+      <div id="inv6" class="accordion-collapse collapse" data-bs-parent="#investAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div style="font-size:0.9rem">
+                <strong style="color:var(--gold)">For parents of girl child</strong> (up to age 10). Interest: <strong style="color:var(--green-light)">8.2% p.a.</strong> — highest among small savings. Min ₹250/year, Max ₹1.5L/year. Account matures when girl turns 21 (or on marriage after 18). Withdrawals from age 18 for education.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="pro-con-box">
+                <div class="pro-item">8.2% — Highest guaranteed rate in India</div>
+                <div class="pro-item">EEE — Completely tax-free</div>
+                <div class="pro-item">Government of India backed</div>
+                <div class="con-item">Only for girl child — specific eligibility</div>
+                <div class="con-item">21-year lock-in period</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        // Color Flavor Toggle
-        function setColorFlavor(flavor) {
-            htmlElement.setAttribute('data-color-flavor', flavor);
+    <!-- ELSS -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inv7">
+          📈 ELSS — Equity Linked Savings Scheme &nbsp;<span class="badge-custom badge-saffron ms-2">Sec 80C | Market-Linked</span>
+        </button>
+      </h2>
+      <div id="inv7" class="accordion-collapse collapse" data-bs-parent="#investAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div style="font-size:0.9rem">
+                <strong style="color:var(--gold)">Mutual funds with tax benefits!</strong> Shortest lock-in in 80C — just <strong style="color:var(--saffron)">3 years</strong>. Market-linked returns (historically 12-15% CAGR long-term). LTCG &gt; ₹1.25L taxed @ 12.5%. Great for wealth creation + tax saving.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="pro-con-box">
+                <div class="pro-item">Shortest 80C lock-in (3 years)</div>
+                <div class="pro-item">Potential 12-15% long-term returns</div>
+                <div class="pro-item">SIP possible — ₹500/month</div>
+                <div class="pro-item">Best wealth-creating 80C option</div>
+                <div class="con-item">Market risk — capital not guaranteed</div>
+                <div class="con-item">LTCG &gt; ₹1.25L taxed @ 12.5%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Life Insurance -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inv8">
+          🛡️ Life Insurance (Term/ULIP/Traditional) &nbsp;<span class="badge-custom badge-cyan ms-2">Sec 80C + Sec 10(10D)</span>
+        </button>
+      </h2>
+      <div id="inv8" class="accordion-collapse collapse" data-bs-parent="#investAccordion">
+        <div class="accordion-body">
+          <div class="row g-3">
+            <div class="col-md-12">
+              <table class="tax-table w-100">
+                <thead><tr><th>Type</th><th>Purpose</th><th>Tax Benefit</th><th>Returns</th><th>Verdict</th></tr></thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Pure Term Plan</strong></td>
+                    <td>Life cover only</td>
+                    <td>80C (premium) + 10(10D) maturity</td>
+                    <td class="slab-nil">NIL (death payout only)</td>
+                    <td><span class="badge-custom badge-green">✅ MUST HAVE</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>ULIP</strong></td>
+                    <td>Insurance + Investment</td>
+                    <td>80C + 10(10D)*</td>
+                    <td class="slab-med">Market-linked 8-12%</td>
+                    <td><span class="badge-custom badge-gold">⚠️ Only if held 5yr+</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Endowment / LIC</strong></td>
+                    <td>Insurance + Savings</td>
+                    <td>80C + 10(10D)</td>
+                    <td class="slab-low">4-6% (poor returns)</td>
+                    <td><span class="badge-custom badge-red">❌ Avoid for returns</span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="mt-2" style="font-size:0.82rem;color:var(--text-secondary)">
+                * 10(10D) maturity exemption: If annual premium &gt; ₹5L (ULIP) or &gt; 10% of sum assured (others), maturity is TAXABLE from FY2021-22. Pure term death claim always tax-free.
+                <br><br><strong style="color:var(--saffron)">Golden Rule:</strong> Keep insurance and investment SEPARATE. Buy ₹1Cr+ term plan (cheap, ~₹8-12K/year for 30yr old) + invest rest in mutual funds.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end accordion -->
+</div>
+
+<!-- ===== SECTION 80C, 80D, etc. ===== -->
+<div class="section-block" id="80c">
+  <div class="section-title"><span class="section-icon">📋</span>TAX DEDUCTION SECTIONS — COMPLETE GUIDE</div>
+
+  <!-- 80C -->
+  <h6 style="color:var(--saffron);font-family:'Orbitron',monospace;font-size:0.9rem;letter-spacing:1px;margin-bottom:1rem">📦 SECTION 80C — MAX LIMIT ₹1,50,000/YEAR</h6>
+  <div class="tax-card mb-4" style="padding:1rem">
+    <div class="row g-2">
+      <div class="col-md-4">
+        <div style="font-size:0.85rem"><strong style="color:var(--gold)">Investments:</strong></div>
+        <div class="invest-row"><span class="invest-icon">🏦</span><div><div class="invest-name">EPF / VPF</div><div class="invest-section">Sec 80C</div></div><div class="invest-limit ms-auto">Variable</div></div>
+        <div class="invest-row"><span class="invest-icon">🏛️</span><div><div class="invest-name">PPF</div><div class="invest-section">Sec 80C • EEE</div></div><div class="invest-limit ms-auto">₹1.5L max</div></div>
+        <div class="invest-row"><span class="invest-icon">📈</span><div><div class="invest-name">ELSS Mutual Fund</div><div class="invest-section">Sec 80C • 3yr lock</div></div><div class="invest-limit ms-auto">No limit*</div></div>
+        <div class="invest-row"><span class="invest-icon">📮</span><div><div class="invest-name">NSC</div><div class="invest-section">Sec 80C</div></div><div class="invest-limit ms-auto">No limit*</div></div>
+        <div class="invest-row"><span class="invest-icon">🏦</span><div><div class="invest-name">5-yr Tax Saver FD</div><div class="invest-section">Sec 80C</div></div><div class="invest-limit ms-auto">No limit*</div></div>
+      </div>
+      <div class="col-md-4">
+        <div style="font-size:0.85rem"><strong style="color:var(--gold)">Insurance & Pension:</strong></div>
+        <div class="invest-row"><span class="invest-icon">🛡️</span><div><div class="invest-name">Life Insurance Premium</div><div class="invest-section">Sec 80C</div></div><div class="invest-limit ms-auto">Actual</div></div>
+        <div class="invest-row"><span class="invest-icon">🎯</span><div><div class="invest-name">NPS (Employee)</div><div class="invest-section">80CCD(1) within 80C</div></div><div class="invest-limit ms-auto">10% of salary</div></div>
+        <div class="invest-row"><span class="invest-icon">👧</span><div><div class="invest-name">SSY</div><div class="invest-section">Sec 80C • EEE</div></div><div class="invest-limit ms-auto">₹1.5L max</div></div>
+        <div class="invest-row"><span class="invest-icon">📜</span><div><div class="invest-name">Senior Citizens Savings</div><div class="invest-section">Sec 80C</div></div><div class="invest-limit ms-auto">₹30L</div></div>
+      </div>
+      <div class="col-md-4">
+        <div style="font-size:0.85rem"><strong style="color:var(--gold)">Loans & Fees:</strong></div>
+        <div class="invest-row"><span class="invest-icon">🏠</span><div><div class="invest-name">Home Loan Principal</div><div class="invest-section">Sec 80C</div></div><div class="invest-limit ms-auto">Actual</div></div>
+        <div class="invest-row"><span class="invest-icon">🎓</span><div><div class="invest-name">Children Tuition Fees</div><div class="invest-section">Sec 80C • 2 children</div></div><div class="invest-limit ms-auto">Actual</div></div>
+        <div class="invest-row"><span class="invest-icon">🏠</span><div><div class="invest-name">Stamp Duty (new house)</div><div class="invest-section">Sec 80C</div></div><div class="invest-limit ms-auto">Actual</div></div>
+        <div class="mt-3 p-2" style="background:rgba(255,102,0,0.1);border-radius:6px;font-size:0.8rem">
+          ⚠️ All above together capped at <strong>₹1,50,000</strong> per year. Choose wisely!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OTHER SECTIONS -->
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="tax-card purple-top">
+        <div style="color:var(--accent-purple);font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:0.8rem">SECTION 80D — HEALTH INSURANCE</div>
+        <table class="tax-table w-100">
+          <thead><tr><th>Who</th><th>Max Deduction</th></tr></thead>
+          <tbody>
+            <tr><td>Self + Family (below 60)</td><td class="slab-low">₹25,000</td></tr>
+            <tr><td>Self + Family (60+)</td><td class="slab-med">₹50,000</td></tr>
+            <tr><td>Parents (below 60)</td><td class="slab-low">+ ₹25,000</td></tr>
+            <tr><td>Parents (60+)</td><td class="slab-high">+ ₹50,000</td></tr>
+            <tr><td><strong>Max (self+family+parents 60+)</strong></td><td class="slab-max"><strong>₹1,00,000</strong></td></tr>
+            <tr><td>Preventive Health Checkup</td><td class="slab-low">₹5,000 (within limit)</td></tr>
+          </tbody>
+        </table>
+        <div class="mt-2" style="font-size:0.8rem;color:var(--text-secondary)">✅ <strong>Allowed in both Old & New Regime!</strong> (New Regime does NOT allow 80D — verify with policy)</div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="tax-card cyan-top">
+        <div style="color:var(--accent-cyan);font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:0.8rem">SECTION 80CCD — NPS EXTRA</div>
+        <div style="font-size:0.9rem">
+          <div class="invest-row">
+            <div><div class="invest-name">80CCD(1) — Employee</div><div class="invest-section">Within ₹1.5L (80C) limit</div></div>
+            <div class="invest-limit ms-auto">10% of salary</div>
+          </div>
+          <div class="invest-row">
+            <div><div class="invest-name">80CCD(1B) — Voluntary</div><div class="invest-section">OVER & ABOVE 80C! ← BIG WIN</div></div>
+            <div class="invest-limit ms-auto">+ ₹50,000</div>
+          </div>
+          <div class="invest-row">
+            <div><div class="invest-name">80CCD(2) — Employer NPS</div><div class="invest-section">Works in NEW REGIME TOO!</div></div>
+            <div class="invest-limit ms-auto">10% of Basic</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="tax-card">
+        <div style="color:var(--gold);font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:0.8rem">SECTION 24(B) — HOME LOAN INTEREST</div>
+        <table class="tax-table w-100">
+          <thead><tr><th>Type</th><th>Deduction</th></tr></thead>
+          <tbody>
+            <tr><td>Self-occupied property (after April 1999)</td><td class="slab-high">₹2,00,000/year</td></tr>
+            <tr><td>Under-construction (moved in 5 yrs)</td><td class="slab-high">₹2,00,000/year</td></tr>
+            <tr><td>Let-out property</td><td class="slab-nil">Actual interest (no cap)</td></tr>
+          </tbody>
+        </table>
+        <div class="mt-2" style="font-size:0.8rem;color:var(--text-secondary)">❌ NOT available in New Regime.</div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="tax-card">
+        <div style="color:var(--green-light);font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:0.8rem">OTHER KEY SECTIONS</div>
+        <table class="tax-table w-100">
+          <thead><tr><th>Section</th><th>What</th><th>Limit</th></tr></thead>
+          <tbody>
+            <tr><td class="slab-low">80E</td><td>Education loan interest</td><td>No limit (8 yrs)</td></tr>
+            <tr><td class="slab-low">80EEB</td><td>EV loan interest</td><td>₹1.5L</td></tr>
+            <tr><td class="slab-low">80G</td><td>Donations (100%/50%)</td><td>Varies</td></tr>
+            <tr><td class="slab-low">80TTA</td><td>Savings bank interest</td><td>₹10,000</td></tr>
+            <tr><td class="slab-low">80TTB</td><td>FD/RD interest (Sr Citizen)</td><td>₹50,000</td></tr>
+            <tr><td class="slab-low">80GGB/C</td><td>Political party donation</td><td>No limit</td></tr>
+            <tr><td class="slab-low">10(10D)</td><td>Life insurance maturity</td><td>Tax-free*</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAX TAX SAVING SUMMARY ===== -->
+<div class="section-block">
+  <div class="section-title"><span class="section-icon">🎯</span>MAXIMUM TAX SAVING WORKSHEET (OLD REGIME)</div>
+  <div class="ascii-box">
+<span class="gold">═══════════════════════════════════════════════════════════════════════════════</span>
+<span class="white">   ANNUAL MAXIMUM DEDUCTION PLANNING SHEET — OLD REGIME</span>
+<span class="gold">═══════════════════════════════════════════════════════════════════════════════</span>
+
+<span class="cyan">SECTION 80C (CAP: ₹1,50,000)</span>
+  EPF (auto-deducted, 12% of Basic)             ₹72,000  [Basic=₹50K/mo]
+  VPF (additional voluntary contribution)        ₹28,000
+  ELSS SIP                                       ₹50,000
+  ──────────────────────────────────────────────────────────
+  80C Total → Max                               <span class="saffron">₹1,50,000</span>
+
+<span class="cyan">NPS ADDITIONAL (80CCD 1B)</span>
+  NPS over and above 80C                         <span class="green">₹50,000</span>   ← BONUS!
+
+<span class="cyan">NPS EMPLOYER (80CCD 2) — works in NEW REGIME TOO!</span>
+  Employer NPS = 10% of Basic = 10% × ₹6L        <span class="green">₹60,000</span>   ← BONUS!
+
+<span class="cyan">SECTION 80D — HEALTH INSURANCE</span>
+  Self + Spouse + Kids (family floater)          ₹25,000
+  Parents (senior citizens 60+)                  ₹50,000
+  ──────────────────────────────────────────────────────────
+  80D Total                                     <span class="purple">₹75,000</span>
+
+<span class="cyan">SECTION 24(B) — HOME LOAN INTEREST</span>
+  Home loan interest (self-occupied)            <span class="cyan">₹2,00,000</span>
+
+<span class="cyan">STANDARD DEDUCTION</span>
+  Salaried / Pensioners                          <span class="gold">₹50,000</span>
+
+<span class="cyan">HRA EXEMPTION (if paying rent in Bangalore metro)</span>
+  Approx exemption on ₹20K/month rent           <span class="gold">₹1,80,000</span>
+
+<span class="gold">════════════════════════════════════════════════════════════</span>
+<span class="white">  TOTAL DEDUCTIONS                              </span><span class="saffron">₹7,65,000</span>
+<span class="white">  On ₹15L salary → Taxable = ₹15L - ₹7.65L = </span><span class="green">₹7,35,000</span>
+<span class="white">  Tax @ Old Regime (after 87A) ≈               </span><span class="green">₹57,200</span> <span class="gold">(incl. cess)</span>
+<span class="white">  vs New Regime Tax ≈                          </span><span class="saffron">₹1,42,350</span>
+<span class="white">  YOU SAVE                                      </span><span class="green">₹85,150 more with OLD REGIME!</span>
+<span class="gold">════════════════════════════════════════════════════════════</span>  </div>
+</div>
+
+<!-- ===== SELF TAX / ADVANCE TAX ===== -->
+<div class="section-block" id="penalties">
+  <div class="section-title"><span class="section-icon">⚠️</span>ADVANCE TAX, SELF-ASSESSMENT & PENALTIES</div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="tax-card" style="border-color:var(--gold)">
+        <div style="color:var(--gold);font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:0.8rem">📅 ADVANCE TAX — WHO MUST PAY?</div>
+        <div style="font-size:0.9rem;margin-bottom:1rem">If your total tax liability AFTER TDS &gt; <strong style="color:var(--saffron)">₹10,000</strong>, you must pay Advance Tax in installments.</div>
+        <table class="tax-table w-100">
+          <thead><tr><th>Due Date</th><th>% of Advance Tax</th></tr></thead>
+          <tbody>
+            <tr><td>15 June</td><td class="slab-low">15%</td></tr>
+            <tr><td>15 September</td><td class="slab-med">45% cumulative</td></tr>
+            <tr><td>15 December</td><td class="slab-high">75% cumulative</td></tr>
+            <tr><td>15 March</td><td class="slab-max">100% cumulative</td></tr>
+          </tbody>
+        </table>
+        <div class="mt-2" style="font-size:0.8rem;color:var(--text-secondary)">Applicable for: freelancers, business income, rental income, capital gains, significant interest income, etc.</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="tax-card" style="border-color:var(--green-light)">
+        <div style="color:var(--green-light);font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:0.8rem">📝 SELF-ASSESSMENT TAX (SAT)</div>
+        <div style="font-size:0.9rem">
+          Any remaining tax after advance tax and TDS is paid as <strong>Self-Assessment Tax</strong> before filing ITR.<br><br>
+          <strong>How to pay:</strong> Challan 280 → Income Tax → Self-Assessment Tax → NSDL portal or net banking.<br><br>
+          Must include <strong>interest u/s 234A and 234B</strong> if applicable.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PENALTIES -->
+  <h6 style="color:#ff6666;font-family:'Orbitron',monospace;font-size:0.85rem;letter-spacing:1px;margin-bottom:1rem">🚨 INTEREST & PENALTY SECTIONS</h6>
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="penalty-card">
+        <div class="penalty-title">⛔ SECTION 234A — Late Filing</div>
+        <div style="font-size:0.88rem">
+          <strong style="color:#ff8888">Interest @ 1% per month</strong> on unpaid tax from due date of filing till actual filing date.<br><br>
+          <strong>Due date:</strong> Usually July 31 (extended some years).<br>
+          <strong>Example:</strong> Tax due ₹1L, filed 3 months late → ₹3,000 interest penalty.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="penalty-card">
+        <div class="penalty-title">⛔ SECTION 234B — Advance Tax Shortfall</div>
+        <div style="font-size:0.88rem">
+          <strong style="color:#ff8888">Interest @ 1% per month</strong> if advance tax paid is &lt; 90% of assessed tax.<br><br>
+          Calculated from April 1 till date of assessment or payment.<br>
+          <strong>Example:</strong> Tax = ₹1L, paid ₹50K advance → Interest on ₹50K × 1% × months.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="penalty-card">
+        <div class="penalty-title">⛔ SECTION 234C — Deferred Installments</div>
+        <div style="font-size:0.88rem">
+          <strong style="color:#ff8888">Interest @ 1% per month × 3 months</strong> for each missed/short installment deadline.<br><br>
+          Applies per installment: June, Sept, Dec, March.<br>
+          <strong>Example:</strong> Should have paid ₹15K by June 15, didn't → ₹450 interest.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="penalty-card">
+        <div class="penalty-title">⛔ SECTION 271 — Penalty for Concealment</div>
+        <div style="font-size:0.88rem">
+          <strong style="color:#ff8888">50% to 200%</strong> of tax amount for hiding income or furnishing inaccurate details. Criminal prosecution possible in serious cases.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="penalty-card">
+        <div class="penalty-title">⛔ SECTION 234F — Late Filing Fee</div>
+        <div style="font-size:0.88rem">
+          <strong style="color:#ff8888">₹5,000 flat fee</strong> if ITR filed after due date (July 31). Reduced to <strong>₹1,000</strong> if total income ≤ ₹5 lakh. No fee if income is below basic exemption.
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="penalty-card">
+        <div class="penalty-title">📌 SALARY ARREARS — SECTION 89(1)</div>
+        <div style="font-size:0.88rem">
+          If you receive <strong>salary in arrears</strong> (previous year pay given now), you can claim <strong>relief u/s 89(1)</strong> to avoid paying higher tax due to bunching. File <strong>Form 10E</strong> before filing ITR to claim this relief.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PENALTY AVOIDANCE TIMELINE -->
+  <div class="mt-4">
+    <h6 style="color:var(--gold);font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:1rem">📅 IMPORTANT TAX COMPLIANCE CALENDAR</h6>
+    <div class="timeline">
+      <div class="timeline-item"><div style="color:var(--saffron);font-weight:700">April — New FY Begins</div><div style="font-size:0.85rem;color:var(--text-secondary)">Choose your tax regime. Submit Investment Declaration to employer. Plan your 80C/80D investments.</div></div>
+      <div class="timeline-item"><div style="color:var(--saffron);font-weight:700">June 15 — Advance Tax 1st Installment</div><div style="font-size:0.85rem;color:var(--text-secondary)">Pay 15% of estimated annual tax. Relevant for freelancers, traders, high-interest earners.</div></div>
+      <div class="timeline-item"><div style="color:var(--saffron);font-weight:700">September 15 — Advance Tax 2nd Installment</div><div style="font-size:0.85rem;color:var(--text-secondary)">Cumulative 45% of annual tax due. Review income and adjust if needed.</div></div>
+      <div class="timeline-item"><div style="color:var(--saffron);font-weight:700">December 15 — Advance Tax 3rd Installment</div><div style="font-size:0.85rem;color:var(--text-secondary)">Cumulative 75% of annual tax due.</div></div>
+      <div class="timeline-item"><div style="color:var(--saffron);font-weight:700">January–February — Proof Submission</div><div style="font-size:0.85rem;color:var(--text-secondary)">Submit investment proofs to employer. Buy health insurance, ELSS, PPF contributions NOW.</div></div>
+      <div class="timeline-item"><div style="color:var(--saffron);font-weight:700">March 15 — Final Advance Tax Installment</div><div style="font-size:0.85rem;color:var(--text-secondary)">100% advance tax paid. Last chance to make PPF/NPS/ELSS contributions for current FY.</div></div>
+      <div class="timeline-item"><div style="color:var(--saffron);font-weight:700">March 31 — LAST DAY of FY!</div><div style="font-size:0.85rem;color:var(--text-secondary)">Last date for all investments to count for this FY. File updated ITR for previous year (AY) if needed.</div></div>
+      <div class="timeline-item"><div style="color:var(--green-light);font-weight:700">July 31 — ITR Filing Due Date</div><div style="font-size:0.85rem;color:var(--text-secondary)">File ITR by this date. Pay Self-Assessment Tax. Missing this = 234A interest + 234F penalty!</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAX SIMULATOR ===== -->
+<div class="section-block" id="simulator">
+  <div class="section-title"><span class="section-icon">🧮</span>INTERACTIVE TAX SIMULATOR</div>
+  <div class="simulator-card">
+    <div class="row g-4">
+      <!-- INPUTS -->
+      <div class="col-lg-5">
+        <h6 style="color:var(--gold);font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:1.5rem">⚙️ YOUR INCOME DETAILS</h6>
+        <div class="mb-3">
+          <div class="sim-label">Annual Gross Salary (₹)</div>
+          <input type="number" class="sim-input" id="sim_salary" value="1500000" step="50000">
+        </div>
+        <div class="mb-3">
+          <div class="sim-label">HRA Received (₹/year) — Old Regime</div>
+          <input type="number" class="sim-input" id="sim_hra_received" value="180000">
+        </div>
+        <div class="mb-3">
+          <div class="sim-label">Annual Rent Paid (₹/year) — Old Regime</div>
+          <input type="number" class="sim-input" id="sim_rent" value="240000">
+        </div>
+        <div class="mb-2">
+          <div class="sim-label">80C Investments: ₹<span id="sim_80c_val">150000</span></div>
+          <input type="range" id="sim_80c" min="0" max="150000" step="5000" value="150000" oninput="document.getElementById('sim_80c_val').innerText=parseInt(this.value).toLocaleString('en-IN')">
+        </div>
+        <div class="mb-2">
+          <div class="sim-label">80D Health Insurance: ₹<span id="sim_80d_val">50000</span></div>
+          <input type="range" id="sim_80d" min="0" max="100000" step="5000" value="50000" oninput="document.getElementById('sim_80d_val').innerText=parseInt(this.value).toLocaleString('en-IN')">
+        </div>
+        <div class="mb-2">
+          <div class="sim-label">NPS Extra 80CCD(1B): ₹<span id="sim_nps_val">50000</span></div>
+          <input type="range" id="sim_nps" min="0" max="50000" step="5000" value="50000" oninput="document.getElementById('sim_nps_val').innerText=parseInt(this.value).toLocaleString('en-IN')">
+        </div>
+        <div class="mb-3">
+          <div class="sim-label">Home Loan Interest (₹) — Old Regime</div>
+          <input type="number" class="sim-input" id="sim_home" value="200000">
+        </div>
+        <button class="btn-calculate" onclick="calculateTax()">⚡ CALCULATE TAX</button>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="col-lg-7">
+        <h6 style="color:var(--gold);font-family:'Orbitron',monospace;font-size:0.85rem;margin-bottom:1.5rem">📊 TAX COMPARISON RESULTS</h6>
+        <div class="row g-3 mb-3" id="sim_results" style="display:none">
+          <div class="col-6">
+            <div class="sim-result">
+              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--accent-cyan);margin-bottom:0.3rem">📜 OLD REGIME</div>
+              <div class="sim-result-value" id="res_old_tax" style="color:var(--accent-cyan)">₹0</div>
+              <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:0.3rem">Taxable Income: <span id="res_old_taxable"></span></div>
+              <div id="res_old_verdict" class="mt-1"></div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="sim-result">
+              <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--green-light);margin-bottom:0.3rem">🆕 NEW REGIME</div>
+              <div class="sim-result-value" id="res_new_tax" style="color:var(--green-light)">₹0</div>
+              <div style="font-size:0.78rem;color:var(--text-secondary);margin-top:0.3rem">Taxable Income: <span id="res_new_taxable"></span></div>
+              <div id="res_new_verdict" class="mt-1"></div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="sim-result" style="background:rgba(255,102,0,0.08);border-color:var(--saffron)">
+              <div style="font-size:0.8rem;margin-bottom:0.5rem;color:var(--text-secondary)">Savings Comparison</div>
+              <div id="res_verdict" style="font-family:'Orbitron',monospace;font-size:1rem;font-weight:700"></div>
+              <div id="sim_breakdown" style="font-size:0.82rem;margin-top:0.8rem;color:var(--text-secondary)"></div>
+            </div>
+          </div>
+        </div>
+        <div id="sim_placeholder" style="text-align:center;padding:3rem;color:var(--text-secondary)">
+          <div style="font-size:3rem">🧮</div>
+          <div>Fill in your details and click Calculate!</div>
+        </div>
+        <canvas id="taxChart" style="display:none;max-height:220px"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PERSONAS ===== -->
+<div class="section-block" id="personas">
+  <div class="section-title"><span class="section-icon">👤</span>TAX STRATEGY BY CAREER STAGE</div>
+  <div class="row g-3">
+
+    <!-- JUNIOR -->
+    <div class="col-md-4">
+      <div class="persona-card" style="border-top:3px solid var(--green-light)">
+        <div class="persona-avatar">🧑‍💻</div>
+        <div class="persona-name">JUNIOR PROFESSIONAL</div>
+        <div class="persona-income">₹4L – ₹10L/year</div>
+        <div style="font-size:0.8rem;color:var(--text-secondary);margin:0.5rem 0">0-3 years experience</div>
+        <hr style="border-color:var(--card-border)">
+        <div style="font-size:0.85rem">
+          <div style="color:var(--green-light);font-weight:700;margin-bottom:0.5rem">✅ RECOMMENDED PLAN:</div>
+          <div class="pro-item">New Regime — likely zero/low tax anyway</div>
+          <div class="pro-item">Start SIP in ELSS ₹2,000-5,000/month</div>
+          <div class="pro-item">Open PPF account (₹500 minimum)</div>
+          <div class="pro-item">Get Term Plan early (cheap at 25!)</div>
+          <div class="pro-item">Build emergency fund (6 months)</div>
+          <div class="con-item">Don't lock too much — need liquidity</div>
+        </div>
+        <div class="mt-3 p-2" style="background:rgba(34,197,94,0.08);border-radius:6px;font-size:0.8rem">
+          💡 At ₹7L, New Regime = ZERO TAX after ₹75K std deduction + 87A rebate!
+        </div>
+      </div>
+    </div>
+
+    <!-- MID -->
+    <div class="col-md-4">
+      <div class="persona-card" style="border-top:3px solid var(--saffron)">
+        <div class="persona-avatar">👨‍💼</div>
+        <div class="persona-name">MID-LEVEL PROFESSIONAL</div>
+        <div class="persona-income">₹10L – ₹25L/year</div>
+        <div style="font-size:0.8rem;color:var(--text-secondary);margin:0.5rem 0">3-10 years experience</div>
+        <hr style="border-color:var(--card-border)">
+        <div style="font-size:0.85rem">
+          <div style="color:var(--saffron);font-weight:700;margin-bottom:0.5rem">🎯 RECOMMENDED PLAN:</div>
+          <div class="pro-item">Old Regime if paying rent + investing</div>
+          <div class="pro-item">Max 80C: EPF + ELSS SIP</div>
+          <div class="pro-item">NPS 80CCD(1B) extra ₹50K</div>
+          <div class="pro-item">Family floater + parent health insurance</div>
+          <div class="pro-item">Home loan if possible (24b deduction)</div>
+          <div class="pro-item">Optimize FBP — HRA, LTA, meal cards</div>
+        </div>
+        <div class="mt-3 p-2" style="background:rgba(255,102,0,0.08);border-radius:6px;font-size:0.8rem">
+          💡 At ₹15L, Old Regime can save ₹50K-₹85K more than New Regime with smart investing!
+        </div>
+      </div>
+    </div>
+
+    <!-- SENIOR -->
+    <div class="col-md-4">
+      <div class="persona-card" style="border-top:3px solid var(--gold)">
+        <div class="persona-avatar">👨‍🏫</div>
+        <div class="persona-name">SENIOR PROFESSIONAL</div>
+        <div class="persona-income">₹25L – ₹1Cr+/year</div>
+        <div style="font-size:0.8rem;color:var(--text-secondary);margin:0.5rem 0">10+ years experience</div>
+        <hr style="border-color:var(--card-border)">
+        <div style="font-size:0.85rem">
+          <div style="color:var(--gold);font-weight:700;margin-bottom:0.5rem">💎 RECOMMENDED PLAN:</div>
+          <div class="pro-item">Compare both regimes carefully each year</div>
+          <div class="pro-item">Max all deductions in Old Regime</div>
+          <div class="pro-item">Employer NPS 80CCD(2) — high impact!</div>
+          <div class="pro-item">LTCG harvesting strategy (₹1.25L/year)</div>
+          <div class="pro-item">HUF account for income splitting</div>
+          <div class="pro-item">Real estate / REIT for portfolio diversity</div>
+          <div class="pro-item">CA consultation strongly recommended</div>
+        </div>
+        <div class="mt-3 p-2" style="background:rgba(244,196,48,0.08);border-radius:6px;font-size:0.8rem">
+          💡 Above ₹50L: Surcharge kicks in! Tax planning becomes critical. Consider salary restructuring.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== MERMAID DIAGRAM ===== -->
+<div class="section-block">
+  <div class="section-title"><span class="section-icon">🗺️</span>REGIME DECISION FLOWCHART</div>
+  <div class="mermaid-wrapper">
+    <pre class="mermaid">
+flowchart TD
+    A([🇮🇳 Start: New Financial Year]) --> B{Are you salaried?}
+    B -->|Yes| C{Do you pay rent?}
+    B -->|No / Business| D[Old Regime if\nlarge deductions]
+    C -->|Yes| E{Have significant investments?\n80C + 80D + NPS?}
+    C -->|No| F{Income ≤ ₹12.75L?}
+    F -->|Yes| G([✅ New Regime\nZERO TAX])
+    F -->|No| H{Employer NPS 80CCD2\nor Home Loan?}
+    H -->|Yes| E
+    H -->|No| I([🆕 New Regime\nSimpler filing])
+    E -->|Yes, total deductions > ₹3.5L| J([📜 Old Regime\nSaves more!])
+    E -->|No| I
+    D --> K{Business/Profession\nincome?}
+    K -->|Yes| L([Old Regime — must\nopt by July 31])
+    K -->|No| M([Calculate both\npick lower tax])
+
+    style A fill:#FF6600,color:#000,stroke:#FF6600
+    style G fill:#138808,color:#fff,stroke:#138808
+    style J fill:#0066aa,color:#fff,stroke:#0066aa
+    style I fill:#22c55e,color:#000,stroke:#22c55e
+    style L fill:#a855f7,color:#fff,stroke:#a855f7
+    style M fill:#f4c430,color:#000,stroke:#f4c430
+    </pre>
+  </div>
+</div>
+
+<!-- ===== INVESTMENT SPECTRUM ===== -->
+<div class="section-block">
+  <div class="section-title"><span class="section-icon">📐</span>RISK-RETURN SPECTRUM OF TAX-SAVING INSTRUMENTS</div>
+  <div class="ascii-box">
+<span class="white">RISK</span>
+  <span class="red">HIGH │  ELSS (12-15% avg)     ← Best wealth creator in 80C</span>
+       <span class="red">│</span>
+  <span class="gold">MED  │  NPS (10-12% avg)      ← Great for long-term pension</span>
+       <span class="gold">│  ULIP (8-12%)          ← Insurance + Investment</span>
+       <span class="gold">│</span>
+  <span class="cyan">LOW  │  SSY (8.2%)            ← Best fixed rate!</span>
+       <span class="cyan">│  EPF/VPF (8.25%)       ← Employer match + guarantee</span>
+       <span class="cyan">│  PPF (7.1%)            ← Sovereign, EEE, 15yr</span>
+       <span class="cyan">│  Tax Saver FD (7-7.5%) ← Bank FD, 5yr lock</span>
+       <span class="green">│  NSC (7.7%)            ← Post office, 5yr</span>
+ <span class="slab-nil">ZERO │  Life Insurance Premium ← Pure risk cover (term)</span>
+       <span class="saffron">└─────────────────────────────────────────────────────────</span>
+                                                            <span class="white">RETURN</span>
+                           <span class="gold">LOW ──────────────────────── HIGH</span>
+
+<span class="white">LIQUIDITY:</span>
+  <span class="green">ELSS</span> (3yr)  <span class="cyan">PPF</span> (7yr partial)  <span class="purple">NPS</span> (till 60)  <span class="red">EPF</span> (till retirement)
+  <span class="green">◄──── More Liquid                                    Less Liquid ────►</span>
+
+<span class="gold">TAX STATUS:</span>
+  <span class="green">EEE: PPF, EPF, SSY, ELSS (LTCG > ₹1.25L taxed)</span>
+  <span class="cyan">EET: NPS (40% lump-sum exempt, 60% annuity taxed)</span>
+  <span class="saffron">EEX: NSC, Tax Saver FD (maturity taxable)</span>  </div>
+</div>
+
+<!-- ===== CHART ===== -->
+<div class="section-block">
+  <div class="section-title"><span class="section-icon">📈</span>TAX OUTGO BY INCOME (NEW vs OLD REGIME)</div>
+  <div class="tax-card" style="padding:1.5rem">
+    <canvas id="regimeChart" style="max-height:350px"></canvas>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div style="font-family:'Orbitron',monospace;color:var(--saffron);font-size:0.9rem;margin-bottom:0.5rem">🇮🇳 INDIA TAX & WEALTH PLAYBOOK — FY 2025-26 (AY 2026-27)</div>
+    <div style="color:var(--text-secondary);font-size:0.8rem">
+      ⚠️ <strong>DISCLAIMER:</strong> This guide is for educational purposes only. Tax laws change frequently. Consult a qualified CA or financial advisor for personal tax planning.<br>
+      Sources: Income Tax Act 1961 | CBDT Circulars | Budget 2025 Amendments | ClearTax | Bajaj Finserv | IDFC First Bank<br><br>
+      Built with ❤️ using Bootstrap 5 + Chart.js + Mermaid.js
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+<script>
+// Initialize Mermaid
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'dark',
+  themeVariables: {
+    primaryColor: '#FF6600',
+    primaryTextColor: '#e8eaf6',
+    primaryBorderColor: '#1e3060',
+    lineColor: '#FF6600',
+    secondaryColor: '#111d3a',
+    tertiaryColor: '#0d1529',
+    background: '#050a14',
+    mainBkg: '#131f3e',
+    nodeBorder: '#1e3060',
+    clusterBkg: '#0d1529',
+    titleColor: '#f4c430',
+    edgeLabelBackground: '#131f3e',
+    attributeBackgroundColorEven: '#131f3e',
+    attributeBackgroundColorOdd: '#0d1529'
+  }
+});
+
+// ===== TAX CALCULATOR =====
+function formatINR(n) {
+  return '₹' + Math.round(n).toLocaleString('en-IN');
+}
+
+function calcOldRegimeTax(taxableIncome) {
+  let tax = 0;
+  if (taxableIncome <= 250000) tax = 0;
+  else if (taxableIncome <= 500000) tax = (taxableIncome - 250000) * 0.05;
+  else if (taxableIncome <= 1000000) tax = 12500 + (taxableIncome - 500000) * 0.20;
+  else tax = 112500 + (taxableIncome - 1000000) * 0.30;
+  // 87A rebate
+  if (taxableIncome <= 500000) tax = Math.max(0, tax - 12500);
+  return tax * 1.04; // cess
+}
+
+function calcNewRegimeTax(taxableIncome) {
+  let tax = 0;
+  const slabs = [
+    [400000, 0],
+    [800000, 0.05],
+    [1200000, 0.10],
+    [1600000, 0.15],
+    [2000000, 0.20],
+    [2400000, 0.25],
+    [Infinity, 0.30]
+  ];
+  let prev = 0;
+  for (const [limit, rate] of slabs) {
+    if (taxableIncome <= prev) break;
+    const slab = Math.min(taxableIncome, limit) - prev;
+    tax += slab * rate;
+    prev = limit;
+    if (taxableIncome <= limit) break;
+  }
+  // 87A rebate (new regime: up to ₹12L, max ₹60,000)
+  if (taxableIncome <= 1200000) tax = Math.max(0, tax - Math.min(tax, 60000));
+  return tax * 1.04; // cess
+}
+
+let taxChartRef = null;
+
+function calculateTax() {
+  const salary = parseFloat(document.getElementById('sim_salary').value) || 0;
+  const hraReceived = parseFloat(document.getElementById('sim_hra_received').value) || 0;
+  const rentPaid = parseFloat(document.getElementById('sim_rent').value) || 0;
+  const inv80c = parseFloat(document.getElementById('sim_80c').value) || 0;
+  const inv80d = parseFloat(document.getElementById('sim_80d').value) || 0;
+  const nps = parseFloat(document.getElementById('sim_nps').value) || 0;
+  const homeLoan = parseFloat(document.getElementById('sim_home').value) || 0;
+
+  // HRA Exemption (assume metro, basic = 50% of gross, basic+DA = 60% of gross)
+  const basic = salary * 0.5;
+  const hraExempt = Math.min(hraReceived, rentPaid - 0.1 * basic, basic * 0.5);
+  const hraFinal = Math.max(0, hraExempt);
+
+  // OLD REGIME
+  let oldTaxable = salary - 50000 - hraFinal - Math.min(inv80c, 150000) - inv80d - nps - Math.min(homeLoan, 200000);
+  oldTaxable = Math.max(0, oldTaxable);
+  const oldTax = calcOldRegimeTax(oldTaxable);
+
+  // NEW REGIME
+  let newTaxable = salary - 75000;
+  newTaxable = Math.max(0, newTaxable);
+  const newTax = calcNewRegimeTax(newTaxable);
+
+  // Display
+  document.getElementById('sim_results').style.display = 'flex';
+  document.getElementById('sim_placeholder').style.display = 'none';
+
+  document.getElementById('res_old_tax').innerText = formatINR(oldTax);
+  document.getElementById('res_old_taxable').innerText = formatINR(oldTaxable);
+  document.getElementById('res_new_tax').innerText = formatINR(newTax);
+  document.getElementById('res_new_taxable').innerText = formatINR(newTaxable);
+
+  const diff = Math.abs(oldTax - newTax);
+  let verdictText, verdictColor;
+  if (oldTax < newTax) {
+    verdictText = `📜 OLD REGIME WINS! You save ${formatINR(diff)} more`;
+    verdictColor = '#00d4ff';
+  } else if (newTax < oldTax) {
+    verdictText = `🆕 NEW REGIME WINS! You save ${formatINR(diff)} more`;
+    verdictColor = '#22c55e';
+  } else {
+    verdictText = `⚖️ BOTH REGIMES give same tax liability!`;
+    verdictColor = '#f4c430';
+  }
+  document.getElementById('res_verdict').style.color = verdictColor;
+  document.getElementById('res_verdict').innerText = verdictText;
+
+  document.getElementById('sim_breakdown').innerHTML = `
+    Old Regime deductions: Std ₹50K + HRA ${formatINR(hraFinal)} + 80C ₹${(Math.min(inv80c,150000)/100).toFixed(0)}K + 80D ${formatINR(inv80d)} + NPS ${formatINR(nps)} + Home Loan ${formatINR(Math.min(homeLoan,200000))}
+    <br>New Regime deductions: Std ₹75K only (no other deductions allowed)
+  `;
+
+  // Bar chart
+  const ctx = document.getElementById('taxChart');
+  ctx.style.display = 'block';
+  if (taxChartRef) taxChartRef.destroy();
+  taxChartRef = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Old Regime', 'New Regime'],
+      datasets: [{
+        label: 'Tax Outgo (₹)',
+        data: [oldTax, newTax],
+        backgroundColor: ['rgba(0,212,255,0.7)', 'rgba(34,197,94,0.7)'],
+        borderColor: ['#00d4ff', '#22c55e'],
+        borderWidth: 2,
+        borderRadius: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#e8eaf6', font: { family: 'Rajdhani', size: 13 } } },
+        tooltip: {
+          callbacks: {
+            label: ctx => '₹' + Math.round(ctx.raw).toLocaleString('en-IN')
+          }
         }
-
-        // Toast Trigger
-        document.getElementById('toastTrigger')?.addEventListener('click', () => {
-            const toast = new bootstrap.Toast(document.getElementById('successToast'));
-            toast.show();
-        });
-
-        // Copy Code Function
-        function copyCode(elementId) {
-            const codeElement = document.getElementById(elementId);
-            const code = codeElement.textContent;
-            navigator.clipboard.writeText(code).then(() => {
-                const toast = new bootstrap.Toast(document.getElementById('successToast'));
-                document.querySelector('#successToast .toast-body').textContent = 'Code copied to clipboard!';
-                toast.show();
-            });
+      },
+      scales: {
+        x: { ticks: { color: '#9aa0b8' }, grid: { color: 'rgba(30,48,96,0.4)' } },
+        y: {
+          ticks: { color: '#9aa0b8', callback: v => '₹' + (v/100000).toFixed(1) + 'L' },
+          grid: { color: 'rgba(30,48,96,0.4)' }
         }
+      }
+    }
+  });
+}
 
-        // Smooth Scroll for Anchor Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                if (href !== '#' && document.querySelector(href)) {
-                    e.preventDefault();
-                    document.querySelector(href).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    </script>
+// ===== REGIME COMPARISON CHART =====
+(function() {
+  const incomes = [500000, 700000, 1000000, 1275000, 1500000, 2000000, 2500000, 3000000];
+  const labels = incomes.map(i => '₹' + (i/100000).toFixed(1) + 'L');
+
+  const oldTaxes = incomes.map(i => {
+    let taxable = Math.max(0, i - 50000 - 150000 - 50000 - 50000); // std + 80C + 80D + NPS
+    return calcOldRegimeTax(taxable);
+  });
+
+  const newTaxes = incomes.map(i => {
+    let taxable = Math.max(0, i - 75000);
+    return calcNewRegimeTax(taxable);
+  });
+
+  const ctx2 = document.getElementById('regimeChart').getContext('2d');
+  new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Old Regime Tax (with deductions)',
+          data: oldTaxes,
+          borderColor: '#00d4ff',
+          backgroundColor: 'rgba(0,212,255,0.1)',
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#00d4ff',
+          pointRadius: 5
+        },
+        {
+          label: 'New Regime Tax',
+          data: newTaxes,
+          borderColor: '#22c55e',
+          backgroundColor: 'rgba(34,197,94,0.1)',
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#22c55e',
+          pointRadius: 5
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#e8eaf6', font: { family: 'Rajdhani', size: 13 }, padding: 20 } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ctx.dataset.label + ': ₹' + Math.round(ctx.raw).toLocaleString('en-IN')
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#9aa0b8' }, grid: { color: 'rgba(30,48,96,0.3)' } },
+        y: {
+          ticks: { color: '#9aa0b8', callback: v => '₹' + (v/100000).toFixed(1) + 'L' },
+          grid: { color: 'rgba(30,48,96,0.3)' }
+        }
+      }
+    }
+  });
+})();
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const el = document.querySelector(a.getAttribute('href'));
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
 </body>
 </html>
