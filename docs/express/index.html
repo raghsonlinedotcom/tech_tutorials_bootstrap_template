@@ -350,29 +350,35 @@ const compression = require('compression');
 // HTTP request logger
 app.use(morgan('dev'));
 
-// Enable CORS
-app.use(cors());
+// Enable CORS - restrict origins in production
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Security headers
 app.use(helmet());
 
 // Compress responses
 app.use(compression());</code></pre>
-                        <p class="mt-2"><strong>Explanation:</strong> Third-party middleware extends Express functionality. <strong>morgan</strong> logs HTTP requests ('dev' format shows colored, concise output), <strong>cors</strong> enables Cross-Origin Resource Sharing for browser security, <strong>helmet</strong> sets security-related HTTP headers, and <strong>compression</strong> compresses response bodies using gzip/deflate to reduce payload size.</p>
+                        <p class="mt-2"><strong>Explanation:</strong> Third-party middleware extends Express functionality. <strong>morgan</strong> logs HTTP requests ('dev' format shows colored, concise output), <strong>cors</strong> enables Cross-Origin Resource Sharing for browser security (<strong>always restrict origins in production</strong> — never use <code>cors()</code> without options as it allows all origins), <strong>helmet</strong> sets security-related HTTP headers, and <strong>compression</strong> compresses response bodies using gzip/deflate to reduce payload size.</p>
 
                         <h5 class="mt-4">Custom Middleware</h5>
                         <pre><code class="language-javascript">// Authentication middleware
+const jwt = require('jsonwebtoken');
+
 const requireAuth = (req, res, next) => {
-  const token = req.headers.authorization;
+  const token = req.headers.authorization?.split(' ')[1];
   
   if (!token) {
     return res.status(401).json({ error: 'No token provided' });
   }
   
-  // Verify token (simplified)
+  // Verify token
   try {
-    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // req.user = decoded;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
     next();
   } catch (err) {
     res.status(403).json({ error: 'Invalid token' });
@@ -782,7 +788,9 @@ const app = express();
 
 // Middleware
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || 'http://localhost:3000'
+}));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

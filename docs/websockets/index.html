@@ -1483,7 +1483,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "*",
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || "http://localhost:3000",
     methods: ["GET", "POST"]
   }
 });
@@ -1923,7 +1923,7 @@ function setupSocketListeners() {
       userElement.className = 'mb-2';
       userElement.innerHTML = `
         <span class="badge bg-success">
-          <i class="bi bi-person-circle"></i> ${user}
+          <i class="bi bi-person-circle"></i> ${escapeHtml(user)}
         </span>
       `;
       userList.appendChild(userElement);
@@ -1991,7 +1991,7 @@ function displayMessage(sender, message, timestamp, isOwn) {
   
   messageDiv.innerHTML = `
     <div class="d-flex justify-content-between">
-      <strong>${sender}</strong>
+      <strong>${escapeHtml(sender)}</strong>
       <small>${time}</small>
     </div>
     <div>${escapeHtml(message)}</div>
@@ -2005,7 +2005,7 @@ function displayMessage(sender, message, timestamp, isOwn) {
 function displaySystemMessage(message) {
   const messageDiv = document.createElement('div');
   messageDiv.className = 'text-center text-muted my-2';
-  messageDiv.innerHTML = `<small><em>${message}</em></small>`;
+  messageDiv.innerHTML = `<small><em>${escapeHtml(message)}</em></small>`;
   chatContainer.appendChild(messageDiv);
   scrollToBottom();
 }
