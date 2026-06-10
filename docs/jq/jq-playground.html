@@ -607,10 +607,12 @@ function runFilter() {
 
 // ── COPY HELPERS ──────────────────────────────────────────
 function copyOutput() {
-  navigator.clipboard.writeText(document.getElementById('output').innerText);
+  navigator.clipboard.writeText(document.getElementById('output').innerText)
+    .catch(err => console.error('Failed to copy output:', err));
 }
 function copyJson() {
-  navigator.clipboard.writeText(JSON.stringify(DATA, null, 2));
+  navigator.clipboard.writeText(JSON.stringify(DATA, null, 2))
+    .catch(err => console.error('Failed to copy JSON:', err));
 }
 
 // ── JQ ENGINE ────────────────────────────────────────────
@@ -678,7 +680,7 @@ function jq(data, expr) {
   const mapValM = expr.match(/^map_values\((.+)\)$/);
   if(mapValM) { if(Array.isArray(data)) return [data.map(item=>jq(item,mapValM[1])[0])]; if(typeof data==='object'&&data!==null){const r={};Object.entries(data).forEach(([k,v])=>{r[k]=jq(v,mapValM[1])[0];});return[r];} return [data]; }
   const selectM = expr.match(/^select\((.+)\)$/);
-  if(selectM) { try{return evalCond(data,selectM[1])?[data]:[];}catch(e){return[];} }
+  if(selectM) { try{return evalCond(data,selectM[1])?[data]:[];}catch(e){console.warn('select() condition error:',e.message);return[];} }
   const hasM = expr.match(/^has\("(.+)"\)$/);
   if(hasM) { return [typeof data==='object'&&data!==null?hasM[1] in data:false]; }
   const limitM = expr.match(/^limit\((\d+),(.+)\)$/);
@@ -690,7 +692,7 @@ function jq(data, expr) {
 
   // Arithmetic / string concat
   if(/[+\-*\/]/.test(expr) && !expr.startsWith('.') && !expr.startsWith('"') && !expr.startsWith('[') && !expr.startsWith('{')) {
-    try { return [evalArith(data, expr)]; } catch(e) {}
+    try { return [evalArith(data, expr)]; } catch(e) { /* fall through to other parsing strategies */ }
   }
 
   // array[]
@@ -711,7 +713,7 @@ function jq(data, expr) {
 
   // dot path with arithmetic
   if(expr.includes('+') || expr.includes('*') || expr.includes(' - ') || expr.includes('/')) {
-    try { return [evalArith(data, expr)]; } catch(e) {}
+    try { return [evalArith(data, expr)]; } catch(e) { /* fall through to dot-path parsing */ }
   }
 
   // plain dot path

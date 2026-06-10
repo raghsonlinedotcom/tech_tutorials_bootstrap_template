@@ -3183,10 +3183,13 @@ jq 'false' file.json</code></pre>
         // Copy Code Function (for manual copy buttons)
         function copyCode(elementId) {
             const codeElement = document.getElementById(elementId);
+            if (!codeElement) return;
             const code = codeElement.textContent;
             navigator.clipboard.writeText(code).then(() => {
                 const toast = new bootstrap.Toast(document.getElementById('successToast'));
                 toast.show();
+            }).catch(err => {
+                console.error('Failed to copy code:', err);
             });
         }
 
@@ -3209,6 +3212,12 @@ jq 'false' file.json</code></pre>
                     const code = pre.querySelector('code').textContent;
                     navigator.clipboard.writeText(code).then(() => {
                         button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy:', err);
+                        button.innerHTML = '<i class="bi bi-x"></i> Failed';
                         setTimeout(() => {
                             button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
                         }, 2000);
