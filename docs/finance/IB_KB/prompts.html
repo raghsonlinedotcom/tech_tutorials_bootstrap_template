@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Session Starter Prompts | IB Deal Lifecycle KB</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Cinzel:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#090d16;--bg2:#0f1624;--bg3:#151e30;--bg4:#1a2540;
+  --gold:#d4af37;--gold2:#f0d060;--gold3:#8a6f1a;
+  --cyan:#22d3ee;--cyan2:#0891b2;
+  --blue:#3b82f6;--green:#22c55e;--red:#ef4444;
+  --amber:#f59e0b;--purple:#a855f7;--purple2:#581c87;
+  --t1:#e2e8f0;--t2:#94a3b8;--t3:#64748b;
+  --border:#1e3a5f;--border2:#253d5f;
+  --mono:'JetBrains Mono',monospace;
+  --display:'Cinzel',serif;
+  --body:'Lato',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--t1);font-family:var(--body);line-height:1.7;font-size:15px;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:linear-gradient(90deg,#05080f,#0c1422,#05080f);border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:.5rem 1.5rem;flex-wrap:wrap;gap:.5rem;}
+.nav-brand{font-family:var(--display);color:var(--gold);font-size:.9rem;letter-spacing:2px;}
+.nav-links{display:flex;flex-wrap:wrap;gap:.25rem;}
+.nav-links a{font-family:var(--mono);font-size:.7rem;color:var(--t2);text-decoration:none;padding:.25rem .5rem;border-radius:3px;border:1px solid transparent;letter-spacing:1px;transition:color .2s,border-color .2s;}
+.nav-links a:hover{color:var(--gold);border-color:var(--gold3);}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#05080f 0%,#0b1525 50%,#07101e 100%);border-bottom:1px solid var(--border);padding:3rem 1.5rem 2.5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(168,85,247,.1) 0%,transparent 65%);}
+.hero-ascii{font-family:var(--mono);font-size:clamp(.38rem,.85vw,.62rem);line-height:1.15;color:var(--purple);opacity:.85;white-space:pre;margin-bottom:1.5rem;text-shadow:0 0 12px rgba(168,85,247,.35);}
+.hero-tag{font-family:var(--mono);color:var(--cyan);font-size:.75rem;letter-spacing:4px;margin-bottom:.5rem;}
+.hero-title{font-family:var(--display);font-size:clamp(1.4rem,3.5vw,2.4rem);color:var(--gold);letter-spacing:3px;margin-bottom:.75rem;}
+.hero-sub{color:var(--t2);font-size:.95rem;max-width:700px;margin:0 auto 1.2rem;}
+.badge{display:inline-block;font-family:var(--mono);font-size:.68rem;padding:.25em .65em;border-radius:3px;margin:.15rem;}
+.b-gold{background:rgba(212,175,55,.12);color:var(--gold);border:1px solid var(--gold3);}
+.b-cyan{background:rgba(34,211,238,.1);color:var(--cyan);border:1px solid var(--cyan2);}
+.b-purple{background:rgba(168,85,247,.1);color:var(--purple);border:1px solid var(--purple2);}
+.b-green{background:rgba(34,197,94,.1);color:var(--green);border:1px solid #14532d;}
+.b-amber{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid #78350f;}
+.b-red{background:rgba(239,68,68,.1);color:var(--red);border:1px solid #7f1d1d;}
+
+/* LAYOUT */
+.container{max-width:1100px;margin:0 auto;padding:2rem 1.5rem;}
+
+/* SECTIONS */
+.section{background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:8px;padding:2rem;margin-bottom:2rem;}
+.section-alt{border-left-color:var(--cyan);}
+.section-purple{border-left-color:var(--purple);}
+.section-title{font-family:var(--display);color:var(--gold);font-size:1.15rem;letter-spacing:2px;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem;}
+.section-title.cyan{color:var(--cyan);}
+.section-title.purple{color:var(--purple);}
+.section-num{font-family:var(--mono);font-size:.7rem;color:var(--t3);background:var(--bg3);border:1px solid var(--border);padding:.2em .5em;border-radius:3px;}
+
+/* TOC */
+.toc{background:#0b1320;border:1px solid var(--border);border-left:4px solid var(--purple);border-radius:8px;padding:1.5rem;margin-bottom:2rem;}
+.toc-title{font-family:var(--display);color:var(--purple);font-size:.9rem;letter-spacing:2px;margin-bottom:1rem;}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.25rem;}
+.toc-link{display:flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.75rem;color:var(--t2);text-decoration:none;padding:.3rem .5rem;border-radius:4px;transition:color .2s,background .2s;}
+.toc-link:hover{color:var(--gold);background:rgba(212,175,55,.06);}
+.toc-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);opacity:.6;flex-shrink:0;}
+
+/* CALLOUTS */
+.callout{border-left:4px solid;border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.88rem;}
+.co-gold{border-color:var(--gold);background:rgba(212,175,55,.06);}
+.co-cyan{border-color:var(--cyan);background:rgba(34,211,238,.05);}
+.co-purple{border-color:var(--purple);background:rgba(168,85,247,.06);}
+.co-green{border-color:var(--green);background:rgba(34,197,94,.05);}
+.co-amber{border-color:var(--amber);background:rgba(245,158,11,.05);}
+.co-red{border-color:var(--red);background:rgba(239,68,68,.05);}
+.co-title{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.35rem;}
+.co-title.gold{color:var(--gold);}
+.co-title.cyan{color:var(--cyan);}
+.co-title.purple{color:var(--purple);}
+.co-title.green{color:var(--green);}
+.co-title.amber{color:var(--amber);}
+.co-title.red{color:var(--red);}
+
+/* ASCII */
+.ascii{font-family:var(--mono);font-size:clamp(.58rem,1.3vw,.75rem);line-height:1.38;background:#050810;border:1px solid var(--border);border-radius:6px;padding:1.2rem 1.5rem;color:var(--cyan);overflow-x:auto;white-space:pre;margin:1.2rem 0;}
+.ascii.gold{color:var(--gold);}
+.ascii.green{color:var(--green);}
+.ascii.amber{color:var(--amber);}
+.ascii.purple{color:var(--purple);}
+
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse;font-size:.84rem;margin:1rem 0;}
+.tbl th{background:#0b1320;color:var(--gold);font-family:var(--mono);font-size:.72rem;letter-spacing:1px;padding:.6rem .8rem;border:1px solid var(--border);text-align:left;}
+.tbl td{padding:.55rem .8rem;border:1px solid #1a2a42;color:var(--t1);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:rgba(30,58,95,.15);}
+.tbl tr:hover td{background:rgba(30,58,95,.35);}
+
+/* CARDS */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:1rem 0;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1rem 0;}
+.card{background:#0b1320;border:1px solid var(--border);border-radius:8px;padding:1.1rem;transition:border-color .2s,background .2s;}
+.card:hover{border-color:var(--gold);background:var(--bg3);}
+.card-title{font-family:var(--mono);font-size:.78rem;color:var(--gold);margin-bottom:.45rem;font-weight:700;}
+.card-title.cyan{color:var(--cyan);}
+.card-title.purple{color:var(--purple);}
+.card-title.green{color:var(--green);}
+.card-title.amber{color:var(--amber);}
+.card p{font-size:.84rem;color:var(--t2);}
+
+/* PROMPT BLOCKS */
+.prompt-block{position:relative;margin:1.2rem 0;}
+.prompt-header{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#080c16;border:1px solid var(--border);
+  border-bottom:none;border-radius:8px 8px 0 0;
+  padding:.6rem 1rem;flex-wrap:wrap;gap:.5rem;
+}
+.prompt-label{font-family:var(--mono);font-size:.72rem;color:var(--purple);letter-spacing:1px;}
+.prompt-meta{font-family:var(--mono);font-size:.68rem;color:var(--t3);}
+.copy-btn{
+  font-family:var(--mono);font-size:.68rem;color:var(--cyan);
+  background:rgba(34,211,238,.08);border:1px solid var(--cyan2);
+  border-radius:4px;padding:.25rem .6rem;cursor:pointer;
+  transition:background .2s,color .2s;white-space:nowrap;
+}
+.copy-btn:hover{background:rgba(34,211,238,.18);color:var(--gold);}
+.copy-btn.copied{color:var(--green);border-color:#14532d;background:rgba(34,197,94,.08);}
+.prompt-pre{
+  font-family:var(--mono);font-size:.72rem;line-height:1.55;
+  background:#050810;border:1px solid var(--border);
+  border-radius:0 0 8px 8px;
+  padding:1.2rem 1.4rem;color:var(--t1);
+  overflow-x:auto;white-space:pre;margin:0;
+  max-height:480px;overflow-y:auto;
+}
+
+/* DELTA TABLE */
+.delta-add{color:var(--green);}
+.delta-change{color:var(--amber);}
+.delta-remove{color:var(--red);}
+
+/* DIAG RULE TABLE */
+.diag-table{width:100%;border-collapse:collapse;font-size:.8rem;margin:.8rem 0;}
+.diag-table th{background:#080c16;color:var(--purple);font-family:var(--mono);font-size:.7rem;letter-spacing:1px;padding:.5rem .8rem;border:1px solid var(--border);}
+.diag-table td{padding:.45rem .8rem;border:1px solid #1a2a42;font-family:var(--mono);font-size:.72rem;vertical-align:middle;}
+.diag-table tr:nth-child(even) td{background:rgba(30,58,95,.12);}
+.tool-mermaid{color:var(--cyan);}
+.tool-ascii{color:var(--gold);}
+.tool-css{color:var(--green);}
+.tool-chartjs{color:var(--amber);}
+.tool-banned{color:var(--red);text-decoration:line-through;}
+
+/* FAQ */
+.faq-item{border:1px solid var(--border);border-radius:6px;margin-bottom:.5rem;overflow:hidden;}
+.faq-q{width:100%;background:#0b1320;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:.85rem 1rem;font-family:var(--mono);font-size:.78rem;color:var(--gold);text-align:left;gap:1rem;transition:background .2s;}
+.faq-q:hover{background:var(--bg3);}
+.faq-q.open{color:var(--cyan);background:var(--bg3);}
+.faq-arrow{font-size:.65rem;flex-shrink:0;transition:transform .25s;color:var(--t3);}
+.faq-q.open .faq-arrow{transform:rotate(180deg);color:var(--cyan);}
+.faq-a{background:var(--bg2);padding:0 1rem;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;font-size:.86rem;color:var(--t2);}
+.faq-a.open{max-height:800px;padding:.9rem 1rem;}
+
+/* MISC */
+.hl-gold{color:var(--gold);font-weight:700;}
+.hl-cyan{color:var(--cyan);}
+.hl-purple{color:var(--purple);}
+.hl-green{color:var(--green);}
+.hl-amber{color:var(--amber);}
+code{font-family:var(--mono);font-size:.8rem;color:var(--cyan);background:#050810;padding:.1em .4em;border-radius:3px;}
+p{margin-bottom:.75rem;}
+h4{font-family:var(--mono);color:var(--gold);font-size:.88rem;margin:1.2rem 0 .5rem;letter-spacing:1px;}
+h5{font-family:var(--mono);color:var(--cyan);font-size:.8rem;margin:1rem 0 .4rem;}
+
+/* MODULE NAV */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:2rem;padding:1rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;}
+.mod-nav a{font-family:var(--mono);font-size:.75rem;color:var(--cyan);text-decoration:none;padding:.4rem .8rem;border:1px solid var(--cyan2);border-radius:4px;transition:background .2s;}
+.mod-nav a:hover{background:rgba(34,211,238,.08);}
+
+/* FOOTER */
+footer{background:#05080f;border-top:2px solid var(--gold);padding:2rem 1.5rem;text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--t3);}
+footer .ft{font-family:var(--display);color:var(--gold);font-size:.85rem;letter-spacing:3px;margin-bottom:.5rem;}
+
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">⬡ IB DEAL LIFECYCLE · PROMPTS</div>
+  <div class="nav-links">
+    <a href="#why">WHY</a>
+    <a href="#diagramming">DIAG RULES</a>
+    <a href="#prompt-a">PROMPT A</a>
+    <a href="#prompt-b">B · M02</a>
+    <a href="#prompt-c">C · M03</a>
+    <a href="#prompt-d">D · M04</a>
+    <a href="#prompt-e">E · M05</a>
+    <a href="#prompt-f">F · M06</a>
+    <a href="#prompt-g">G · INDEX</a>
+    <a href="#changelog-prompts">CHANGELOG</a>
+    <a href="#faq">FAQ</a>
+    <a href="#version">VERSION</a>
+    <a href="index.html">⬡ INDEX</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-ascii">
+ ██████╗ ██████╗  ██████╗ ███╗   ███╗██████╗ ████████╗███████╗
+ ██╔══██╗██╔══██╗██╔═══██╗████╗ ████║██╔══██╗╚══██╔══╝██╔════╝
+ ██████╔╝██████╔╝██║   ██║██╔████╔██║██████╔╝   ██║   ███████╗
+ ██╔═══╝ ██╔══██╗██║   ██║██║╚██╔╝██║██╔═══╝    ██║   ╚════██║
+ ██║     ██║  ██║╚██████╔╝██║ ╚═╝ ██║██║        ██║   ███████║
+ ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚═╝        ╚═╝   ╚══════╝
+</div>
+  <div class="hero-tag">OPERATIONAL REFERENCE · IB DEAL LIFECYCLE KNOWLEDGE BASE</div>
+  <h1 class="hero-title">SESSION STARTER PROMPTS</h1>
+  <p class="hero-sub">All prompts required to build or resume each module of the IB Deal Lifecycle Knowledge Base in a new Claude session — self-contained, versioned, and copy-ready.</p>
+  <div>
+    <span class="badge b-purple">v1.2 Current</span>
+    <span class="badge b-gold">7 Prompts</span>
+    <span class="badge b-cyan">Mermaid · ASCII · Chart.js</span>
+    <span class="badge b-green">Zero Pure-CSS Flowcharts</span>
+    <span class="badge b-amber">ECM + DCM Coverage</span>
+  </div>
+</section>
+
+<div class="container">
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-title">▸ TABLE OF CONTENTS</div>
+  <div class="toc-grid">
+    <a class="toc-link" href="#why"><span class="toc-dot"></span>01 · Why This File Exists</a>
+    <a class="toc-link" href="#howto"><span class="toc-dot"></span>02 · How to Use These Prompts</a>
+    <a class="toc-link" href="#diagramming"><span class="toc-dot"></span>03 · Master Diagramming Rules</a>
+    <a class="toc-link" href="#prompt-a"><span class="toc-dot"></span>04 · Prompt A — Session 1 (Context)</a>
+    <a class="toc-link" href="#prompt-b"><span class="toc-dot"></span>05 · Prompt B — M02 Parties & Ratings</a>
+    <a class="toc-link" href="#prompt-c"><span class="toc-dot"></span>06 · Prompt C — M03 Pre-Deal Compliance</a>
+    <a class="toc-link" href="#prompt-d"><span class="toc-dot"></span>07 · Prompt D — M04 Regulatory Reporting</a>
+    <a class="toc-link" href="#prompt-e"><span class="toc-dot"></span>08 · Prompt E — M05 Booking Vehicles + M&A</a>
+    <a class="toc-link" href="#prompt-f"><span class="toc-dot"></span>09 · Prompt F — M06 Deal Economics</a>
+    <a class="toc-link" href="#prompt-g"><span class="toc-dot"></span>10 · Prompt G — index.html</a>
+    <a class="toc-link" href="#changelog-prompts"><span class="toc-dot"></span>11 · Prompt Changelog</a>
+    <a class="toc-link" href="#faq"><span class="toc-dot"></span>12 · FAQ</a>
+    <a class="toc-link" href="#version"><span class="toc-dot"></span>13 · Version History</a>
+  </div>
+</div>
+
+<!-- 01: WHY -->
+<div id="why" class="section section-purple">
+  <div class="section-title purple"><span class="section-num">01</span> WHY THIS FILE EXISTS</div>
+  <p>Claude has <span class="hl-gold">no memory between sessions</span>. Every new conversation starts completely blank — no knowledge of previous modules built, no awareness of the design system established, no recollection of decisions made. Without a structured prompt, a new session will:</p>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title red" style="color:var(--red);">Without this file</div>
+      <p>Wrong colour palette · Wrong fonts · Mermaid syntax errors from rushing · Pure CSS flowcharts substituted · Missing ECM/DCM coverage · No FAQ or Version History · Inconsistent section structure · No awareness of prior modules</p>
+    </div>
+    <div class="card">
+      <div class="card-title green">With this file</div>
+      <p>Full design system inherited · Correct diagramming tool per use case · ECM and DCM coverage enforced · FAQ accordion and Version History mandatory · Module cross-references intact · Session history understood · Zero regressions</p>
+    </div>
+  </div>
+  <div class="callout co-purple">
+    <div class="co-title purple">📌 The core principle</div>
+    Each prompt is <strong>fully self-contained</strong>. It carries everything a fresh Claude session needs to produce output consistent with all prior modules — with no reliance on this thread, no memory, and no assumptions.
+  </div>
+</div>
+
+<!-- 02: HOW TO USE -->
+<div id="howto" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">02</span> HOW TO USE THESE PROMPTS</div>
+  <div class="ascii gold">
+HOW TO START A NEW MODULE SESSION
+═══════════════════════════════════════════════════════════════════════════════
+  STEP 1 · Open this file (prompts.html) in your browser
+  STEP 2 · Navigate to the prompt for the module you want to build
+           e.g. "Prompt B" for m02_parties.html
+  STEP 3 · Click the [COPY PROMPT] button on the prompt block
+  STEP 4 · Open a NEW Claude session (claude.ai or Claude app)
+  STEP 5 · Paste the prompt as your FIRST message
+  STEP 6 · Claude builds the HTML file in one session
+  STEP 7 · Download the output file
+  STEP 8 · Come back here and update the Version History if any
+           changes were made during the session
+═══════════════════════════════════════════════════════════════════════════════
+  IMPORTANT: Always use the LATEST version of each prompt.
+  Check the version badge on each prompt block and the
+  Prompt Changelog (Section 11) to confirm you have current copy.
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+  <div class="callout co-amber">
+    <div class="co-title amber">⚠ If you add content mid-session</div>
+    If you ask Claude to add something new during a build session (e.g. "also add ECM vs DCM" mid-session), you <strong>must update the relevant prompt here</strong> before the next session that references it. The Prompt Changelog (Section 11) records every such addition with a delta description.
+  </div>
+</div>
+
+<!-- 03: DIAGRAMMING RULES -->
+<div id="diagramming" class="section">
+  <div class="section-title"><span class="section-num">03</span> MASTER DIAGRAMMING RULES</div>
+  <p>These rules apply to <em>every</em> module. They were established after repeated Mermaid syntax failures in early sessions where diagrams were rushed — emojis inside node labels, line breaks inside quotes, and pure CSS boxes used as fallbacks. All three are now explicitly banned.</p>
+
+  <table class="diag-table">
+    <thead>
+      <tr>
+        <th>USE CASE</th>
+        <th>CORRECT TOOL</th>
+        <th>REASON</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Process flows</td>
+        <td class="tool-mermaid">Mermaid flowchart TD/LR</td>
+        <td style="color:var(--t2);font-size:.7rem;">Proper graph layout, curved edges, maintainable syntax</td>
+      </tr>
+      <tr>
+        <td>Decision trees</td>
+        <td class="tool-mermaid">Mermaid flowchart with diamond nodes</td>
+        <td style="color:var(--t2);font-size:.7rem;">Clean branching, labeled edges, readable at scale</td>
+      </tr>
+      <tr>
+        <td>Org charts / entity maps</td>
+        <td class="tool-mermaid">Mermaid flowchart or graph</td>
+        <td style="color:var(--t2);font-size:.7rem;">Hierarchy rendering built-in</td>
+      </tr>
+      <tr>
+        <td>Sequence / state diagrams</td>
+        <td class="tool-mermaid">Mermaid sequenceDiagram / stateDiagram</td>
+        <td style="color:var(--t2);font-size:.7rem;">Native support; no workaround needed</td>
+      </tr>
+      <tr>
+        <td>Side-by-side matrices</td>
+        <td class="tool-ascii">ASCII — pre block with .ascii class</td>
+        <td style="color:var(--t2);font-size:.7rem;">Mermaid cannot do side-by-side well; ASCII is genuinely superior here</td>
+      </tr>
+      <tr>
+        <td>Comparison tables</td>
+        <td class="tool-ascii">ASCII or HTML .tbl table</td>
+        <td style="color:var(--t2);font-size:.7rem;">Both render cleanly; .tbl preferred for hover/striping</td>
+      </tr>
+      <tr>
+        <td>Stage pipelines</td>
+        <td class="tool-css">CSS .pipeline component</td>
+        <td style="color:var(--t2);font-size:.7rem;">Arrow-connected stage boxes — works well, established in M01</td>
+      </tr>
+      <tr>
+        <td>Data charts (bar/line)</td>
+        <td class="tool-chartjs">Chart.js — M06 only</td>
+        <td style="color:var(--t2);font-size:.7rem;">Economics module needs interactive data viz; CDN available</td>
+      </tr>
+      <tr>
+        <td>Simple annotated layouts</td>
+        <td class="tool-ascii">ASCII</td>
+        <td style="color:var(--t2);font-size:.7rem;">Fastest, most reliable for annotated box diagrams</td>
+      </tr>
+      <tr>
+        <td>Pure CSS flowcharts</td>
+        <td class="tool-banned">BANNED — never use</td>
+        <td style="color:var(--t2);font-size:.7rem;">Trades Mermaid syntax errors for brittle layout bugs; not professional</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>▸ MERMAID NON-NEGOTIABLE RULES</h4>
+  <div class="ascii amber">
+MERMAID RULES — VIOLATION = BROKEN DIAGRAM
+═══════════════════════════════════════════════════════════════════════════════
+RULE 1  CDN must be:
+        https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+
+RULE 2  Initialise exactly as:
+        mermaid.initialize({startOnLoad:true, theme:'dark',
+          themeVariables:{primaryColor:'#1e3a5f',
+            primaryTextColor:'#e2e8f0', lineColor:'#d4af37',
+            fontFamily:'JetBrains Mono, monospace'}})
+
+RULE 3  ZERO emojis inside node labels
+        BAD:  A["Cleared? ✓"]
+        GOOD: A["Cleared"]
+
+RULE 4  ZERO Unicode / special chars inside node labels
+        BAD:  B["Step → Next"]
+        GOOD: B["Step to Next"]
+
+RULE 5  ZERO \n line breaks inside node label quotes
+        BAD:  C["Deal\nOrigination"]
+        GOOD: C["Deal Origination"]  -- keep it short, put detail in caption
+
+RULE 6  Wrap every diagram in:
+        &lt;div class="mermaid-wrap"&gt;
+          &lt;pre class="mermaid"&gt;...diagram...&lt;/pre&gt;
+          &lt;div class="diagram-caption"&gt;Fig N.N — description&lt;/div&gt;
+        &lt;/div&gt;
+
+RULE 7  Mentally trace every node and edge before writing the next diagram
+        If a node is referenced but never defined, Mermaid fails silently
+
+RULE 8  Keep diagrams to &lt;= 12 nodes for readability
+        Split large flows into two diagrams with a shared entry/exit node
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+  <div class="callout co-cyan">
+    <div class="co-title cyan">💡 Why pure CSS flowcharts were used before — and why they are now banned</div>
+    In early sessions, repeated Mermaid syntax errors (emojis in labels, line breaks in quotes, undefined nodes) caused diagrams to render blank or broken. Rather than fix the root cause, pure CSS div-based boxes were substituted as a "safe" fallback. This was the wrong trade — it swapped <em>syntax errors</em> for <em>layout brittleness</em>. The correct fix is the 8 rules above. Pure CSS flowcharts are now permanently banned.
+  </div>
+</div>
+
+<!-- 04: PROMPT A -->
+<div id="prompt-a" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">04</span> PROMPT A — SESSION 1 (CONTEXT RECORD)</div>
+  <div class="callout co-gold">
+    <div class="co-title gold">📋 Note</div>
+    Session 1 was an exploratory session — no single starter prompt was used. Instead, the module scope, session matrix, and design system were established iteratively. This section records what Session 1 produced for cross-reference. Use Prompts B–G for all subsequent sessions.
+  </div>
+  <div class="ascii gold">
+SESSION 1 — WHAT WAS ESTABLISHED
+═══════════════════════════════════════════════════════════════════════════════
+FILE PRODUCED   : m01_origination.html (v1.2, 112KB, 1754 lines, 13 sections)
+
+DESIGN SYSTEM ESTABLISHED:
+  Fonts         : JetBrains Mono (code/mono) + Cinzel (headings/display)
+  Palette       : gold #d4af37 / cyan #22d3ee / bg #090d16
+  Components    : .section/.section-alt, .ascii (4 colour variants),
+                  .tbl, .timeline, .pipeline, .grid-2/.grid-3, .card,
+                  .callout (5 variants), .faq-item accordion (toggleFaq JS),
+                  .gate-grid, .example-box, .badge, .toc-link, .mod-nav
+
+CONTENT COVERED:
+  - Deal lifecycle 3 phases: Origination, Syndication, Closeout
+  - Pitch / Verbal Mandate / Formal Mandate — definitions + comparison
+  - 9 compliance workflows as hard gate conditions
+  - ECM vs DCM: instrument spectrum, 3-phase comparison tables,
+    Research Wall, LIC IPO case study, gate condition diff matrix
+  - Infosys USD 500M Bond case study (DCM end-to-end)
+  - LIC IPO case study (ECM parallel)
+  - FAQ accordion (8 Qs), Version History (v1.0–v1.2)
+
+DECISIONS MADE:
+  - 6 modules + index.html + prompts.html file structure
+  - 1 module per Claude session for ACU optimisation
+  - Mermaid for flows, ASCII for matrices, Chart.js for M06 only
+  - Pure CSS flowcharts banned
+  - FAQ + Version History mandatory in every module
+  - ECM vs DCM coverage mandatory in every module
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+</div>
+
+<!-- 05: PROMPT B -->
+<div id="prompt-b" class="section">
+  <div class="section-title"><span class="section-num">05</span> PROMPT B — SESSION 2 · M02 PARTIES &amp; RATINGS</div>
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge b-purple">v1.2</span>
+    <span class="badge b-cyan">Target file: m02_parties.html</span>
+    <span class="badge b-amber">Session 2</span>
+    <span class="badge b-green">13+ sections</span>
+  </div>
+  <div class="prompt-block">
+    <div class="prompt-header">
+      <span class="prompt-label">PROMPT B · M02 · PARTIES &amp; RATINGS</span>
+      <span class="prompt-meta">v1.2 · Updated Jun 2025</span>
+      <button class="copy-btn" onclick="copyPrompt('pb')">⎘ COPY PROMPT</button>
+    </div>
+    <pre class="prompt-pre" id="pb">I am building an IB Deal Lifecycle Knowledge Base as a series of linked
+Bootstrap 5 dark-theme HTML files. Design standard: JetBrains Mono +
+Cinzel fonts, gold (#d4af37) and cyan (#22d3ee) accent palette. No
+Bootstrap JS — vanilla JS only.
+
+DIAGRAMMING RULES (mandatory — do not deviate):
+  USE CASE                      TOOL
+  ──────────────────────────────────────────────────────
+  Process flows                 Mermaid flowchart
+  Decision trees                Mermaid flowchart
+  Org charts / entity maps      Mermaid flowchart or graph
+  Sequence / state diagrams     Mermaid sequenceDiagram
+  Side-by-side matrices         ASCII (.ascii class)
+  Comparison tables             ASCII or HTML .tbl
+  Stage pipelines               CSS .pipeline component
+  Bar / line data charts        Chart.js (M06 only — not this module)
+  Pure CSS flowcharts           BANNED — never use div boxes as flowchart
+
+  MERMAID NON-NEGOTIABLE RULES:
+  1. CDN: https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+  2. Init: mermaid.initialize({startOnLoad:true, theme:'dark',
+       themeVariables:{primaryColor:'#1e3a5f',primaryTextColor:'#e2e8f0',
+       lineColor:'#d4af37',fontFamily:'JetBrains Mono, monospace'}})
+  3. ZERO emojis or Unicode special chars inside node labels
+  4. ZERO \n line breaks inside node label quotes
+  5. Node text: short plain ASCII only — move detail to caption below
+  6. Wrap every diagram:
+       &lt;div class="mermaid-wrap"&gt;&lt;pre class="mermaid"&gt;...&lt;/pre&gt;
+       &lt;div class="diagram-caption"&gt;Fig N.N — description&lt;/div&gt;&lt;/div&gt;
+  7. Trace every node and edge mentally before writing the next diagram
+  8. Max 12 nodes per diagram — split larger flows into two diagrams
+
+SESSION HISTORY:
+Session 1 produced m01_origination.html (v1.2, 112KB, 13 sections):
+- Deal lifecycle: Origination, Syndication, Closeout (3 phases)
+- Pitch / Verbal Mandate / Formal Mandate — definitions + comparison table
+- 9 compliance workflows as hard gate conditions with interconnect map
+- ECM vs DCM: instrument spectrum, 3-phase comparison tables (Origination /
+  Syndication / Closeout), Research Wall, gate condition diff matrix,
+  LIC IPO case study (ECM) + Infosys USD 500M Bond case study (DCM)
+- FAQ accordion (8 Qs, toggleFaq JS), Version History table
+CSS components used: .section/.section-alt, .ascii (gold/cyan/green/amber),
+.tbl, .timeline, .pipeline, .grid-2/.grid-3, .card, .callout (5 variants),
+.faq-item/.faq-q/.faq-a accordion, .gate-grid, .example-box, .badge,
+.toc-link, .mod-nav
+
+Now build m02_parties.html — all deal parties and issuer ratings:
+
+CONTENT (13+ sections minimum):
+1. Why party structure matters — how wrong classification breaks
+   compliance, revenue attribution, and regulatory reporting
+2. Issuer Client — definition, who qualifies, ECM vs DCM differences,
+   examples (SPV, subsidiary, parent guarantee structures)
+3. Engaging Client — when it differs from the Issuer; internal bank
+   significance; real examples
+4. Primary Client — internal bank classification; revenue attribution;
+   KYC ownership; relationship management system entry
+5. Issuer vs Engaging vs Primary — side-by-side comparison table +
+   Mermaid org chart showing the three-way relationship per deal type
+6. Book Runners — Sole Bookrunner vs Joint Lead Manager vs Co-Manager:
+   roles, responsibilities, fee split mechanics (praecipium, underwriting
+   pool, selling concession), when each structure is chosen;
+   Mermaid syndicate hierarchy diagram
+7. Issuer Counsel — who appoints, what they produce (OC, IM, legal
+   opinions), who pays, ECM vs DCM scope differences
+8. Underwriter Counsel (UW Counsel) — bank legal representation;
+   what they negotiate vs Issuer Counsel; subscription agreement;
+   comfort letters; who pays
+9. Auditor — comfort letters, long-form reports, SAS 72/135;
+   why more critical in ECM (full prospectus) than DCM
+10. ECM-specific parties — equity research analyst (walled off during
+    quiet period), equity sales desk, stabilisation agent (greenshoe),
+    registrar and transfer agent, BRLM (India-specific), SEBI-registered
+    merchant banker
+11. DCM-specific parties — rating agency liaison (S&P/Moody's/Fitch
+    relationship management), trustee, paying agent, fiscal agent,
+    listing agent, calculation agent (for FRNs)
+12. Issuer Ratings — S&P / Moody's / Fitch rating scale comparison
+    (AAA through D for S&P; Aaa through C for Moody's); Investment
+    Grade vs High Yield threshold; rating outlook vs watch;
+    local agencies (ICRA, CRISIL, CARE in India) and their scales;
+    how ratings mechanically drive DCM pricing (spread over benchmark);
+    why ECM does not require ratings; Mermaid rating process flow
+13. Real-world party map (DCM) — Infosys USD 500M bond: map every
+    party role to a real named entity with their specific function
+14. Real-world party map (ECM) — LIC IPO: map every party role to
+    a real named entity; show BRLM structure (8 joint bookrunners);
+    SEBI merchant banker registration context
+15. FAQ accordion — 8+ questions with toggleFaq JS
+16. Version History table (v1.0 initial release of this module)
+
+MANDATORY STRUCTURE (replicate M01 exactly):
+- Sticky &lt;nav&gt; with gold border-bottom, all section anchors in nav-links
+- Hero section: ASCII art title banner + hero-tag + hero-title +
+  hero-sub + badge row (b-gold, b-cyan, b-amber, b-green, b-purple)
+- TOC: .toc div with .toc-grid, .toc-link for every section
+- Sections: alternating .section (gold left border 4px) and
+  .section-alt (cyan left border) each with .section-title + .section-num
+- ASCII blocks: &lt;div class="ascii"&gt; with colour variants (.gold .cyan .green .amber)
+- Tables: &lt;table class="tbl"&gt; with thead gold, striped tbody
+- Card grids: .grid-2 / .grid-3 with .card and .card-title (colour variants)
+- Callouts: .callout.co-* with .co-title.* for 5 colour variants
+- Timeline: .timeline with .tl-item, .tl-dot, .tl-title, .tl-sub
+- Pipeline: .pipeline with .pipe-stage and p-gold/p-cyan/p-blue/p-green
+- Mermaid: .mermaid-wrap wrapping &lt;pre class="mermaid"&gt; + .diagram-caption
+- FAQ: .faq-item &gt; button.faq-q + div.faq-a; toggleFaq(btn) JS function
+- Version History: .tbl table as last section before mod-nav
+- Module nav: .mod-nav linking index.html, m01_origination.html (left),
+  m03_compliance.html (right)
+- Footer: .ft title span + badge row for all modules
+
+VALIDATION (run before finishing):
+- Zero broken or unclosed HTML tags
+- All section IDs reachable from TOC anchor hrefs
+- All Mermaid pre blocks: no emojis, no \n in labels, no undefined nodes
+- toggleFaq function present and wired to all .faq-q buttons
+- Version History table present as final section</pre>
+  </div>
+</div>
+
+<!-- 06: PROMPT C -->
+<div id="prompt-c" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">06</span> PROMPT C — SESSION 3 · M03 PRE-DEAL COMPLIANCE</div>
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge b-purple">v1.2</span>
+    <span class="badge b-cyan">Target file: m03_compliance.html</span>
+    <span class="badge b-amber">Session 3</span>
+    <span class="badge b-green">14+ sections</span>
+  </div>
+  <div class="prompt-block">
+    <div class="prompt-header">
+      <span class="prompt-label">PROMPT C · M03 · PRE-DEAL COMPLIANCE</span>
+      <span class="prompt-meta">v1.2 · Updated Jun 2025</span>
+      <button class="copy-btn" onclick="copyPrompt('pc')">⎘ COPY PROMPT</button>
+    </div>
+    <pre class="prompt-pre" id="pc">I am building an IB Deal Lifecycle Knowledge Base as a series of linked
+Bootstrap 5 dark-theme HTML files. Design standard: JetBrains Mono +
+Cinzel fonts, gold (#d4af37) and cyan (#22d3ee) accent palette.
+Vanilla JS only — no Bootstrap JS, no jQuery.
+
+DIAGRAMMING RULES (mandatory):
+  Process flows / decision trees / org charts  Mermaid
+  Side-by-side matrices / gate comparisons     ASCII (.ascii class)
+  Stage pipelines                              CSS .pipeline component
+  Pure CSS flowcharts                          BANNED permanently
+
+  MERMAID NON-NEGOTIABLE:
+  CDN: https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+  Init: mermaid.initialize({startOnLoad:true,theme:'dark',
+    themeVariables:{primaryColor:'#1e3a5f',primaryTextColor:'#e2e8f0',
+    lineColor:'#d4af37',fontFamily:'JetBrains Mono, monospace'}})
+  ZERO emojis / Unicode / special chars in node labels
+  ZERO \n in node label quotes — short plain text only
+  Max 12 nodes per diagram — split larger flows
+  Wrap: &lt;div class="mermaid-wrap"&gt;&lt;pre class="mermaid"&gt;...&lt;/pre&gt;
+    &lt;div class="diagram-caption"&gt;Fig N.N — desc&lt;/div&gt;&lt;/div&gt;
+  Trace every node and edge before writing next diagram
+
+SESSION HISTORY:
+M01 (m01_origination.html v1.2, 13 sections) — lifecycle, pitch/mandate,
+  9 compliance workflows as gate conditions, ECM vs DCM full comparison,
+  Infosys bond + LIC IPO case studies, FAQ accordion, Version History.
+M02 (m02_parties.html) — issuer/engaging/primary client, bookrunners,
+  counsel, auditor, ratings (S&amp;P/Moody's/Fitch/ICRA/CRISIL), ECM vs DCM
+  party differences, real party maps for both case studies.
+
+Now build m03_compliance.html — deep dive into every pre-deal compliance
+workflow, their interconnection, and ECM vs DCM differences:
+
+CONTENT (14+ sections):
+1. Compliance as architecture — why it is a hard gate not a checkbox;
+   regulatory and legal consequences of proceeding without clearance;
+   who owns each workflow
+2. Conflict Clearance — full detail beyond M01 intro: search process,
+   database sources (internal CRM, NDA log, MNPI register, deal history),
+   severity tiers (Low/Medium/High), all four resolution mechanisms
+   (Disclose+Consent / Chinese Wall / Recuse / Decline), Conflict of
+   Interest Register, escalation path for hostile deals;
+   Mermaid decision flow (no emojis in labels)
+3. KYC / AML — Standard / Enhanced / EDD tiers; UBO identification
+   (FATF 25% threshold, legal entity types); source of funds vs source
+   of wealth distinction; refresh cycles (annual / 6-monthly / event);
+   what causes KYC failure; Mermaid tier escalation flow
+4. Counterparty Screening — databases (World-Check, Dow Jones Risk,
+   OFAC SDN list, UN Consolidated, EU list); what triggers a flag;
+   false positive management; ongoing monitoring cadence; PEP definition
+   and treatment (family members, close associates)
+5. Sanctions — OFAC / UN / EU / UK HMT / SEBI-RBI regimes compared;
+   blocking sanctions vs filtering / secondary sanctions; deal stop
+   scenarios; no-action letter process; Mermaid sanctions decision tree
+6. Anti-Bribery and Corruption — UK Bribery Act 2010 (Section 7
+   corporate offence, adequate procedures defence); US FCPA (books and
+   records, anti-bribery provisions); India Prevention of Corruption
+   Act; red flags in IB (facilitation payments, agent/introducer fees,
+   government-linked transactions, state-owned enterprise counterparties)
+7. MiFID II — client classification (Retail / Professional / Eligible
+   Counterparty) and opt-up/opt-down; suitability vs appropriateness
+   distinction; cost and charge disclosure ex-ante and ex-post;
+   product governance and target market (ECM-specific); transaction
+   reporting obligation post-trade; Mermaid classification decision flow
+8. DAC6 — Directive on Administrative Cooperation simplified;
+   hallmarks A through E with concrete IB examples for each;
+   intermediary definition (promoter / service provider);
+   30-day reporting clock start triggers; which EU authority receives;
+   cross-border arrangement examples in DCM (structured bonds, hybrids)
+9. FinCEN / BSA / AML — SAR triggers and red flags specific to IB
+   (large round-number transactions, layering, unusual counterparties);
+   CDD Rule beneficial ownership certification for legal entity customers;
+   BSA annual compliance program elements; FinCEN 314(a) information
+   requests; distinction from OFAC sanctions screening
+10. Meaningful Client Work (MCW) — classification criteria in full;
+    Finance sign-off process; link to league table credit (Bloomberg /
+    Dealogic); deal system status field behaviour; what disqualifies
+    a deal from MCW (selling group only, advisory without fee, etc.)
+11. Engagement Letter — clause-by-clause deep dive: scope of services,
+    fee structure (retainer / success / spread), expense cap and what
+    qualifies, exclusivity clause, market flex (DCM), termination and
+    kill fee, governing law and dispute resolution; what each party
+    fights hardest on; ECM vs DCM EL key differences
+12. Research Wall / Quiet Period (ECM-only) — why it exists (Reg AC,
+    FINRA 2711); SEBI quiet period (30 days pre-IPO); SEC lockup regimes
+    (10/25/40 days by underwriter role); what analysts cannot do
+    (publish reports, change ratings, appear on panels); physical +
+    system controls (separate floor, IT access restriction); breach
+    consequences (SEC enforcement, SEBI action, reputational damage)
+13. Workflow interconnection — Mermaid flow showing all 10 compliance
+    workflows; which run in parallel vs sequential; which are hard gates
+    vs conditional (ECM vs DCM); what blocks what;
+    ASCII gate matrix: rows=workflows, cols=ECM/DCM, cells=Required/Conditional/NA
+14. FAQ accordion — 8+ questions with toggleFaq JS
+15. Version History table (v1.0)
+
+MANDATORY STRUCTURE: replicate M01 exactly — nav, hero, TOC,
+alternating .section/.section-alt, .ascii, .tbl, .card grids,
+.callout, .timeline, .pipeline, .mermaid-wrap, .faq-item accordion
+with toggleFaq JS, Version History, .mod-nav (left: m02, right: m04),
+footer badges. Validate before finishing.</pre>
+  </div>
+</div>
+
+<!-- 07: PROMPT D -->
+<div id="prompt-d" class="section">
+  <div class="section-title"><span class="section-num">07</span> PROMPT D — SESSION 4 · M04 REGULATORY REPORTING</div>
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge b-purple">v1.2</span>
+    <span class="badge b-cyan">Target file: m04_regulatory.html</span>
+    <span class="badge b-amber">Session 4</span>
+    <span class="badge b-green">12+ sections</span>
+  </div>
+  <div class="prompt-block">
+    <div class="prompt-header">
+      <span class="prompt-label">PROMPT D · M04 · REGULATORY REPORTING</span>
+      <span class="prompt-meta">v1.2 · Updated Jun 2025</span>
+      <button class="copy-btn" onclick="copyPrompt('pd')">⎘ COPY PROMPT</button>
+    </div>
+    <pre class="prompt-pre" id="pd">I am building an IB Deal Lifecycle Knowledge Base as a series of linked
+Bootstrap 5 dark-theme HTML files. Design standard: JetBrains Mono +
+Cinzel fonts, gold (#d4af37) and cyan (#22d3ee) accent palette.
+Vanilla JS only.
+
+DIAGRAMMING RULES (mandatory):
+  Process flows / decision trees  Mermaid
+  Timelines / calendars           ASCII (.ascii class)
+  Comparison matrices             ASCII or .tbl
+  Pure CSS flowcharts             BANNED permanently
+
+  MERMAID NON-NEGOTIABLE:
+  CDN: https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+  Init: mermaid.initialize({startOnLoad:true,theme:'dark',
+    themeVariables:{primaryColor:'#1e3a5f',primaryTextColor:'#e2e8f0',
+    lineColor:'#d4af37',fontFamily:'JetBrains Mono, monospace'}})
+  ZERO emojis / Unicode / special chars in node labels
+  ZERO \n in node label quotes
+  Max 12 nodes per diagram — split larger flows
+  Wrap in .mermaid-wrap with .diagram-caption
+  Trace every node and edge before writing next diagram
+
+SESSION HISTORY: M01-M03 complete.
+M01 — lifecycle, pitch/mandate, compliance workflows overview, ECM vs DCM
+M02 — all deal parties, bookrunners, counsel, ratings (S&amp;P/Moody/Fitch/India)
+M03 — all 10 compliance workflows in depth, Research Wall, interconnection map
+
+Now build m04_regulatory.html — what gets reported, to whom, by when,
+at which deal stage, for both ECM and DCM:
+
+CONTENT (12+ sections):
+1. Regulatory reporting philosophy — why banks report to regulators;
+   principal regulators per jurisdiction (FCA, SEC, SEBI, BaFin, MAS);
+   consequences of late or non-reporting (fines, suspensions, reputational)
+2. MiFID II transaction reporting — Article 26 obligations; 65-field
+   report structure (key fields: LEI, ISIN, price, quantity, venue,
+   buyer, seller); T+1 filing deadline; ARM/NCA routing;
+   ECM vs DCM field differences; Mermaid flow of report lifecycle
+3. MiFID II best execution — RTS 27 execution venue quality reports;
+   RTS 28 top-5 venue annual reports; what 'best execution' means in
+   IB context (bonds vs equities differ significantly)
+4. DAC6 filing walkthrough — step by step: identify arrangement, apply
+   hallmark A-E test, determine intermediary obligation, calculate
+   30-day clock start, select competent authority, file;
+   ASCII decision tree for the hallmark test
+5. FinCEN — SAR filing mechanics (when to file, who files, FinCEN form
+   fields); BSA annual compliance program 5 pillars; CDD Rule
+   beneficial ownership certification for legal entity customers;
+   difference between FinCEN SAR and OFAC SDN match process
+6. SEBI reporting (India):
+   DCM: RBI ECB filing (Form ECB, ECB-2 monthly return) for foreign
+     currency bonds; SEBI debt listing requirements; credit rating
+     disclosure obligations
+   ECM: DRHP/RHP filing process and SEBI observation letter;
+     basis of allotment report (post-IPO); Reg 31 shareholding
+     pattern disclosure (quarterly); lock-up confirmation to exchange;
+     UPSI (Unpublished Price Sensitive Information) log maintenance;
+     insider trading window management
+7. Expense tracking — per-stage expense log design; category taxonomy
+   (legal / rating / roadshow / listing / internal); variance analysis
+   vs EL expense cap; approval workflow; who signs at each stage;
+   audit trail requirements for regulator inspection
+8. Revenue recognition — IFRS 15 performance obligations applied to IB;
+   when mandate fee is recognised (at signing vs at closing);
+   success fee timing; multi-tranche deal treatment;
+   booking entity allocation mechanics; deal abandonment revenue reversal
+9. Regulatory reporting calendar — ASCII master timeline for both ECM
+   and DCM: T+0, T+1, T+2, T+5, T+30, T+60, T+90 — what fires at
+   each point, to which regulator, filed by whom
+10. Common failures and audit red flags — top 10 reporting failures
+    in IB deals; what internal audit looks for; what regulators
+    examine on inspection; remediation process
+11. FAQ accordion — 8+ questions with toggleFaq JS
+12. Version History table (v1.0)
+
+MANDATORY STRUCTURE: replicate M01 exactly. .mod-nav: left m03, right m05.
+Validate before finishing.</pre>
+  </div>
+</div>
+
+<!-- 08: PROMPT E -->
+<div id="prompt-e" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">08</span> PROMPT E — SESSION 5 · M05 BOOKING VEHICLES + M&amp;A</div>
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge b-purple">v1.2</span>
+    <span class="badge b-cyan">Target file: m05_vehicles.html</span>
+    <span class="badge b-amber">Session 5</span>
+    <span class="badge b-green">10+ sections</span>
+  </div>
+  <div class="prompt-block">
+    <div class="prompt-header">
+      <span class="prompt-label">PROMPT E · M05 · BOOKING VEHICLES + M&amp;A</span>
+      <span class="prompt-meta">v1.2 · Updated Jun 2025</span>
+      <button class="copy-btn" onclick="copyPrompt('pe')">⎘ COPY PROMPT</button>
+    </div>
+    <pre class="prompt-pre" id="pe">I am building an IB Deal Lifecycle Knowledge Base as a series of linked
+Bootstrap 5 dark-theme HTML files. Design standard: JetBrains Mono +
+Cinzel fonts, gold (#d4af37) and cyan (#22d3ee) accent palette.
+Vanilla JS only.
+
+DIAGRAMMING RULES (mandatory):
+  Entity / org / flow diagrams    Mermaid
+  Cross-border vehicle matrices   ASCII (.ascii class)
+  Stage pipelines                 CSS .pipeline component
+  Pure CSS flowcharts             BANNED permanently
+
+  MERMAID NON-NEGOTIABLE:
+  CDN: https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+  Init: mermaid.initialize({startOnLoad:true,theme:'dark',
+    themeVariables:{primaryColor:'#1e3a5f',primaryTextColor:'#e2e8f0',
+    lineColor:'#d4af37',fontFamily:'JetBrains Mono, monospace'}})
+  ZERO emojis / Unicode / special chars in node labels
+  ZERO \n in node label quotes
+  Max 12 nodes per diagram — split larger flows
+  Wrap in .mermaid-wrap with .diagram-caption
+  Trace every node and edge before writing next diagram
+
+SESSION HISTORY: M01-M04 complete.
+M01 — lifecycle, pitch/mandate, compliance workflows, ECM vs DCM
+M02 — all deal parties, bookrunners, ratings
+M03 — all 10 compliance workflows in depth
+M04 — regulatory reporting (MiFID II, DAC6, FinCEN, SEBI), expense
+       tracking, revenue recognition, regulatory calendar
+
+Now build m05_vehicles.html — legal booking vehicles and M&amp;A:
+
+CONTENT (10+ sections):
+1. What is a Legal Booking Vehicle — legal entity vs deal team vs bank
+   brand distinction; examples of real booking entity names
+   (Goldman Sachs International, J.P. Morgan Securities plc, etc.);
+   why the same bank brand can have 10+ booking entities globally
+2. Why multiple vehicles exist — regulatory authorisation by jurisdiction
+   (MiFID II requires EU-authorised entity; SEBI requires registered
+   entity in India); tax efficiency; client relationship geography;
+   P&amp;L attribution; inter-entity transfer pricing agreements
+3. Single booking vehicle scenario — when used; simple DCM bond example
+   (London entity books entire deal); Mermaid entity diagram
+4. Multiple booking vehicles — cross-border deal mechanics;
+   how revenue is contractually split between entities;
+   how P&amp;L flows (gross revenue to each entity, shared cost allocation);
+   inter-entity back-to-back agreements; Mermaid multi-entity flow
+5. ECM booking vehicle specifics — greenshoe/stabilisation entity
+   (often separate regulated entity); why stabilisation must be
+   conducted by an entity with specific regulatory permission;
+   worked ECM example with 2-3 vehicles
+6. M&amp;A booking vehicle specifics — adviser entity (relationship bank)
+   vs financing entity (underwriter); fairness opinion entity;
+   cross-border acquisition with 3 vehicles across 3 jurisdictions;
+   Mermaid M&amp;A vehicle structure diagram
+7. M&amp;A deep-dive walkthrough — Indian acquirer (Tata-style) buying
+   UK target: full Origination through Close timeline; which booking
+   vehicle operates at each stage; what each books; how compliance
+   gates apply per vehicle; how fees are split and recognised;
+   ASCII deal timeline with vehicle annotations
+8. Deal origination system representation — how multiple vehicles
+   appear under a parent deal ID; mandatory fields per vehicle entry
+   (entity LEI, jurisdiction, authorisation type, revenue amount);
+   system validation rules preventing revenue double-count;
+   audit trail per vehicle for regulator inspection
+9. FAQ accordion — 8+ questions with toggleFaq JS
+10. Version History table (v1.0)
+
+MANDATORY STRUCTURE: replicate M01 exactly. .mod-nav: left m04, right m06.
+Validate before finishing.</pre>
+  </div>
+</div>
+
+<!-- 09: PROMPT F -->
+<div id="prompt-f" class="section">
+  <div class="section-title"><span class="section-num">09</span> PROMPT F — SESSION 6 · M06 DEAL ECONOMICS</div>
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge b-purple">v1.2</span>
+    <span class="badge b-cyan">Target file: m06_economics.html</span>
+    <span class="badge b-amber">Session 6</span>
+    <span class="badge b-green">12+ sections</span>
+  </div>
+  <div class="prompt-block">
+    <div class="prompt-header">
+      <span class="prompt-label">PROMPT F · M06 · DEAL ECONOMICS</span>
+      <span class="prompt-meta">v1.2 · Updated Jun 2025</span>
+      <button class="copy-btn" onclick="copyPrompt('pf')">⎘ COPY PROMPT</button>
+    </div>
+    <pre class="prompt-pre" id="pf">I am building an IB Deal Lifecycle Knowledge Base as a series of linked
+Bootstrap 5 dark-theme HTML files. Design standard: JetBrains Mono +
+Cinzel fonts, gold (#d4af37) and cyan (#22d3ee) accent palette.
+Vanilla JS only.
+
+DIAGRAMMING RULES (mandatory):
+  Process / decision flows     Mermaid
+  Fee structure breakdowns     ASCII (.ascii class)
+  Comparison matrices          ASCII or .tbl
+  Bar / line data charts       Chart.js (this module only)
+  Pure CSS flowcharts          BANNED permanently
+
+  MERMAID NON-NEGOTIABLE:
+  CDN: https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+  Init: mermaid.initialize({startOnLoad:true,theme:'dark',
+    themeVariables:{primaryColor:'#1e3a5f',primaryTextColor:'#e2e8f0',
+    lineColor:'#d4af37',fontFamily:'JetBrains Mono, monospace'}})
+  ZERO emojis / Unicode / special chars in node labels
+  ZERO \n in node label quotes
+  Max 12 nodes per diagram
+  Wrap in .mermaid-wrap with .diagram-caption
+
+  CHART.JS RULES (economics charts only):
+  CDN: https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js
+  Dark theme: canvas background transparent; grid lines #1e3a5f;
+    tick color #94a3b8; legend color #e2e8f0
+  Primary dataset: gold #d4af37; secondary: cyan #22d3ee;
+    tertiary: green #22c55e; quaternary: amber #f59e0b
+  Always call chart.destroy() before re-rendering on input change
+  Wrap each chart: &lt;div class="chart-wrap"&gt;&lt;canvas id="..."&gt;&lt;/canvas&gt;&lt;/div&gt;
+
+SESSION HISTORY: M01-M05 complete.
+M01 — lifecycle, pitch/mandate, ECM vs DCM, case studies
+M02 — all parties, bookrunners, ratings
+M03 — all compliance workflows
+M04 — regulatory reporting, expense tracking, revenue recognition
+M05 — legal booking vehicles, M&amp;A walkthrough
+
+Now build m06_economics.html — complete deal economics:
+
+CONTENT (12+ sections):
+1. Deal size definition — notional for bonds; gross proceeds for IPO;
+   enterprise value for M&amp;A advisory; why the basis matters for fee
+   calculation; examples from Infosys bond + LIC IPO + M&amp;A deal
+2. DCM fee structure — management fee (praecipium + pool share);
+   underwriting fee; selling concession; total spread in bps;
+   who receives which component; ASCII fee waterfall diagram;
+   worked numeric example using Infosys USD 500M bond
+3. ECM fee structure — gross spread components: base management fee,
+   underwriting fee, selling concession (same structure, % not bps);
+   incentive fee (discretionary); stabilisation fee; BRLM fee in India;
+   ASCII fee waterfall; worked example using LIC IPO
+4. M&amp;A fee structure — retainer (monthly, credited against success fee);
+   success fee: classic Lehman formula (5-4-3-2-1) and modern stepped
+   variants; fairness opinion fee; financing fee if bank arranges debt;
+   ASCII formula breakdown; worked numeric example
+5. Expenses taxonomy — full category breakdown: legal (issuer counsel,
+   UW counsel), rating agency, roadshow (travel, venues, materials),
+   listing fees, trustee/agent, printing/distribution, internal systems;
+   who bears what (issuer vs bank); EL expense cap mechanics;
+   variance analysis table; ECM vs DCM expense comparison
+6. Fee splits in syndicated deals — praecipium mechanics (% retained
+   by lead before pool split); underwriting pool split; selling
+   concession; worked example: 3 joint bookrunners, unequal economics;
+   ASCII split waterfall showing flows to each bank entity
+7. Revenue recognition — IFRS 15 performance obligations applied to IB;
+   mandate fee: point in time vs over time recognition debate;
+   success fee: recognised at closing; multi-tranche: per tranche;
+   deal abandonment: reversal treatment; booking entity allocation
+8. P&amp;L flow — gross revenue to booking entity; transfer pricing to
+   coverage entity; cost allocation (front office, middle office, tech,
+   compliance); net contribution margin; Chart.js stacked bar chart:
+   revenue vs direct costs vs allocated costs vs net P&amp;L per deal type
+9. Regulatory financial disclosures — MiFID II ex-ante cost disclosure
+   format (what must be shown to client before trade); ex-post annual
+   report format; SEBI fee disclosure in DRHP/RHP (mandatory section);
+   what a regulator P&amp;L report looks like for an IB deal
+10. Interactive fee calculator — vanilla HTML + JS (no frameworks):
+    Inputs (live-updating on change):
+      Deal size (number input, INR Cr or USD M toggle)
+      Deal type radio: DCM / ECM / M&amp;A
+      Role radio: Sole Bookrunner / Joint Lead / Co-Manager
+      Number of joint bookrunners (1-8, shown when Joint Lead selected)
+      Expense estimate (number input, pre-filled with typical value)
+    Outputs (recalculate instantly):
+      Gross fee (INR Cr or USD M)
+      Your share of fee (after bookrunner split)
+      Estimated expenses (bank-borne)
+      Net revenue
+      Effective fee in bps
+      Expense ratio as % of gross fee
+    Style: dark card matching KB design, gold labels, cyan output values
+11. FAQ accordion — 8+ questions with toggleFaq JS
+12. Version History table (v1.0)
+
+MANDATORY STRUCTURE: replicate M01 exactly. Calculator uses vanilla JS.
+Chart.js uses dark theme with gold/cyan palette as specified.
+.mod-nav: left m05, right index.html. Validate before finishing.</pre>
+  </div>
+</div>
+
+<!-- 10: PROMPT G -->
+<div id="prompt-g" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">10</span> PROMPT G — SESSION 7 · INDEX.HTML</div>
+  <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+    <span class="badge b-purple">v1.2</span>
+    <span class="badge b-cyan">Target file: index.html (extend starter)</span>
+    <span class="badge b-amber">Session 7</span>
+    <span class="badge b-green">8+ sections</span>
+  </div>
+  <div class="prompt-block">
+    <div class="prompt-header">
+      <span class="prompt-label">PROMPT G · SESSION 7 · INDEX.HTML</span>
+      <span class="prompt-meta">v1.2 · Updated Jun 2025</span>
+      <button class="copy-btn" onclick="copyPrompt('pg')">⎘ COPY PROMPT</button>
+    </div>
+    <pre class="prompt-pre" id="pg">I am building an IB Deal Lifecycle Knowledge Base as a series of linked
+Bootstrap 5 dark-theme HTML files. Design standard: JetBrains Mono +
+Cinzel fonts, gold (#d4af37) and cyan (#22d3ee) accent palette.
+Vanilla JS only.
+
+DIAGRAMMING RULES (mandatory):
+  All flows / org charts        Mermaid
+  Matrices / calendars          ASCII
+  Pure CSS flowcharts           BANNED permanently
+
+  MERMAID NON-NEGOTIABLE:
+  CDN: https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+  Init: mermaid.initialize({startOnLoad:true,theme:'dark',
+    themeVariables:{primaryColor:'#1e3a5f',primaryTextColor:'#e2e8f0',
+    lineColor:'#d4af37',fontFamily:'JetBrains Mono, monospace'}})
+  ZERO emojis / Unicode in node labels; ZERO \n in label quotes
+  Max 12 nodes; wrap in .mermaid-wrap with .diagram-caption
+
+SESSION HISTORY: All 6 modules + prompts.html complete:
+m01_origination.html  v1.2, 13 sections, 112KB — lifecycle, pitch/mandate,
+  9 compliance workflows, ECM vs DCM (spectrum, 3-phase tables, Research Wall,
+  gate matrix), Infosys bond + LIC IPO case studies, FAQ, Version History
+m02_parties.html  — issuer/engaging/primary client, bookrunners (sole/JLM/co),
+  counsel (issuer/UW), auditor, ECM+DCM specific parties, ratings
+  (S&amp;P/Moody/Fitch/ICRA/CRISIL), real party maps for both case studies
+m03_compliance.html — all 10 compliance workflows in depth, Research Wall,
+  Mermaid interconnection flow, ECM vs DCM gate ASCII matrix
+m04_regulatory.html — MiFID II, DAC6, FinCEN, SEBI (ECB/IPO), expense
+  tracking, IFRS 15 revenue recognition, ASCII regulatory calendar
+m05_vehicles.html — legal booking vehicles, single vs multi, ECM greenshoe
+  entity, M&amp;A cross-border walkthrough (3 vehicles), deal system fields
+m06_economics.html — DCM/ECM/M&amp;A fee structures, expense taxonomy, fee
+  splits, P&amp;L flow, Chart.js charts, interactive fee calculator
+prompts.html — all session starter prompts B-G, diagramming rules,
+  prompt changelog, FAQ, Version History
+
+A starter index.html already exists with: hero, placeholder module cards,
+prompts.html link, and version history stub. Extend it with full content:
+
+CONTENT (8+ sections):
+1. Hero — series title ASCII art, series subtitle, total module count,
+   status badges (modules complete / in progress)
+2. Module card grid — 7 cards (6 modules + prompts.html):
+   each card: module number/label, title, section count, 4-5 key topics,
+   status badge (Complete/In Progress), direct link button;
+   prompts.html card uses purple accent to distinguish as operational
+3. Visual deal stage map — Mermaid diagram: lifecycle stages as nodes,
+   annotated with which module number owns each stage;
+   show ECM and DCM as separate swim lanes if possible within 12-node limit
+   (otherwise split into 2 diagrams: ECM track and DCM track)
+4. ECM vs DCM master cheat sheet — ASCII one-pager covering:
+   origination timeline, regulatory burden, roadshow length, pricing
+   mechanism, settlement, lock-up, greenshoe, fee structure, expense
+   profile, key parties, key compliance differences — all in one
+   side-by-side ASCII table
+5. Master glossary — all terms from M01-M06 consolidated;
+   alphabetically sorted; each entry: term | definition | [M0X] source;
+   use .tbl table with search/filter: vanilla JS input filtering rows
+6. Regulatory acronym reference — every acronym used across all modules:
+   MiFID II, DAC6, FinCEN, KYC, AML, MCW, EL, DRHP, OC, RHP, RegS,
+   144A, OFAC, UBO, PEP, EDD, VWAP, CRISIL, ICRA, CARE, ECB, BRLM,
+   SAR, BSA, CDD, FATF, RTS, ARM, NCA, IFRS, SPV, UPSI, FCPA, PCA,
+   SAS, LEI, ISIN, SDN, HMT, FRN, JLM, EDD, MCW, MDR, ESMA
+   Format: acronym | full form | one-line definition | [M0X]
+7. Series version history — version log for the overall KB:
+   v1.0 (M01 initial), v1.1 (ECM/DCM added), v1.2 (FAQ + changelog),
+   subsequent versions as modules are completed
+8. FAQ accordion — 8 series-level questions with toggleFaq JS
+
+MANDATORY STRUCTURE: replicate M01 style (nav, hero, TOC, alternating
+sections, ASCII, .tbl, .card grids, .callout, FAQ accordion, Version
+History). No .mod-nav (index is root). Footer links to all 6 modules
++ prompts.html. Glossary and acronym table have vanilla JS filter.
+Validate: zero broken tags, all module links correct, Mermaid valid.</pre>
+  </div>
+</div>
+
+<!-- 11: PROMPT CHANGELOG -->
+<div id="changelog-prompts" class="section">
+  <div class="section-title"><span class="section-num">11</span> PROMPT CHANGELOG</div>
+  <p>Every change to any prompt is recorded here. This allows you to understand exactly what was added in each revision and why — and to audit whether a module built with an older prompt version needs updating.</p>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th style="width:70px;">VERSION</th>
+        <th style="width:100px;">DATE</th>
+        <th style="width:90px;">PROMPT(S)</th>
+        <th>DELTA — WHAT CHANGED AND WHY</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>v1.0</code></td>
+        <td>Jun 2025</td>
+        <td>B, C, D, E, F, G</td>
+        <td>Initial prompt set. Basic design system (Bootstrap 5 dark, JetBrains Mono + Cinzel, gold/cyan). Mermaid for diagrams. Session history references for each module. Content outline per module.</td>
+      </tr>
+      <tr>
+        <td><code>v1.1</code></td>
+        <td>Jun 2025</td>
+        <td>B, C, D, E, F, G</td>
+        <td class="delta-add">+ ECM vs DCM coverage made mandatory in all modules (Research Wall, gate matrix, instrument spectrum, 3-phase comparison tables). + LIC IPO and Infosys bond cross-references added to all session history blocks. + Research Wall added as 10th compliance workflow in Prompt C.</td>
+      </tr>
+      <tr>
+        <td><code>v1.2</code></td>
+        <td>Jun 2025</td>
+        <td>B, C, D, E, F, G</td>
+        <td>
+          <span class="delta-add">+ FAQ accordion (8+ questions, toggleFaq JS) made mandatory in all modules.<br/>
+          + Version History table made mandatory in all modules.<br/>
+          + Diagramming rules block added to ALL prompts — Mermaid for flows, ASCII for matrices, Chart.js for M06 only, pure CSS flowcharts BANNED.<br/>
+          + Mermaid 8 non-negotiable rules added (ZERO emojis, ZERO \n, max 12 nodes, .mermaid-wrap, trace before write).<br/>
+          + MANDATORY STRUCTURE checklist added to all prompts.<br/>
+          + VALIDATION checklist added to all prompts.<br/>
+          + Chart.js rules added to Prompt F (dark theme, gold/cyan palette, destroy before re-render).</span><br/>
+          <span class="delta-change">~ Session history blocks updated in all prompts to reflect M01 v1.2 content (13 sections, ECM/DCM, FAQ, Version History).</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout co-cyan">
+    <div class="co-title cyan">📌 How to add a changelog entry</div>
+    When you add new content mid-session that changes what future prompts should include, add a row here with: new version number, date, affected prompts (B/C/D/E/F/G), and a delta description prefixed with <span class="hl-green">+ (addition)</span>, <span class="hl-amber">~ (change)</span>, or <span class="hl-red">- (removal)</span>.
+  </div>
+</div>
+
+<!-- 12: FAQ -->
+<div id="faq" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">12</span> FAQ</div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q1. Do I need to read this file before every new session, or just once?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>You don't need to read it — you just need to <strong>copy the right prompt</strong> from it. Open the file, click the copy button for the module you're building, paste it as your first message in a new Claude session. The prompt carries everything Claude needs. The only time you need to read it carefully is when you want to verify you have the latest version, or when updating the Prompt Changelog after adding new content mid-session.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q2. What if I add something mid-session that the prompt doesn't mention?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>That's exactly what happened in Session 1 — ECM vs DCM, FAQ, and Version History were all added mid-session. The process is: (1) finish the session and download the output, (2) open prompts.html, (3) update the relevant prompt to include the new content, (4) add a row to the Prompt Changelog (Section 11) with the delta. This ensures the next session that references this module inherits the addition automatically.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q3. Why is there a Prompt A if Session 1 didn't use a single starter prompt?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>Prompt A is a <strong>context record</strong>, not a reusable starter. Session 1 was exploratory — the scope, design system, and module structure were established iteratively through conversation. Prompt A documents what that session produced so that future sessions (and future readers of this file) have a complete picture of how the KB was initiated. If you ever need to rebuild M01 from scratch, Prompt A gives you the full context to write a proper starter prompt for it.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q4. Can I build two modules in one session to save ACUs?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>Not recommended. Each module is 80–120KB of HTML with multiple Mermaid diagrams, ASCII charts, comparison tables, case studies, FAQ sections, and Version History. Attempting two in one session risks: (1) running out of context window mid-second module causing truncation, (2) rushing diagrams and reintroducing Mermaid syntax errors, (3) the second module not inheriting the full design system correctly. The 1-module-per-session rule is the ACU-optimal approach, not just a conservative one.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q5. What if a future Claude version handles Mermaid differently?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>The Mermaid rules in this file are based on the Mermaid <strong>library itself</strong> (v10), not on Claude's behaviour. Emojis breaking Mermaid, line breaks failing in labels, and undefined nodes causing silent failures — these are Mermaid library constraints that apply regardless of which Claude version generates the code. If Mermaid releases a version that handles these differently, update Rule 1 (CDN version) and remove the relevant constraints from the rules block. The CDN version pin (mermaid@10) ensures consistent behaviour across sessions.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q6. Should prompts.html be shared with the HTML modules if I give this KB to someone else?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>Yes — and it's actually the most valuable file to share if you want someone else to <strong>extend</strong> the KB. The 6 module HTML files are the knowledge content; prompts.html is the <em>build manual</em>. Without it, anyone wanting to add a Module 7 or update an existing module would have to reverse-engineer the design system from scratch. Share the full folder: index.html + prompts.html + m01 through m06.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- 13: VERSION HISTORY -->
+<div id="version" class="section">
+  <div class="section-title"><span class="section-num">13</span> VERSION HISTORY</div>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th style="width:70px;">VERSION</th>
+        <th style="width:110px;">DATE</th>
+        <th style="width:140px;">AUTHOR</th>
+        <th>CHANGES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>v1.0</code></td>
+        <td>Jun 2025</td>
+        <td>Raghavan / Claude</td>
+        <td>Initial release — all 7 prompts (A context + B through G), master diagramming rules, diagramming tool comparison table, Mermaid 8 non-negotiable rules, how-to-use guide, FAQ (6 Qs), Prompt Changelog table.</td>
+      </tr>
+      <tr>
+        <td><code>v1.1</code></td>
+        <td>Jun 2025</td>
+        <td>Raghavan / Claude</td>
+        <td>All prompts updated to v1.2 (ECM/DCM mandatory, FAQ mandatory, Version History mandatory, diagramming rules block in every prompt, Mermaid non-negotiable rules, MANDATORY STRUCTURE checklist, VALIDATION checklist, Chart.js rules for M06). Prompt Changelog section added. FAQ expanded to 6 questions.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- MODULE NAV -->
+<div class="mod-nav">
+  <span style="font-family:var(--mono);font-size:.75rem;color:var(--t3);">PROMPTS.HTML · SESSION STARTER PROMPTS · v1.1</span>
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+    <a href="index.html">⬡ INDEX</a>
+    <a href="m01_origination.html">M01 · ORIGINATION</a>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<footer>
+  <div class="ft">IB DEAL LIFECYCLE · SESSION STARTER PROMPTS</div>
+  <div style="margin-bottom:.4rem;">Operational reference — prompts to build or resume each module in a new Claude session</div>
+  <div style="color:var(--border2);">─────────────────────────────────────────────────────────────────</div>
+  <div style="margin-top:.5rem;">
+    <span class="badge b-gold">M01 ✅</span>
+    <span class="badge b-cyan">M02 →</span>
+    <span class="badge b-gold">M03 →</span>
+    <span class="badge b-cyan">M04 →</span>
+    <span class="badge b-gold">M05 →</span>
+    <span class="badge b-cyan">M06 →</span>
+    <span class="badge b-purple">INDEX →</span>
+  </div>
+  <div style="margin-top:.75rem;font-size:.68rem;">For educational and internal reference purposes only. © IB Knowledge Base Series.</div>
+</footer>
+
+<script>
+function toggleFaq(btn){
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+function copyPrompt(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    const btn = el.previousElementSibling.querySelector('.copy-btn');
+    if(btn){
+      btn.textContent='✓ COPIED';
+      btn.classList.add('copied');
+      setTimeout(()=>{btn.textContent='⎘ COPY PROMPT';btn.classList.remove('copied');},2500);
+    }
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=el.textContent;
+    ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn=el.previousElementSibling.querySelector('.copy-btn');
+    if(btn){btn.textContent='✓ COPIED';btn.classList.add('copied');setTimeout(()=>{btn.textContent='⎘ COPY PROMPT';btn.classList.remove('copied');},2500);}
+  });
+}
+</script>
+</body>
+</html>
