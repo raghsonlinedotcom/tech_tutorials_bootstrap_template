@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IB Deal Lifecycle Knowledge Base</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Cinzel:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#090d16;--bg2:#0f1624;--bg3:#151e30;
+  --gold:#d4af37;--gold3:#8a6f1a;
+  --cyan:#22d3ee;--cyan2:#0891b2;
+  --blue:#3b82f6;--green:#22c55e;--red:#ef4444;
+  --amber:#f59e0b;--purple:#a855f7;--purple2:#581c87;
+  --t1:#e2e8f0;--t2:#94a3b8;--t3:#64748b;
+  --border:#1e3a5f;
+  --mono:'JetBrains Mono',monospace;
+  --display:'Cinzel',serif;
+  --body:'Lato',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--t1);font-family:var(--body);line-height:1.7;font-size:15px;}
+
+nav{position:sticky;top:0;z-index:100;background:linear-gradient(90deg,#05080f,#0c1422,#05080f);border-bottom:2px solid var(--gold);display:flex;align-items:center;justify-content:space-between;padding:.5rem 1.5rem;flex-wrap:wrap;gap:.5rem;}
+.nav-brand{font-family:var(--display);color:var(--gold);font-size:.9rem;letter-spacing:2px;}
+.nav-links{display:flex;flex-wrap:wrap;gap:.25rem;}
+.nav-links a{font-family:var(--mono);font-size:.7rem;color:var(--t2);text-decoration:none;padding:.25rem .5rem;border-radius:3px;border:1px solid transparent;letter-spacing:1px;transition:color .2s,border-color .2s;}
+.nav-links a:hover{color:var(--gold);border-color:var(--gold3);}
+
+.hero{background:linear-gradient(135deg,#05080f 0%,#0b1525 50%,#07101e 100%);border-bottom:1px solid var(--border);padding:3rem 1.5rem 2.5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(212,175,55,.1) 0%,transparent 65%);}
+.hero-ascii{font-family:var(--mono);font-size:clamp(.35rem,.8vw,.58rem);line-height:1.15;color:var(--gold);opacity:.8;white-space:pre;margin-bottom:1.5rem;text-shadow:0 0 12px rgba(212,175,55,.35);}
+.hero-tag{font-family:var(--mono);color:var(--cyan);font-size:.75rem;letter-spacing:4px;margin-bottom:.5rem;}
+.hero-title{font-family:var(--display);font-size:clamp(1.4rem,3.5vw,2.6rem);color:var(--gold);letter-spacing:3px;margin-bottom:.75rem;}
+.hero-sub{color:var(--t2);font-size:.95rem;max-width:700px;margin:0 auto 1.2rem;}
+.badge{display:inline-block;font-family:var(--mono);font-size:.68rem;padding:.25em .65em;border-radius:3px;margin:.15rem;}
+.b-gold{background:rgba(212,175,55,.12);color:var(--gold);border:1px solid var(--gold3);}
+.b-cyan{background:rgba(34,211,238,.1);color:var(--cyan);border:1px solid var(--cyan2);}
+.b-purple{background:rgba(168,85,247,.1);color:var(--purple);border:1px solid var(--purple2);}
+.b-green{background:rgba(34,197,94,.1);color:var(--green);border:1px solid #14532d;}
+.b-amber{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid #78350f;}
+.b-red{background:rgba(239,68,68,.1);color:var(--red);border:1px solid #7f1d1d;}
+
+.container{max-width:1100px;margin:0 auto;padding:2rem 1.5rem;}
+
+.section{background:var(--bg2);border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:8px;padding:2rem;margin-bottom:2rem;}
+.section-alt{border-left-color:var(--cyan);}
+.section-purple{border-left-color:var(--purple);}
+.section-title{font-family:var(--display);color:var(--gold);font-size:1.15rem;letter-spacing:2px;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem;}
+.section-title.cyan{color:var(--cyan);}
+.section-title.purple{color:var(--purple);}
+.section-num{font-family:var(--mono);font-size:.7rem;color:var(--t3);background:var(--bg3);border:1px solid var(--border);padding:.2em .5em;border-radius:3px;}
+
+.toc{background:#0b1320;border:1px solid var(--border);border-left:4px solid var(--cyan);border-radius:8px;padding:1.5rem;margin-bottom:2rem;}
+.toc-title{font-family:var(--display);color:var(--cyan);font-size:.9rem;letter-spacing:2px;margin-bottom:1rem;}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.25rem;}
+.toc-link{display:flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.75rem;color:var(--t2);text-decoration:none;padding:.3rem .5rem;border-radius:4px;transition:color .2s,background .2s;}
+.toc-link:hover{color:var(--gold);background:rgba(212,175,55,.06);}
+.toc-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:.5;flex-shrink:0;}
+
+/* MODULE CARDS */
+.mod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;margin:1.2rem 0;}
+.mod-card{background:#0b1320;border:1px solid var(--border);border-radius:10px;padding:1.4rem;transition:border-color .25s,background .25s;display:flex;flex-direction:column;gap:.6rem;}
+.mod-card:hover{border-color:var(--gold);background:var(--bg3);}
+.mod-card.purple-card:hover{border-color:var(--purple);}
+.mod-card-num{font-family:var(--mono);font-size:.65rem;color:var(--t3);letter-spacing:2px;}
+.mod-card-title{font-family:var(--display);color:var(--gold);font-size:.95rem;letter-spacing:1px;}
+.mod-card.purple-card .mod-card-title{color:var(--purple);}
+.mod-card-sections{font-family:var(--mono);font-size:.65rem;color:var(--t3);}
+.mod-card-topics{font-size:.8rem;color:var(--t2);line-height:1.5;}
+.mod-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.4rem;flex-wrap:wrap;gap:.5rem;}
+.mod-link{font-family:var(--mono);font-size:.72rem;color:var(--cyan);text-decoration:none;padding:.3rem .7rem;border:1px solid var(--cyan2);border-radius:4px;transition:background .2s;}
+.mod-link:hover{background:rgba(34,211,238,.1);}
+.mod-card.purple-card .mod-link{color:var(--purple);border-color:var(--purple2);}
+.mod-card.purple-card .mod-link:hover{background:rgba(168,85,247,.1);}
+.status-done{font-family:var(--mono);font-size:.65rem;padding:.2em .5em;border-radius:3px;background:rgba(34,197,94,.1);color:var(--green);border:1px solid #14532d;}
+.status-pending{font-family:var(--mono);font-size:.65rem;padding:.2em .5em;border-radius:3px;background:rgba(245,158,11,.08);color:var(--amber);border:1px solid #78350f;}
+
+.ascii{font-family:var(--mono);font-size:clamp(.58rem,1.3vw,.75rem);line-height:1.38;background:#050810;border:1px solid var(--border);border-radius:6px;padding:1.2rem 1.5rem;color:var(--cyan);overflow-x:auto;white-space:pre;margin:1.2rem 0;}
+.ascii.gold{color:var(--gold);}
+
+.tbl{width:100%;border-collapse:collapse;font-size:.84rem;margin:1rem 0;}
+.tbl th{background:#0b1320;color:var(--gold);font-family:var(--mono);font-size:.72rem;letter-spacing:1px;padding:.6rem .8rem;border:1px solid var(--border);text-align:left;}
+.tbl td{padding:.55rem .8rem;border:1px solid #1a2a42;color:var(--t1);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:rgba(30,58,95,.15);}
+.tbl tr:hover td{background:rgba(30,58,95,.35);}
+
+.callout{border-left:4px solid;border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.88rem;}
+.co-gold{border-color:var(--gold);background:rgba(212,175,55,.06);}
+.co-cyan{border-color:var(--cyan);background:rgba(34,211,238,.05);}
+.co-purple{border-color:var(--purple);background:rgba(168,85,247,.06);}
+.co-title{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.35rem;}
+.co-title.gold{color:var(--gold);}
+.co-title.cyan{color:var(--cyan);}
+.co-title.purple{color:var(--purple);}
+
+.faq-item{border:1px solid var(--border);border-radius:6px;margin-bottom:.5rem;overflow:hidden;}
+.faq-q{width:100%;background:#0b1320;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:.85rem 1rem;font-family:var(--mono);font-size:.78rem;color:var(--gold);text-align:left;gap:1rem;transition:background .2s;}
+.faq-q:hover{background:var(--bg3);}
+.faq-q.open{color:var(--cyan);background:var(--bg3);}
+.faq-arrow{font-size:.65rem;flex-shrink:0;transition:transform .25s;color:var(--t3);}
+.faq-q.open .faq-arrow{transform:rotate(180deg);color:var(--cyan);}
+.faq-a{background:var(--bg2);padding:0 1rem;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;font-size:.86rem;color:var(--t2);}
+.faq-a.open{max-height:500px;padding:.9rem 1rem;}
+
+.hl-gold{color:var(--gold);font-weight:700;}
+.hl-cyan{color:var(--cyan);}
+.hl-purple{color:var(--purple);}
+code{font-family:var(--mono);font-size:.8rem;color:var(--cyan);background:#050810;padding:.1em .4em;border-radius:3px;}
+p{margin-bottom:.75rem;}
+h4{font-family:var(--mono);color:var(--gold);font-size:.88rem;margin:1.2rem 0 .5rem;letter-spacing:1px;}
+
+footer{background:#05080f;border-top:2px solid var(--gold);padding:2rem 1.5rem;text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--t3);}
+footer .ft{font-family:var(--display);color:var(--gold);font-size:.85rem;letter-spacing:3px;margin-bottom:.5rem;}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">⬡ IB DEAL LIFECYCLE KB</div>
+  <div class="nav-links">
+    <a href="#modules">MODULES</a>
+    <a href="#stagemap">STAGE MAP</a>
+    <a href="#ecm-dcm-ref">ECM vs DCM</a>
+    <a href="#faq">FAQ</a>
+    <a href="#version">VERSION</a>
+    <a href="prompts.html">⬡ PROMPTS</a>
+  </div>
+</nav>
+
+<section class="hero">
+<div class="hero-ascii">
+ ██╗██████╗      ██████╗ ███████╗ █████╗ ██╗         ██╗     ██╗███████╗███████╗ ██████╗██╗   ██╗ ██████╗██╗     ███████╗
+ ██║██╔══██╗     ██╔══██╗██╔════╝██╔══██╗██║         ██║     ██║██╔════╝██╔════╝██╔════╝╚██╗ ██╔╝██╔════╝██║     ██╔════╝
+ ██║██████╔╝     ██║  ██║█████╗  ███████║██║         ██║     ██║█████╗  █████╗  ██║      ╚████╔╝ ██║     ██║     █████╗
+ ██║██╔══██╗     ██║  ██║██╔══╝  ██╔══██║██║         ██║     ██║██╔══╝  ██╔══╝  ██║       ╚██╔╝  ██║     ██║     ██╔══╝
+ ██║██████╔╝     ██████╔╝███████╗██║  ██║███████╗    ███████╗██║██║     ███████╗╚██████╗   ██║   ╚██████╗███████╗███████╗
+ ╚═╝╚═════╝      ╚═════╝ ╚══════╝╚═╝  ╚═╝╚══════╝    ╚══════╝╚═╝╚═╝     ╚══════╝ ╚═════╝   ╚═╝    ╚═════╝╚══════╝╚══════╝
+</div>
+  <div class="hero-tag">INVESTMENT BANKING · KNOWLEDGE BASE · MASTER INDEX</div>
+  <h1 class="hero-title">IB DEAL LIFECYCLE</h1>
+  <p class="hero-sub">A comprehensive reference covering Deal Origination, Syndication, and Closeout — with full compliance workflow, regulatory reporting, party structure, booking vehicle, and economics coverage for both ECM and DCM.</p>
+  <div>
+    <span class="badge b-gold">6 Modules</span>
+    <span class="badge b-cyan">ECM + DCM</span>
+    <span class="badge b-green">1 Complete ✅</span>
+    <span class="badge b-amber">5 In Progress</span>
+    <span class="badge b-purple">prompts.html included</span>
+  </div>
+</section>
+
+<div class="container">
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-title">▸ TABLE OF CONTENTS</div>
+  <div class="toc-grid">
+    <a class="toc-link" href="#modules"><span class="toc-dot"></span>01 · Module Library</a>
+    <a class="toc-link" href="#stagemap"><span class="toc-dot"></span>02 · Deal Stage Map</a>
+    <a class="toc-link" href="#ecm-dcm-ref"><span class="toc-dot"></span>03 · ECM vs DCM Quick Reference</a>
+    <a class="toc-link" href="#faq"><span class="toc-dot"></span>04 · FAQ</a>
+    <a class="toc-link" href="#version"><span class="toc-dot"></span>05 · Version History</a>
+    <a class="toc-link" href="prompts.html"><span class="toc-dot"></span>⬡ Session Starter Prompts</a>
+  </div>
+  <div class="callout co-purple" style="margin-top:1rem;margin-bottom:0;">
+    <div class="co-title purple">📌 Note to Session 7</div>
+    This is the <strong>starter index.html</strong> created during Session 1 to hold links and version history. Session 7 will extend this file with: full module card grid, deal stage Mermaid diagram, ECM vs DCM master cheat sheet, master glossary, and regulatory acronym reference. All sections marked with [SESSION 7] below are placeholders.
+  </div>
+</div>
+
+<!-- 01: MODULE LIBRARY -->
+<div id="modules" class="section">
+  <div class="section-title"><span class="section-num">01</span> MODULE LIBRARY</div>
+  <p>Each module is a standalone HTML file covering one domain of the IB deal lifecycle. All modules share the same design system — open any file independently or navigate between them via the module nav footer in each file.</p>
+
+  <div class="mod-grid">
+    <div class="mod-card">
+      <div class="mod-card-num">MODULE 01</div>
+      <div class="mod-card-title">Deal Origination Fundamentals</div>
+      <div class="mod-card-sections">13 sections · 112KB · v1.2</div>
+      <div class="mod-card-topics">Deal lifecycle (3 phases) · Pitch / Verbal Mandate / Formal Mandate · 9 compliance workflows · ECM vs DCM (instrument spectrum, 3-phase tables, Research Wall, gate matrix) · Infosys bond + LIC IPO case studies · FAQ · Version History</div>
+      <div class="mod-card-footer">
+        <span class="status-done">✅ Complete</span>
+        <a class="mod-link" href="m01_origination.html">Open M01 →</a>
+      </div>
+    </div>
+
+    <div class="mod-card">
+      <div class="mod-card-num">MODULE 02</div>
+      <div class="mod-card-title">Parties &amp; Ratings</div>
+      <div class="mod-card-sections">13+ sections · Session 2</div>
+      <div class="mod-card-topics">Issuer / Engaging / Primary Client · Sole Bookrunner / JLM / Co-Manager · Issuer Counsel · UW Counsel · Auditor · ECM + DCM specific parties · S&amp;P / Moody's / Fitch / ICRA / CRISIL · Real party maps</div>
+      <div class="mod-card-footer">
+        <span class="status-pending">⏳ Pending Session 2</span>
+        <a class="mod-link" href="m02_parties.html">Open M02 →</a>
+      </div>
+    </div>
+
+    <div class="mod-card">
+      <div class="mod-card-num">MODULE 03</div>
+      <div class="mod-card-title">Pre-Deal Compliance</div>
+      <div class="mod-card-sections">14+ sections · Session 3</div>
+      <div class="mod-card-topics">Conflict Clearance · KYC/AML · Counterparty Screening · Sanctions · Anti-Bribery · MiFID II · DAC6 · FinCEN · MCW · Engagement Letter · Research Wall · Workflow interconnection map</div>
+      <div class="mod-card-footer">
+        <span class="status-pending">⏳ Pending Session 3</span>
+        <a class="mod-link" href="m03_compliance.html">Open M03 →</a>
+      </div>
+    </div>
+
+    <div class="mod-card">
+      <div class="mod-card-num">MODULE 04</div>
+      <div class="mod-card-title">Regulatory Reporting</div>
+      <div class="mod-card-sections">12+ sections · Session 4</div>
+      <div class="mod-card-topics">MiFID II transaction reporting · DAC6 filing walkthrough · FinCEN / SAR · SEBI (ECB / IPO filings) · Expense tracking · IFRS 15 revenue recognition · Regulatory calendar (T+0 to T+90)</div>
+      <div class="mod-card-footer">
+        <span class="status-pending">⏳ Pending Session 4</span>
+        <a class="mod-link" href="m04_regulatory.html">Open M04 →</a>
+      </div>
+    </div>
+
+    <div class="mod-card">
+      <div class="mod-card-num">MODULE 05</div>
+      <div class="mod-card-title">Legal Booking Vehicles + M&amp;A</div>
+      <div class="mod-card-sections">10+ sections · Session 5</div>
+      <div class="mod-card-topics">What is a booking vehicle · Single vs multiple · ECM greenshoe entity · M&amp;A cross-border walkthrough (3 vehicles) · Deal system representation · Transfer pricing · Revenue attribution per vehicle</div>
+      <div class="mod-card-footer">
+        <span class="status-pending">⏳ Pending Session 5</span>
+        <a class="mod-link" href="m05_vehicles.html">Open M05 →</a>
+      </div>
+    </div>
+
+    <div class="mod-card">
+      <div class="mod-card-num">MODULE 06</div>
+      <div class="mod-card-title">Deal Economics</div>
+      <div class="mod-card-sections">12+ sections · Session 6</div>
+      <div class="mod-card-topics">DCM / ECM / M&amp;A fee structures · Expense taxonomy · Fee splits (3-bank worked example) · IFRS 15 revenue recognition · P&amp;L flow · Chart.js economics charts · Interactive fee calculator</div>
+      <div class="mod-card-footer">
+        <span class="status-pending">⏳ Pending Session 6</span>
+        <a class="mod-link" href="m06_economics.html">Open M06 →</a>
+      </div>
+    </div>
+
+    <div class="mod-card purple-card">
+      <div class="mod-card-num">OPERATIONAL</div>
+      <div class="mod-card-title">Session Starter Prompts</div>
+      <div class="mod-card-sections">13 sections · v1.1 current</div>
+      <div class="mod-card-topics">All prompts (A context + B through G) · Master diagramming rules · Mermaid non-negotiable rules · One-click copy buttons · Prompt Changelog (delta per version) · FAQ · Version History</div>
+      <div class="mod-card-footer">
+        <span class="status-done" style="background:rgba(168,85,247,.1);color:var(--purple);border-color:var(--purple2);">✅ Complete</span>
+        <a class="mod-link" href="prompts.html">Open PROMPTS →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 02: STAGE MAP PLACEHOLDER -->
+<div id="stagemap" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">02</span> DEAL STAGE MAP</div>
+  <div class="callout co-cyan">
+    <div class="co-title cyan">[SESSION 7] — Full content to be added</div>
+    Session 7 will replace this placeholder with: a Mermaid deal stage diagram showing which module owns each lifecycle stage, with ECM and DCM as separate tracks where they diverge.
+  </div>
+  <div class="ascii gold">
+DEAL LIFECYCLE — MODULE OWNERSHIP (PREVIEW)
+═══════════════════════════════════════════════════════════════════════════════
+  ORIGINATION PHASE           SYNDICATION PHASE          CLOSEOUT PHASE
+  ┌─────────────────┐         ┌──────────────────┐       ┌──────────────┐
+  │ M01 · Lifecycle │         │ M01 · Syndication│       │ M01 · Close  │
+  │ M02 · Parties   │────────▶│ M02 · Bookrunners│──────▶│ M04 · Report │
+  │ M03 · Compliance│         │ M05 · Vehicles   │       │ M06 · Econ   │
+  │ M04 · Reporting │         │ M06 · Economics  │       │              │
+  │ M05 · Vehicles  │         └──────────────────┘       └──────────────┘
+  │ M06 · Fees/EL   │
+  └─────────────────┘
+  FULL MERMAID DIAGRAM WITH ECM + DCM SWIM LANES → SESSION 7
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+</div>
+
+<!-- 03: ECM vs DCM QUICK REF PLACEHOLDER -->
+<div id="ecm-dcm-ref" class="section">
+  <div class="section-title"><span class="section-num">03</span> ECM vs DCM QUICK REFERENCE</div>
+  <div class="callout co-gold">
+    <div class="co-title gold">[SESSION 7] — Full content to be added</div>
+    Session 7 will replace this with the master ECM vs DCM one-pager covering all lifecycle phases, compliance, economics, parties, and regulatory differences in a single ASCII side-by-side table.
+  </div>
+  <div class="ascii">
+ECM vs DCM — SNAPSHOT (PREVIEW — full table in Session 7)
+═══════════════════════════════════════════════════════════════════════════════
+  DIMENSION              DCM (Debt)              ECM (Equity)
+  ─────────────────────────────────────────────────────────────────────────
+  Instrument             Bond / Note / Loan      Shares / GDR / ADR
+  Investor return        Coupon + principal      Dividends + capital gain
+  Rating required        Yes (IG) / Market std   No
+  Origination timeline   Days to 2 weeks         Weeks to months (SEBI/SEC)
+  Roadshow               1-3 days                2-3 weeks (IPO)
+  Fee basis              Basis points (bps)      % of proceeds
+  Research Wall          Optional                Mandatory
+  Greenshoe              Rare                    Common (IPO)
+  Settlement             T+2 to T+5              T+1 (India) / T+2 (US/UK)
+  Full table             → M01 Section 11        → M01 Section 11
+  ─────────────────────────────────────────────────────────────────────────
+  MASTER CHEAT SHEET (all modules consolidated) → SESSION 7
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+</div>
+
+<!-- 04: FAQ -->
+<div id="faq" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">04</span> FAQ — SERIES LEVEL</div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q1. What order should I read the modules in?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>Start with <strong>M01</strong> — it establishes the lifecycle framework and terminology that every other module references. Then M02 (parties) before M03 (compliance) because M03 uses party definitions. M04, M05, M06 can be read in any order after M01-M03. The <strong>prompts.html</strong> file is operational — read it when you want to build or extend the KB, not as knowledge content.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q2. Can I use this KB as a training resource for new joiners?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>Yes — that is one of the primary intended use cases. The KB is structured to take someone with no IB background from first principles (what is a deal? what is a pitch?) through to detailed operational knowledge (MiFID II transaction reporting fields, IFRS 15 revenue recognition, DAC6 hallmark tests). Share the full folder (all HTML files) and open <code>index.html</code> as the entry point. The glossary (added in Session 7) will be particularly useful for new joiners.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q3. How do I add a Module 7 or extend the KB after Session 7?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>Open <strong>prompts.html</strong> and create a new Prompt H following the same structure as Prompts B-G. Include: diagramming rules block, session history (referencing all prior modules), content outline for the new module, and the mandatory structure checklist. Add a row to the Prompt Changelog. Then use Prompt H as your Session 8 starter. Update <code>index.html</code> to add the new module card and update the Version History.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- 05: VERSION HISTORY -->
+<div id="version" class="section">
+  <div class="section-title"><span class="section-num">05</span> VERSION HISTORY</div>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th style="width:70px;">VERSION</th>
+        <th style="width:110px;">DATE</th>
+        <th style="width:140px;">AUTHOR</th>
+        <th>CHANGES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>v0.1</code></td>
+        <td>Jun 2025</td>
+        <td>Raghavan / Claude</td>
+        <td>Starter index.html created during Session 1. Contains: hero, module card grid (7 cards with status badges), deal stage map placeholder, ECM vs DCM quick ref placeholder, series FAQ (3 Qs), Version History. Links to prompts.html and all 6 module files. Placeholders marked [SESSION 7] for full content addition.</td>
+      </tr>
+      <tr>
+        <td><code>v1.0</code></td>
+        <td>TBD — Session 7</td>
+        <td>Raghavan / Claude</td>
+        <td>[PLANNED] Full content: deal stage Mermaid diagram (ECM + DCM swim lanes), master ECM vs DCM ASCII cheat sheet, master glossary (all M01-M06 terms, searchable), regulatory acronym reference (40+ acronyms), series FAQ expanded to 8+ Qs, prompts.html link in operational card.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- /container -->
+
+<footer>
+  <div class="ft">IB DEAL LIFECYCLE KNOWLEDGE BASE</div>
+  <div style="margin-bottom:.4rem;">Master Index · 6 Knowledge Modules + Session Starter Prompts</div>
+  <div style="color:var(--border);margin:.4rem 0;">─────────────────────────────────────────────────────────────────</div>
+  <div>
+    <a href="m01_origination.html" style="text-decoration:none;"><span class="badge b-gold">M01 ✅</span></a>
+    <a href="m02_parties.html" style="text-decoration:none;"><span class="badge b-cyan">M02</span></a>
+    <a href="m03_compliance.html" style="text-decoration:none;"><span class="badge b-gold">M03</span></a>
+    <a href="m04_regulatory.html" style="text-decoration:none;"><span class="badge b-cyan">M04</span></a>
+    <a href="m05_vehicles.html" style="text-decoration:none;"><span class="badge b-gold">M05</span></a>
+    <a href="m06_economics.html" style="text-decoration:none;"><span class="badge b-cyan">M06</span></a>
+    <a href="prompts.html" style="text-decoration:none;"><span class="badge b-purple">PROMPTS ✅</span></a>
+  </div>
+  <div style="margin-top:.75rem;font-size:.68rem;">For educational and internal reference purposes only. © IB Knowledge Base Series.</div>
+</footer>
+
+<script>
+function toggleFaq(btn){
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+</script>
+</body>
+</html>
