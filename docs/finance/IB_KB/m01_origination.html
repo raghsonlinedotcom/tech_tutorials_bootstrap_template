@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>M01 · Deal Origination Fundamentals | IB Deal Lifecycle</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Cinzel:wght@700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#090d16;--bg2:#0f1624;--bg3:#151e30;--bg4:#1a2540;
+  --gold:#d4af37;--gold2:#f0d060;--gold3:#8a6f1a;
+  --cyan:#22d3ee;--cyan2:#0891b2;
+  --blue:#3b82f6;--green:#22c55e;--red:#ef4444;--amber:#f59e0b;--purple:#a855f7;
+  --t1:#e2e8f0;--t2:#94a3b8;--t3:#64748b;
+  --border:#1e3a5f;--border2:#253d5f;
+  --mono:'JetBrains Mono',monospace;
+  --display:'Cinzel',serif;
+  --body:'Lato',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--t1);font-family:var(--body);line-height:1.7;font-size:15px;}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(90deg,#05080f,#0c1422,#05080f);
+  border-bottom:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.5rem 1.5rem;flex-wrap:wrap;gap:.5rem;
+}
+.nav-brand{font-family:var(--display);color:var(--gold);font-size:.9rem;letter-spacing:2px;}
+.nav-links{display:flex;flex-wrap:wrap;gap:.25rem;}
+.nav-links a{
+  font-family:var(--mono);font-size:.7rem;color:var(--t2);
+  text-decoration:none;padding:.25rem .5rem;border-radius:3px;
+  border:1px solid transparent;letter-spacing:1px;
+  transition:color .2s,border-color .2s;
+}
+.nav-links a:hover{color:var(--gold);border-color:var(--gold3);}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,#05080f 0%,#0b1525 50%,#07101e 100%);
+  border-bottom:1px solid var(--border);
+  padding:3rem 1.5rem 2.5rem;
+  text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% -10%,rgba(212,175,55,.1) 0%,transparent 65%);
+}
+.hero-ascii{
+  font-family:var(--mono);font-size:clamp(.38rem,.85vw,.62rem);
+  line-height:1.15;color:var(--gold);opacity:.8;
+  white-space:pre;margin-bottom:1.5rem;
+  text-shadow:0 0 12px rgba(212,175,55,.35);
+}
+.hero-tag{font-family:var(--mono);color:var(--cyan);font-size:.75rem;letter-spacing:4px;margin-bottom:.5rem;}
+.hero-title{font-family:var(--display);font-size:clamp(1.4rem,3.5vw,2.5rem);color:var(--gold);letter-spacing:3px;margin-bottom:.75rem;}
+.hero-sub{color:var(--t2);font-size:.95rem;max-width:680px;margin:0 auto 1.2rem;}
+.badge{display:inline-block;font-family:var(--mono);font-size:.68rem;padding:.25em .65em;border-radius:3px;margin:.15rem;}
+.b-gold{background:rgba(212,175,55,.12);color:var(--gold);border:1px solid var(--gold3);}
+.b-cyan{background:rgba(34,211,238,.1);color:var(--cyan);border:1px solid var(--cyan2);}
+.b-red{background:rgba(239,68,68,.1);color:var(--red);border:1px solid #7f1d1d;}
+.b-green{background:rgba(34,197,94,.1);color:var(--green);border:1px solid #14532d;}
+.b-purple{background:rgba(168,85,247,.1);color:var(--purple);border:1px solid #581c87;}
+.b-amber{background:rgba(245,158,11,.1);color:var(--amber);border:1px solid #78350f;}
+
+/* ── LAYOUT ── */
+.container{max-width:1100px;margin:0 auto;padding:2rem 1.5rem;}
+
+/* ── SECTION BLOCKS ── */
+.section{
+  background:var(--bg2);border:1px solid var(--border);
+  border-left:4px solid var(--gold);border-radius:8px;
+  padding:2rem;margin-bottom:2rem;
+}
+.section-alt{border-left-color:var(--cyan);}
+.section-title{
+  font-family:var(--display);color:var(--gold);
+  font-size:1.15rem;letter-spacing:2px;
+  margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem;
+}
+.section-title.cyan{color:var(--cyan);}
+.section-num{
+  font-family:var(--mono);font-size:.7rem;color:var(--t3);
+  background:var(--bg3);border:1px solid var(--border);
+  padding:.2em .5em;border-radius:3px;
+}
+
+/* ── TOC ── */
+.toc{background:#0b1320;border:1px solid var(--border);border-left:4px solid var(--cyan);border-radius:8px;padding:1.5rem;margin-bottom:2rem;}
+.toc-title{font-family:var(--display);color:var(--cyan);font-size:.9rem;letter-spacing:2px;margin-bottom:1rem;}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.25rem;}
+.toc-link{
+  display:flex;align-items:center;gap:.5rem;
+  font-family:var(--mono);font-size:.75rem;color:var(--t2);
+  text-decoration:none;padding:.3rem .5rem;border-radius:4px;
+  transition:color .2s,background .2s;
+}
+.toc-link:hover{color:var(--gold);background:rgba(212,175,55,.06);}
+.toc-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:.5;flex-shrink:0;}
+
+/* ── CALLOUT ── */
+.callout{border-left:4px solid;border-radius:6px;padding:1rem 1.2rem;margin:1rem 0;font-size:.88rem;}
+.co-gold{border-color:var(--gold);background:rgba(212,175,55,.06);}
+.co-cyan{border-color:var(--cyan);background:rgba(34,211,238,.05);}
+.co-red{border-color:var(--red);background:rgba(239,68,68,.05);}
+.co-green{border-color:var(--green);background:rgba(34,197,94,.05);}
+.co-amber{border-color:var(--amber);background:rgba(245,158,11,.05);}
+.co-title{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.35rem;}
+.co-title.gold{color:var(--gold);}
+.co-title.cyan{color:var(--cyan);}
+.co-title.red{color:var(--red);}
+.co-title.green{color:var(--green);}
+.co-title.amber{color:var(--amber);}
+
+/* ── ASCII BLOCK ── */
+.ascii{
+  font-family:var(--mono);font-size:clamp(.58rem,1.3vw,.75rem);
+  line-height:1.38;background:#050810;
+  border:1px solid var(--border);border-radius:6px;
+  padding:1.2rem 1.5rem;color:var(--cyan);
+  overflow-x:auto;white-space:pre;margin:1.2rem 0;
+}
+.ascii.gold{color:var(--gold);}
+.ascii.green{color:var(--green);}
+.ascii.amber{color:var(--amber);}
+
+/* ── TABLES ── */
+.tbl{width:100%;border-collapse:collapse;font-size:.84rem;margin:1rem 0;}
+.tbl th{
+  background:#0b1320;color:var(--gold);font-family:var(--mono);
+  font-size:.72rem;letter-spacing:1px;padding:.6rem .8rem;
+  border:1px solid var(--border);text-align:left;
+}
+.tbl td{padding:.55rem .8rem;border:1px solid #1a2a42;color:var(--t1);vertical-align:top;}
+.tbl tr:nth-child(even) td{background:rgba(30,58,95,.15);}
+.tbl tr:hover td{background:rgba(30,58,95,.35);}
+
+/* ── CSS FLOWCHART ── */
+.flow-wrap{overflow-x:auto;padding:.5rem 0;}
+.flow{display:flex;flex-direction:column;align-items:center;gap:0;padding:1rem;}
+.flow-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;}
+.fbox{
+  font-family:var(--mono);font-size:.72rem;text-align:center;
+  border-radius:6px;padding:.55rem .8rem;min-width:110px;
+  border:1px solid;line-height:1.35;position:relative;
+  white-space:nowrap;
+}
+.fbox-sub{font-size:.62rem;opacity:.75;margin-top:.15rem;white-space:normal;}
+.fb-gold{background:rgba(212,175,55,.1);border-color:var(--gold);color:var(--gold);}
+.fb-cyan{background:rgba(34,211,238,.08);border-color:var(--cyan);color:var(--cyan);}
+.fb-blue{background:rgba(59,130,246,.1);border-color:var(--blue);color:var(--blue);}
+.fb-green{background:rgba(34,197,94,.1);border-color:var(--green);color:var(--green);}
+.fb-red{background:rgba(239,68,68,.1);border-color:var(--red);color:var(--red);}
+.fb-amber{background:rgba(245,158,11,.1);border-color:var(--amber);color:var(--amber);}
+.fb-purple{background:rgba(168,85,247,.1);border-color:var(--purple);color:var(--purple);}
+.fb-gray{background:rgba(100,116,139,.1);border-color:var(--t3);color:var(--t2);}
+.farr-d{width:2px;height:28px;background:var(--t3);position:relative;margin:0 auto;}
+.farr-d::after{content:'';position:absolute;bottom:-5px;left:-4px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid var(--t3);}
+.farr-r{width:28px;height:2px;background:var(--t3);position:relative;flex-shrink:0;}
+.farr-r::after{content:'';position:absolute;right:-5px;top:-4px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid var(--t3);}
+.farr-l{width:28px;height:2px;background:var(--t3);position:relative;flex-shrink:0;}
+.farr-l::before{content:'';position:absolute;left:-5px;top:-4px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:7px solid var(--t3);}
+.fdiamond{
+  font-family:var(--mono);font-size:.68rem;text-align:center;
+  width:110px;height:60px;
+  background:rgba(245,158,11,.1);border:1px solid var(--amber);color:var(--amber);
+  transform:rotate(45deg);display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.fdiamond span{transform:rotate(-45deg);line-height:1.2;}
+
+/* ── GRID CARDS ── */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin:1rem 0;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1rem 0;}
+.card{background:#0b1320;border:1px solid var(--border);border-radius:8px;padding:1.1rem;transition:border-color .2s,background .2s;}
+.card:hover{border-color:var(--gold);background:var(--bg3);}
+.card-title{font-family:var(--mono);font-size:.78rem;color:var(--gold);margin-bottom:.45rem;font-weight:700;}
+.card-title.cyan{color:var(--cyan);}
+.card-title.green{color:var(--green);}
+.card-title.red{color:var(--red);}
+.card-title.amber{color:var(--amber);}
+.card-title.purple{color:var(--purple);}
+.card p{font-size:.84rem;color:var(--t2);}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:2.2rem;}
+.timeline::before{content:'';position:absolute;left:.6rem;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--gold),var(--cyan),var(--blue));}
+.tl-item{position:relative;margin-bottom:1.8rem;}
+.tl-dot{position:absolute;left:-1.65rem;top:.3rem;width:.9rem;height:.9rem;border-radius:50%;border:2px solid var(--gold);background:var(--bg);}
+.tl-dot.cyan{border-color:var(--cyan);}
+.tl-dot.green{border-color:var(--green);}
+.tl-dot.red{border-color:var(--red);}
+.tl-title{font-family:var(--mono);font-size:.82rem;color:var(--cyan);font-weight:700;margin-bottom:.3rem;}
+.tl-sub{font-size:.84rem;color:var(--t2);}
+
+/* ── STAGE PIPELINE ── */
+.pipeline{display:flex;flex-wrap:wrap;gap:0;margin:1.2rem 0;align-items:stretch;}
+.pipe-stage{
+  flex:1;min-width:140px;
+  background:var(--bg3);border:1px solid var(--border);
+  padding:.9rem .7rem;text-align:center;position:relative;
+}
+.pipe-stage::after{
+  content:'▶';position:absolute;right:-10px;top:50%;transform:translateY(-50%);
+  color:var(--t3);font-size:.8rem;z-index:1;
+}
+.pipe-stage:last-child::after{display:none;}
+.pipe-stage:first-child{border-radius:8px 0 0 8px;}
+.pipe-stage:last-child{border-radius:0 8px 8px 0;}
+.pipe-num{font-family:var(--mono);font-size:.62rem;color:var(--t3);margin-bottom:.3rem;}
+.pipe-name{font-family:var(--mono);font-size:.72rem;font-weight:700;}
+.pipe-desc{font-size:.7rem;color:var(--t2);margin-top:.25rem;line-height:1.3;}
+.p-gold{border-top:3px solid var(--gold);} .p-gold .pipe-name{color:var(--gold);}
+.p-cyan{border-top:3px solid var(--cyan);} .p-cyan .pipe-name{color:var(--cyan);}
+.p-blue{border-top:3px solid var(--blue);} .p-blue .pipe-name{color:var(--blue);}
+.p-green{border-top:3px solid var(--green);} .p-green .pipe-name{color:var(--green);}
+
+/* ── CODE INLINE ── */
+code{font-family:var(--mono);font-size:.8rem;color:var(--cyan);background:#050810;padding:.1em .4em;border-radius:3px;}
+
+/* ── HIGHLIGHT TEXT ── */
+.hl-gold{color:var(--gold);font-weight:700;}
+.hl-cyan{color:var(--cyan);}
+.hl-green{color:var(--green);}
+.hl-red{color:var(--red);}
+.hl-amber{color:var(--amber);}
+
+/* ── GATE BOX ── */
+.gate-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.75rem;margin:1rem 0;}
+.gate-item{
+  background:#0b1320;border:1px solid var(--border);border-radius:6px;
+  padding:.8rem;display:flex;align-items:flex-start;gap:.6rem;
+}
+.gate-icon{font-size:1.1rem;flex-shrink:0;margin-top:.1rem;}
+.gate-text{font-family:var(--mono);font-size:.73rem;color:var(--t1);}
+.gate-text span{display:block;color:var(--t3);font-size:.67rem;margin-top:.2rem;}
+
+/* ── EXAMPLE BOX ── */
+.example-box{
+  background:linear-gradient(135deg,#081018,#0a1520);
+  border:1px solid var(--cyan2);border-radius:8px;
+  padding:1.5rem;margin:1.2rem 0;
+}
+.example-title{font-family:var(--display);color:var(--cyan);font-size:.95rem;letter-spacing:2px;margin-bottom:1rem;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* ── FOOTER ── */
+footer{background:#05080f;border-top:2px solid var(--gold);padding:2rem 1.5rem;text-align:center;font-family:var(--mono);font-size:.72rem;color:var(--t3);}
+footer .ft{font-family:var(--display);color:var(--gold);font-size:.85rem;letter-spacing:3px;margin-bottom:.5rem;}
+
+/* ── MODULE NAV FOOTER ── */
+.mod-nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:2rem;padding:1rem 1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:8px;}
+.mod-nav a{font-family:var(--mono);font-size:.75rem;color:var(--cyan);text-decoration:none;padding:.4rem .8rem;border:1px solid var(--cyan2);border-radius:4px;transition:background .2s;}
+.mod-nav a:hover{background:rgba(34,211,238,.08);}
+
+p{margin-bottom:.75rem;}
+h4{font-family:var(--mono);color:var(--gold);font-size:.88rem;margin:1.2rem 0 .5rem;letter-spacing:1px;}
+h5{font-family:var(--mono);color:var(--cyan);font-size:.8rem;margin:1rem 0 .4rem;}
+
+/* ── FAQ ACCORDION ── */
+.faq-item{border:1px solid var(--border);border-radius:6px;margin-bottom:.5rem;overflow:hidden;}
+.faq-q{
+  width:100%;background:#0b1320;border:none;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.85rem 1rem;font-family:var(--mono);font-size:.78rem;
+  color:var(--gold);text-align:left;gap:1rem;
+  transition:background .2s;
+}
+.faq-q:hover{background:var(--bg3);}
+.faq-q.open{color:var(--cyan);background:var(--bg3);}
+.faq-arrow{font-size:.65rem;flex-shrink:0;transition:transform .25s;color:var(--t3);}
+.faq-q.open .faq-arrow{transform:rotate(180deg);color:var(--cyan);}
+.faq-a{
+  background:var(--bg2);padding:0 1rem;
+  max-height:0;overflow:hidden;
+  transition:max-height .3s ease, padding .3s ease;
+  font-size:.86rem;color:var(--t2);
+}
+.faq-a.open{max-height:600px;padding:.9rem 1rem;}
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <div class="nav-brand">⬡ IB DEAL LIFECYCLE · M01</div>
+  <div class="nav-links">
+    <a href="#lifecycle">LIFECYCLE</a>
+    <a href="#origination">ORIGINATION</a>
+    <a href="#pitch-mandate">PITCH &amp; MANDATE</a>
+    <a href="#syndication">SYNDICATION</a>
+    <a href="#closeout">CLOSEOUT</a>
+    <a href="#workflows">WORKFLOWS</a>
+    <a href="#casestudy">CASE STUDY</a>
+    <a href="#gates">GATE CONDITIONS</a>
+    <a href="#ecm-dcm">ECM vs DCM</a>
+    <a href="#faq">FAQ</a>
+    <a href="#version">CHANGELOG</a>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+<div class="hero-ascii">
+ ██████╗ ███████╗ █████╗ ██╗         ██╗     ██╗███████╗███████╗ ██████╗██╗   ██╗ ██████╗██╗     ███████╗
+ ██╔══██╗██╔════╝██╔══██╗██║         ██║     ██║██╔════╝██╔════╝██╔════╝╚██╗ ██╔╝██╔════╝██║     ██╔════╝
+ ██║  ██║█████╗  ███████║██║         ██║     ██║█████╗  █████╗  ██║      ╚████╔╝ ██║     ██║     █████╗
+ ██║  ██║██╔══╝  ██╔══██║██║         ██║     ██║██╔══╝  ██╔══╝  ██║       ╚██╔╝  ██║     ██║     ██╔══╝
+ ██████╔╝███████╗██║  ██║███████╗    ███████╗██║██║     ███████╗╚██████╗   ██║   ╚██████╗███████╗███████╗
+ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚══════╝    ╚══════╝╚═╝╚═╝     ╚══════╝ ╚═════╝   ╚═╝    ╚═════╝╚══════╝╚══════╝
+</div>
+  <div class="hero-tag">MODULE 01 · INVESTMENT BANKING KNOWLEDGE BASE</div>
+  <h1 class="hero-title">DEAL ORIGINATION FUNDAMENTALS</h1>
+  <p class="hero-sub">From the first client conversation to a cleared mandate — the complete anatomy of Deal Origination, Syndication, and Closeout with real-world examples from the Indian capital markets.</p>
+  <div>
+    <span class="badge b-gold">Deal Origination</span>
+    <span class="badge b-cyan">Syndication</span>
+    <span class="badge b-gold">Closeout</span>
+    <span class="badge b-cyan">Pitch</span>
+    <span class="badge b-gold">Mandate</span>
+    <span class="badge b-cyan">Verbal Mandate</span>
+    <span class="badge b-amber">Conflict Clearance</span>
+    <span class="badge b-green">KYC</span>
+    <span class="badge b-red">Sanctions</span>
+    <span class="badge b-purple">MiFID II</span>
+  </div>
+</section>
+
+<!-- ══════════ CONTAINER ══════════ -->
+<div class="container">
+
+<!-- ── TOC ── -->
+<div class="toc">
+  <div class="toc-title">▸ TABLE OF CONTENTS</div>
+  <div class="toc-grid">
+    <a class="toc-link" href="#lifecycle"><span class="toc-dot"></span>01 · The Deal Lifecycle — Big Picture</a>
+    <a class="toc-link" href="#origination"><span class="toc-dot"></span>02 · Deal Origination — What &amp; Why</a>
+    <a class="toc-link" href="#pitch-mandate"><span class="toc-dot"></span>03 · Pitch · Mandate · Verbal Mandate</a>
+    <a class="toc-link" href="#origination-flow"><span class="toc-dot"></span>04 · Origination Workflow Step-by-Step</a>
+    <a class="toc-link" href="#workflows"><span class="toc-dot"></span>05 · Associated Compliance Workflows</a>
+    <a class="toc-link" href="#syndication"><span class="toc-dot"></span>06 · Deal Syndication — Execution Phase</a>
+    <a class="toc-link" href="#closeout"><span class="toc-dot"></span>07 · Deal Closeout — Expenses &amp; Wrap-up</a>
+    <a class="toc-link" href="#gates"><span class="toc-dot"></span>08 · Gate Conditions — Origination → Syndication</a>
+    <a class="toc-link" href="#casestudy"><span class="toc-dot"></span>09 · Real-World Case Study (Infosys Bond)</a>
+    <a class="toc-link" href="#glossary"><span class="toc-dot"></span>10 · Quick Glossary</a>
+    <a class="toc-link" href="#ecm-dcm"><span class="toc-dot"></span>11 · ECM vs DCM — Lifecycle Differences</a>
+    <a class="toc-link" href="#faq"><span class="toc-dot"></span>12 · FAQ</a>
+    <a class="toc-link" href="#version"><span class="toc-dot"></span>13 · Version History</a>
+  </div>
+</div>
+
+<!-- ══════════ SECTION 01: BIG PICTURE ══════════ -->
+<div id="lifecycle" class="section">
+  <div class="section-title"><span class="section-num">01</span> THE DEAL LIFECYCLE — BIG PICTURE</div>
+
+  <p>Every investment banking transaction — whether a bond issuance, an M&A advisory, an IPO, or a syndicated loan — follows the same fundamental three-phase lifecycle. Everything else is detail layered on top of this spine.</p>
+
+  <div class="pipeline">
+    <div class="pipe-stage p-gold">
+      <div class="pipe-num">PHASE 1</div>
+      <div class="pipe-name">ORIGINATION</div>
+      <div class="pipe-desc">First client contact → Pitch → Mandate → Compliance clearances → Engagement Letter</div>
+    </div>
+    <div class="pipe-stage p-cyan">
+      <div class="pipe-num">PHASE 2</div>
+      <div class="pipe-name">SYNDICATION / EXECUTION</div>
+      <div class="pipe-desc">Deal structuring → Book building → Pricing → Allocation → Settlement</div>
+    </div>
+    <div class="pipe-stage p-blue">
+      <div class="pipe-num">PHASE 3</div>
+      <div class="pipe-name">CLOSEOUT</div>
+      <div class="pipe-desc">Expense reconciliation → Fee invoicing → Revenue booking → Regulatory reporting → File archival</div>
+    </div>
+    <div class="pipe-stage p-green">
+      <div class="pipe-num">THROUGHOUT</div>
+      <div class="pipe-name">COMPLIANCE LAYER</div>
+      <div class="pipe-desc">KYC · Conflict Clearance · Sanctions · MiFID II · DAC6 · FinCEN run across all phases</div>
+    </div>
+  </div>
+
+  <div class="callout co-gold">
+    <div class="co-title gold">🔑 Key Principle</div>
+    <strong>Origination cannot close until every compliance gate is green.</strong> No mandate is formally accepted, no Engagement Letter is signed, and no deal resources are allocated until Conflict Clearance, KYC, Counterparty Screening, Sanctions, and Anti-Bribery checks are all cleared. This is not bureaucracy — it is the legal prerequisite for the bank to act as adviser or underwriter.
+  </div>
+
+  <div class="ascii">
+DEAL LIFECYCLE — HIGH LEVEL TIMELINE
+══════════════════════════════════════════════════════════════════════════════════
+  DAY 0          DAY 3-10         DAY 10-20           DAY 20-60+        POST-DEAL
+    │               │                │                    │                 │
+    ▼               ▼                ▼                    ▼                 ▼
+┌────────┐    ┌──────────┐    ┌───────────┐    ┌───────────────┐   ┌────────────┐
+│FIRST   │    │COMPLIANCE│    │ ENGAGEMENT│    │  SYNDICATION  │   │  CLOSEOUT  │
+│CONTACT │───▶│CLEARANCES│───▶│  LETTER   │───▶│  EXECUTION    │──▶│  EXPENSES  │
+│PITCH   │    │  KYC etc │    │  SIGNED   │    │  SETTLEMENT   │   │  FEES      │
+└────────┘    └──────────┘    └───────────┘    └───────────────┘   └────────────┘
+    │               │                │                    │                 │
+    └── ORIGINATION PHASE ───────────┘                    └── CLOSEOUT ─────┘
+                                              SYNDICATION PHASE
+══════════════════════════════════════════════════════════════════════════════════
+  </div>
+</div>
+
+<!-- ══════════ SECTION 02: DEAL ORIGINATION ══════════ -->
+<div id="origination" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">02</span> DEAL ORIGINATION — WHAT &amp; WHY</div>
+
+  <p><span class="hl-gold">Deal Origination</span> is the process by which an investment bank identifies, develops, and converts a business opportunity into a formally mandated transaction. It is the <em>demand-generation engine</em> of investment banking — no origination means no deals means no revenue.</p>
+
+  <p>Origination begins the moment a banker identifies a potential transaction and ends when the <span class="hl-cyan">Engagement Letter</span> is signed and all compliance gates are cleared. Only then does the deal move into Syndication/Execution.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Who drives Origination?</div>
+      <p>Senior bankers (MDs, Directors) who maintain deep client relationships. They identify opportunities during routine client coverage — earnings calls, strategic reviews, M&A rumours, market windows.</p>
+    </div>
+    <div class="card">
+      <div class="card-title cyan">What triggers Origination?</div>
+      <p>Client needs capital · Client wants to acquire · Client is being acquired · Market conditions create a window (rate environment, spread tightening) · Regulatory change forces restructuring.</p>
+    </div>
+    <div class="card">
+      <div class="card-title green">What is the output of Origination?</div>
+      <p>A cleared, signed <strong>Engagement Letter</strong> confirming: the scope of work, the fee structure, the parties involved, and the bank's appointment as adviser/underwriter/arranger.</p>
+    </div>
+    <div class="card">
+      <div class="card-title amber">Why does it matter?</div>
+      <p>No deal can be executed without a valid mandate. Regulators (MiFID II, SEBI) require evidence of the client relationship and engagement terms before any transaction is structured or marketed.</p>
+    </div>
+  </div>
+
+  <h4>THE THREE SUB-DOMAINS OF DEAL ORIGINATION</h4>
+
+  <div class="ascii gold">
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     ORIGINATION SUB-DOMAIN MAP                             │
+├───────────────────┬────────────────────────┬────────────────────────────── │
+│  RELATIONSHIP     │  TRANSACTION           │  COMPLIANCE                   │
+│  ORIGINATION      │  ORIGINATION           │  ORIGINATION                  │
+├───────────────────┼────────────────────────┼────────────────────────────── │
+│ • Client coverage │ • Deal structuring     │ • Conflict clearance          │
+│ • Pitch decks     │ • Pricing analysis     │ • KYC / AML                   │
+│ • Mandate hunting │ • Comparable analysis  │ • Counterparty screening      │
+│ • Relationship    │ • Market sounding      │ • Sanctions check             │
+│   management      │ • Internal approval    │ • Anti-Bribery                │
+│                   │   (credit/risk)        │ • Engagement Letter           │
+├───────────────────┼────────────────────────┼────────────────────────────── │
+│   OWNED BY:       │   OWNED BY:            │   OWNED BY:                   │
+│   Coverage MD     │   Product team         │   Compliance / Legal          │
+│   (Relationship   │   (DCM/ECM/M&A)        │   (Control Room)              │
+│    Banking)       │                        │                               │
+└───────────────────┴────────────────────────┴────────────────────────────── │
+  </div>
+</div>
+
+<!-- ══════════ SECTION 03: PITCH · MANDATE · VERBAL MANDATE ══════════ -->
+<div id="pitch-mandate" class="section">
+  <div class="section-title"><span class="section-num">03</span> PITCH · MANDATE · VERBAL MANDATE</div>
+
+  <p>These three terms define the <em>commercial journey</em> from a bank expressing interest in a deal to being formally appointed to execute it. Understanding the distinction is critical — each carries different legal weight and triggers different internal processes.</p>
+
+  <!-- PITCH -->
+  <h4>▸ WHAT IS A PITCH?</h4>
+  <div class="grid-2">
+    <div>
+      <p>A <span class="hl-gold">Pitch</span> (also called a <em>Pitch Book</em> or <em>Credentials Presentation</em>) is a formal or informal presentation made by a bank to a prospective client proposing that the bank should be appointed to advise on or execute a specific transaction.</p>
+      <p>The pitch demonstrates the bank's credentials, market insight, proposed transaction structure, indicative pricing, and why the client should choose <em>this bank</em> over competitors.</p>
+      <div class="callout co-amber">
+        <div class="co-title amber">⚠ Legal Status of a Pitch</div>
+        A pitch is <strong>non-binding</strong> on both sides. No Conflict Clearance is strictly required to prepare a pitch (though banks run a preliminary check). No resources are formally committed. The bank is in <em>competition mode</em>.
+      </div>
+    </div>
+    <div>
+      <div class="ascii" style="font-size:.65rem;">
+PITCH ANATOMY
+══════════════════════════════════
+  SECTION 1 · Bank Credentials
+  ─────────────────────────────
+  • League table rankings
+  • Relevant deal tombstones
+  • Team bios (MD + team)
+
+  SECTION 2 · Market Analysis
+  ─────────────────────────────
+  • Current market conditions
+  • Comparable transactions
+  • Investor demand signals
+
+  SECTION 3 · Proposed Structure
+  ─────────────────────────────
+  • Recommended transaction type
+  • Indicative size / tenor / pricing
+  • Execution timeline
+
+  SECTION 4 · Fee Proposal
+  ─────────────────────────────
+  • Management fee
+  • Underwriting / placement fee
+  • Expense cap
+
+  STATUS: NON-BINDING
+══════════════════════════════════
+      </div>
+    </div>
+  </div>
+
+  <!-- VERBAL MANDATE -->
+  <h4>▸ WHAT IS A VERBAL MANDATE?</h4>
+  <p>A <span class="hl-gold">Verbal Mandate</span> is the moment a client indicates — verbally, by phone, email, or in a meeting — that they <em>intend to appoint</em> the bank, before a formal Engagement Letter is signed. It is the deal origination equivalent of a handshake agreement.</p>
+
+  <div class="callout co-cyan">
+    <div class="co-title cyan">💡 Why Verbal Mandate Matters Operationally</div>
+    The moment a Verbal Mandate is received, the bank <strong>treats it as a live deal</strong>:
+    <ul style="margin-top:.5rem;margin-left:1.2rem;font-size:.88rem;">
+      <li>Deal is logged in the <strong>Deal Origination System</strong> (your system, Raghavan)</li>
+      <li><strong>Conflict Clearance</strong> is formally triggered — full search initiated</li>
+      <li><strong>KYC / AML</strong> process starts for any new counterparties</li>
+      <li>Internal deal code / deal ID is assigned</li>
+      <li>Resources (analyst, associate, VP) are provisionally allocated</li>
+      <li><strong>MNPI (Material Non-Public Information)</strong> protocols kick in immediately</li>
+    </ul>
+    However: the deal is still <strong>not binding</strong> until the Engagement Letter is executed.
+  </div>
+
+  <div class="ascii amber">
+VERBAL MANDATE — WHAT CHANGES IMMEDIATELY
+═══════════════════════════════════════════════════════════════════════
+ CLIENT SAYS: "We want to go ahead with you as our bookrunner."
+                              │
+                              ▼
+ ┌─────────────────────────────────────────────────────────────────┐
+ │  BANK INTERNAL ACTIONS (triggered within 24-48 hours)           │
+ ├─────────────────────────────────────────────────────────────────┤
+ │  ✦ Deal logged in Origination System         [STATUS: PIPELINE] │
+ │  ✦ Conflict Clearance request filed          [COMPLIANCE]       │
+ │  ✦ KYC dossier initiated for issuer          [COMPLIANCE]       │
+ │  ✦ Sanctions / PEP screening initiated       [COMPLIANCE]       │
+ │  ✦ MNPI wall erected if needed               [CONTROL ROOM]     │
+ │  ✦ Preliminary internal credit review        [RISK]             │
+ │  ✦ Engagement Letter drafting begins         [LEGAL]            │
+ │  ✦ Deal team staffed (Analyst → MD)          [BANKING]          │
+ └─────────────────────────────────────────────────────────────────┘
+                              │
+              NOT A MANDATE UNTIL ENGAGEMENT LETTER SIGNED
+═══════════════════════════════════════════════════════════════════════
+  </div>
+
+  <!-- FORMAL MANDATE -->
+  <h4>▸ WHAT IS A FORMAL MANDATE?</h4>
+  <p>A <span class="hl-gold">Mandate</span> (or <em>Formal Mandate</em>) is the bank's official, legally binding appointment by the client to execute a specific transaction. It is evidenced by a signed <span class="hl-cyan">Engagement Letter</span> (also called a Mandate Letter in some jurisdictions).</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">What the Engagement Letter contains</div>
+      <p>Scope of services · Roles (sole bookrunner, joint lead manager, adviser) · Fee structure (retainer, success fee, spread) · Expense reimbursement terms · Exclusivity clause · Term/duration · Governing law · Termination rights</p>
+    </div>
+    <div class="card">
+      <div class="card-title amber">What a Mandate unlocks</div>
+      <p>Full resource allocation · Deal structuring begins · Marketing materials prepared · Regulatory filings initiated (Prospectus, OC) · Revenue booked in deal origination system · Deal moves to <em>Active</em> status</p>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <h4>▸ PITCH vs VERBAL MANDATE vs FORMAL MANDATE — COMPARISON</h4>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>DIMENSION</th>
+        <th>PITCH</th>
+        <th>VERBAL MANDATE</th>
+        <th>FORMAL MANDATE</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Legal Binding?</strong></td>
+        <td><span class="badge b-red">No</span></td>
+        <td><span class="badge b-amber">No (but intent clear)</span></td>
+        <td><span class="badge b-green">Yes — Engagement Letter</span></td>
+      </tr>
+      <tr>
+        <td><strong>Deal System Entry?</strong></td>
+        <td>Optional / as "Prospect"</td>
+        <td>Yes — logged as "Pipeline"</td>
+        <td>Yes — logged as "Active"</td>
+      </tr>
+      <tr>
+        <td><strong>Conflict Clearance?</strong></td>
+        <td>Preliminary check only</td>
+        <td>Full clearance initiated</td>
+        <td>Full clearance required before signing</td>
+      </tr>
+      <tr>
+        <td><strong>KYC / AML?</strong></td>
+        <td>Not required</td>
+        <td>Initiated</td>
+        <td>Must be complete</td>
+      </tr>
+      <tr>
+        <td><strong>Sanctions Screen?</strong></td>
+        <td>Not required</td>
+        <td>Initiated</td>
+        <td>Must be clear</td>
+      </tr>
+      <tr>
+        <td><strong>MNPI Protocols?</strong></td>
+        <td>If MNPI exchanged, yes</td>
+        <td>Yes — triggered immediately</td>
+        <td>Yes — fully enforced</td>
+      </tr>
+      <tr>
+        <td><strong>Resources Allocated?</strong></td>
+        <td>None formally</td>
+        <td>Provisional</td>
+        <td>Full team committed</td>
+      </tr>
+      <tr>
+        <td><strong>Revenue Booked?</strong></td>
+        <td>No</td>
+        <td>Pipeline probability only</td>
+        <td>Yes — fee booked on mandate</td>
+      </tr>
+      <tr>
+        <td><strong>Deal Stage in System?</strong></td>
+        <td>Prospect / Opportunity</td>
+        <td>Pipeline</td>
+        <td>Active / Mandate</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════ SECTION 04: ORIGINATION WORKFLOW ══════════ -->
+<div id="origination-flow" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">04</span> ORIGINATION WORKFLOW — STEP BY STEP</div>
+
+  <p>The origination workflow is a sequential process with parallel compliance tracks. The deal cannot advance to Syndication until <em>every branch</em> of this workflow is complete.</p>
+
+  <div class="ascii">
+ORIGINATION WORKFLOW — COMPLETE FLOW
+═══════════════════════════════════════════════════════════════════════════════
+                        ┌─────────────────┐
+                        │  CLIENT CONTACT  │  ◄── Coverage MD / Relationship
+                        │  / OPPORTUNITY   │       team identifies opportunity
+                        └────────┬─────────┘
+                                 │
+                                 ▼
+                        ┌─────────────────┐
+                        │  PITCH PREPARED  │  ◄── Product team (DCM/ECM/M&A)
+                        │  & DELIVERED     │       prepares pitch book
+                        └────────┬─────────┘
+                                 │
+                        ┌────────▼─────────┐
+                        │   VERBAL MANDATE  │  ◄── Client signals intent
+                        │   RECEIVED        │
+                        └────────┬──────────┘
+                                 │
+          ┌──────────────────────┼──────────────────────┐
+          │                      │                       │
+          ▼                      ▼                       ▼
+  ┌───────────────┐    ┌─────────────────┐    ┌──────────────────┐
+  │  CONFLICT     │    │   KYC / AML     │    │  SANCTIONS &amp;     │
+  │  CLEARANCE    │    │   INITIATED     │    │  ANTI-BRIBERY    │
+  │  (Full check) │    │                 │    │  SCREENING       │
+  └───────┬───────┘    └────────┬────────┘    └────────┬─────────┘
+          │                     │                       │
+          ▼                     ▼                       ▼
+     CLEARED?              CLEAN?                  CLEARED?
+     [YES/NO]              [YES/NO]                [YES/NO]
+          │                     │                       │
+          └─────────────────────┴───────────────────────┘
+                                │
+                         ALL THREE GREEN?
+                                │
+                    ┌───────────┴────────────┐
+                    │                        │
+                 YES ▼                    NO ▼
+          ┌──────────────────┐     ┌──────────────────┐
+          │  ENGAGEMENT       │     │  RESOLVE ISSUES  │
+          │  LETTER DRAFTED   │     │  OR DECLINE      │
+          │  &amp; NEGOTIATED    │     │  MANDATE         │
+          └────────┬─────────┘     └──────────────────┘
+                   │
+                   ▼
+          ┌──────────────────┐
+          │  ENGAGEMENT       │
+          │  LETTER SIGNED    │  ◄── FORMAL MANDATE ACHIEVED
+          │  (Both parties)   │
+          └────────┬─────────┘
+                   │
+                   ▼
+          ┌──────────────────┐
+          │  DEAL MOVES TO    │
+          │  SYNDICATION /    │  ◄── Phase 2 begins
+          │  EXECUTION        │
+          └──────────────────┘
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+
+  <div class="callout co-green">
+    <div class="co-title green">✅ What "All Three Green" means in practice</div>
+    In your deal origination system, the deal cannot transition from <code>PIPELINE</code> → <code>ACTIVE/MANDATE</code> status until Conflict Clearance, KYC, and Sanctions checks each have a <strong>CLEARED</strong> status recorded with a timestamp, reviewer ID, and approval reference. This is the system-level gate your platform enforces.
+  </div>
+</div>
+
+<!-- ══════════ SECTION 05: ASSOCIATED WORKFLOWS ══════════ -->
+<div id="workflows" class="section">
+  <div class="section-title"><span class="section-num">05</span> ASSOCIATED COMPLIANCE WORKFLOWS</div>
+
+  <p>The following workflows are not sequential — several run <em>in parallel</em> during origination. Each is a gate: all must clear before the Engagement Letter can be executed.</p>
+
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-title">1. CONFLICT CLEARANCE</div>
+      <div class="tl-sub">
+        <p>The bank searches all existing client relationships, active deals, MNPI logs, and NDA registers to ensure it has no conflicting interest in the proposed transaction. <em>Triggered immediately on Verbal Mandate.</em></p>
+        <div class="callout co-amber" style="margin-top:.5rem;">
+          <div class="co-title amber">Outcome options</div>
+          <strong>CLEARED</strong> → proceed · <strong>MANAGED</strong> (Chinese Wall erected) → proceed with controls · <strong>DECLINED</strong> → bank cannot take the mandate
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot cyan"></div>
+      <div class="tl-title">2. KYC — KNOW YOUR CUSTOMER</div>
+      <div class="tl-sub">
+        <p>A comprehensive identity and business verification of the client entity and its beneficial owners. Includes: corporate structure verification, beneficial ownership identification (UBO), source of funds/wealth, business purpose, and ongoing monitoring.</p>
+        <div class="ascii" style="font-size:.62rem;margin-top:.6rem;">
+KYC TIERS IN IB
+══════════════════════════════════════════════════════
+  TIER 1 · Standard   → Listed corporates, known entities
+  TIER 2 · Enhanced   → Privately held, complex structures
+  TIER 3 · EDD        → High-risk jurisdictions, PEP links
+                          (Enhanced Due Diligence)
+  REFRESH CYCLE       → Annual (standard), 6-monthly (enhanced)
+══════════════════════════════════════════════════════
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot green"></div>
+      <div class="tl-title">3. COUNTERPARTY SCREENING</div>
+      <div class="tl-sub">
+        <p>All entities involved in the deal — not just the client, but also co-arrangers, guarantors, significant investors, and key officers — are screened against global watchlists, adverse media databases, and regulatory debarment lists.</p>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot red" style="border-color:var(--red);"></div>
+      <div class="tl-title">4. SANCTIONS &amp; ANTI-BRIBERY</div>
+      <div class="tl-sub">
+        <p><strong>Sanctions:</strong> Screen all deal parties against OFAC (US), UN, EU, UK HMT, and SEBI/RBI sanction lists. Any match = deal stops. No exceptions.</p>
+        <p><strong>Anti-Bribery:</strong> Under UK Bribery Act 2010, US FCPA, and Indian Prevention of Corruption Act — the bank must ensure no improper payments are being made to influence deal outcomes. Particular scrutiny on government-linked transactions, state-owned enterprises, and deals in high-risk jurisdictions.</p>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot" style="border-color:var(--purple);"></div>
+      <div class="tl-title">5. MiFID II (Markets in Financial Instruments Directive)</div>
+      <div class="tl-sub">
+        <p>For European deals or European counterparties: MiFID II requires the bank to classify the client (Retail / Professional / Eligible Counterparty), ensure suitability of the transaction, and produce a cost/charge disclosure before execution. Transaction reporting to regulators is mandatory post-execution.</p>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot" style="border-color:var(--amber);"></div>
+      <div class="tl-title">6. DAC6 — EU CROSS-BORDER ARRANGEMENT DISCLOSURE</div>
+      <div class="tl-sub">
+        <p>If the transaction involves a potentially aggressive cross-border tax arrangement (e.g. structured bonds, hybrids, specific debt structures across EU jurisdictions), DAC6 requires the bank (as an Intermediary) to report the arrangement to the relevant EU tax authority — typically within 30 days of implementation.</p>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot cyan"></div>
+      <div class="tl-title">7. FinCEN / AML REPORTING</div>
+      <div class="tl-sub">
+        <p>The US Financial Crimes Enforcement Network (FinCEN) requires Suspicious Activity Reports (SARs) for any transaction exhibiting red flags: unusual transaction size, structuring, uneconomic behaviour, or involvement of high-risk jurisdictions. AML programs must be maintained throughout the deal lifecycle.</p>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot green"></div>
+      <div class="tl-title">8. MEANINGFUL CLIENT WORK (MCW)</div>
+      <div class="tl-sub">
+        <p><span class="hl-gold">MCW</span> is an internal bank classification that distinguishes genuine advisory/underwriting work from peripheral engagement. A deal must qualify as MCW to be recognised for revenue attribution, league table credit, and banker performance review. MCW status is assigned by the deal origination team and confirmed by Finance.</p>
+        <div class="callout co-gold" style="margin-top:.5rem;">
+          <div class="co-title gold">MCW Criteria (typical)</div>
+          The bank must have provided substantive financial advice or committed capital · The engagement must be evidenced by an Engagement Letter · The bank's work must have materially contributed to the transaction outcome · There must be a verifiable fee or economic interest
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot" style="border-color:var(--gold);"></div>
+      <div class="tl-title">9. ENGAGEMENT LETTER</div>
+      <div class="tl-sub">
+        <p>The Engagement Letter (EL) is the culminating output of the origination phase. It is a legal contract between the bank and the client that formally defines the mandate. Once signed by both parties, the deal transitions from Origination to Syndication/Execution.</p>
+        <table class="tbl" style="margin-top:.6rem;font-size:.78rem;">
+          <thead><tr><th>EL CLAUSE</th><th>WHAT IT COVERS</th></tr></thead>
+          <tbody>
+            <tr><td>Scope of Work</td><td>Advisory only / Underwriting / Joint Lead Manager / Sole Bookrunner</td></tr>
+            <tr><td>Fee Structure</td><td>Retainer (upfront), Success Fee (on closing), Management Fee, Spread</td></tr>
+            <tr><td>Expense Reimbursement</td><td>Cap on deal expenses; what qualifies (legal, travel, roadshow)</td></tr>
+            <tr><td>Exclusivity</td><td>Whether client can approach other banks during the mandate period</td></tr>
+            <tr><td>Market Flex</td><td>Bank's right to adjust pricing/structure in response to market conditions</td></tr>
+            <tr><td>Termination</td><td>Conditions under which either party can exit the engagement</td></tr>
+            <tr><td>Governing Law</td><td>Jurisdiction for dispute resolution (English law common for IB)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- WORKFLOW INTERCONNECTION -->
+  <h4>▸ HOW WORKFLOWS INTERCONNECT</h4>
+  <div class="ascii green">
+WORKFLOW INTERDEPENDENCY MAP
+═══════════════════════════════════════════════════════════════════════════════
+ VERBAL MANDATE RECEIVED
+        │
+        ├──▶ [1] CONFLICT CLEARANCE ────────────────────────────────────────┐
+        │           │                                                         │
+        │    CLEARED? ──YES──▶ Deal proceeds on this track                   │
+        │           │                                                         │
+        ├──▶ [2] KYC / AML ─────────────────────────────────────────────────┤
+        │           │                                                         │
+        │    CLEAN?  ──YES──▶ Client approved for engagement                 │
+        │           │                                                         │
+        ├──▶ [3] COUNTERPARTY SCREENING ──────────────────────────────────── │
+        │           │                                                         │
+        │    CLEAN?  ──YES──▶ All entities approved                           │
+        │           │                                                         │
+        ├──▶ [4] SANCTIONS ─────────────────────────────────────────────────┤
+        │           │                                                         │
+        │    CLEAR?  ──YES──▶ No blocked entities                             │
+        │           │                                                         │
+        ├──▶ [5] ANTI-BRIBERY ──────────────────────────────────────────────┤
+        │           │                                                         │
+        │    CLEAR?  ──YES──▶ No corruption risk identified                  │
+        │           │                                                         │
+        ├──▶ [6] MiFID II CLIENT CLASSIFICATION (if EU deal) ───────────────┤
+        │           │                                                         │
+        ├──▶ [7] DAC6 ASSESSMENT (if cross-border tax angle) ───────────────┤
+        │           │                                                         │
+        └──▶ [8] MCW CLASSIFICATION ─────────────────────────────────────── │
+                    │                                                         │
+                    ▼                                                         │
+         ALL WORKFLOWS GREEN? ◄────────────────────────────────────────────┘
+                    │
+            YES ────▶ ENGAGEMENT LETTER DRAFTED &amp; SIGNED
+            NO  ────▶ ISSUES RESOLVED OR MANDATE DECLINED
+═══════════════════════════════════════════════════════════════════════════════
+Note: Workflows [1]–[5] are HARD GATES (deal cannot proceed without clearance)
+      Workflows [6]–[8] are CONDITIONAL (triggered by deal type/jurisdiction)
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+</div>
+
+<!-- ══════════ SECTION 06: SYNDICATION ══════════ -->
+<div id="syndication" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">06</span> DEAL SYNDICATION — THE EXECUTION PHASE</div>
+
+  <p><span class="hl-gold">Syndication</span> (or Deal Execution) is Phase 2 of the lifecycle. It begins the moment the Engagement Letter is signed and all origination gates are cleared. This is where the deal is <em>built, marketed, and closed</em>.</p>
+
+  <div class="callout co-cyan">
+    <div class="co-title cyan">💡 Syndication vs Origination</div>
+    Origination = winning the deal. Syndication = executing the deal. The same bank may do both, but different teams typically lead each phase. The Coverage/Relationship team owns Origination; the Product team (DCM, ECM, Loans Syndication, M&A Execution) owns Syndication.
+  </div>
+
+  <h4>▸ SYNDICATION SUB-PHASES</h4>
+  <div class="ascii">
+SYNDICATION PHASE — DETAILED FLOW (e.g. Bond Issuance)
+═══════════════════════════════════════════════════════════════════════════════
+PHASE 2A: DEAL STRUCTURING
+  │
+  ├── Finalise transaction structure (size, tenor, coupon type, currency)
+  ├── Legal documentation (Offering Circular / Prospectus / Information Memo)
+  ├── Rating Agency process (S&amp;P, Moody's, Fitch) → get/reaffirm rating
+  ├── Internal credit/risk approval
+  └── Determine Bookrunner syndicate (sole / joint lead managers)
+        │
+PHASE 2B: MARKETING / BOOK BUILDING
+  │
+  ├── Management Presentation / Roadshow (investor meetings, 3-5 days)
+  ├── Investor calls (institutional investors, asset managers, insurers)
+  ├── Order collection (book building) via syndication desk
+  ├── Monitor order book: oversubscription / coverage ratio tracked
+  └── Guidance and revision of price range
+        │
+PHASE 2C: PRICING &amp; ALLOCATION
+  │
+  ├── Final pricing decision (typically evening of last roadshow day)
+  ├── Allocation of bonds to investors (based on book quality + size)
+  ├── Term Sheet / Final Terms published
+  └── Trade date confirmed (T+0 or T+1)
+        │
+PHASE 2D: SETTLEMENT
+  │
+  ├── Settlement via Euroclear / Clearstream / DTC (T+2 or T+5)
+  ├── Proceeds flow from investors → issuer (minus fees)
+  ├── Deal confirmed as CLOSED
+  └── Transition to CLOSEOUT phase
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+
+  <h4>▸ KEY PARTIES IN SYNDICATION (Preview — full detail in M02)</h4>
+  <table class="tbl">
+    <thead>
+      <tr><th>PARTY</th><th>ROLE IN SYNDICATION</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Issuer (client)</strong></td><td>The entity raising capital. Signs the Engagement Letter. Approves pricing and allocation.</td></tr>
+      <tr><td><strong>Sole Bookrunner</strong></td><td>Single bank managing the entire book-building process. Full fee, full risk.</td></tr>
+      <tr><td><strong>Joint Lead Managers</strong></td><td>Multiple banks sharing the bookrunner role. Fees split per agreed percentages.</td></tr>
+      <tr><td><strong>Co-Manager</strong></td><td>Smaller participation — brings investors but does not lead the book.</td></tr>
+      <tr><td><strong>Issuer Counsel</strong></td><td>Law firm representing the issuer on legal documentation.</td></tr>
+      <tr><td><strong>Underwriter Counsel</strong></td><td>Law firm representing the bank(s) on legal documentation.</td></tr>
+      <tr><td><strong>Trustee</strong></td><td>Holds bonds on behalf of investors; enforces bondholder rights.</td></tr>
+      <tr><td><strong>Paying Agent</strong></td><td>Handles coupon payments and principal repayment to investors.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════ SECTION 07: CLOSEOUT ══════════ -->
+<div id="closeout" class="section">
+  <div class="section-title"><span class="section-num">07</span> DEAL CLOSEOUT — EXPENSES &amp; WRAP-UP</div>
+
+  <p><span class="hl-gold">Deal Closeout</span> is Phase 3 — the post-execution administrative and financial wrap-up that transforms a closed transaction into booked revenue and a clean regulatory record. It is often underestimated in complexity but carries significant compliance risk if done poorly.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Why Closeout Matters</div>
+      <p>Fees cannot be recognised as revenue until expenses are reconciled. Regulators require a clean audit trail of all deal costs. Expense errors can misstate P&amp;L. Incorrect allocations across booking vehicles create tax exposure.</p>
+    </div>
+    <div class="card">
+      <div class="card-title amber">Typical Closeout Timeline</div>
+      <p>T+0 (Deal closes) → T+5: Expense compilation begins · T+30: Final expense report · T+45: Fee invoice sent to client · T+60: Revenue recognition in books · T+90: Regulatory report filed</p>
+    </div>
+  </div>
+
+  <h4>▸ DEAL EXPENSES — TAXONOMY</h4>
+  <div class="ascii amber">
+DEAL EXPENSE CATEGORIES
+══════════════════════════════════════════════════════════════════════
+CATEGORY 1: LEGAL EXPENSES
+  • Issuer counsel fees (billed to issuer, reimbursed through deal)
+  • Underwriter counsel fees (bank's own legal cost)
+  • Regulatory filing fees (prospectus registration, listing fees)
+
+CATEGORY 2: ROADSHOW / MARKETING EXPENSES
+  • Travel (flights, hotels — MD + team during investor roadshow)
+  • Investor event costs (venue, materials, video conferencing)
+  • Presentation production costs
+
+CATEGORY 3: ADMINISTRATIVE EXPENSES
+  • Trustee / Paying Agent appointment fees
+  • Rating Agency fees (S&amp;P, Moody's, Fitch — paid by issuer)
+  • Listing fees (exchange listing — LSE, SGX, NSE)
+  • Printing / distribution (Offering Circular physical copies)
+
+CATEGORY 4: INTERNAL BANK EXPENSES
+  • Systems / technology costs (Bloomberg, deal management system)
+  • Research costs (if research report produced for deal)
+  • Internal audit / compliance review costs
+
+EXPENSE ACCOUNTABILITY:
+  → Issuer-borne: Legal fees, rating fees, listing fees (reimbursed to bank)
+  → Bank-borne:   Internal systems, some compliance costs
+  → Deducted from proceeds at closing (not invoiced separately)
+══════════════════════════════════════════════════════════════════════
+  </div>
+
+  <h4>▸ CLOSEOUT WORKFLOW</h4>
+  <div class="ascii green">
+CLOSEOUT STEP-BY-STEP
+═══════════════════════════════════════════════════════════════════════════════
+STEP 1: DEAL CLOSED CONFIRMATION
+  → Syndication desk confirms settlement
+  → Deal status updated: PIPELINE → ACTIVE → CLOSED in origination system
+
+STEP 2: EXPENSE COMPILATION
+  → All deal expenses collected from: Legal, Roadshow, Travel, Systems
+  → Cross-referenced against pre-approved expense budget in Engagement Letter
+  → Variance analysis: actual vs budgeted expenses
+
+STEP 3: FEE CALCULATION &amp; INVOICE
+  → Gross fee (as per Engagement Letter) calculated
+  → Allowable expenses deducted or reimbursed
+  → Net fee invoice prepared and sent to issuer
+  → For syndicated deals: fee split across bookrunners per agreed % table
+
+STEP 4: REVENUE RECOGNITION
+  → Fee revenue recognised in the booking entity's P&amp;L
+  → Revenue allocated by: geography, product, deal type, booking vehicle
+  → League table credit recorded (for bank rankings)
+
+STEP 5: MCW FINAL CERTIFICATION
+  → Finance confirms deal qualifies as Meaningful Client Work
+  → Banker performance attribution confirmed
+
+STEP 6: REGULATORY REPORTING
+  → MiFID II: transaction report filed (if EU counterparty)
+  → FinCEN: any SAR filed if red flags identified
+  → SEBI/RBI: relevant filings for Indian deals
+  → Internal: Risk, Compliance, and Audit sign-off
+
+STEP 7: FILE ARCHIVAL
+  → Deal file (all documents, approvals, emails) archived per
+    retention policy (typically 7–10 years)
+  → KYC records retained for prescribed period
+  → All clearance records stored for regulator access
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+</div>
+
+<!-- ══════════ SECTION 08: GATE CONDITIONS ══════════ -->
+<div id="gates" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">08</span> GATE CONDITIONS — ORIGINATION → SYNDICATION</div>
+
+  <p>The following conditions must all be satisfied before a deal can transition from the Origination phase to Syndication/Execution. In a well-implemented deal origination system, these are enforced as <span class="hl-gold">hard workflow gates</span> — the system literally prevents the status change until each item is checked.</p>
+
+  <div class="gate-grid">
+    <div class="gate-item">
+      <div class="gate-icon">🛡️</div>
+      <div class="gate-text">Conflict Clearance<span>Status: CLEARED (with reviewer ID + timestamp)</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">🪪</div>
+      <div class="gate-text">KYC Complete<span>All UBOs identified; tier classification assigned; approval reference logged</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">🔍</div>
+      <div class="gate-text">Counterparty Screening Clear<span>All deal parties screened; no adverse matches</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">🚫</div>
+      <div class="gate-text">Sanctions Check Clear<span>OFAC, UN, EU, UK HMT — all negative</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">⚖️</div>
+      <div class="gate-text">Anti-Bribery Cleared<span>No corruption risk flags; any PEP involvement managed</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">📄</div>
+      <div class="gate-text">Engagement Letter Signed<span>Executed by both client and bank authorised signatories</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">✅</div>
+      <div class="gate-text">MCW Classification Confirmed<span>Finance team confirmed deal qualifies as Meaningful Client Work</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">🏛️</div>
+      <div class="gate-text">Internal Credit / Risk Approval<span>Risk committee sign-off for underwriting commitment</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">📋</div>
+      <div class="gate-text">MiFID II Classification (if EU)<span>Client classified; suitability confirmed; cost disclosure made</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">🌐</div>
+      <div class="gate-text">DAC6 Assessment (if cross-border)<span>Reporting obligation assessed; filing scheduled if required</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">🏦</div>
+      <div class="gate-text">Booking Vehicle Assigned<span>Legal entity / entities designated for revenue booking</span></div>
+    </div>
+    <div class="gate-item">
+      <div class="gate-icon">📊</div>
+      <div class="gate-text">Deal Recorded in Origination System<span>Deal ID, parties, type, size, status — all entered and validated</span></div>
+    </div>
+  </div>
+
+  <div class="callout co-red">
+    <div class="co-title red">⛔ What happens if a gate fails</div>
+    If any gate returns a negative result — conflict not cleared, sanctions match found, KYC incomplete — the deal is <strong>frozen at Origination status</strong>. It cannot be staffed for execution, no marketing materials can be prepared, and no client commitments can be made on pricing or structure. The Compliance team and senior management decide whether to: resolve the issue, decline the mandate, or (in rare cases) proceed with specific controls documented and approved at the highest level.
+  </div>
+</div>
+
+<!-- ══════════ SECTION 09: CASE STUDY ══════════ -->
+<div id="casestudy" class="section">
+  <div class="section-title"><span class="section-num">09</span> REAL-WORLD CASE STUDY</div>
+
+  <div class="example-box">
+    <div class="example-title">▸ INFOSYS LIMITED — USD 500M BOND ISSUANCE</div>
+    <p style="color:var(--t2);font-size:.85rem;margin-bottom:1rem;">A realistic walk-through of the complete deal lifecycle for a USD 500 million 5-year senior unsecured bond by Infosys Limited (Indian IT major), arranged through GlobalBank's India DCM team with joint bookrunners.</p>
+
+    <div class="ascii" style="font-size:.67rem;">
+═══════════════════════════════════════════════════════════════════════════════════
+DEAL SNAPSHOT
+═══════════════════════════════════════════════════════════════════════════════════
+  Issuer          : Infosys Limited (NSE: INFY / NYSE: INFY)
+  Deal Type       : USD Senior Unsecured Bond (RegS / 144A)
+  Deal Size       : USD 500,000,000
+  Tenor           : 5 years
+  Currency        : USD (USD settlement, Regulation S + Rule 144A)
+  Use of Proceeds : General corporate purposes / refinancing existing debt
+  Listing         : Singapore Stock Exchange (SGX)
+  Issuer Rating   : Baa1 (Moody's) / BBB+ (S&amp;P) — Investment Grade
+  Sole Bookrunner : GlobalBank Ltd. (London / Singapore / Mumbai offices)
+  Issuer Counsel  : Cyril Amarchand Mangaldas (India) + Linklaters (London)
+  UW Counsel      : Allen &amp; Overy (London)
+  Trustee         : Deutsche Trustee Company Limited
+  Settlement      : Euroclear / Clearstream (T+5)
+═══════════════════════════════════════════════════════════════════════════════════
+    </div>
+
+    <h4 style="margin-top:1.2rem;">PHASE 1: ORIGINATION TIMELINE</h4>
+    <div class="ascii gold" style="font-size:.67rem;">
+═══════════════════════════════════════════════════════════════════════════════════
+DAY -30  │ GlobalBank India Coverage MD meets Infosys CFO (quarterly review)
+         │ CFO mentions: "We're looking at USD capital markets in H1"
+         │ BANKER ACTION: Internal opportunity flagged; preliminary conflict
+         │               check run → CLEAR (no existing Infosys mandate)
+         │
+DAY -20  │ GlobalBank DCM team prepares PITCH BOOK
+         │ Contents: Market analysis (USD bond spreads tight, good window),
+         │           Comparable issuers (TCS 2022, Wipro 2021 bonds),
+         │           Proposed structure (5yr, USD 500M, ~T+95bps guidance),
+         │           GlobalBank credentials (Asia DCM #2, top 10 Indian issuer)
+         │
+DAY -15  │ PITCH DELIVERED to Infosys CFO + Treasury team (virtual + deck)
+         │ Two competing banks also pitch (Citi, JPM)
+         │
+DAY -10  │ VERBAL MANDATE received — CFO: "GlobalBank is our preferred bank,
+         │   let's proceed. We're targeting late next month."
+         │
+         │ BANK ACTIONS TRIGGERED IMMEDIATELY:
+         │  ✦ Deal logged: ID #GBL-2024-DCM-1847 | Status: PIPELINE
+         │  ✦ Full Conflict Clearance initiated → CLEARED (Day -8)
+         │  ✦ KYC: Infosys is existing client → KYC refresh initiated
+         │  ✦ Sanctions: All directors screened → CLEAR (Day -9)
+         │  ✦ Anti-Bribery: No government ownership, no PEP → CLEAR
+         │  ✦ MiFID II: Infosys classified as Professional Client (EU investors)
+         │  ✦ Engagement Letter drafting: Legal team starts
+         │  ✦ Deal team staffed: 1x MD, 1x Director, 2x VP, 3x Analyst
+         │
+DAY -5   │ Engagement Letter negotiated (fees, scope, exclusivity)
+         │ KEY TERMS AGREED:
+         │   Management Fee: 0.10% of deal size = USD 500,000
+         │   Underwriting Fee: 0.25% = USD 1,250,000
+         │   Total Fee: USD 1,750,000 (~35bps all-in)
+         │   Expenses: Capped at USD 150,000 (legal, travel, listing)
+         │   Exclusivity: 60 days
+         │
+DAY 0    │ ENGAGEMENT LETTER SIGNED — FORMAL MANDATE ACHIEVED
+         │ Deal status: PIPELINE → ACTIVE/MANDATE
+         │ ALL ORIGINATION GATES: ✅ CLEARED
+═══════════════════════════════════════════════════════════════════════════════════
+    </div>
+
+    <h4>PHASE 2: SYNDICATION TIMELINE</h4>
+    <div class="ascii" style="font-size:.67rem;">
+═══════════════════════════════════════════════════════════════════════════════════
+DAY 1    │ Internal credit approval granted (Underwriting Committee)
+         │ Rating agency (Moody's + S&amp;P) contacted → existing ratings reaffirmed
+         │ Offering Circular (OC) drafting begins (Linklaters + A&amp;O)
+         │
+DAY 8    │ Offering Circular finalised and approved by Infosys Board
+         │ Roadshow schedule fixed: Singapore → London → New York (3 days)
+         │
+DAY 10   │ INVESTOR ROADSHOW BEGINS
+         │ Management Presentation: Infosys CFO + GlobalBank MD
+         │ 40+ investor meetings across 3 cities
+         │ Key investors: BlackRock, PIMCO, Fidelity, Amundi, Eastspring
+         │
+DAY 13   │ ORDER BOOKS OPEN (Asia morning)
+         │ Initial Price Thoughts (IPT): T+95-100bps
+         │ By midday London: Book = USD 2.1bn (4.2x oversubscribed)
+         │ GUIDANCE REVISED: T+90bps (tightened 5-10bps on demand)
+         │
+DAY 13   │ BOOKS CLOSED — Final book: USD 2.8bn on USD 500M (5.6x covered)
+(evening) │ PRICING: UST 5yr + 88bps → coupon 5.375% (semi-annual)
+         │
+DAY 14   │ ALLOCATION published — quality accounts preferred
+         │ Asia: 45% / EMEA: 35% / Americas: 20%
+         │ Asset Managers: 60% / Banks: 20% / Insurance/Pension: 20%
+         │ TRADE DATE: T+0
+         │
+DAY 19   │ SETTLEMENT (T+5): USD 500M received by Infosys
+         │ GlobalBank fee: USD 1,750,000 deducted at settlement
+         │ DEAL STATUS: CLOSED
+═══════════════════════════════════════════════════════════════════════════════════
+    </div>
+
+    <h4>PHASE 3: CLOSEOUT</h4>
+    <div class="ascii amber" style="font-size:.67rem;">
+═══════════════════════════════════════════════════════════════════════════════════
+DAY 20   │ Expense compilation begins
+         │   Legal fees (A&amp;O): USD 280,000
+         │   Legal fees (Linklaters): USD 180,000 [issuer-borne, reimbursed]
+         │   Roadshow travel (3 cities): USD 42,000
+         │   Listing fee (SGX): USD 12,500
+         │   Trustee appointment: USD 8,000
+         │   TOTAL EXPENSES: USD 522,500
+         │   vs EL Cap: USD 150,000 (bank-borne only: USD 42,000 + USD 8,000)
+         │
+DAY 35   │ Final expense report approved by Finance
+         │ Net revenue to GlobalBank: USD 1,750,000 gross fees
+         │                          − USD 50,000 bank-borne expenses
+         │                          = USD 1,700,000 net revenue
+         │
+DAY 45   │ Revenue booked in London booking entity (GlobalBank International)
+         │ League table credit: USD 500M → Moody's Baa1, S&amp;P BBB+
+         │ MCW status: CONFIRMED (Finance sign-off)
+         │
+DAY 50   │ REGULATORY REPORTING
+         │   MiFID II transaction report: Filed to FCA (EU investor allocation)
+         │   SGX: Listing confirmation filed
+         │   RBI/SEBI: ECB (External Commercial Borrowing) reporting filed
+         │
+DAY 60   │ Deal file archived (7-year retention)
+         │ KYC records retained (per RBI / FCA requirements)
+         │ DEAL STATUS: CLOSED &amp; ARCHIVED ✅
+═══════════════════════════════════════════════════════════════════════════════════
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION 10: GLOSSARY ══════════ -->
+<div id="glossary" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">10</span> QUICK GLOSSARY</div>
+  <table class="tbl">
+    <thead>
+      <tr><th>TERM</th><th>DEFINITION</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>Pitch Book</code></td><td>Presentation prepared by a bank to compete for a mandate. Non-binding. Contains credentials, market analysis, proposed structure, and fee proposal.</td></tr>
+      <tr><td><code>Verbal Mandate</code></td><td>Client's informal indication of intent to appoint the bank. Triggers all compliance workflows internally but is not legally binding until the Engagement Letter is signed.</td></tr>
+      <tr><td><code>Formal Mandate</code></td><td>The legally binding appointment of a bank, evidenced by a signed Engagement Letter / Mandate Letter.</td></tr>
+      <tr><td><code>Engagement Letter</code></td><td>Legal contract between client and bank defining the scope of work, fees, exclusivity, expense cap, and governing law.</td></tr>
+      <tr><td><code>Origination</code></td><td>Phase 1: First client contact through to signed Engagement Letter. Includes all compliance clearances.</td></tr>
+      <tr><td><code>Syndication</code></td><td>Phase 2: Deal structuring, marketing, book-building, pricing, and settlement. Begins after Engagement Letter is signed.</td></tr>
+      <tr><td><code>Closeout</code></td><td>Phase 3: Post-settlement expense reconciliation, fee invoicing, revenue recognition, and regulatory reporting.</td></tr>
+      <tr><td><code>Conflict Clearance</code></td><td>Formal compliance check to ensure the bank has no conflicting interest in the proposed transaction. Hard gate for deal progression.</td></tr>
+      <tr><td><code>KYC</code></td><td>Know Your Customer — identity and business verification of the client and beneficial owners. Required before any mandate can be formally accepted.</td></tr>
+      <tr><td><code>MNPI</code></td><td>Material Non-Public Information — any confidential deal information that could affect a security's price. Once received, MNPI protocols restrict what the bank can trade or disclose.</td></tr>
+      <tr><td><code>MCW</code></td><td>Meaningful Client Work — internal classification confirming that the bank's work on a deal was substantive and qualifies for revenue attribution and league table credit.</td></tr>
+      <tr><td><code>Booking Vehicle</code></td><td>The legal entity within the bank that executes and books the deal for regulatory, tax, and P&amp;L purposes. A deal may have multiple booking vehicles across jurisdictions. (Covered in depth in M05.)</td></tr>
+      <tr><td><code>MiFID II</code></td><td>EU regulation requiring client classification, suitability assessment, cost disclosure, and post-trade transaction reporting for financial instruments.</td></tr>
+      <tr><td><code>DAC6</code></td><td>EU Directive on Administrative Cooperation — requires intermediaries (including banks) to report cross-border tax arrangements that meet specific hallmarks.</td></tr>
+      <tr><td><code>FinCEN</code></td><td>US Financial Crimes Enforcement Network — requires Suspicious Activity Reports (SARs) and AML program maintenance for US-regulated entities.</td></tr>
+      <tr><td><code>Sole Bookrunner</code></td><td>A single bank managing the entire book-building and distribution process for a transaction. Receives full fee and has full responsibility.</td></tr>
+      <tr><td><code>Joint Lead Manager</code></td><td>Multiple banks sharing the bookrunner role. Fees and responsibilities split per agreed percentages in the Engagement Letter.</td></tr>
+      <tr><td><code>Offering Circular (OC)</code></td><td>The legal disclosure document (prospectus) provided to investors in a bond issuance, describing the issuer, the transaction, and the risks.</td></tr>
+      <tr><td><code>RegS / 144A</code></td><td>US securities exemptions: Regulation S (non-US investors) and Rule 144A (qualified institutional buyers in the US). Most international bonds use both.</td></tr>
+      <tr><td><code>Book Building</code></td><td>The process of collecting orders from investors to determine demand and price for a new securities issuance.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════ SECTION 11: ECM vs DCM ══════════ -->
+<div id="ecm-dcm" class="section">
+  <div class="section-title"><span class="section-num">11</span> EQUITY CAPITAL MARKETS vs DEBT CAPITAL MARKETS</div>
+
+  <p>The three-phase deal lifecycle (Origination → Syndication → Closeout) is the same spine for both <span class="hl-gold">ECM</span> and <span class="hl-cyan">DCM</span>. However, the <em>nature of the instrument</em> being issued creates significant differences in how each phase operates, who the key parties are, what the regulatory obligations are, and how risk is priced and distributed.</p>
+
+  <div class="callout co-gold">
+    <div class="co-title gold">🔑 One Sentence Each</div>
+    <strong>DCM</strong> = the bank helps a client borrow money from the capital markets by issuing bonds, notes, or loans — the client pays it back with interest.<br/>
+    <strong>ECM</strong> = the bank helps a client raise money by selling ownership (shares) in the company — investors become part-owners with no guaranteed return.
+  </div>
+
+  <div class="ascii gold">
+ECM vs DCM — INSTRUMENT SPECTRUM
+═══════════════════════════════════════════════════════════════════════════════
+                        CAPITAL MARKETS
+                              │
+          ┌───────────────────┴───────────────────┐
+          │                                       │
+  DEBT CAPITAL MARKETS (DCM)         EQUITY CAPITAL MARKETS (ECM)
+  ─────────────────────────          ─────────────────────────────
+  • Investment Grade Bonds            • Initial Public Offering (IPO)
+  • High Yield / Leveraged Bonds      • Follow-on / Secondary Offering (FPO)
+  • Convertible Bonds (hybrid)        • Rights Issue
+  • Syndicated Loans                  • Block Trade / Accelerated Book Build
+  • Commercial Paper                  • Private Placement (QIP, PIPE)
+  • Green / Sustainability Bonds      • Convertible Bonds (hybrid — also ECM)
+  • Sukuk (Islamic Finance)           • Depositary Receipts (GDR/ADR)
+          │                                       │
+   INVESTOR GETS:                      INVESTOR GETS:
+   Fixed/floating coupon               Ownership (equity) stake
+   Principal repayment at maturity     Dividends (not guaranteed)
+   Senior/secured claim in default     Residual claim in default
+          │                                       │
+   CLIENT CREDIT RATED (S&amp;P/Moody's)   NO RATING REQUIRED
+   → Rating drives pricing              → Market cap + growth story drives price
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+
+  <h4>▸ PHASE-BY-PHASE COMPARISON: ORIGINATION</h4>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>ORIGINATION DIMENSION</th>
+        <th>DCM (Debt)</th>
+        <th>ECM (Equity)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Who pitches?</strong></td>
+        <td>DCM Coverage + Relationship Banking MD</td>
+        <td>ECM Coverage + Equity Syndicate MD</td>
+      </tr>
+      <tr>
+        <td><strong>Pitch focus</strong></td>
+        <td>Spread vs comparable bonds, funding cost, optimal tenor, rating impact</td>
+        <td>Valuation (P/E, EV/EBITDA multiples), equity story, investor appetite, float size</td>
+      </tr>
+      <tr>
+        <td><strong>Client trigger</strong></td>
+        <td>Refinancing need, capex, M&amp;A financing, balance sheet optimisation</td>
+        <td>Growth capital need, founder liquidity, PE exit, regulatory requirement (listing)</td>
+      </tr>
+      <tr>
+        <td><strong>Verbal Mandate trigger</strong></td>
+        <td>Same — triggers Conflict Clearance, KYC, Sanctions immediately</td>
+        <td>Same — identical gate process. Additionally triggers SEBI/SEC registration assessment</td>
+      </tr>
+      <tr>
+        <td><strong>Conflict Clearance</strong></td>
+        <td>Standard — check for existing creditor relationships, MNPI on issuer</td>
+        <td>Same + check for any equity research coverage of the issuer (Research wall issues)</td>
+      </tr>
+      <tr>
+        <td><strong>KYC</strong></td>
+        <td>Standard corporate KYC + UBO identification</td>
+        <td>Same + shareholder structure review (existing large shareholders, lock-up agreements)</td>
+      </tr>
+      <tr>
+        <td><strong>Engagement Letter key terms</strong></td>
+        <td>Management fee + underwriting/placement spread (bps on deal size)</td>
+        <td>Gross spread (% of IPO proceeds) — typically 3–7%; split across bookrunners</td>
+      </tr>
+      <tr>
+        <td><strong>Exclusivity</strong></td>
+        <td>Common — 30–90 days exclusivity to a single bank or small syndicate</td>
+        <td>Common for IPO; rare for block trades (speed is the product)</td>
+      </tr>
+      <tr>
+        <td><strong>Regulatory pre-work</strong></td>
+        <td>Offering Circular / Information Memo prep begins</td>
+        <td>DRHP (India) / S-1 (US) / Prospectus filing begins — much heavier regulatory burden</td>
+      </tr>
+      <tr>
+        <td><strong>Timeline to Engagement Letter</strong></td>
+        <td>Days to 2 weeks (investment grade); weeks for high yield</td>
+        <td>Weeks to months — SEBI/SEC review of draft prospectus often takes 30–75 days</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>▸ PHASE-BY-PHASE COMPARISON: SYNDICATION / EXECUTION</h4>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>EXECUTION DIMENSION</th>
+        <th>DCM</th>
+        <th>ECM</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Core document</strong></td>
+        <td>Offering Circular (OC) / Information Memorandum (IM)</td>
+        <td>Prospectus / DRHP (Draft Red Herring Prospectus in India) / S-1 (US)</td>
+      </tr>
+      <tr>
+        <td><strong>Regulatory filing</strong></td>
+        <td>Minimal (RegS/144A bonds — no SEC registration required)</td>
+        <td>Heavy — SEBI (India), SEC (US), or FCA (UK) review of full prospectus mandatory</td>
+      </tr>
+      <tr>
+        <td><strong>Rating requirement</strong></td>
+        <td>Mandatory for IG bonds. HY optional but market-standard. Drives pricing directly.</td>
+        <td>Not required. Valuation driven by comparable company analysis and investor sentiment.</td>
+      </tr>
+      <tr>
+        <td><strong>Roadshow</strong></td>
+        <td>1–3 days. Virtual common. CFO + Treasurer + DCM MD.</td>
+        <td>2–3 weeks (IPO). CEO + CFO + ECM MD. Covers 50–100 investor meetings globally.</td>
+      </tr>
+      <tr>
+        <td><strong>Book building</strong></td>
+        <td>Hours to 1 day. Books open at IPT (spread guidance), tighten on demand.</td>
+        <td>Days to weeks (IPO). Price range set; final price determined by demand quality.</td>
+      </tr>
+      <tr>
+        <td><strong>Pricing mechanism</strong></td>
+        <td>Spread over benchmark (UST, Gilts, SOFR). Fixed or floating coupon.</td>
+        <td>Price per share (fixed in IPO after book build; discount to VWAP in block trades).</td>
+      </tr>
+      <tr>
+        <td><strong>Allocation</strong></td>
+        <td>Discretionary by syndicate desk. Quality accounts preferred. Size-weighted.</td>
+        <td>Discretionary — ECM desk + issuer jointly decide. Anchor investors prioritised.</td>
+      </tr>
+      <tr>
+        <td><strong>Settlement</strong></td>
+        <td>T+2 to T+5. Via Euroclear / Clearstream / DTC.</td>
+        <td>T+1 (India, post-2023 SEBI mandate) / T+2 (US/UK). Via NSDL/CDSL (India), DTC (US).</td>
+      </tr>
+      <tr>
+        <td><strong>Lock-up period</strong></td>
+        <td>Not applicable.</td>
+        <td>Promoters/founders locked up for 90–180 days post-IPO (SEBI requirement in India).</td>
+      </tr>
+      <tr>
+        <td><strong>Greenshoe / Stabilisation</strong></td>
+        <td>Rare in bonds.</td>
+        <td>Common in IPOs — over-allotment option allowing price stabilisation post-listing.</td>
+      </tr>
+      <tr>
+        <td><strong>Listing venue</strong></td>
+        <td>SGX, LSE, Euronext (bonds). Or unlisted (private placements).</td>
+        <td>NSE/BSE (India), NYSE/NASDAQ (US), LSE (UK). Exchange-specific listing rules apply.</td>
+      </tr>
+      <tr>
+        <td><strong>MiFID II obligations</strong></td>
+        <td>Transaction reporting, cost disclosure, client classification.</td>
+        <td>Same + product governance requirements (target market assessment for equity).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>▸ PHASE-BY-PHASE COMPARISON: CLOSEOUT</h4>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>CLOSEOUT DIMENSION</th>
+        <th>DCM</th>
+        <th>ECM</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Fee structure</strong></td>
+        <td>Management fee + underwriting spread (bps). E.g. 35bps on USD 500M = USD 1.75M</td>
+        <td>Gross spread as % of proceeds. E.g. 3.5% on INR 5,000 Cr IPO = INR 175 Cr</td>
+      </tr>
+      <tr>
+        <td><strong>Expense profile</strong></td>
+        <td>Legal, rating agency, listing, roadshow. Moderate. Capped in EL.</td>
+        <td>Legal, DRHP filing, SEBI fees, advertising/marketing, roadshow. Significantly higher.</td>
+      </tr>
+      <tr>
+        <td><strong>Stabilisation accounting</strong></td>
+        <td>Not applicable.</td>
+        <td>Greenshoe P&amp;L must be tracked separately. Any stabilisation purchases are recorded as positions until unwound.</td>
+      </tr>
+      <tr>
+        <td><strong>Regulatory post-trade reporting</strong></td>
+        <td>MiFID II transaction report, FinCEN (if applicable), ECB filing (India cross-border).</td>
+        <td>SEBI allotment report, lock-up confirmation, post-IPO shareholding disclosure, market abuse monitoring.</td>
+      </tr>
+      <tr>
+        <td><strong>League table credit</strong></td>
+        <td>DCM league table — by deal size, currency, region, credit rating band.</td>
+        <td>ECM league table — by IPO proceeds, secondary offerings. Both tracked by Bloomberg/Dealogic.</td>
+      </tr>
+      <tr>
+        <td><strong>MCW classification</strong></td>
+        <td>Standard MCW — fee + role confirmation.</td>
+        <td>Same MCW criteria. For block trades: must have been active bookrunner (not just selling group).</td>
+      </tr>
+      <tr>
+        <td><strong>Archival obligations</strong></td>
+        <td>7–10 years deal file. KYC per regulatory retention schedule.</td>
+        <td>Same + prospectus must be archived (public document — permanent record).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>▸ KEY ORIGINATION DIFFERENCES — VISUAL SUMMARY</h4>
+  <div class="ascii">
+ECM vs DCM — ORIGINATION GATE DIFFERENCES
+═══════════════════════════════════════════════════════════════════════════════
+GATE CONDITION              DCM STATUS          ECM STATUS
+───────────────────────────────────────────────────────────────────────────────
+Conflict Clearance          REQUIRED ✓          REQUIRED ✓ + Research wall check
+KYC / AML                   REQUIRED ✓          REQUIRED ✓ + shareholder structure
+Sanctions Screening         REQUIRED ✓          REQUIRED ✓
+Anti-Bribery                REQUIRED ✓          REQUIRED ✓
+Engagement Letter           REQUIRED ✓          REQUIRED ✓
+MCW Classification          REQUIRED ✓          REQUIRED ✓
+MiFID II Client Class.      IF EU DEAL ◑        IF EU DEAL ◑ + product governance
+DAC6 Assessment             IF APPLICABLE ◑     RARELY applicable ○
+Credit / Risk Approval      REQUIRED ✓          REQUIRED ✓ (underwriting risk)
+Rating Agency Process       REQUIRED for IG ✓   NOT REQUIRED ○
+SEBI/SEC Prospectus Review  NOT REQUIRED ○      REQUIRED ✓ (weeks–months delay)
+Research Blackout / Wall    OPTIONAL ◑          MANDATORY ✓ (pre-IPO quiet period)
+Lock-up Agreement Review    NOT APPLICABLE ○    REQUIRED ✓ (promoter lock-ups)
+───────────────────────────────────────────────────────────────────────────────
+LEGEND:  ✓ Required for all deals   ◑ Conditional   ○ Not applicable / rare
+═══════════════════════════════════════════════════════════════════════════════
+  </div>
+
+  <h4>▸ ECM-SPECIFIC: THE RESEARCH WALL (Equity Research Conflict)</h4>
+  <div class="callout co-red">
+    <div class="co-title red">⚠ Critical ECM-Only Conflict — Research Blackout</div>
+    <p>In ECM, a unique conflict arises when the bank's <strong>Equity Research team</strong> covers the company that the <strong>ECM/Investment Banking team</strong> is about to take public or secondary. The research analyst cannot publish reports or issue ratings changes during the <em>quiet period</em> (typically 40 days before and 25 days after an IPO in the US; SEBI has its own regime).</p>
+    <p style="margin-top:.5rem;">The Chinese Wall between Research and Investment Banking is therefore <strong>mandatory and actively monitored</strong> in every ECM transaction — not just a best-practice consideration as in DCM.</p>
+  </div>
+
+  <h4>▸ REAL-WORLD PARALLEL — ECM EXAMPLE</h4>
+  <div class="example-box">
+    <div class="example-title">▸ LIC OF INDIA IPO — MAY 2022 (ECM Parallel to Infosys Bond)</div>
+    <div class="ascii" style="font-size:.67rem;">
+═══════════════════════════════════════════════════════════════════════════════
+DEAL SNAPSHOT (ECM)
+  Issuer          : Life Insurance Corporation of India (LIC)
+  Deal Type       : Initial Public Offering (IPO) — Government divestment
+  Deal Size       : INR 20,557 Cr (~USD 2.7 Bn) — India's largest IPO ever
+  Instrument      : Equity shares (fresh + offer for sale by Government of India)
+  Listing         : NSE + BSE
+  Price Band      : INR 902 – 949 per share
+  Book Runners    : Goldman Sachs, Axis Capital, BofA, Citigroup, JM Financial,
+                    Kotak, Nomura, SBI Capital Markets (8 Joint Book Runners)
+  DRHP Filed      : Feb 2022 → SEBI Observations received: May 2022
+  Roadshow        : 2 weeks (India + Singapore + London + New York)
+  Subscription    : 2.95x overall; Institutional 2.83x; Retail 1.99x
+  Settlement      : T+1 (SEBI mandate for Indian exchanges)
+
+ORIGINATION DIFFERENCES vs INFOSYS DCM BOND:
+  ─────────────────────────────────────────────────────────────────────────
+  ✦ DRHP preparation took 3 months (vs OC taking 1 week for bond)
+  ✦ SEBI review took ~75 days (vs no regulator review for RegS bond)
+  ✦ 8 Joint Bookrunners (vs 1 Sole Bookrunner for bond) — fee split 8 ways
+  ✦ Gross spread: ~0.35% (vs 35bps for bond — similar but different mechanism)
+  ✦ Lock-up: GOI locked up for 1 year post-IPO (no equivalent in DCM)
+  ✦ Research blackout: All 8 banks' research analysts silenced on LIC
+  ✦ Stabilisation: Greenshoe option exercised post-listing to support price
+  ✦ Post-IPO: Quarterly shareholding disclosure required (SEBI Reg 31)
+  ✦ Timeline: Origination to listing ~5 months (vs ~6 weeks for bond)
+  ─────────────────────────────────────────────────────────────────────────
+  CLOSEOUT COMPLEXITY: 8x bookrunner expense splits, greenshoe P&amp;L tracking,
+  SEBI post-allotment filings, lock-up monitoring system entries
+═══════════════════════════════════════════════════════════════════════════════
+    </div>
+  </div>
+
+  <h4>▸ IMPACT ON M01 DEAL LIFECYCLE MODEL — WHAT CHANGES?</h4>
+  <p>The core three-phase lifecycle model in Section 01 is valid for <em>both</em> ECM and DCM. The differences are in the <strong>depth, duration, and regulatory complexity</strong> of each phase:</p>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">Origination Phase</div>
+      <p>ECM takes 2–5x longer due to SEBI/SEC prospectus review. More parties involved in pitch (ECM + research + equity sales). Additional gate: Research wall check.</p>
+    </div>
+    <div class="card">
+      <div class="card-title cyan">Syndication Phase</div>
+      <p>ECM roadshow is 10–15 days vs DCM's 1–3 days. Book building is longer. Greenshoe adds a post-listing execution layer with no DCM equivalent.</p>
+    </div>
+    <div class="card">
+      <div class="card-title green">Closeout Phase</div>
+      <p>ECM closeout is more complex: greenshoe accounting, post-IPO SEBI filings, lock-up register, multi-bookrunner expense splits, prospectus archival (permanent).</p>
+    </div>
+    <div class="card">
+      <div class="card-title amber">Compliance Workflows</div>
+      <p>Same workflows but ECM adds: Research blackout monitoring, lock-up agreement review, SEBI/SEC product governance, post-IPO market abuse monitoring.</p>
+    </div>
+    <div class="card">
+      <div class="card-title red">Risk Profile</div>
+      <p>ECM underwriting risk is higher and more visible — share price can move against the bank between pricing and settlement. DCM spread risk is usually hedged at pricing.</p>
+    </div>
+    <div class="card">
+      <div class="card-title purple">Deal System Impact</div>
+      <p>Deal origination system must track: instrument type (equity/debt), DRHP status, SEBI filing dates, lock-up expiry dates, greenshoe option status — additional fields vs DCM.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION 12: FAQ ══════════ -->
+<div id="faq" class="section section-alt">
+  <div class="section-title cyan"><span class="section-num">12</span> FREQUENTLY ASKED QUESTIONS</div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q1. What is the difference between a Mandate and an Engagement Letter — are they the same thing?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>They are closely related but technically distinct. A <span class="hl-gold">Mandate</span> is the commercial appointment — the client's decision to use a specific bank for a transaction. The <span class="hl-cyan">Engagement Letter</span> (also called Mandate Letter in some jurisdictions) is the <em>legal document</em> that evidences and formalises that mandate. You can have a mandate without a signed Engagement Letter (i.e. a Verbal Mandate), but you cannot have a valid Engagement Letter without a mandate decision. In practice, bankers use "mandate" and "Engagement Letter" almost interchangeably once the letter is signed — but the distinction matters operationally because Verbal Mandate triggers compliance workflows while the EL is still being drafted.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q2. Can a bank start structuring a deal before the Engagement Letter is signed?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>In practice, yes — limited internal work often begins after Verbal Mandate. Bankers start drafting term sheets, running pricing models, and consulting internal credit teams. However, the bank cannot: commit any formal resources to the client, share any indicative terms externally, or begin investor outreach until the EL is signed and all compliance gates are cleared. Any work done pre-EL is <em>at the bank's own risk</em> — if the client chooses a different bank, the pre-EL work is uncompensated. This is why the Engagement Letter contains an expense reimbursement clause: to recoup costs even if the deal is aborted post-signing.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q3. In a deal origination system, how does the deal status change across the lifecycle?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>A typical deal origination system (like the one you work on, Raghavan) uses a status progression tied to gate completion:</p>
+      <div class="ascii" style="margin:.75rem 0;font-size:.68rem;">
+STATUS FLOW IN DEAL ORIGINATION SYSTEM
+═══════════════════════════════════════════════════════════════════════
+  PROSPECT       → Opportunity identified; pitch being prepared
+  PIPELINE       → Verbal Mandate received; compliance workflows running
+  MANDATE        → Engagement Letter signed; all gates cleared
+  ACTIVE         → Syndication/execution in progress
+  PRICING        → Deal priced; allocation in progress
+  CLOSED         → Settlement complete; closeout begins
+  ARCHIVED       → Closeout complete; file archived; revenue booked
+  WITHDRAWN      → Deal abandoned post-mandate (rare; fee implications)
+  DECLINED       → Mandate not taken (conflict/sanctions failure)
+═══════════════════════════════════════════════════════════════════════
+      </div>
+      <p>Each status transition is gated — the system enforces that required fields and approval records exist before allowing the move. <code>PIPELINE → MANDATE</code> is the hardest gate (all compliance workflows must be green).</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q4. Why does ECM origination take so much longer than DCM?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>Three primary reasons: (1) <span class="hl-gold">Regulatory review</span> — the DRHP (India) or S-1 (US) must be reviewed and cleared by SEBI or SEC respectively, which takes 30–75 days and involves multiple rounds of comments and responses. DCM bonds (issued under RegS/144A) have no equivalent regulator review. (2) <span class="hl-cyan">Document complexity</span> — an IPO Prospectus is a far more extensive document than a bond Offering Circular, covering full company history, risk factors, financial statements, and MD&A going back 3–5 years. (3) <span class="hl-gold">Investor education</span> — equity investors need to understand the business fundamentally; debt investors primarily assess credit quality. The ECM roadshow is correspondingly longer and more intensive.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q5. What happens to deal expenses if a deal is withdrawn after the Engagement Letter is signed?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>This depends entirely on the Engagement Letter terms. Most ELs contain a <span class="hl-gold">break fee</span> or <span class="hl-cyan">expense reimbursement clause</span> that requires the client to reimburse the bank for all reasonable expenses incurred up to the point of withdrawal — legal fees, rating agency fees, roadshow costs, and sometimes a portion of the success fee (kill fee). If the bank withdraws (e.g. due to a conflict discovered mid-deal), the bank typically bears its own costs. The Closeout process still runs for withdrawn deals: all expenses are compiled, documented, and charged per the EL terms, and the deal is archived with a <code>WITHDRAWN</code> status. Regulatory reporting (MiFID II, FinCEN) may still be required depending on how far execution had progressed.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q6. What is Meaningful Client Work (MCW) and why does it matter for deal system entries?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>MCW is the internal classification that distinguishes <em>substantive</em> advisory or underwriting work from peripheral involvement. It matters for three reasons: (1) <span class="hl-gold">Revenue attribution</span> — only MCW-classified deals contribute to a banker's or team's P&amp;L and performance review; (2) <span class="hl-cyan">League table credit</span> — Bloomberg, Dealogic, and Thomson Reuters only count a bank's deal participation if it meets MCW-equivalent standards (i.e. active bookrunner role, not just selling group); (3) <span class="hl-gold">Deal system integrity</span> — MCW confirmation prevents the origination system from being inflated with deals where the bank had only marginal involvement. In your system, MCW status is a required field that Finance must approve before a deal can transition to <code>CLOSED</code> status.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q7. Can the same deal have both ECM and DCM components?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>Yes — and this is common in large M&amp;A transactions. An acquisition might be financed with a combination of: (1) a bond issuance (DCM) to fund the cash consideration, (2) a share issuance (ECM) to partially fund the deal or as consideration to the target's shareholders, and (3) a revolving credit facility (loans/DCM). Each component has its own origination workflow, Engagement Letter, booking vehicle, and compliance treatment — but they are linked in the deal origination system under a single parent deal ID. The bank may use separate teams for each component (DCM desk for the bond, ECM desk for the equity) with a coordinating MD overseeing the combined transaction. This is where booking vehicle complexity (covered in M05) becomes significant.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      <span>Q8. What is a Greenshoe option and why does it complicate ECM closeout?</span>
+      <span class="faq-arrow">▼</span>
+    </button>
+    <div class="faq-a">
+      <p>A <span class="hl-gold">Greenshoe</span> (formally: Over-Allotment Option) is a provision in an IPO Engagement Letter that allows the bookrunner to sell up to 15% more shares than originally planned (by borrowing shares from the issuer or major shareholders), then buy those shares in the open market post-listing to stabilise the price if it falls. If the price holds or rises, the bank exercises the option and delivers the extra shares from the issuer. The ECM closeout complication: the bank holds a <em>short position</em> in the shares during the stabilisation window (typically 30 days post-listing), which must be tracked as a live trading position, marked to market daily, and P&amp;L recorded separately from the deal fee. This requires coordination between the ECM desk, the trading desk, the finance team, and the risk system — none of which exists in a standard DCM closeout.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════ SECTION 13: VERSION HISTORY ══════════ -->
+<div id="version" class="section">
+  <div class="section-title"><span class="section-num">13</span> VERSION HISTORY</div>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th style="width:80px;">VERSION</th>
+        <th style="width:120px;">DATE</th>
+        <th style="width:160px;">AUTHOR</th>
+        <th>CHANGES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>v1.0</code></td>
+        <td>Jun 2025</td>
+        <td>Raghavan / Claude</td>
+        <td>Initial release — 10 sections: Deal Lifecycle, Origination, Pitch/Mandate/Verbal Mandate, Origination Workflow, Compliance Workflows (9 workflows), Syndication, Closeout, Gate Conditions, Infosys Bond Case Study, Glossary</td>
+      </tr>
+      <tr>
+        <td><code>v1.1</code></td>
+        <td>Jun 2025</td>
+        <td>Raghavan / Claude</td>
+        <td>Added Section 11: ECM vs DCM — instrument spectrum, 3-phase comparison tables (Origination / Syndication / Closeout), gate condition diff matrix, Research Wall explanation, LIC IPO case study, deal system impact summary. Nav and TOC updated.</td>
+      </tr>
+      <tr>
+        <td><code>v1.2</code></td>
+        <td>Jun 2025</td>
+        <td>Raghavan / Claude</td>
+        <td>Added Section 12: FAQ (8 questions — Mandate vs EL, pre-EL structuring, deal system status flow, ECM timeline, withdrawn deal expenses, MCW, combined ECM+DCM deals, Greenshoe). Added Section 13: Version History. Nav and TOC updated to 13 sections.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════ MODULE NAV ══════════ -->
+<div class="mod-nav">
+  <span style="font-family:var(--mono);font-size:.75rem;color:var(--t3);">MODULE 01 · ORIGINATION FUNDAMENTALS · 13 SECTIONS</span>
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+    <a href="index.html">⬡ INDEX</a>
+    <a href="m02_parties.html">M02 · PARTIES &amp; RATINGS →</a>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="ft">IB DEAL LIFECYCLE · MODULE 01</div>
+  <div style="margin-bottom:.4rem;">Deal Origination Fundamentals · Pitch · Mandate · Verbal Mandate · Syndication · Closeout</div>
+  <div style="color:var(--border2);">─────────────────────────────────────────────────────────────────</div>
+  <div style="margin-top:.5rem;">
+    <span class="badge b-gold">M01</span>
+    <span class="badge b-cyan">M02 →</span>
+    <span class="badge b-gold">M03 →</span>
+    <span class="badge b-cyan">M04 →</span>
+    <span class="badge b-gold">M05 →</span>
+    <span class="badge b-cyan">M06 →</span>
+  </div>
+  <div style="margin-top:.75rem;font-size:.68rem;">For educational and internal reference purposes only. Not legal or financial advice. © IB Knowledge Base Series.</div>
+</footer>
+<script>
+function toggleFaq(btn){
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+</script>
+</body>
+</html>
