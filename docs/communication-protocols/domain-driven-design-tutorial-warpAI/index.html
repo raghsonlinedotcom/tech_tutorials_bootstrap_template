@@ -2833,10 +2833,17 @@ Communication Patterns:
         // Code Copy Function
         function copyCode(button) {
             const codeBlock = button.parentElement.querySelector('code');
+            if (!codeBlock) return;
             const text = codeBlock.textContent;
             
             navigator.clipboard.writeText(text).then(() => {
                 button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                button.innerHTML = '<i class="bi bi-x"></i> Failed';
                 setTimeout(() => {
                     button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
                 }, 2000);
@@ -2852,9 +2859,11 @@ Communication Patterns:
         // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                const target = document.querySelector(href);
                 if (target) {
+                    e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });

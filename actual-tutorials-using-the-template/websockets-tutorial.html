@@ -3069,9 +3069,11 @@ mongoose.connect(process.env.MONGODB_URI)
         // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                const target = document.querySelector(href);
                 if (target) {
+                    e.preventDefault();
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
@@ -3096,6 +3098,12 @@ mongoose.connect(process.env.MONGODB_URI)
                     const code = pre.querySelector('code').textContent;
                     navigator.clipboard.writeText(code).then(() => {
                         button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+                        setTimeout(() => {
+                            button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy:', err);
+                        button.innerHTML = '<i class="bi bi-x"></i> Failed';
                         setTimeout(() => {
                             button.innerHTML = '<i class="bi bi-clipboard"></i> Copy';
                         }, 2000);
